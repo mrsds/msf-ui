@@ -6,7 +6,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=0&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=0&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
       {
@@ -15,7 +15,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=1&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=1&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
       {
@@ -24,7 +24,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=2&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=2&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
       {
@@ -33,7 +33,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=3&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=3&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
       {
@@ -42,7 +42,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=4&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=4&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
       {
@@ -51,7 +51,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=5&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=5&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
       {
@@ -60,7 +60,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=6&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=6&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
       {
@@ -69,7 +69,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=7&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=7&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
       {
@@ -78,7 +78,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=8&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=8&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
       {
@@ -87,7 +87,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=9&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=9&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
       {
@@ -96,7 +96,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=10&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=10&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
       {
@@ -105,7 +105,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=11&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=11&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
       {
@@ -114,7 +114,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=12&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=12&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
       {
@@ -123,10 +123,19 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "http://localhost:9090/vista?category=13&maxObjects=10000",
+        "url": "http://100.64.114.155:9090/vista?category=13&maxObjects=10000",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
 
+      {
+        "id": "AVIRIS_TEST",
+        "title": "AVIRIS Test",
+        "type": "data",
+        "handleAs": "vector_geojson",
+        "isDefault": false,
+        "url": "https://s3-us-gov-west-1.amazonaws.com/methane/AVIRIS/test.json",
+        "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
+      },
 
       {
         "id": "Reference_Labels",
