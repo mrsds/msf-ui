@@ -36,6 +36,7 @@ import MiscUtil from '_core/utils/MiscUtil';
 import MapUtil from '_core/utils/MapUtil';
 import TileHandler from '_core/utils/TileHandler';
 import Cache from '_core/utils/Cache';
+import fetch from 'isomorphic-fetch';
 
 export default class MapWrapper_openlayers extends MapWrapper {
     constructor(container, options) {
@@ -1281,10 +1282,36 @@ export default class MapWrapper_openlayers extends MapWrapper {
             });
         }
 
-        return new Ol_Source_Vector({
+        let format = new Ol_Format_GeoJSON();
+        let vectorSource = new Ol_Source_Vector({
             url: options.url,
-            format: new Ol_Format_GeoJSON()
+            format: format,
+            loader: function(extent, resolution, projection) {
+              this.resolution = resolution;
+
+              let url = options.url;
+              url += "&minLon" + extent[0];
+              url += "&minLat" + extent[1];
+              url += "&maxLon" + extent[2];
+              url += "&maxLat" + extent[3];
+
+              fetch(url).then((response) => {
+                return response.json();
+              }).then(function(json) {
+                console.info(json);
+                let features = format.readFeatures(json, {featureProjection: 'EPSG:4326'});
+                vectorSource.addFeatures(features);
+
+              });
+            },
+          strategy: function(extent, resolution) {
+              if(this.resolution && this.resolution != resolution){
+                this.loadedExtentsRtree_.clear();
+              }
+              return [extent];
+            }
         });
+      return vectorSource;
     }
 
     createVectorTopojsonSource(layer, options) {
