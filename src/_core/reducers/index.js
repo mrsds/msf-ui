@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import Immutable from 'immutable';
 import view from '_core/reducers/view';
-import map from '_core/reducers/map';
+import map_Extended from 'reducers/map_Extended';
 import settings from '_core/reducers/settings';
 import help from '_core/reducers/help';
 import layerInfo from '_core/reducers/layerInfo';
@@ -13,7 +13,7 @@ import alerts from '_core/reducers/alerts';
 
 const rootReducer = combineReducers({
     view,
-    map,
+    map: map_Extended,
     settings,
     help,
     layerInfo,
