@@ -133,7 +133,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "https://s3-us-gov-west-1.amazonaws.com/methane/AVIRIS/test.json",
+        "url": "http://localhost:9090/aviris",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
 

@@ -1290,7 +1290,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
               this.resolution = resolution;
 
               let url = options.url;
-              url += "&minLon" + extent[0];
+
+              if (url.indexOf("?") == -1) {
+                url += "?";
+              } else {
+                url += "&";
+              }
+
+              url += "minLon" + extent[0];
               url += "&minLat" + extent[1];
               url += "&maxLon" + extent[2];
               url += "&maxLat" + extent[3];
@@ -1298,7 +1305,6 @@ export default class MapWrapper_openlayers extends MapWrapper {
               fetch(url).then((response) => {
                 return response.json();
               }).then(function(json) {
-                console.info(json);
                 let features = format.readFeatures(json, {featureProjection: 'EPSG:4326'});
                 vectorSource.addFeatures(features);
 
