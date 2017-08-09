@@ -11,7 +11,8 @@ const OPS_CONFIG = Immutable.fromJS(window.APPLICATION_CONFIG);
 const APP_CONFIG = Immutable.fromJS({
 	URLS: {
 		vistaEndpoint: "http://100.64.114.155:9090/vista?maxLat={latMax}&maxLon={lonMax}&minLat={latMin}&minLon={lonMin}"
-	}
+	},
+	DEFAULT_BBOX_EXTENT: [-120,33,-116,35]
 });
 
 // define and export the final config
