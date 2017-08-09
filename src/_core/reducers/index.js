@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import Immutable from 'immutable';
 import view from '_core/reducers/view';
 import map_Extended from 'reducers/map_Extended';
 import settings from '_core/reducers/settings';
