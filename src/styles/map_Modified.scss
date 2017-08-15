@@ -5,7 +5,7 @@
     transition: opacity 0.2s linear 0s, top 0s linear 0.21s;
     opacity: 0;
     pointer-events: none;
-    &:not(.active) { 
+    &:not(.active) {
         // visibility: hidden;
     }
     &.active {
@@ -196,7 +196,7 @@
     height: 100%;
     overflow: hidden;
     opacity: 1;
-    display: block;
+    display: inline-block;
 }
 
 #mapContainer {

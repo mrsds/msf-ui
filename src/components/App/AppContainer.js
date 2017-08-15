@@ -44,6 +44,8 @@ import AnalyticsContainer from "_core/components/Analytics/AnalyticsContainer";
 import KeyboardControlsContainer from "_core/components/KeyboardControls/KeyboardControlsContainer";
 import CoordinateTracker from "_core/components/Map/CoordinateTracker";
 import LayerSidebarContainer from "components/MethaneSidebar/LayerSidebarContainer";
+import FeatureFocusContainer from "components/FeatureFocus/FeatureFocusContainer";
+
 import "styles/styles.scss";
 
 const miscUtil = new MiscUtil();
@@ -130,8 +132,8 @@ export class AppContainer extends Component {
         return (
             <div id="appContainer" className={containerClasses}>
                 <HelpContainer />
+                <LayerSidebarContainer />
                 <MapContainerExtended />
-                <MapControlsContainer />
                 <AppBarContainer />
                 <SettingsContainer />
                 <ShareContainer />
@@ -144,7 +146,6 @@ export class AppContainer extends Component {
                 <AnalyticsContainer />
                 <KeyboardControlsContainer />
                 <CoordinateTracker />
-                <LayerSidebarContainer />
                 <ReactTooltip
                     effect="solid"
                     globalEventOff="click"

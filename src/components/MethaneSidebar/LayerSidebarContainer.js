@@ -9,7 +9,7 @@ import * as layerSidebarActions from "actions/LayerSidebarActions";
 import LayerControlContainer from "_core/components/LayerMenu/LayerControlContainer";
 import MiscUtil from "_core/utils/MiscUtil";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import FeatureInfoContainer from "components/FeatureInfo/FeatureInfoContainer";
+import FeatureItemContainer from "components/MethaneSidebar/FeatureItemContainer";
 
 const miscUtil = new MiscUtil();
 
@@ -34,32 +34,48 @@ export class LayerSidebarContainer extends Component {
         }
     }
 
+    getNameForCategory(category) {
+        switch (category) {
+            case layerSidebarTypes.CATEGORY_PLUMES:
+                return "Plumes";
+            case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
+                return "Infrastructure";
+        }
+    }
+
     changeCategory(index) {
         this.props.changeSidebarCategory(this.getCategoryForIndex(index));
     }
 
+    // getMaxEntriesInPage() {
+    //     const baseNode = this.refs.targetDiv.getDOMNode();
+    //     return baseNode.getBoundingClientRect();
+    // }
+
     makeTab(category) {
         return (
             <Tab
-                label={`Infrastructure (${this.props.availableFeatures.get(
+                label={`${this.getNameForCategory(
                     category
-                ).size})`}
+                )} (${this.props.availableFeatures.get(category).size})`}
             >
-                {this.props.availableFeatures
-                    .get(category)
-                    .slice(
-                        this.props.pageIndices.get(category),
-                        this.props.pageIndices.get(category) +
-                            layerSidebarTypes.FEATURES_PER_PAGE
-                    )
-                    .map(feature =>
-                        <FeatureInfoContainer
-                            key={feature.get("id") + "_feature_listing"}
-                            name={feature.get("name")}
-                            id={feature.get("id")}
-                            category={feature.get("category")}
-                        />
-                    )}
+                <div className="features-container">
+                    {this.props.availableFeatures
+                        .get(category)
+                        .slice(
+                            this.props.pageIndices.get(category),
+                            this.props.pageIndices.get(category) +
+                                layerSidebarTypes.FEATURES_PER_PAGE
+                        )
+                        .map(feature =>
+                            <FeatureItemContainer
+                                key={feature.get("id") + "_feature_listing"}
+                                name={feature.get("name")}
+                                id={feature.get("id")}
+                                category={feature.get("category")}
+                            />
+                        )}
+                </div>
                 {this.getPageControls(category)}
             </Tab>
         );
@@ -106,7 +122,7 @@ export class LayerSidebarContainer extends Component {
             ? null
             : "no-results";
         return (
-            <div id="layerSidebar">
+            <div id="layerSidebar" ref="targetDiv">
                 <div id="layerSidebarHeaderRow" className="row middle-xs">
                     <Tabs
                         index={this.getIndexForCategory(

@@ -13,8 +13,8 @@ const miscUtil = new MiscUtil();
 
 export class FeatureInfoContainer extends Component {
     getCategoryIcon() {
-        switch (this.props.category) {
-            case "Oil & Gas Wells":
+        switch (this.props.category.toLowerCase()) {
+            case "oil & gas wells":
                 return "whatshot";
             default:
                 return "";
@@ -22,10 +22,13 @@ export class FeatureInfoContainer extends Component {
     }
 
     render() {
+        const featureName = /\S/.test(this.props.name)
+            ? this.props.name
+            : "(no name)";
         return (
             <div className="feature-info">
                 <div className="feature-title">
-                    {this.props.id}
+                    {featureName}
                 </div>
                 <div className="feature-details">
                     <span className="county">Los Angeles County</span>

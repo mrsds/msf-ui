@@ -18,4 +18,4 @@ export const INFRASTRUCTURE_SUBCATEGORIES = {
 	VISTA_2017_SOCAB_BOUND: 13
 };
 
-export const FEATURES_PER_PAGE = 9;
+export const FEATURES_PER_PAGE = 20;

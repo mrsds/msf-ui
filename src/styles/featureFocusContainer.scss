@@ -1,0 +1,55 @@
+#featureFocusContainer {
+	position: absolute;
+	top: 42px;
+	left: 400px;
+	width: 800px;
+	background-color: $color-light;
+}
+
+#featureFocusImageHeaderRow {
+	z-index: 1;
+	position: relative;
+	padding: 0;
+	margin: 0;
+	height: 150px;
+	/*top: 0px;
+    left: 0px;*/
+	width: 100%;
+	color: $color-light;
+	background: $color-light;
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	@include light-shadow();
+
+	div {
+		padding: 0;
+	}
+
+	button[data-react-toolbox="button"] {
+		color: $color-primary;
+		position: absolute;
+		top: 1.0rem;
+		left: 1.0rem;
+		padding: 0 1.2rem;
+	}
+}
+
+#featureFocusHeaderRow {
+	z-index: 1;
+	position: relative;
+	padding: 0.3rem;
+	margin: 0;
+	/*top: 0px;
+    left: 0px;*/
+	width: 100%;
+	color: $color-light;
+	background: $header-dark;
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	@include light-shadow();
+
+	h2 {
+		margin-top: 0.5rem;
+		font-weight: 600;
+	}
+}

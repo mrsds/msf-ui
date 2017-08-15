@@ -1,9 +1,13 @@
 #layerSidebar {
-	position: absolute;
-	top: 42px;
-	left: 0px;
+	display: inline-block;
+	float: left;
+	margin-top: 42px;
+	// position: absolute;
+	// top: 42px;
+	// left: 0px;
 	width: 370px;
-	background: #fafafa;
+	height: 100%;
+	background-color: $color-medium-light;
 	padding: 0;
 	border-bottom-left-radius: 2px;
 	border-bottom-right-radius: 2px;
@@ -11,7 +15,7 @@
 		0 1px 1px 0 rgba(0, 0, 0, 0.24);
 	#layerSidebarHeaderRow {
 		background: $color-primary-dark;
-		// height: 40px;
+		// max-height: calc(100vh);
 		margin: 0;
 	}
 
@@ -30,11 +34,15 @@
 	.category-tab-content {
 		background-color: $color-medium-light;
 		padding: 0;
-		height: 518px;
+
+		.features-container {
+			// overflow-y: scroll;
+		}
 	}
 
 	.no-results .category-tab-content {
 		height: 35px;
+		overflow-y: scroll;
 	}
 
 	.layer-sidebar-menu-header.selected {
@@ -49,6 +57,8 @@
 		position: absolute;
 		bottom: 0;
 		align-self: flex-end;
+		width: 100%;
+		background-color: $color-medium-light;
 	}
 
 	.layer-sidebar-page-label {
