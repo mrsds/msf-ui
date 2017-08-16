@@ -3,23 +3,78 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Button } from "react-toolbox/lib/button";
-import * as appStrings from "_core/constants/appStrings";
-import * as layerSidebarActions from "actions/LayerSidebarActions";
-import MiscUtil from "_core/utils/MiscUtil";
-import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import FontIcon from "react-toolbox/lib/font_icon";
+import * as featureFocusActions from "actions/FeatureFocusActions";
+import MiscUtil_Extended from "utils/MiscUtil_Extended";
 
-const miscUtil = new MiscUtil();
+const miscUtil = new MiscUtil_Extended();
 
 export class FeatureFocusContainer extends Component {
+    getCategory() {
+        try {
+            console.dir(this.props.activeFeature.get("metadata").toJS());
+            return this.props.activeFeature
+                .get("metadata")
+                .find(val => val.get("name").toLowerCase() === "category")
+                .get("value");
+        } catch (e) {
+            return "(no category)";
+        }
+    }
+
+    getCoordinates() {
+        try {
+            const lat = this.props.activeFeature
+                .get("metadata")
+                .find(val => val.get("name").toLowerCase() === "latitude")
+                .get("value");
+            const long = this.props.activeFeature
+                .get("metadata")
+                .find(val => val.get("name").toLowerCase() === "longitude")
+                .get("value");
+            return [lat, long];
+        } catch (e) {
+            return null;
+        }
+    }
+    getAddress() {
+        try {
+            return this.props.activeFeature
+                .get("metadata")
+                .find(val => val.get("name").toLowerCase() === "zip")
+                .get("value");
+        } catch (e) {
+            return "(no address)";
+        }
+    }
+
+    getGoogleMapsButton() {
+        const uri = this.getCoordinates()
+            ? `http://maps.google.com/maps?q=${this.getCoordinates().join(",")}`
+            : "";
+        return (
+            <Button
+                disabled={!this.getCoordinates()}
+                href={uri}
+                target="_blank"
+            >
+                View In Google Maps
+            </Button>
+        );
+    }
+
     render() {
+        if (!this.props.activeFeature) return null;
         const featureName = this.props.activeFeature.get("name");
         return (
-            <div id="featureFocusContainer">
+            <div id="featureFocusContainer" hidden={!this.props.isOpen}>
                 <div id="featureFocusImageHeaderRow" className="row">
                     <div className="col-sm-12 text-left">
-                        <img src="fake_info_img.png" />
-                        <Button raised>Back to Map</Button>
+                        <Button
+                            onClick={this.props.hideFeatureFocusContainer}
+                            raised
+                        >
+                            Back to Map
+                        </Button>
                     </div>
                 </div>
                 <div id="featureFocusHeaderRow" className="row">
@@ -27,6 +82,82 @@ export class FeatureFocusContainer extends Component {
                         <h2>
                             {featureName}
                         </h2>
+                        <h3>
+                            {this.getCategory()} &bull; Los Angeles, CA
+                        </h3>
+                    </div>
+                </div>
+                <div id="featureFocusBodyContent" className="row">
+                    <div className="content-section">
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <h2>Facility Overview</h2>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-sm-2">
+                                <h3>Facility Type</h3>
+                            </div>
+                            <div className="col-sm-2">
+                                <span>
+                                    {this.getCategory()}
+                                </span>
+                            </div>
+                            <div className="col-sm-2">
+                                <h3>Facility Location</h3>
+                            </div>
+                            <div className="col-sm-6">
+                                <span>
+                                    {this.getCoordinates()
+                                        ? this.getCoordinates().join(", ")
+                                        : "(no coordinates)"}
+                                </span>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-sm-2">
+                                <h3>Number of Flyovers</h3>
+                            </div>
+                            <div className="col-sm-2">
+                                <span>(not found)</span>
+                            </div>
+                            <div className="col-sm-2">
+                                <h3>Facility Address</h3>
+                            </div>
+                            <div className="col-sm-6">
+                                <span>
+                                    {this.getAddress()}
+                                </span>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-sm-2">
+                                <h3>Nearby Plumes</h3>
+                            </div>
+                            <div className="col-sm-2">
+                                <span>(not found)</span>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-sm-2">
+                                <h3>County</h3>
+                            </div>
+                            <div className="col-sm-2">
+                                <span>
+                                    {miscUtil.getCountyFromFeature(
+                                        this.props.activeFeature,
+                                        "(not found)"
+                                    )}
+                                </span>
+                            </div>
+                        </div>
+                        <hr />
+                        <div className="row">
+                            <div className="col-sm">
+                                {this.getGoogleMapsButton()}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -35,30 +166,32 @@ export class FeatureFocusContainer extends Component {
 }
 
 FeatureFocusContainer.propTypes = {
-    activeFeature: PropTypes.object.isRequired
-    //     // id: PropTypes.string.isRequired,
-    //     // category: PropTypes.string.isRequired
+    activeFeature: function(props, propName, componentName) {
+        const propValue = props[propName];
+        if (propValue === null) return;
+        if (typeof propValue === "object") return;
+        return new Error(`${componentName} only accepts null or object`);
+    },
+    isOpen: PropTypes.bool.isRequired,
+    hideFeatureFocusContainer: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
     return {
-        activeFeature: state.featureFocus.get("activeFeature")
-        // availableFeatures: state.layerSidebar.get("availableFeatures"),
-        //         layerMenuOpen: state.view.get("layerMenuOpen"),
-        //         layers: state.map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA]),
-        //         palettes: state.map.get("palettes"),
-        //         distractionFreeMode: state.view.get("distractionFreeMode")
+        activeFeature: state.featureFocus.get("activeFeature"),
+        isOpen: state.featureFocus.get("isOpen")
     };
 }
 
-// function mapDispatchToProps(dispatch) {
-//     return {
-//         setLayerSidebarCategory: bindActionCreators(layerSidebarActions.setLayerSidebarCategory, dispatch)
-//     };
-// }
+function mapDispatchToProps(dispatch) {
+    return {
+        hideFeatureFocusContainer: bindActionCreators(
+            featureFocusActions.hideFeatureFocusContainer,
+            dispatch
+        )
+    };
+}
 
-export default connect(
-    mapStateToProps,
-    null
-    // mapDispatchToProps
-)(FeatureFocusContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(
+    FeatureFocusContainer
+);

@@ -80,6 +80,14 @@
 		border-bottom: 1px solid $color-divider;
 		background-color: $color-light;
 
+		&.is-selected {
+			background-color: $color-primary;
+			color: $color-light;
+			.county {
+				color: $color-light;
+			}
+		}
+
 		.feature-title {
 			font-size: 2.0rem;
 			font-weight: 300;

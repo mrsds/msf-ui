@@ -1,9 +1,10 @@
 #featureFocusContainer {
 	position: absolute;
 	top: 42px;
-	left: 400px;
-	width: 800px;
-	background-color: $color-light;
+	left: 370px;
+	width: 100%;
+	height: 100%;
+	background-color: $color-medium-light;
 }
 
 #featureFocusImageHeaderRow {
@@ -12,8 +13,6 @@
 	padding: 0;
 	margin: 0;
 	height: 150px;
-	/*top: 0px;
-    left: 0px;*/
 	width: 100%;
 	color: $color-light;
 	background: $color-light;
@@ -37,7 +36,7 @@
 #featureFocusHeaderRow {
 	z-index: 1;
 	position: relative;
-	padding: 0.3rem;
+	padding: 15px 15px;
 	margin: 0;
 	/*top: 0px;
     left: 0px;*/
@@ -49,7 +48,49 @@
 	@include light-shadow();
 
 	h2 {
-		margin-top: 0.5rem;
-		font-weight: 600;
+		font-size: 32px;
+		margin: 0;
+		font-weight: 500;
+	}
+
+	h3 {
+		margin: 0;
+		margin-top: 5px;
+		font-size: 16px;
+		color: $color-text-secondary;
+		font-weight: 700;
+	}
+}
+
+#featureFocusBodyContent {
+	width: 100%;
+	margin: 0;
+	padding: 0.75em;
+	.content-section {
+		color: $color-dark;
+		background-color: $color-light;
+		width: 100%;
+		padding: 0.75em;
+		h2 {
+			color: $color-dark;
+			margin: 0.35em 0;
+			margin-bottom: 0.50em;
+			font-size: 24px;
+		}
+		h3 {
+			font-size: unset;
+			margin: 0.35em 0;
+			color: $color-text-secondary;
+		}
+		hr {
+			border: 0;
+			border-bottom: 1px solid $color-text-secondary;
+			width: 100%;
+			margin: 0.5em -0.75em;
+		}
+		a[data-react-toolbox="button"] {
+			color: $color-primary-dark;
+			padding: 0 0;
+		}
 	}
 }

@@ -47,8 +47,8 @@ export class LayerMenuContainer extends CoreLayerMenuContainer {
                             data-place="left"
                             icon={
                                 this.props.layerMenuOpen
-                                    ? "keyboard_arrow_up"
-                                    : "keyboard_arrow_down"
+                                    ? "keyboard_arrow_down"
+                                    : "keyboard_arrow_up"
                             }
                             className="no-padding mini-xs-waysmall"
                             onClick={() =>

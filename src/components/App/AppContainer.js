@@ -145,12 +145,13 @@ export class AppContainer extends Component {
                 <MouseFollowerContainer />
                 <AnalyticsContainer />
                 <KeyboardControlsContainer />
-                <CoordinateTracker />
                 <ReactTooltip
                     effect="solid"
                     globalEventOff="click"
                     delayShow={600}
                 />
+                <FeatureFocusContainer />
+                <MapControlsContainer />
             </div>
         );
     }

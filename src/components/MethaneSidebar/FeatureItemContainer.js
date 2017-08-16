@@ -5,15 +5,15 @@ import { connect } from "react-redux";
 import { Button, IconButton } from "react-toolbox/lib/button";
 import * as appStrings from "_core/constants/appStrings";
 import * as layerSidebarActions from "actions/LayerSidebarActions";
-import MiscUtil from "_core/utils/MiscUtil";
+import MiscUtil_Extended from "utils/MiscUtil_Extended";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import FontIcon from "react-toolbox/lib/font_icon";
 
-const miscUtil = new MiscUtil();
+const miscUtil = new MiscUtil_Extended();
 
 export class FeatureInfoContainer extends Component {
     getCategoryIcon() {
-        switch (this.props.category.toLowerCase()) {
+        switch (this.props.feature.get("category").toLowerCase()) {
             case "oil & gas wells":
                 return "whatshot";
             default:
@@ -22,23 +22,36 @@ export class FeatureInfoContainer extends Component {
     }
 
     render() {
-        const featureName = /\S/.test(this.props.name)
-            ? this.props.name
+        console.log(this.props.selected);
+        const featureName = /\S/.test(this.props.feature.get("name"))
+            ? this.props.feature.get("name")
             : "(no name)";
+        const featureClass = miscUtil.generateStringFromSet({
+            "feature-info": true,
+            "is-selected": this.props.selected
+        });
         return (
-            <div className="feature-info">
+            <div
+                className={featureClass}
+                onClick={() => this.props.pickFeatureFocus(this.props.feature)}
+            >
                 <div className="feature-title">
                     {featureName}
                 </div>
                 <div className="feature-details">
-                    <span className="county">Los Angeles County</span>
+                    <span className="county">
+                        {miscUtil.getCountyFromFeature(
+                            this.props.feature,
+                            "(no county)"
+                        )}
+                    </span>
                     <div className="category">
                         <FontIcon
                             value={this.getCategoryIcon()}
                             className="category-icon"
                         />
                         <div>
-                            {this.props.category}
+                            {this.props.feature.get("category")}
                         </div>
                     </div>
                 </div>
@@ -48,9 +61,9 @@ export class FeatureInfoContainer extends Component {
 }
 
 FeatureInfoContainer.propTypes = {
-    name: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired
+    feature: PropTypes.object,
+    pickFeatureFocus: PropTypes.func.isRequired,
+    selected: PropTypes.bool.isRequired
 };
 
 // function mapStateToProps(state) {
@@ -64,15 +77,17 @@ FeatureInfoContainer.propTypes = {
 // };
 // }
 
-// function mapDispatchToProps(dispatch) {
-//     return {
-//         setLayerSidebarCategory: bindActionCreators(layerSidebarActions.setLayerSidebarCategory, dispatch)
-//     };
-// }
+function mapDispatchToProps(dispatch) {
+    return {
+        pickFeatureFocus: bindActionCreators(
+            layerSidebarActions.pickFeatureFocus,
+            dispatch
+        )
+    };
+}
 
 export default connect(
     null,
     // mapStateToProps,
-    null
-    // mapDispatchToProps
+    mapDispatchToProps
 )(FeatureInfoContainer);

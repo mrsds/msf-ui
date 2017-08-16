@@ -72,7 +72,7 @@ hr.divider {
 }
 
 hr.divider.wide {
-    width: 100%
+    width: 100%;
 }
 
 hr.divider.medium {
@@ -227,11 +227,11 @@ button .button-icon-right {
 }
 
 .rotate-90 {
-    @include rotate(90deg)
+    @include rotate(90deg);
 }
 
 .rotate-270 {
-    @include rotate(270deg)
+    @include rotate(270deg);
 }
 
 .pos-rel {
@@ -250,7 +250,7 @@ button .button-icon-right {
     }
     ul {
         padding: 0px;
-        width: calc(100% - 3.2rem)
+        width: calc(100% - 3.2rem);
     }
     &.small {
         .dropdown-item-label {
@@ -392,7 +392,12 @@ button.context-menu-item {
         & [data-react-toolbox="progress-bar"] {
             display: block;
             [data-ref="buffer"] {
-                background-image: linear-gradient(to right, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), linear-gradient(to right, $color-primary, $color-primary);
+                background-image: linear-gradient(
+                        to right,
+                        rgba(255, 255, 255, 0.7),
+                        rgba(255, 255, 255, 0.7)
+                    ),
+                    linear-gradient(to right, $color-primary, $color-primary);
             }
             [data-ref="value"] {
                 background-color: $color-primary;
@@ -427,7 +432,6 @@ button.context-menu-item {
         }
     }
 }
-
 
 /* imports */
 

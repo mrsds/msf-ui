@@ -12,13 +12,12 @@ export function changeSidebarCategory(category) {
 	return { type: types.CHANGE_LAYER_SIDEBAR_CATEGORY, category };
 }
 
-export function pickFeatureFocus(argument) {
-	return dispatch => {
+export function pickFeatureFocus(feature) {
+	return (dispatch, getState) => {
 		dispatch(featureFocusInfoLoading());
 
 		// Do async stuff to get feature info
-		const testFeature = {};
-		dispatch(updateFeatureFocusInfo(testFeature));
+		dispatch(updateFeatureFocusInfo(feature));
 		dispatch(featureFocusInfoLoaded());
 	};
 }
@@ -30,6 +29,7 @@ function featureFocusInfoLoading() {
 function featureFocusInfoLoaded() {
 	return { type: types.FEATURE_FOCUS_INFO_LOADED };
 }
+
 function updateFeatureFocusInfo(feature) {
 	return { type: types.UPDATE_FEATURE_FOCUS_INFO, feature };
 }

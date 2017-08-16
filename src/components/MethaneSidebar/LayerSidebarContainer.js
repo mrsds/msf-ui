@@ -70,9 +70,13 @@ export class LayerSidebarContainer extends Component {
                         .map(feature =>
                             <FeatureItemContainer
                                 key={feature.get("id") + "_feature_listing"}
-                                name={feature.get("name")}
-                                id={feature.get("id")}
-                                category={feature.get("category")}
+                                feature={feature}
+                                selected={
+                                    this.props.activeFeature
+                                        ? feature.get("id") ===
+                                          this.props.activeFeature.get("id", "")
+                                        : false
+                                }
                             />
                         )}
                 </div>
@@ -156,14 +160,21 @@ LayerSidebarContainer.propTypes = {
     pageForward: PropTypes.func.isRequired,
     pageBackward: PropTypes.func.isRequired,
     changeSidebarCategory: PropTypes.func.isRequired,
-    pageIndices: PropTypes.object.isRequired
+    pageIndices: PropTypes.object.isRequired,
+    activeFeature: function(props, propName, componentName) {
+        const propValue = props[propName];
+        if (propValue === null) return;
+        if (typeof propValue === "object") return;
+        return new Error(`${componentName} only accepts null or object`);
+    }
 };
 
 function mapStateToProps(state) {
     return {
         availableFeatures: state.layerSidebar.get("availableFeatures"),
         activeFeatureCategory: state.layerSidebar.get("activeFeatureCategory"),
-        pageIndices: state.layerSidebar.get("pageIndices")
+        pageIndices: state.layerSidebar.get("pageIndices"),
+        activeFeature: state.featureFocus.get("activeFeature")
     };
 }
 

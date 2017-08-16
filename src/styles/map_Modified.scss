@@ -47,8 +47,9 @@
     position: absolute;
     bottom: 65px;
     width: 76px;
-    bottom: 75px;
-    left: 15px;
+    bottom: 10px;
+    left: unset;
+    right: 10px;
     display: flex;
     flex-wrap: wrap;
     flex-flow: column wrap;
