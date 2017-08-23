@@ -236,6 +236,39 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    vectorStyleSelector(feature) {
+
+      // No, I do not plan on keeping this hardcoded or even done in this file :-)
+      let minValue = 0.0;
+      let maxValue = 35.340399730000001;
+
+      let fillColor = appConfig.GEOMETRY_FILL_COLOR;
+      let strokeColor = appConfig.GEOMETRY_STROKE_COLOR;
+
+      if (feature.values_.Sum_Total_ !== undefined) {
+          let f = parseInt(Math.round((feature.values_.Sum_Total_ / maxValue) * 255));
+          let a = (feature.values_.Sum_Total_ == 0.0) ? 0 : 255;
+          fillColor = [f, f, f, a];
+          strokeColor = [f, f, f, a];
+      }
+
+      return new Ol_Style({
+        fill: new Ol_Style_Fill({
+          color: fillColor
+        }),
+        stroke: new Ol_Style_Stroke({
+          color: strokeColor,
+          width: appConfig.GEOMETRY_STROKE_WEIGHT
+        }),
+        image: new Ol_Style_Circle({
+          radius: 7,
+          fill: new Ol_Style_Fill({
+            color: '#ffcc33'
+          })
+        })
+      });
+    }
+
     createVectorLayer(layer, fromCache = true) {
         try {
             let layerSource = this.createLayerSource(layer, {
@@ -247,6 +280,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
 
             return new Ol_Layer_Vector({
                 source: layerSource,
+                style: this.vectorStyleSelector,
                 opacity: layer.get("opacity"),
                 visible: layer.get("isActive")
             });
@@ -1282,6 +1316,29 @@ export default class MapWrapper_openlayers extends MapWrapper {
             });
         }
 
+        let s = new Ol_Style({
+          stroke: new Ol_Style_Stroke({
+            color: 'red',
+            lineDash: [4],
+            width: 3
+          }),
+          fill: new Ol_Style_Fill({
+            color: 'rgba(255, 0, 0, 0.1)'
+          })
+        });
+        let styles = {
+          'Polygon': new Ol_Style({
+            stroke: new Ol_Style_Stroke({
+              color: 'blue',
+              lineDash: [4],
+              width: 3
+            }),
+            fill: new Ol_Style_Fill({
+              color: 'rgba(0, 0, 255, 0.1)'
+            })
+          })
+        };
+
         let format = new Ol_Format_GeoJSON();
         let vectorSource = new Ol_Source_Vector({
             url: options.url,
@@ -1305,7 +1362,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
               fetch(url).then((response) => {
                 return response.json();
               }).then(function(json) {
-                let features = format.readFeatures(json, {featureProjection: 'EPSG:4326'});
+                let features = format.readFeatures(json, {featureProjection: appConfig.DEFAULT_PROJECTION.code});
                 vectorSource.addFeatures(features);
 
               });
@@ -1317,7 +1374,8 @@ export default class MapWrapper_openlayers extends MapWrapper {
               return [extent];
             }
         });
-      return vectorSource;
+
+        return vectorSource;
     }
 
     createVectorTopojsonSource(layer, options) {

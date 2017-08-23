@@ -138,6 +138,17 @@
       },
 
       {
+        "id": "GRIDDED_EMISSIONS_TEST",
+        "title": "Emissions Test",
+        "type": "data",
+        "handleAs": "vector_geojson",
+        "isDefault": false,
+        "url": "https://s3-us-gov-west-1.amazonaws.com/methane/GriddedEPA/Vista_Emissions_Coarse.json",
+        "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
+      },
+
+
+      {
         "id": "Reference_Labels",
         "title": "Reference Labels",
         "type": "reference",
