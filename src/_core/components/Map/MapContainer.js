@@ -8,6 +8,7 @@ import * as actions from '_core/actions/MapActions';
 import MapContainer2D from '_core/components/Map/MapContainer2D';
 import MapContainer3D from '_core/components/Map/MapContainer3D';
 
+
 export class MapContainer extends Component {
     componentDidMount() {
         this.refs.container.addEventListener("mouseout", (evt) => {
@@ -41,3 +42,4 @@ export default connect(
     null,
     mapDispatchToProps
 )(MapContainer);
+

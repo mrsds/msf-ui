@@ -179,6 +179,9 @@ export default class MapWrapper_openlayers extends MapWrapper {
             case appStrings.LAYER_VECTOR_GEOJSON:
                 mapLayer = this.createVectorLayer(layer, fromCache);
                 break;
+            case appStrings.LAYER_VECTOR_GEOJSON_AVIRIS:
+                mapLayer = this.createVectorLayer(layer, fromCache);
+                break;
             case appStrings.LAYER_VECTOR_TOPOJSON:
                 mapLayer = this.createVectorLayer(layer, fromCache);
                 break;
@@ -240,14 +243,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
 
       // No, I do not plan on keeping this hardcoded or even done in this file :-)
       let minValue = 0.0;
-      let maxValue = 35.340399730000001;
+      let maxValue = 1.0;
 
       let fillColor = appConfig.GEOMETRY_FILL_COLOR;
       let strokeColor = appConfig.GEOMETRY_STROKE_COLOR;
 
-      if (feature.values_.Sum_Total_ !== undefined) {
-          let f = parseInt(Math.round((feature.values_.Sum_Total_ / maxValue) * 255));
-          let a = (feature.values_.Sum_Total_ == 0.0) ? 0 : 255;
+      if (feature.values_.Total_Gg !== undefined) {
+          let f = parseInt(Math.round((feature.values_.Total_Gg / maxValue) * 255));
+          let a = (feature.values_.Total_Gg == 0.0) ? 0 : 255;
           fillColor = [f, f, f, a];
           strokeColor = [f, f, f, a];
       }
@@ -269,7 +272,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
       });
     }
 
+
+    createPlumeLayer(layer) {
+
+    }
+
     createVectorLayer(layer, fromCache = true) {
+
         try {
             let layerSource = this.createLayerSource(layer, {
                 url: layer.get("url")
@@ -288,6 +297,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             console.warn("Error in MapWrapper_openlayers.createVectorLayer:", err);
             return false;
         }
+
     }
 
     getCenter() {
@@ -1243,6 +1253,8 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 return this.createXYZSource(layer, options);
             case appStrings.LAYER_VECTOR_GEOJSON:
                 return this.createVectorGeojsonSource(layer, options);
+            case appStrings.LAYER_VECTOR_GEOJSON_AVIRIS:
+                return this.createVectorGeojsonAvirisSource(layer, options);
             case appStrings.LAYER_VECTOR_TOPOJSON:
                 return this.createVectorTopojsonSource(layer, options);
             case appStrings.LAYER_VECTOR_KML:
@@ -1306,6 +1318,70 @@ export default class MapWrapper_openlayers extends MapWrapper {
         });
     }
 
+
+
+
+    createVectorGeojsonAvirisSource(layer, options) {
+
+      let createPlumeVector = function(vectorSource, jsonUrl) {
+
+        let format = new Ol_Format_GeoJSON();
+
+        fetch(jsonUrl).then((response) => {
+            return response.json();
+        }).then(function(json) {
+            console.info(json);
+            let features = format.readFeatures(json.features, {featureProjection: appConfig.DEFAULT_PROJECTION.code});
+            features[0].setId(jsonUrl);
+            console.info(features);
+            vectorSource.addFeatures(features);
+        });
+
+      };
+
+
+      let vectorSource = new Ol_Source_Vector({
+        url: options.url,
+        loader: function(extent, resolution, projection) {
+          this.resolution = resolution;
+
+          let url = options.url;
+
+          if (url.indexOf("?") == -1) {
+            url += "?";
+          } else {
+            url += "&";
+          }
+
+          url += "minLon" + extent[0];
+          url += "&minLat" + extent[1];
+          url += "&maxLon" + extent[2];
+          url += "&maxLat" + extent[3];
+
+          fetch(url).then((response) => {
+            return response.json();
+          }).then(function(json) {
+
+
+            for (let i = 0; i < json.length; i++) {
+              createPlumeVector(vectorSource, json[i].json_url);
+            }
+
+          });
+        },
+        strategy: function(extent, resolution) {
+          if(this.resolution && this.resolution != resolution){
+            this.loadedExtentsRtree_.clear();
+          }
+          return [extent];
+        }
+      });
+
+      return vectorSource;
+
+
+    }
+
     createVectorGeojsonSource(layer, options) {
         // customize the layer url if needed
         if (typeof options.url !== "undefined" && typeof layer.getIn(["urlFunctions", appStrings.MAP_LIB_2D]) !== "undefined") {
@@ -1316,6 +1392,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             });
         }
 
+      /*
         let s = new Ol_Style({
           stroke: new Ol_Style_Stroke({
             color: 'red',
@@ -1338,6 +1415,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             })
           })
         };
+        */
 
         let format = new Ol_Format_GeoJSON();
         let vectorSource = new Ol_Source_Vector({
@@ -1366,13 +1444,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 vectorSource.addFeatures(features);
 
               });
-            },
-          strategy: function(extent, resolution) {
-              if(this.resolution && this.resolution != resolution){
-                this.loadedExtentsRtree_.clear();
-              }
-              return [extent];
-            }
+            }//,
+          //strategy: function(extent, resolution) {
+              //if(this.resolution && this.resolution != resolution){
+              //  this.loadedExtentsRtree_.clear();
+              //}
+              //return [extent];
+            //}
         });
 
         return vectorSource;

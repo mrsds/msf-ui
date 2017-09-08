@@ -28,6 +28,7 @@ export const LAYER_GIBS_RASTER = 'GIBS_raster';
 export const LAYER_WMTS_RASTER = 'wmts_raster';
 export const LAYER_XYZ_RASTER = 'xyz_raster';
 export const LAYER_VECTOR_GEOJSON = 'vector_geojson';
+export const LAYER_VECTOR_GEOJSON_AVIRIS = 'vector_geojson_aviris';
 export const LAYER_VECTOR_TOPOJSON = 'vector_topojson';
 export const LAYER_VECTOR_KML = 'vector_kml';
 export const LAYER_VECTOR_DRAWING = 'vector_drawing';

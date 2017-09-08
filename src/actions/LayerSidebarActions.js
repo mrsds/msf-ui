@@ -1,5 +1,6 @@
 import * as types from "constants/actionTypes_Extended";
 
+
 export function pageForward(category) {
 	return { type: types.FEATURE_SIDEBAR_PAGE_FORWARD, category };
 }
@@ -33,3 +34,4 @@ function featureFocusInfoLoaded() {
 function updateFeatureFocusInfo(feature) {
 	return { type: types.UPDATE_FEATURE_FOCUS_INFO, feature };
 }
+

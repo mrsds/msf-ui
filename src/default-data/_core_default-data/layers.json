@@ -131,9 +131,9 @@
         "id": "AVIRIS_TEST",
         "title": "AVIRIS Test",
         "type": "data",
-        "handleAs": "vector_geojson",
+        "handleAs": "vector_geojson_aviris",
         "isDefault": false,
-        "url": "http://localhost:9090/aviris",
+        "url": "http://100.64.114.155:9090/aviris",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
 
@@ -143,7 +143,7 @@
         "type": "data",
         "handleAs": "vector_geojson",
         "isDefault": false,
-        "url": "https://s3-us-gov-west-1.amazonaws.com/methane/GriddedEPA/Vista_Emissions_Coarse.json",
+        "url": "https://s3-us-gov-west-1.amazonaws.com/methane/GriddedEPA/gridded_emissions.json",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
       },
 
