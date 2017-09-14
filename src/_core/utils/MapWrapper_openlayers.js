@@ -8,6 +8,8 @@ import Ol_Source_WMTS from 'ol/source/wmts';
 import Ol_Source_Cluster from 'ol/source/cluster';
 import Ol_Source_Vector from 'ol/source/vector';
 import Ol_Source_XYZ from 'ol/source/xyz';
+import Ol_Layer_Image from 'ol/layer/image';
+import Ol_Source_StaticImage from 'ol/source/ImageStatic';
 import Ol_Tilegrid_WMTS from 'ol/tilegrid/wmts';
 import Ol_Style_Fill from 'ol/style/fill';
 import Ol_Style from 'ol/style/style';
@@ -23,10 +25,12 @@ import Ol_Feature from 'ol/feature';
 import Ol_Geom_Circle from 'ol/geom/circle';
 import Ol_Geom_Linestring from 'ol/geom/linestring';
 import Ol_Geom_Polygon from 'ol/geom/polygon';
+import Ol_Geom_Point from 'ol/geom/point';
 import Ol_Format_GeoJSON from 'ol/format/geojson';
 import Ol_Format_TopoJSON from 'ol/format/topojson';
 import Ol_Format_KML from 'ol/format/kml';
 import Ol_Format_WMTSCapabilities from 'ol/format/wmtscapabilities';
+
 import Ol_Easing from 'ol/easing';
 import proj4js from 'proj4';
 import * as appStrings from '_core/constants/appStrings';
@@ -179,8 +183,9 @@ export default class MapWrapper_openlayers extends MapWrapper {
             case appStrings.LAYER_VECTOR_GEOJSON:
                 mapLayer = this.createVectorLayer(layer, fromCache);
                 break;
-            case appStrings.LAYER_VECTOR_GEOJSON_AVIRIS:
-                mapLayer = this.createVectorLayer(layer, fromCache);
+            case appStrings.LAYER_AVIRIS:
+                mapLayer = this.createAvirisLayers(layer, fromCache);
+                //mapLayer = this.createVectorLayer(layer, fromCache);
                 break;
             case appStrings.LAYER_VECTOR_TOPOJSON:
                 mapLayer = this.createVectorLayer(layer, fromCache);
@@ -1253,8 +1258,8 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 return this.createXYZSource(layer, options);
             case appStrings.LAYER_VECTOR_GEOJSON:
                 return this.createVectorGeojsonSource(layer, options);
-            case appStrings.LAYER_VECTOR_GEOJSON_AVIRIS:
-                return this.createVectorGeojsonAvirisSource(layer, options);
+            case appStrings.LAYER_AVIRIS:
+                return this.createAvirisLayers(layer, options);
             case appStrings.LAYER_VECTOR_TOPOJSON:
                 return this.createVectorTopojsonSource(layer, options);
             case appStrings.LAYER_VECTOR_KML:
@@ -1321,25 +1326,102 @@ export default class MapWrapper_openlayers extends MapWrapper {
 
 
 
-    createVectorGeojsonAvirisSource(layer, options) {
+    createAvirisLayer(scope, layerJson) {
+      console.info(layerJson);
+      let plume_url = layerJson.plume_url;
+      let shape = layerJson.shape;
+      let extent = [
+        shape[0][0],
+        shape[1][1],
+        shape[2][0],
+        shape[0][1]
+      ];
 
+      let staticPlumeImage = new Ol_Source_StaticImage({
+        url : plume_url,
+        imageExtent: extent
+      });
+
+      let plumeLayer = new Ol_Layer_Image({
+        source : staticPlumeImage
+      });
+
+      plumeLayer.set("_layerId", layerJson.id);
+
+      let index = scope.findTopInsertIndexForLayer(plumeLayer);
+      scope.map.getLayers().insertAt(index, plumeLayer);
+    }
+
+
+
+
+    createAvirisLayers(layer, options) {
+      /*
       let createPlumeVector = function(vectorSource, jsonUrl) {
-
+        jsonUrl = "https://s3-us-gov-west-1.amazonaws.com/methane/AVIRIS/test.json";
         let format = new Ol_Format_GeoJSON();
 
         fetch(jsonUrl).then((response) => {
             return response.json();
         }).then(function(json) {
+
             console.info(json);
-            let features = format.readFeatures(json.features, {featureProjection: appConfig.DEFAULT_PROJECTION.code});
+            let features = format.readFeatures(json, {featureProjection: 'EPSG:4326'});
             features[0].setId(jsonUrl);
             console.info(features);
             vectorSource.addFeatures(features);
         });
 
       };
+      */
+
+      // TODO: DON'T hardcode this. Really.
+      let url = "http://100.64.114.155:9090/aviris";
+
+      if (url.indexOf("?") == -1) {
+        url += "?";
+      } else {
+        url += "&";
+      }
+
+      let extent = this.getExtent();
+      url += "minLon" + extent[0];
+      url += "&minLat" + extent[1];
+      url += "&maxLon" + extent[2];
+      url += "&maxLat" + extent[3];
+
+      let scope = this;
+      fetch(url).then((response) => {
+        return response.json();
+      }).then(function(json) {
+        console.info(json);
+        for (let i = 0; i < json.length; i++) {
+          let layerJson = json[i];
+          scope.createAvirisLayer(scope, layerJson);
+        }
+
+      });
+
+      // Returns a blank image layer to make the openlayers stuff up above happy.
+      return new Ol_Layer_Image({});
 
 
+
+
+
+      /*
+       let extent = [-118.409132561, 33.9107045204, -118.397865128, 33.9013096592];
+      let plume = new Ol_Source_StaticImage({
+        url : "https://s3-us-gov-west-1.amazonaws.com/methane/AVIRIS/ang20160910t193531_S00009_r7078_c866_ctr.png",
+        imageExtent: extent
+      });
+      let imageLayer = new Ol_Layer_Image({
+        source:plume
+      });
+      return imageLayer;
+      */
+        /*
+      let format = new Ol_Format_GeoJSON();
       let vectorSource = new Ol_Source_Vector({
         url: options.url,
         loader: function(extent, resolution, projection) {
@@ -1361,24 +1443,24 @@ export default class MapWrapper_openlayers extends MapWrapper {
           fetch(url).then((response) => {
             return response.json();
           }).then(function(json) {
+            console.info(json);
 
-
-            for (let i = 0; i < json.length; i++) {
-              createPlumeVector(vectorSource, json[i].json_url);
-            }
+            //for (let i = 0; i < json.length; i++) {
+            //  createPlumeVector(vectorSource, json[i].json_url);
+           // }
 
           });
-        },
-        strategy: function(extent, resolution) {
-          if(this.resolution && this.resolution != resolution){
-            this.loadedExtentsRtree_.clear();
-          }
-          return [extent];
-        }
+        }//,
+        //strategy: function(extent, resolution) {
+          //if(this.resolution && this.resolution != resolution){
+          //  this.loadedExtentsRtree_.clear();
+          //}
+          //return [extent];
+        //}
       });
 
       return vectorSource;
-
+      */
 
     }
 
@@ -1440,6 +1522,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
               fetch(url).then((response) => {
                 return response.json();
               }).then(function(json) {
+                console.info(json);
                 let features = format.readFeatures(json, {featureProjection: appConfig.DEFAULT_PROJECTION.code});
                 vectorSource.addFeatures(features);
 

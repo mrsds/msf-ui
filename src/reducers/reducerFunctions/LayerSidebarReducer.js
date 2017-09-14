@@ -55,6 +55,8 @@ export default class LayerSidebarReducer {
                 ["activeInfrastructureSubCategories", action.layer],
                 action.active
             );
+        } else {
+          return state;
         }
     }
 

@@ -22,7 +22,7 @@ export default class MapWrapper_cesium extends MapWrapper {
         this.mapUtil = new MapUtil();
         this.miscUtil = new MiscUtil();
 
-        // Create cesium scene 
+        // Create cesium scene
         window.CESIUM_BASE_URL = 'assets/cesium';
         this.cesium = window.Cesium;
         this.drawHelper = window.DrawHelper;
@@ -196,7 +196,7 @@ export default class MapWrapper_cesium extends MapWrapper {
                 this.cesium.Math.toDegrees(viewRect.north)
             ];
 
-            // If viewRect is too far out and we actually get [-180, -90, 180, 90], 
+            // If viewRect is too far out and we actually get [-180, -90, 180, 90],
             // attempt to approximate view by creating extent around center point
             if (viewRectDeg[0] === -180 && viewRectDeg[1] === -90 && viewRectDeg[2] === 180 && viewRectDeg[3] === 90) {
                 let center = this.getCenter();
@@ -463,7 +463,7 @@ export default class MapWrapper_cesium extends MapWrapper {
                 let cesiumRadius = null;
                 // Check coordinate type
                 if (geometry.coordinateType === appStrings.COORDINATE_TYPE_CARTOGRAPHIC) {
-                    // Calc radius by finding cartesian distance from 
+                    // Calc radius by finding cartesian distance from
                     // center to radius point
                     let point = { lat: geometry.center.lat, lon: geometry.center.lon };
                     point.lon += geometry.radius;
@@ -889,6 +889,8 @@ export default class MapWrapper_cesium extends MapWrapper {
                 return this.createWMTSLayer(layer);
             case appStrings.LAYER_VECTOR_GEOJSON:
                 return this.createVectorLayer(layer);
+            case appStrings.LAYER_VECTOR_GEOJSON_AVIRIS:
+              return this.createVectorLayer(layer);
             case appStrings.LAYER_VECTOR_TOPOJSON:
                 return this.createVectorLayer(layer);
             case appStrings.LAYER_VECTOR_KML:
@@ -1304,6 +1306,8 @@ export default class MapWrapper_cesium extends MapWrapper {
             case appStrings.LAYER_XYZ_RASTER:
                 return this.map.imageryLayers;
             case appStrings.LAYER_VECTOR_GEOJSON:
+                return this.map.dataSources;
+            case appStrings.LAYER_VECTOR_GEOJSON_AVIRIS:
                 return this.map.dataSources;
             case appStrings.LAYER_VECTOR_TOPOJSON:
                 return this.map.dataSources;

@@ -131,7 +131,7 @@
         "id": "AVIRIS_TEST",
         "title": "AVIRIS Test",
         "type": "data",
-        "handleAs": "vector_geojson_aviris",
+        "handleAs": "aviris_plume",
         "isDefault": false,
         "url": "http://100.64.114.155:9090/aviris",
         "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
