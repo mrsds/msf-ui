@@ -1376,7 +1376,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
       */
 
       // TODO: DON'T hardcode this. Really.
-      let url = "http://100.64.114.155:9090/aviris";
+      let url = "http://100.64.114.155:9090/aviris?maxObjects=1000";
 
       if (url.indexOf("?") == -1) {
         url += "?";
