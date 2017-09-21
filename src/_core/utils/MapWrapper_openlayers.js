@@ -9,7 +9,7 @@ import Ol_Source_Cluster from 'ol/source/cluster';
 import Ol_Source_Vector from 'ol/source/vector';
 import Ol_Source_XYZ from 'ol/source/xyz';
 import Ol_Layer_Image from 'ol/layer/image';
-import Ol_Source_StaticImage from 'ol/source/ImageStatic';
+import Ol_Source_StaticImage from 'ol/source/imagestatic';
 import Ol_Tilegrid_WMTS from 'ol/tilegrid/wmts';
 import Ol_Style_Fill from 'ol/style/fill';
 import Ol_Style from 'ol/style/style';
