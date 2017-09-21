@@ -55,6 +55,11 @@ export class FeatureDetailContainer extends Component {
         return (
             <div className="feature-detail-card-container">
                 <Card className="feature-detail-card">
+                    <CardActions className="exit-button">
+                        <Button onClick={this.props.hideFeatureDetailContainer}>
+                            Back to Map
+                        </Button>
+                    </CardActions>
                     <CardMedia
                         className="header-image"
                         image="./styles/resources/img/fake_info_img.png"
@@ -184,9 +189,8 @@ FeatureDetailContainer.propTypes = {
         if (propValue === null) return;
         if (typeof propValue === "object") return;
         return new Error(`${componentName} only accepts null or object`);
-    }
-    // isOpen: PropTypes.bool.isRequired,
-    // hideFeatureDetailContainer: PropTypes.func.isRequired
+    },
+    hideFeatureDetailContainer: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -198,11 +202,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        // hideFeatureDetailContainer: bindActionCreators(
-        //     featureDetailActions.hideFeatureDetailContainer,
-        //     dispatch
-        // )
+        hideFeatureDetailContainer: bindActionCreators(
+            featureDetailActions.hideFeatureDetailContainer,
+            dispatch
+        )
     };
 }
 
-export default connect(mapStateToProps, null)(FeatureDetailContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(
+    FeatureDetailContainer
+);

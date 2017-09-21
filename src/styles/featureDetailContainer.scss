@@ -5,6 +5,18 @@
 	width: calc(100% - 370px);
 	height: 100%;
 	.feature-detail-card {
+		.exit-button {
+			position: absolute;
+			z-index: 2;
+			button {
+				color: #4285f4;
+				background-color: #fff;
+				&:hover {
+					color: #fff;
+					background-color: #4285f4;
+				}
+			}
+		}
 		background-color: #f9f9f9;
 		.header-image {
 			height: 150px;

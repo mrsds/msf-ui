@@ -11,6 +11,8 @@ export default function layerSidebar(
 	switch (action.type) {
 		case actionTypes_Extended.UPDATE_FEATURE_DETAIL:
 			return opt_reducer.updateFeatureDetail(state, action);
+		case actionTypes_Extended.HIDE_FEATURE_DETAIL_CONTAINER:
+			return opt_reducer.hideFeatureDetailContainer(state, action);
 		// case actionTypes_Extended.UPDATE_FEATURE_FOCUS_INFO:
 		// 	return opt_reducer.updateFeatureFocusInfo(state, action);
 		// case actionTypes_Extended.HIDE_FEATURE_FOCUS_CONTAINER:

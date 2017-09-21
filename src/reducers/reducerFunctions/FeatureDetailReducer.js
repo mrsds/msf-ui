@@ -20,7 +20,7 @@ export default class FeatureDetailReducer {
 		return state.set("activeFeature", action.feature).set("isOpen", true);
 	}
 
-	static hideFeatureFocusContainer(state, action) {
-		return state.set("isOpen", false).set("activeFeature", null);
+	static hideFeatureDetailContainer(state, action) {
+		return state.set("category", "").set("feature", Immutable.fromJS({}));
 	}
 }
