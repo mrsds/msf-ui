@@ -1,9 +1,12 @@
 import appConfig from "constants/appConfig";
+import * as types from "_core/constants/actionTypes";
 import * as types_extended from "constants/actionTypes_Extended";
 import MiscUtil from "_core/utils/MiscUtil";
 import MapUtil_Extended from "utils/MapUtil_Extended";
 import * as appStrings_Extended from "constants/appStrings_Extended";
 import * as AlertActions from "_core/actions/AlertActions";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import * as appStrings from "_core/constants/appStrings";
 
 const miscUtil = new MiscUtil();
 const mapUtil = new MapUtil_Extended();
@@ -14,9 +17,13 @@ export function getAvailableLayers(extent) {
         const layerSidebarState = getState().layerSidebar;
         if (!mapUtil.activeInfrastructureCategories(layerSidebarState)) {
             dispatch(updateAvailableFeatures([]));
+            dispatch(
+                availableLayerListLoaded(
+                    layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                )
+            );
             return;
         }
-
         dispatch(availableLayerListLoading());
 
         return miscUtil
@@ -32,7 +39,11 @@ export function getAvailableLayers(extent) {
                     // update available features for bbox
                     dispatch(updateAvailableFeatures(data.features));
                     // signal loading complete
-                    dispatch(availableLayerListLoaded());
+                    dispatch(
+                        availableLayerListLoaded(
+                            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                        )
+                    );
                 },
                 err => {
                     console.warn(
@@ -40,7 +51,11 @@ export function getAvailableLayers(extent) {
                         err
                     );
                     // signal loading complete
-                    dispatch(availableLayerListLoaded());
+                    dispatch(
+                        availableLayerListLoaded(
+                            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                        )
+                    );
 
                     // display alert
                     dispatch(
@@ -67,8 +82,8 @@ export function availableLayerListLoading() {
     return { type: types_extended.AVAILABLE_LAYER_LIST_LOADING };
 }
 
-export function availableLayerListLoaded() {
-    return { type: types_extended.AVAILABLE_LAYER_LIST_LOADED };
+export function availableLayerListLoaded(category) {
+    return { type: types_extended.AVAILABLE_LAYER_LIST_LOADED, category };
 }
 
 export function updateAvailableFeatures(layerList) {

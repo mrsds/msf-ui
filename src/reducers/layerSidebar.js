@@ -23,6 +23,14 @@ export default function layerSidebar(
             return opt_reducer.updateActiveSubcategories(state, action);
         case actionTypes_Extended.REFRESH_ACTIVE_SUBCATEGORIES:
             return opt_reducer.refreshActiveSubcategories(state, action);
+        case actionTypes_Extended.UPDATE_FEATURE_SEARCH_TEXT:
+            return opt_reducer.updateFeatureSearchText(state, action);
+        case actionTypes_Extended.UPDATE_FEATURE_SEARCH_RESULTS:
+            return opt_reducer.updateSearchResults(state, action);
+        case actionTypes_Extended.AVAILABLE_LAYER_LIST_LOADED:
+            return opt_reducer.updateSearchResults(state, action);
+        case actionTypes_Extended.TOGGLE_INFRASTRUCTURE_FACILITY_FILTER_OPTIONS_VISIBLE:
+            return opt_reducer.setActiveFeatureCategories(state, action);
         default:
             return state;
     }

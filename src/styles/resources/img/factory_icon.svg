@@ -1,0 +1,14 @@
+<svg width="12" height="12" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>factory</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(319 -1707)">
+<g id="factory">
+<g id="Shape">
+<use xlink:href="#path0_fill" transform="translate(-319 1707)" fill="#393939"/>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" fill-rule="evenodd" d="M 1.20001 9.59998L 1.20001 10.8L 3.60001 10.8L 3.60001 9.59998L 1.20001 9.59998ZM 1.20001 7.19995L 1.20001 8.39995L 7.20001 8.39995L 7.20001 7.19995L 1.20001 7.19995ZM 4.79999 9.59998L 4.79999 10.8L 7.19999 10.8L 7.19999 9.59998L 4.79999 9.59998ZM 8.39999 7.19995L 8.39999 8.39995L 10.8 8.39995L 10.8 7.19995L 8.39999 7.19995ZM 8.39999 9.59998L 8.39999 10.8L 10.8 10.8L 10.8 9.59998L 8.39999 9.59998ZM 0 12L 0 3.6L 3 6L 3 3.6L 6 6L 6 3.6L 9 6L 9.6 0L 11.4 0L 12 6L 12 12L 0 12Z"/>
+</defs>
+</svg>

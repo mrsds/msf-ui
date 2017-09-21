@@ -6,7 +6,7 @@ export default class MiscUtil_Extended extends MiscUtil {
 		try {
 			const countyCode = feature
 				.get("metadata")
-				.find(val => val.get("name").toLowerCase() === "countyid")
+				.find(item => item.get("name").toLowerCase() === "countyid")
 				.get("value");
 			return this.getCaCountyNameFromCode(countyCode) || errStr;
 		} catch (e) {

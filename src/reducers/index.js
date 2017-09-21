@@ -10,7 +10,7 @@ import asynchronous_Extended from "reducers/async_Extended";
 import analytics from "_core/reducers/analytics";
 import alerts from "_core/reducers/alerts";
 import layerSidebar from "reducers/layerSidebar";
-import featureFocus from "reducers/featureFocus";
+import featureDetail from "reducers/featureDetail";
 
 const rootReducer = combineReducers({
     view,
@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
     analytics,
     alerts,
     layerSidebar,
-    featureFocus
+    featureDetail
 });
 
 export default rootReducer;

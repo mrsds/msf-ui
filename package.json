@@ -124,5 +124,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.jpl.nasa.gov/CommonMappingClient/cmc-core.git"
+  },
+  "devDependencies": {
+    "fuse.js": "3.1.0"
   }
 }

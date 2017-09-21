@@ -1,6 +1,7 @@
 import appConfig from "constants/appConfig";
 import MapUtil from "_core/utils/MapUtil";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import * as appStrings from "constants/appStrings_Extended.js";
 
 export default class MapUtil_Extended extends MapUtil {
 	buildAvailableLayerQueryString(extent, sidebarState) {
@@ -37,5 +38,9 @@ export default class MapUtil_Extended extends MapUtil {
 		return sidebarState
 			.get("activeInfrastructureSubCategories")
 			.some(val => val);
+	}
+
+	getInfrastructureCategoryHumanName(category) {
+		return appStrings.INFRASTRUCTURE_FACILITY_TYPE_TO_NAME[category];
 	}
 }

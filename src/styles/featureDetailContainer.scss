@@ -1,13 +1,60 @@
-#featureFocusContainer {
+.feature-detail-card-container {
 	position: absolute;
 	top: 42px;
 	left: 370px;
-	width: 100%;
+	width: calc(100% - 370px);
 	height: 100%;
-	background-color: $color-medium-light;
+	.feature-detail-card {
+		background-color: #f9f9f9;
+		.header-image {
+			height: 150px;
+		}
+		.header {
+			background-color: #3367d6;
+			color: #fff;
+		}
+
+		.title {
+			margin: 0;
+		}
+
+		.section {
+			background-color: #fff;
+			.row {
+				margin: 10px 0;
+				div {
+					width: 50%;
+					display: flex;
+					justify-content: flex-start;
+				}
+
+				label {
+					flex-basis: 225px;
+					display: inline-block;
+					color: #7f7f7f;
+					&.stacked {
+						.main {
+							display: block;
+						}
+						.sub {
+							font-size: 12px;
+						}
+					}
+				}
+				span {
+					unit {
+						color: #7f7f7f;
+					}
+				}
+			}
+			.button {
+				color: #4285f4;
+			}
+		}
+	}
 }
 
-#featureFocusImageHeaderRow {
+#featureDetailImageHeaderRow {
 	z-index: 1;
 	position: relative;
 	padding: 0;
@@ -27,13 +74,13 @@
 	button[data-react-toolbox="button"] {
 		color: $color-primary;
 		position: absolute;
-		top: 1.0rem;
-		left: 1.0rem;
+		top: 1rem;
+		left: 1rem;
 		padding: 0 1.2rem;
 	}
 }
 
-#featureFocusHeaderRow {
+#featureDetailHeaderRow {
 	z-index: 1;
 	position: relative;
 	padding: 15px 15px;
@@ -62,7 +109,7 @@
 	}
 }
 
-#featureFocusBodyContent {
+#featureDetailBodyContent {
 	width: 100%;
 	margin: 0;
 	padding: 0.75em;
@@ -74,7 +121,7 @@
 		h2 {
 			color: $color-dark;
 			margin: 0.35em 0;
-			margin-bottom: 0.50em;
+			margin-bottom: 0.5em;
 			font-size: 24px;
 		}
 		h3 {

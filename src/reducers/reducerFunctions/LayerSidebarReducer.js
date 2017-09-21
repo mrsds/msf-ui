@@ -1,5 +1,7 @@
+const Fuse = require("fuse.js");
 import Immutable from "immutable";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import * as appConfig from "constants/appConfig.js";
 
 export default class LayerSidebarReducer {
     static updateActiveCategory(state, action) {
@@ -18,29 +20,32 @@ export default class LayerSidebarReducer {
             );
             return keys;
         }, []);
-        return state
-            .setIn(
-                [
-                    "availableFeatures",
-                    layerSidebarTypes.CATEGORY_INFRASTRUCTURE
-                ],
-                Immutable.fromJS(features)
-            )
-            .set("pageIndices", state.get("pageIndices").map(index => 0));
+        return state.setIn(
+            ["availableFeatures", layerSidebarTypes.CATEGORY_INFRASTRUCTURE],
+            Immutable.fromJS(features)
+        );
     }
 
     static pageForward(state, action) {
-        const currentIndex = state.getIn(["pageIndices", action.category]);
+        const currentIndex = state.getIn([
+            "searchState",
+            action.category,
+            "pageIndex"
+        ]);
         return state.setIn(
-            ["pageIndices", action.category],
+            ["searchState", action.category, "pageIndex"],
             currentIndex + layerSidebarTypes.FEATURES_PER_PAGE
         );
     }
 
     static pageBackward(state, action) {
-        const currentIndex = state.getIn(["pageIndices", action.category]);
+        const currentIndex = state.getIn([
+            "searchState",
+            action.category,
+            "pageIndex"
+        ]);
         return state.setIn(
-            ["pageIndices", action.category],
+            ["searchState", action.category, "pageIndex"],
             currentIndex - layerSidebarTypes.FEATURES_PER_PAGE
         );
     }
@@ -56,7 +61,7 @@ export default class LayerSidebarReducer {
                 action.active
             );
         } else {
-          return state;
+            return state;
         }
     }
 
@@ -71,5 +76,47 @@ export default class LayerSidebarReducer {
             "activeInfrastructureSubCategories",
             newSubcategoryState
         );
+    }
+
+    static getSearchResultsHelper(featureList, searchString) {
+        if (!searchString || !featureList.size) return featureList;
+        const searchObject = new Fuse(
+            featureList.toJS(),
+            appConfig.INFRASTRUCTURE_SEARCH_OPTIONS.toJS()
+        );
+        return Immutable.fromJS(searchObject.search(searchString));
+    }
+
+    static updateFeatureSearchText(state, action) {
+        return state.setIn(
+            ["searchState", action.category, "searchString"],
+            action.value
+        );
+    }
+
+    static updateSearchResults(state, action) {
+        const searchString = state.getIn([
+            "searchState",
+            action.category,
+            "searchString"
+        ]);
+        const featureList = state.getIn(["availableFeatures", action.category]);
+        const searchResults = LayerSidebarReducer.getSearchResultsHelper(
+            featureList,
+            searchString
+        );
+        return state.setIn(
+            ["searchState", action.category, "searchResults"],
+            searchResults
+        );
+    }
+
+    static setActiveFeatureCategories(state, action) {
+        const path = [
+            "searchState",
+            layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+            "facilityFilterOptionsVisible"
+        ];
+        return state.setIn(path, !state.getIn(path));
     }
 }

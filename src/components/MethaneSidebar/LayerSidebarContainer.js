@@ -9,7 +9,7 @@ import * as layerSidebarActions from "actions/LayerSidebarActions";
 import LayerControlContainer from "_core/components/LayerMenu/LayerControlContainer";
 import MiscUtil from "_core/utils/MiscUtil";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import FeatureItemContainer from "components/MethaneSidebar/FeatureItemContainer";
+import InfrastructureContainer from "components/MethaneSidebar/InfrastructureContainer";
 
 const miscUtil = new MiscUtil();
 
@@ -47,10 +47,16 @@ export class LayerSidebarContainer extends Component {
         this.props.changeSidebarCategory(this.getCategoryForIndex(index));
     }
 
-    // getMaxEntriesInPage() {
-    //     const baseNode = this.refs.targetDiv.getDOMNode();
-    //     return baseNode.getBoundingClientRect();
-    // }
+    makeInfrastructureTab() {
+        return (
+            <Tab
+                label={`Infrastructure (${this.props.searchState.getIn([
+                    layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+                    "searchResults"
+                ]).size})`}
+            />
+        );
+    }
 
     makeTab(category) {
         return (
@@ -58,66 +64,44 @@ export class LayerSidebarContainer extends Component {
                 label={`${this.getNameForCategory(
                     category
                 )} (${this.props.availableFeatures.get(category).size})`}
-            >
-                <div className="features-container">
-                    {this.props.availableFeatures
-                        .get(category)
-                        .slice(
-                            this.props.pageIndices.get(category),
-                            this.props.pageIndices.get(category) +
-                                layerSidebarTypes.FEATURES_PER_PAGE
-                        )
-                        .map(feature =>
-                            <FeatureItemContainer
-                                key={feature.get("id") + "_feature_listing"}
-                                feature={feature}
-                                selected={
-                                    this.props.activeFeature
-                                        ? feature.get("id") ===
-                                          this.props.activeFeature.get("id", "")
-                                        : false
-                                }
-                            />
-                        )}
-                </div>
-                {this.getPageControls(category)}
-            </Tab>
+            />
         );
     }
 
-    getPageControls(category) {
-        const totalFeatures = this.props.availableFeatures.get(category).size;
-        const currentPageIndex = this.props.pageIndices.get(category);
-        const endIndex =
-            currentPageIndex + layerSidebarTypes.FEATURES_PER_PAGE >
-            totalFeatures
-                ? totalFeatures
-                : currentPageIndex + layerSidebarTypes.FEATURES_PER_PAGE;
-        const counterLabel =
-            totalFeatures !== 0
-                ? `Showing ${currentPageIndex + 1} to ${endIndex}`
-                : "No features found in the current viewport";
+    // getPageControls(category) {
+    //     const totalFeatures = this.props.searchState.getIn([
+    //         category,
+    //         "searchResults"
+    //     ]).size;
+    //     const currentPageIndex = this.props.pageIndices.get(category);
+    //     const endIndex =
+    //         currentPageIndex + layerSidebarTypes.FEATURES_PER_PAGE >
+    //         totalFeatures
+    //             ? totalFeatures
+    //             : currentPageIndex + layerSidebarTypes.FEATURES_PER_PAGE;
+    //     const counterLabel =
+    //         totalFeatures !== 0
+    //             ? `Showing ${currentPageIndex + 1} to ${endIndex}`
+    //             : "No features found in the current viewport";
 
-        return (
-            <div className="feature-results-page-row">
-                <div className="layer-sidebar-page-label">
-                    {counterLabel}
-                </div>
-                <IconButton
-                    icon="chevron_left"
-                    onClick={() => this.props.pageBackward(category)}
-                    disabled={currentPageIndex === 0}
-                    theme={{ icon: "layer-sidebar-page-icon" }}
-                />
-                <IconButton
-                    icon="chevron_right"
-                    onClick={() => this.props.pageForward(category)}
-                    disabled={endIndex === totalFeatures}
-                    theme={{ icon: "layer-sidebar-page-icon" }}
-                />
-            </div>
-        );
-    }
+    //     return (
+    //         <div className="feature-results-page-row">
+    //             <div className="layer-sidebar-page-label">{counterLabel}</div>
+    //             <IconButton
+    //                 icon="chevron_left"
+    //                 onClick={() => this.props.pageBackward(category)}
+    //                 disabled={currentPageIndex === 0}
+    //                 theme={{ icon: "layer-sidebar-page-icon" }}
+    //             />
+    //             <IconButton
+    //                 icon="chevron_right"
+    //                 onClick={() => this.props.pageForward(category)}
+    //                 disabled={endIndex === totalFeatures}
+    //                 theme={{ icon: "layer-sidebar-page-icon" }}
+    //             />
+    //         </div>
+    //     );
+    // }
 
     render() {
         const containerStyle = this.props.availableFeatures.get(
@@ -143,11 +127,20 @@ export class LayerSidebarContainer extends Component {
                         }}
                         className={containerStyle}
                     >
-                        {this.makeTab(layerSidebarTypes.CATEGORY_PLUMES)}
-                        {this.makeTab(
+                        {this.makeInfrastructureTab()}
+                    </Tabs>
+                    <InfrastructureContainer
+                        availableFeatures={this.props.availableFeatures.get(
                             layerSidebarTypes.CATEGORY_INFRASTRUCTURE
                         )}
-                    </Tabs>
+                        isVisible={true}
+                        searchState={this.props.searchState.get(
+                            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                        )}
+                        activeInfrastructureSubCategories={
+                            this.props.activeInfrastructureSubCategories
+                        }
+                    />
                 </div>
             </div>
         );
@@ -160,21 +153,18 @@ LayerSidebarContainer.propTypes = {
     pageForward: PropTypes.func.isRequired,
     pageBackward: PropTypes.func.isRequired,
     changeSidebarCategory: PropTypes.func.isRequired,
-    pageIndices: PropTypes.object.isRequired,
-    activeFeature: function(props, propName, componentName) {
-        const propValue = props[propName];
-        if (propValue === null) return;
-        if (typeof propValue === "object") return;
-        return new Error(`${componentName} only accepts null or object`);
-    }
+    searchState: PropTypes.object.isRequired,
+    activeInfrastructureSubCategories: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
     return {
         availableFeatures: state.layerSidebar.get("availableFeatures"),
         activeFeatureCategory: state.layerSidebar.get("activeFeatureCategory"),
-        pageIndices: state.layerSidebar.get("pageIndices"),
-        activeFeature: state.featureFocus.get("activeFeature")
+        searchState: state.layerSidebar.get("searchState"),
+        activeInfrastructureSubCategories: state.layerSidebar.get(
+            "activeInfrastructureSubCategories"
+        )
     };
 }
 

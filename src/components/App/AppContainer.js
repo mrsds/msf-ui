@@ -44,7 +44,7 @@ import AnalyticsContainer from "_core/components/Analytics/AnalyticsContainer";
 import KeyboardControlsContainer from "_core/components/KeyboardControls/KeyboardControlsContainer";
 import CoordinateTracker from "_core/components/Map/CoordinateTracker";
 import LayerSidebarContainer from "components/MethaneSidebar/LayerSidebarContainer";
-import FeatureFocusContainer from "components/FeatureFocus/FeatureFocusContainer";
+import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContainer";
 
 import "styles/styles.scss";
 
@@ -150,7 +150,7 @@ export class AppContainer extends Component {
                     globalEventOff="click"
                     delayShow={600}
                 />
-                <FeatureFocusContainer />
+                <FeatureDetailContainer />
                 <MapControlsContainer />
             </div>
         );
