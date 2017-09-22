@@ -1385,10 +1385,10 @@ export default class MapWrapper_openlayers extends MapWrapper {
       }
 
       let extent = this.getExtent();
-      url += "minLon" + extent[0];
-      url += "&minLat" + extent[1];
-      url += "&maxLon" + extent[2];
-      url += "&maxLat" + extent[3];
+      url += "minLon=" + extent[0];
+      url += "&minLat=" + extent[1];
+      url += "&maxLon=" + extent[2];
+      url += "&maxLat=" + extent[3];
 
       let scope = this;
       fetch(url).then((response) => {
