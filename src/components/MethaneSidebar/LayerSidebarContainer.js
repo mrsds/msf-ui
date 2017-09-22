@@ -10,6 +10,7 @@ import LayerControlContainer from "_core/components/LayerMenu/LayerControlContai
 import MiscUtil from "_core/utils/MiscUtil";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import InfrastructureContainer from "components/MethaneSidebar/InfrastructureContainer";
+import PlumesContainer from "components/MethaneSidebar/PlumesContainer";
 
 const miscUtil = new MiscUtil();
 
@@ -47,27 +48,51 @@ export class LayerSidebarContainer extends Component {
         this.props.changeSidebarCategory(this.getCategoryForIndex(index));
     }
 
-    makeInfrastructureTab() {
-        return (
-            <Tab
-                label={`Infrastructure (${this.props.searchState.getIn([
-                    layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-                    "searchResults"
-                ]).size})`}
-            />
-        );
-    }
-
     makeTab(category) {
         return (
             <Tab
                 label={`${this.getNameForCategory(
                     category
-                )} (${this.props.availableFeatures.get(category).size})`}
+                )} (${this.props.searchState.getIn([category, "searchResults"])
+                    .size})`}
             />
         );
     }
 
+    getActiveResultsContainer() {
+        switch (this.props.activeFeatureCategory) {
+            case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
+                return (
+                    <InfrastructureContainer
+                        availableFeatures={this.props.availableFeatures.get(
+                            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                        )}
+                        isVisible={true}
+                        searchState={this.props.searchState.get(
+                            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                        )}
+                        activeInfrastructureSubCategories={
+                            this.props.activeInfrastructureSubCategories
+                        }
+                    />
+                );
+            case layerSidebarTypes.CATEGORY_PLUMES:
+                return (
+                    <PlumesContainer
+                        availableFeatures={this.props.availableFeatures.get(
+                            layerSidebarTypes.CATEGORY_PLUMES
+                        )}
+                        isVisible={true}
+                        searchState={this.props.searchState.get(
+                            layerSidebarTypes.CATEGORY_PLUMES
+                        )}
+                        activeInfrastructureSubCategories={
+                            this.props.activeInfrastructureSubCategories
+                        }
+                    />
+                );
+        }
+    }
     // getPageControls(category) {
     //     const totalFeatures = this.props.searchState.getIn([
     //         category,
@@ -127,20 +152,12 @@ export class LayerSidebarContainer extends Component {
                         }}
                         className={containerStyle}
                     >
-                        {this.makeInfrastructureTab()}
+                        {this.makeTab(layerSidebarTypes.CATEGORY_PLUMES)}
+                        {this.makeTab(
+                            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                        )}
                     </Tabs>
-                    <InfrastructureContainer
-                        availableFeatures={this.props.availableFeatures.get(
-                            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
-                        )}
-                        isVisible={true}
-                        searchState={this.props.searchState.get(
-                            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
-                        )}
-                        activeInfrastructureSubCategories={
-                            this.props.activeInfrastructureSubCategories
-                        }
-                    />
+                    {this.getActiveResultsContainer()}
                 </div>
             </div>
         );

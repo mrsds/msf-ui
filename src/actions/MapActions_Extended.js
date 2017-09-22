@@ -17,6 +17,7 @@ export function updateFeatureList(category) {
         const layerSidebarState = getState().layerSidebar;
         const extent = mapState.getIn(["view", "extent"]);
 
+        // Routine for getting VISTA (infrastructure) features
         const infrastructureLayerActive = mapState
             .get("groups")
             .find(group => group.get("id") === "VISTA")
@@ -28,9 +29,8 @@ export function updateFeatureList(category) {
             infrastructureLayerActive && activeInfrastructureCategories;
 
         if (
-            infrastructureVisible &&
-            (!category ||
-                category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE)
+            !category ||
+            category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE
         ) {
             dispatch(
                 availableFeatureListLoading(
@@ -38,19 +38,47 @@ export function updateFeatureList(category) {
                 )
             );
 
-            requestAvailableFeatures(
-                layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-                extent,
-                layerSidebarState,
-                dispatch
-            );
+            if (!infrastructureVisible) {
+                dispatch(updateAvailableFeatures(category, null));
+            } else {
+                requestAvailableFeatures(
+                    layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+                    extent,
+                    layerSidebarState,
+                    dispatch
+                );
+            }
 
             dispatch(
                 availableFeatureListLoaded(
                     layerSidebarTypes.CATEGORY_INFRASTRUCTURE
                 )
             );
-            return;
+        }
+
+        // Routine for getting AVIRIS (plume) features
+        const plumeLayerVisible = mapState
+            .getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA, "AVIRIS_TEST"])
+            .get("isActive");
+        if (!category || category === layerSidebarTypes.CATEGORY_PLUMES) {
+            dispatch(
+                availableFeatureListLoading(layerSidebarTypes.CATEGORY_PLUMES)
+            );
+
+            if (!plumeLayerVisible) {
+                dispatch(updateAvailableFeatures(category, null));
+            } else {
+                requestAvailableFeatures(
+                    layerSidebarTypes.CATEGORY_PLUMES,
+                    extent,
+                    layerSidebarState,
+                    dispatch
+                );
+            }
+
+            dispatch(
+                availableFeatureListLoaded(layerSidebarTypes.CATEGORY_PLUMES)
+            );
         }
     };
 }
@@ -89,7 +117,7 @@ function requestAvailableFeatures(
         })
         .then(
             data => {
-                dispatch(updateAvailableFeatures(category, data.features));
+                dispatch(updateAvailableFeatures(category, data));
                 dispatch(availableFeatureListLoaded(category));
             },
             err => {
@@ -123,5 +151,7 @@ function getQueryString(category, extent, layerSidebarState) {
                 extent,
                 layerSidebarState
             );
+        case layerSidebarTypes.CATEGORY_PLUMES:
+            return mapUtil.buildAvirisFeatureQueryString(extent);
     }
 }

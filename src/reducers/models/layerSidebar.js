@@ -29,10 +29,12 @@ export const layerSidebarState = Immutable.fromJS({
             searchResults: {},
             facilityFilterOptionsVisible: false,
             pageIndex: 0
+        },
+        [layerSidebarTypes.CATEGORY_PLUMES]: {
+            searchString: "",
+            searchResults: {},
+            filterOptionsVisible: false,
+            pageIndex: 0
         }
     }
-});
-
-export const featuresModel = Immutable.fromJS({
-    id: ""
 });

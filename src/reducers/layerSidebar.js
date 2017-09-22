@@ -28,7 +28,10 @@ export default function layerSidebar(
         case actionTypes_Extended.AVAILABLE_LAYER_LIST_LOADED:
             return opt_reducer.updateSearchResults(state, action);
         case actionTypes_Extended.TOGGLE_INFRASTRUCTURE_FACILITY_FILTER_OPTIONS_VISIBLE:
-            return opt_reducer.setActiveFeatureCategories(state, action);
+            return opt_reducer.setInfrastructureFacilityFilterOptionsVisible(
+                state,
+                action
+            );
         default:
             return state;
     }

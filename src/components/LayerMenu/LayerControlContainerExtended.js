@@ -29,7 +29,7 @@ export class LayerControlContainer extends CoreLayerControlContainer {
         this.isChangingPosition = false;
         this.isChangingOpacity = false;
         this.props.actions.setLayerActive(this.props.layer.get("id"), active);
-        this.props.actionsExtended.updateActiveFeatureCategories(
+        this.props.actionsExtended.updateFeatureList(
             this.props.layer.get("id"),
             active
         );

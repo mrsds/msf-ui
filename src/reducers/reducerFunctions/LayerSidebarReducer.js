@@ -9,21 +9,65 @@ export default class LayerSidebarReducer {
     }
 
     static updateAvailableFeatures(state, action) {
-        const features = action.featureList.reduce((keys, feature) => {
-            keys.push(
-                Immutable.fromJS({
-                    name: feature.properties.name,
-                    id: feature.properties.id,
-                    category: feature.properties.category,
-                    metadata: feature.properties.metadata
-                })
-            );
-            return keys;
-        }, []);
-        return state.setIn(
-            ["availableFeatures", layerSidebarTypes.CATEGORY_INFRASTRUCTURE],
-            Immutable.fromJS(features)
-        );
+        switch (action.category) {
+            case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
+                return state.setIn(
+                    [
+                        "availableFeatures",
+                        layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                    ],
+                    Immutable.fromJS(
+                        !action.featureList
+                            ? []
+                            : action.featureList.features.reduce(
+                                  (keys, feature) => {
+                                      keys.push(
+                                          Immutable.fromJS({
+                                              name: feature.properties.name,
+                                              id: feature.properties.id,
+                                              category:
+                                                  feature.properties.category,
+                                              metadata:
+                                                  feature.properties.metadata
+                                          })
+                                      );
+                                      return keys;
+                                  },
+                                  []
+                              )
+                    )
+                );
+            case layerSidebarTypes.CATEGORY_PLUMES:
+                return state.setIn(
+                    ["availableFeatures", layerSidebarTypes.CATEGORY_PLUMES],
+                    Immutable.fromJS(
+                        !action.featureList
+                            ? []
+                            : action.featureList.reduce((keys, feature) => {
+                                  keys.push(
+                                      Immutable.fromJS({
+                                          name: feature.name,
+                                          flight_id: feature.flight_id,
+                                          id: feature.id,
+                                          metadata: [
+                                              {
+                                                  name: "latitude",
+                                                  value: feature.location[0]
+                                              },
+                                              {
+                                                  name: "longitude",
+                                                  value: feature.location[1]
+                                              }
+                                          ]
+                                      })
+                                  );
+                                  return keys;
+                              }, [])
+                    )
+                );
+            default:
+                return state;
+        }
     }
 
     static pageForward(state, action) {
@@ -78,11 +122,11 @@ export default class LayerSidebarReducer {
         );
     }
 
-    static getSearchResultsHelper(featureList, searchString) {
+    static getSearchResultsHelper(category, featureList, searchString) {
         if (!searchString || !featureList.size) return featureList;
         const searchObject = new Fuse(
             featureList.toJS(),
-            appConfig.INFRASTRUCTURE_SEARCH_OPTIONS.toJS()
+            appConfig.SEARCH_OPTIONS.get(category).toJS()
         );
         return Immutable.fromJS(searchObject.search(searchString));
     }
@@ -102,6 +146,7 @@ export default class LayerSidebarReducer {
         ]);
         const featureList = state.getIn(["availableFeatures", action.category]);
         const searchResults = LayerSidebarReducer.getSearchResultsHelper(
+            action.category,
             featureList,
             searchString
         );
@@ -111,7 +156,7 @@ export default class LayerSidebarReducer {
         );
     }
 
-    static setActiveFeatureCategories(state, action) {
+    static setInfrastructureFacilityFilterOptionsVisible(state, action) {
         const path = [
             "searchState",
             layerSidebarTypes.CATEGORY_INFRASTRUCTURE,

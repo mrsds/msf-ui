@@ -37,4 +37,20 @@ export default class MapUtil_Extended extends MapUtil {
 	getInfrastructureCategoryHumanName(category) {
 		return appStrings.INFRASTRUCTURE_FACILITY_TYPE_TO_NAME[category];
 	}
+
+	buildAvirisFeatureQueryString(extent) {
+		const [lonMax, latMax] = this.constrainCoordinates([
+			parseFloat(extent.get(2)),
+			parseFloat(extent.get(3))
+		]);
+		const [lonMin, latMin] = this.constrainCoordinates([
+			parseFloat(extent.get(0)),
+			parseFloat(extent.get(1))
+		]);
+		return appConfig.URLS.avirisEndpoint
+			.replace("{latMax}", latMax)
+			.replace("{lonMax}", lonMax)
+			.replace("{latMin}", latMin)
+			.replace("{lonMin}", lonMin);
+	}
 }

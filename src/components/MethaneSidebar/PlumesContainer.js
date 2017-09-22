@@ -17,11 +17,11 @@ import { Button, IconButton } from "react-toolbox/lib/button";
 const miscUtil = new MiscUtil_Extended();
 const mapUtil = new MapUtil_Extended();
 
-export class InfrastructureContainer extends Component {
+export class PlumesContainer extends Component {
 	isActiveFeature(feature) {
 		return (
 			this.props.activeFeature.get("category") ===
-				layerSidebarTypes.CATEGORY_INFRASTRUCTURE &&
+				layerSidebarTypes.CATEGORY_PLUMES &&
 			feature.get("id") ===
 				this.props.activeFeature.getIn(["feature", "id"])
 		);
@@ -59,7 +59,7 @@ export class InfrastructureContainer extends Component {
 						legend={this.getCountyLabel(feature)}
 						onClick={() =>
 							this.props.toggleFeatureDetail(
-								layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+								layerSidebarTypes.CATEGORY_PLUMES,
 								feature
 							)}
 					/>
@@ -68,53 +68,53 @@ export class InfrastructureContainer extends Component {
 		return listItems;
 	}
 
-	makeFacilityFilterList() {
-		const listItems = [];
-		const listGroups = Object.keys(
-			layerSidebarTypes.INFRASTRUCTURE_GROUPS
-		).forEach(group => {
-			listItems.push(
-				<ListSubHeader
-					key={group}
-					caption={group}
-					className="facility-filter-category-label"
-				/>
-			);
-			layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].forEach(category => {
-				const categoryName = mapUtil.getInfrastructureCategoryHumanName(
-					category
-				);
-				const checked =
-					this.props.activeInfrastructureSubCategories.get(
-						category
-					) || false;
-				listItems.push(
-					<ListCheckbox
-						key={categoryName}
-						caption={categoryName}
-						className="facility-filter-list-item"
-						theme={{ check: "facility-filter-list-item-check" }}
-						checked={checked}
-						onChange={this.props.updateInfrastructureCategoryFilter.bind(
-							null,
-							category
-						)}
-					/>
-				);
-			});
-		});
-		return (
-			<div id="infrastructureFilters">
-				<List selectable ripple className="facility-filter-list">
-					{listItems}
-				</List>
-			</div>
-		);
-	}
+	// makeFacilityFilterList() {
+	// 	const listItems = [];
+	// 	const listGroups = Object.keys(
+	// 		layerSidebarTypes.INFRASTRUCTURE_GROUPS
+	// 	).forEach(group => {
+	// 		listItems.push(
+	// 			<ListSubHeader
+	// 				key={group}
+	// 				caption={group}
+	// 				className="facility-filter-category-label"
+	// 			/>
+	// 		);
+	// 		layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].forEach(category => {
+	// 			const categoryName = mapUtil.getInfrastructureCategoryHumanName(
+	// 				category
+	// 			);
+	// 			const checked =
+	// 				this.props.activeInfrastructureSubCategories.get(
+	// 					category
+	// 				) || false;
+	// 			listItems.push(
+	// 				<ListCheckbox
+	// 					key={categoryName}
+	// 					caption={categoryName}
+	// 					className="facility-filter-list-item"
+	// 					theme={{ check: "facility-filter-list-item-check" }}
+	// 					checked={checked}
+	// 					onChange={this.props.updateInfrastructureCategoryFilter.bind(
+	// 						null,
+	// 						category
+	// 					)}
+	// 				/>
+	// 			);
+	// 		});
+	// 	});
+	// 	return (
+	// 		<div id="infrastructureFilters">
+	// 			<List selectable ripple className="facility-filter-list">
+	// 				{listItems}
+	// 			</List>
+	// 		</div>
+	// 	);
+	// }
 
 	makeSearchResults() {
 		return (
-			<div id="infrastructureResults">
+			<div id="plumeResults">
 				<List selectable ripple className="feature-item-list">
 					{this.makeListItems()}
 				</List>
@@ -123,7 +123,7 @@ export class InfrastructureContainer extends Component {
 					hidden={this.props.searchState.get("searchResults").size}
 				>
 					<div className="icon" />
-					<h1>No Infrastructure Found</h1>
+					<h1>No Plumes Found</h1>
 					<h2>Try widening some search parameters</h2>
 				</div>
 				{this.makePageControls()}
@@ -132,33 +132,35 @@ export class InfrastructureContainer extends Component {
 	}
 
 	makeResultsArea() {
-		if (this.props.searchState.get("facilityFilterOptionsVisible")) {
-			return this.makeFacilityFilterList();
-		} else {
-			return this.makeSearchResults();
-		}
+		// 	if (this.props.searchState.get("filterOptionsVisible")) {
+		// 		return this.makeFacilityFilterList();
+		// 	} else {
+		return this.makeSearchResults();
+		// 	}
 	}
 
-	makeFacilityFilterButton() {
-		const isActive = this.props.searchState.get("filterOptionsVisible");
-		const buttonLabel = "Filter By Facility";
-		return (
-			<Button
-				className="button"
-				theme={{
-					button: "button-content",
-					primary: "button-content-primary"
-				}}
-				primary={isActive}
-				onClick={
-					this.props.toggleInfrastructureFacilityFilterOptionsVisible
-				}
-			>
-				<span className="factory-icon" />
-				<label>{buttonLabel}</label>
-			</Button>
-		);
-	}
+	// makeFacilityFilterButton() {
+	// 	const isActive = this.props.searchState.get(
+	// 		"filterOptionsVisible"
+	// 	);
+	// 	const buttonLabel = "Filter By Facility";
+	// 	return (
+	// 		<Button
+	// 			className="button"
+	// 			theme={{
+	// 				button: "button-content",
+	// 				primary: "button-content-primary"
+	// 			}}
+	// 			primary={isActive}
+	// 			onClick={
+	// 				this.props.toggleInfrastructurefilterOptionsVisible
+	// 			}
+	// 		>
+	// 			<span className="factory-icon" />
+	// 			<label>{buttonLabel}</label>
+	// 		</Button>
+	// 	);
+	// }
 
 	makePageControls() {
 		const totalFeatures = this.props.searchState.get("searchResults").size;
@@ -181,7 +183,7 @@ export class InfrastructureContainer extends Component {
 					icon="chevron_left"
 					onClick={() =>
 						this.props.pageBackward(
-							layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+							layerSidebarTypes.CATEGORY_PLUMES
 						)}
 					disabled={currentPageIndex === 0}
 					theme={{ icon: "layer-sidebar-page-icon" }}
@@ -190,7 +192,7 @@ export class InfrastructureContainer extends Component {
 					icon="chevron_right"
 					onClick={() =>
 						this.props.pageForward(
-							layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+							layerSidebarTypes.CATEGORY_PLUMES
 						)}
 					disabled={endIndex === totalFeatures}
 					theme={{ icon: "layer-sidebar-page-icon" }}
@@ -199,27 +201,43 @@ export class InfrastructureContainer extends Component {
 		);
 	}
 
+	// this.makeFacilityFilterList();
+	// return (
+	// 	<div className="feature-item-container">
+	// 		<div id="infrastructureSearch">
+	// 			<input
+	// 				type="text"
+	// 				placeholder="Search for Infrastructure"
+	// 				onChange={this.props.updateFeatureSearchText.bind(
+	// 					null,
+	// 					layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+	// 				)}
+	// 			/>
+	// 			{this.makeFacilityFilterButton()}
+	// 			<Button
+	// 				className="button"
+	// 				theme={{ button: "button-content" }}
+	// 			>
+	// 				<span className="plane-icon" />
+	// 				<label>Any number of flyovers</label>
+	// 			</Button>
+	// 		</div>
+	// 		{this.makeResultsArea()}
+	// 	</div>
+	// );
+
 	render() {
-		this.makeFacilityFilterList();
 		return (
 			<div className="feature-item-container">
-				<div id="infrastructureSearch">
+				<div id="plumeSearch">
 					<input
 						type="text"
-						placeholder="Search for Infrastructure"
+						placeholder="Search for Plumes"
 						onChange={this.props.updateFeatureSearchText.bind(
 							null,
-							layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+							layerSidebarTypes.CATEGORY_PLUMES
 						)}
 					/>
-					{this.makeFacilityFilterButton()}
-					<Button
-						className="button"
-						theme={{ button: "button-content" }}
-					>
-						<span className="plane-icon" />
-						<label>Any number of flyovers</label>
-					</Button>
 				</div>
 				{this.makeResultsArea()}
 			</div>
@@ -227,7 +245,7 @@ export class InfrastructureContainer extends Component {
 	}
 }
 
-InfrastructureContainer.propTypes = {
+PlumesContainer.propTypes = {
 	isVisible: PropTypes.bool.isRequired,
 	// activeFeature: PropTypes.object.isRequired,
 	activeFeature: function(props, propName, componentName) {
@@ -238,9 +256,6 @@ InfrastructureContainer.propTypes = {
 	},
 	updateFeatureSearchText: PropTypes.func.isRequired,
 	searchState: PropTypes.object.isRequired,
-	activeInfrastructureSubCategories: PropTypes.object.isRequired,
-	updateInfrastructureCategoryFilter: PropTypes.func.isRequired,
-	toggleInfrastructureFacilityFilterOptionsVisible: PropTypes.func.isRequired,
 	pageForward: PropTypes.func.isRequired,
 	pageBackward: PropTypes.func.isRequired,
 	toggleFeatureDetail: PropTypes.func.isRequired
@@ -258,14 +273,6 @@ function mapDispatchToProps(dispatch) {
 			layerSidebarActions.updateFeatureSearchText,
 			dispatch
 		),
-		updateInfrastructureCategoryFilter: bindActionCreators(
-			layerSidebarActions.updateInfrastructureCategoryFilter,
-			dispatch
-		),
-		toggleInfrastructureFacilityFilterOptionsVisible: bindActionCreators(
-			layerSidebarActions.toggleInfrastructureFacilityFilterOptionsVisible,
-			dispatch
-		),
 		pageForward: bindActionCreators(
 			layerSidebarActions.pageForward,
 			dispatch
@@ -281,6 +288,4 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-	InfrastructureContainer
-);
+export default connect(mapStateToProps, mapDispatchToProps)(PlumesContainer);

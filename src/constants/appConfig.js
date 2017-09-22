@@ -1,5 +1,6 @@
 import Immutable from "immutable";
 import * as coreConfig from "_core/constants/appConfig";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
 // the config as defined by CMC Core
 const CORE_CONFIG = Immutable.fromJS(coreConfig);
@@ -11,7 +12,9 @@ const OPS_CONFIG = Immutable.fromJS(window.APPLICATION_CONFIG);
 const APP_CONFIG = Immutable.fromJS({
 	URLS: {
 		vistaEndpoint:
-			"http://100.64.114.155:9090/vista?maxLat={latMax}&maxLon={lonMax}&minLat={latMin}&minLon={lonMin}&category={category}"
+			"http://100.64.114.155:9090/vista?maxLat={latMax}&maxLon={lonMax}&minLat={latMin}&minLon={lonMin}&category={category}",
+		avirisEndpoint:
+			"http://100.64.114.155:9090/aviris?maxObjects=1000&minLon{lonMin}&minLat{latMin}&maxLon{lonMax}&maxLat{latMax}"
 	},
 	DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35]
 });
@@ -22,12 +25,23 @@ const appConfig = CORE_CONFIG.mergeDeep(APP_CONFIG)
 	.toJS();
 export default appConfig;
 
-export const INFRASTRUCTURE_SEARCH_OPTIONS = Immutable.fromJS({
-	shouldSort: true,
-	threshold: 0.6,
-	location: 0,
-	distance: 100,
-	maxPatternLength: 32,
-	minMatchCharLength: 1,
-	keys: ["name"]
+export const SEARCH_OPTIONS = Immutable.fromJS({
+	[layerSidebarTypes.CATEGORY_INFRASTRUCTURE]: {
+		shouldSort: true,
+		threshold: 0.6,
+		location: 0,
+		distance: 100,
+		maxPatternLength: 32,
+		minMatchCharLength: 1,
+		keys: ["name"]
+	},
+	[layerSidebarTypes.CATEGORY_PLUMES]: {
+		shouldSort: true,
+		threshold: 0.6,
+		location: 0,
+		distance: 100,
+		maxPatternLength: 32,
+		minMatchCharLength: 1,
+		keys: ["name"]
+	}
 });

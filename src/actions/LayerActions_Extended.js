@@ -6,22 +6,19 @@ import * as AlertActions from "_core/actions/AlertActions";
 import * as MapActions_Extended from "actions/MapActions_Extended";
 import * as LayerActions from "_core/actions/LayerActions";
 import MiscUtil from "_core/utils/MiscUtil";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
 const miscUtil = new MiscUtil();
 
-// export function updateActiveFeatureCategories(layer, active) {
-// 	return (dispatch, getState) => {
-// 		dispatch(setActiveFeatureCategories(layer, active));
-// 		dispatch(
-// 			MapActions_Extended.getAvailableLayers(
-// 				getState().map.getIn(["view", "extent"])
-// 			)
-// 		);
-// 	};
-// }
-
-export function setActiveFeatureCategories(layer, active) {
-	return { type: types_extended.UPDATE_ACTIVE_SUBCATEGORIES, layer, active };
+export function updateFeatureList(layer, active) {
+	return (dispatch, getState) => {
+		if (layer === "AVIRIS_TEST")
+			dispatch(
+				MapActions_Extended.updateFeatureList(
+					layerSidebarTypes.CATEGORY_PLUMES
+				)
+			);
+	};
 }
 
 export function setGroupVisible(group, active) {
