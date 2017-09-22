@@ -110,7 +110,6 @@ export class AppContainer extends Component {
                     // signal complete
                     this.props.actions.completeInitialLoad();
                     this.props.actions.updateFeatureList(
-                        this.props.layerList,
                         appConfig.DEFAULT_BBOX_EXTENT
                     );
 

@@ -8,8 +8,8 @@ export default class LayerSidebarReducer {
         return state.set("activeCategory", action.category);
     }
 
-    static updateAvailableFeatureList(state, action) {
-        const features = action.layerList.reduce((keys, feature) => {
+    static updateAvailableFeatures(state, action) {
+        const features = action.featureList.reduce((keys, feature) => {
             keys.push(
                 Immutable.fromJS({
                     name: feature.properties.name,

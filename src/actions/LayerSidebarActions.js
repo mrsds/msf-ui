@@ -2,6 +2,7 @@ import * as types from "constants/actionTypes_Extended";
 import * as MapActions_Extended from "actions/MapActions_Extended";
 import * as LayerActions from "_core/actions/LayerActions";
 import * as appStrings from "_core/constants/appStrings";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
 export function pageForward(category) {
 	return { type: types.FEATURE_SIDEBAR_PAGE_FORWARD, category };
@@ -25,10 +26,6 @@ function featureFocusInfoLoading() {
 
 function featureFocusInfoLoaded() {
 	return { type: types.FEATURE_FOCUS_INFO_LOADED };
-}
-
-function updateFeatureFocusInfo(feature) {
-	return { type: types.UPDATE_FEATURE_FOCUS_INFO, feature };
 }
 
 export function updateFeatureSearchText(category, evt) {
@@ -64,8 +61,8 @@ export function updateInfrastructureCategoryFilter(layerName, evt) {
 		}
 		dispatch(setActiveFeatureCategories(layerName, evt));
 		dispatch(
-			MapActions_Extended.getAvailableLayers(
-				getState().map.getIn(["view", "extent"])
+			MapActions_Extended.updateFeatureList(
+				layerSidebarTypes.CATEGORY_INFRASTRUCTURE
 			)
 		);
 	};

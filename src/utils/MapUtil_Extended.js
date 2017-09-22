@@ -4,7 +4,7 @@ import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import * as appStrings from "constants/appStrings_Extended.js";
 
 export default class MapUtil_Extended extends MapUtil {
-	buildAvailableLayerQueryString(extent, sidebarState) {
+	buildVistaFeatureQueryString(extent, sidebarState) {
 		const [lonMax, latMax] = this.constrainCoordinates([
 			parseFloat(extent.get(2)),
 			parseFloat(extent.get(3))
@@ -32,12 +32,6 @@ export default class MapUtil_Extended extends MapUtil {
 				(val, key) =>
 					layerSidebarTypes.INFRASTRUCTURE_SUBCATEGORIES[key]
 			);
-	}
-
-	activeInfrastructureCategories(sidebarState) {
-		return sidebarState
-			.get("activeInfrastructureSubCategories")
-			.some(val => val);
 	}
 
 	getInfrastructureCategoryHumanName(category) {

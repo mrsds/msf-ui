@@ -9,16 +9,16 @@ import MiscUtil from "_core/utils/MiscUtil";
 
 const miscUtil = new MiscUtil();
 
-export function updateActiveFeatureCategories(layer, active) {
-	return (dispatch, getState) => {
-		dispatch(setActiveFeatureCategories(layer, active));
-		dispatch(
-			MapActions_Extended.getAvailableLayers(
-				getState().map.getIn(["view", "extent"])
-			)
-		);
-	};
-}
+// export function updateActiveFeatureCategories(layer, active) {
+// 	return (dispatch, getState) => {
+// 		dispatch(setActiveFeatureCategories(layer, active));
+// 		dispatch(
+// 			MapActions_Extended.getAvailableLayers(
+// 				getState().map.getIn(["view", "extent"])
+// 			)
+// 		);
+// 	};
+// }
 
 export function setActiveFeatureCategories(layer, active) {
 	return { type: types_extended.UPDATE_ACTIVE_SUBCATEGORIES, layer, active };

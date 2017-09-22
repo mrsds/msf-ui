@@ -11,8 +11,8 @@ export default function layerSidebar(
     switch (action.type) {
         case actionTypes_Extended.SET_LAYER_SIDEBAR_CATEGORY:
             return opt_reducer.updateActiveCategory(state, action);
-        case actionTypes_Extended.UPDATE_AVAILABLE_FEATURE_LIST:
-            return opt_reducer.updateAvailableFeatureList(state, action);
+        case actionTypes_Extended.UPDATE_AVAILABLE_FEATURES:
+            return opt_reducer.updateAvailableFeatures(state, action);
         case actionTypes_Extended.FEATURE_SIDEBAR_PAGE_FORWARD:
             return opt_reducer.pageForward(state, action);
         case actionTypes_Extended.FEATURE_SIDEBAR_PAGE_BACKWARD:
@@ -21,8 +21,6 @@ export default function layerSidebar(
             return opt_reducer.changeSidebarCategory(state, action);
         case actionTypes_Extended.UPDATE_ACTIVE_SUBCATEGORIES:
             return opt_reducer.updateActiveSubcategories(state, action);
-        case actionTypes_Extended.REFRESH_ACTIVE_SUBCATEGORIES:
-            return opt_reducer.refreshActiveSubcategories(state, action);
         case actionTypes_Extended.UPDATE_FEATURE_SEARCH_TEXT:
             return opt_reducer.updateFeatureSearchText(state, action);
         case actionTypes_Extended.UPDATE_FEATURE_SEARCH_RESULTS:

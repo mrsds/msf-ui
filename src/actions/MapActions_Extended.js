@@ -11,81 +11,117 @@ import * as appStrings from "_core/constants/appStrings";
 const miscUtil = new MiscUtil();
 const mapUtil = new MapUtil_Extended();
 
-export function getAvailableLayers(extent) {
+export function updateFeatureList(category) {
     return (dispatch, getState) => {
-        // First check if there are any active layers we need to grab data for
+        const mapState = getState().map;
         const layerSidebarState = getState().layerSidebar;
-        if (!mapUtil.activeInfrastructureCategories(layerSidebarState)) {
-            dispatch(updateAvailableFeatures([]));
+        const extent = mapState.getIn(["view", "extent"]);
+
+        const infrastructureLayerActive = mapState
+            .get("groups")
+            .find(group => group.get("id") === "VISTA")
+            .get("isActive");
+        const activeInfrastructureCategories = layerSidebarState
+            .get("activeInfrastructureSubCategories")
+            .some(cat => cat);
+        const infrastructureVisible =
+            infrastructureLayerActive && activeInfrastructureCategories;
+
+        if (
+            infrastructureVisible &&
+            (!category ||
+                category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE)
+        ) {
             dispatch(
-                availableLayerListLoaded(
+                availableFeatureListLoading(
+                    layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                )
+            );
+
+            requestAvailableFeatures(
+                layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+                extent,
+                layerSidebarState,
+                dispatch
+            );
+
+            dispatch(
+                availableFeatureListLoaded(
                     layerSidebarTypes.CATEGORY_INFRASTRUCTURE
                 )
             );
             return;
         }
-        dispatch(availableLayerListLoading());
-
-        return miscUtil
-            .asyncFetch({
-                url: mapUtil.buildAvailableLayerQueryString(
-                    extent,
-                    layerSidebarState
-                ),
-                handleAs: "json"
-            })
-            .then(
-                data => {
-                    // update available features for bbox
-                    dispatch(updateAvailableFeatures(data.features));
-                    // signal loading complete
-                    dispatch(
-                        availableLayerListLoaded(
-                            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
-                        )
-                    );
-                },
-                err => {
-                    console.warn(
-                        "Error getting available layer list for current view bbox:",
-                        err
-                    );
-                    // signal loading complete
-                    dispatch(
-                        availableLayerListLoaded(
-                            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
-                        )
-                    );
-
-                    // display alert
-                    dispatch(
-                        AlertActions.addAlert({
-                            title:
-                                appStrings_Extended.ALERTS
-                                    .LAYER_AVAILABILITY_LIST_LOAD_FAILED.title,
-                            body:
-                                appStrings_Extended.ALERTS
-                                    .LAYER_AVAILABILITY_LIST_LOAD_FAILED,
-                            severity:
-                                appStrings_Extended.ALERTS
-                                    .LAYER_AVAILABILITY_LIST_LOAD_FAILED
-                                    .severity,
-                            time: new Date()
-                        })
-                    );
-                }
-            );
     };
 }
 
-export function availableLayerListLoading() {
+function availableLayerListLoading() {
     return { type: types_extended.AVAILABLE_LAYER_LIST_LOADING };
 }
 
-export function availableLayerListLoaded(category) {
+function availableFeatureListLoading(category) {
+    return { type: types_extended.AVAILABLE_LAYER_LIST_LOADING, category };
+}
+
+function availableFeatureListLoaded(category) {
     return { type: types_extended.AVAILABLE_LAYER_LIST_LOADED, category };
 }
 
-export function updateAvailableFeatures(layerList) {
-    return { type: types_extended.UPDATE_AVAILABLE_FEATURE_LIST, layerList };
+function updateAvailableFeatures(category, featureList) {
+    return {
+        type: types_extended.UPDATE_AVAILABLE_FEATURES,
+        category,
+        featureList
+    };
+}
+
+function requestAvailableFeatures(
+    category,
+    extent,
+    layerSidebarState,
+    dispatch
+) {
+    const queryUrl = getQueryString(category, extent, layerSidebarState);
+    return miscUtil
+        .asyncFetch({
+            url: queryUrl,
+            handleAs: "json"
+        })
+        .then(
+            data => {
+                dispatch(updateAvailableFeatures(category, data.features));
+                dispatch(availableFeatureListLoaded(category));
+            },
+            err => {
+                console.warn(
+                    "Error getting available layer list for current view bbox:",
+                    err
+                );
+                dispatch(availableFeatureListLoaded(category));
+                dispatch(
+                    AlertActions.addAlert({
+                        title:
+                            appStrings_Extended.ALERTS
+                                .LAYER_AVAILABILITY_LIST_LOAD_FAILED.title,
+                        body:
+                            appStrings_Extended.ALERTS
+                                .LAYER_AVAILABILITY_LIST_LOAD_FAILED,
+                        severity:
+                            appStrings_Extended.ALERTS
+                                .LAYER_AVAILABILITY_LIST_LOAD_FAILED.severity,
+                        time: new Date()
+                    })
+                );
+            }
+        );
+}
+
+function getQueryString(category, extent, layerSidebarState) {
+    switch (category) {
+        case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
+            return mapUtil.buildVistaFeatureQueryString(
+                extent,
+                layerSidebarState
+            );
+    }
 }

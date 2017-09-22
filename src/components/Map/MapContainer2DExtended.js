@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as actions from '_core/actions/MapActions';
-import * as actions_extended from 'actions/MapActions_Extended';
-import * as appStrings from '_core/constants/appStrings';
-import MiscUtil from '_core/utils/MiscUtil';
-import { MapContainer2D as CoreMapContainer2D } from '_core/components/Map/MapContainer2D';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "_core/actions/MapActions";
+import * as actions_extended from "actions/MapActions_Extended";
+import * as appStrings from "_core/constants/appStrings";
+import MiscUtil from "_core/utils/MiscUtil";
+import { MapContainer2D as CoreMapContainer2D } from "_core/components/Map/MapContainer2D";
 
 const miscUtil = new MiscUtil();
 
@@ -14,12 +14,15 @@ export class MapContainer2D extends CoreMapContainer2D {
     handleMapMoveEnd(map) {
         // Only fire move event if this map is active
         // and target inactive map
-        this.props.actions_extended.getAvailableLayers(this.props.extent);
+        this.props.actions_extended.updateFeatureList();
         if (map.isActive) {
-            this.props.actions.setMapView({
-                extent: map.getExtent(),
-                projection: map.getProjection()
-            }, false);
+            this.props.actions.setMapView(
+                {
+                    extent: map.getExtent(),
+                    projection: map.getProjection()
+                },
+                false
+            );
         }
     }
 }
@@ -51,7 +54,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(MapContainer2D);
+export default connect(mapStateToProps, mapDispatchToProps)(MapContainer2D);
