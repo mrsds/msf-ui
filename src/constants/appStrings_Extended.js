@@ -1,5 +1,7 @@
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
+export const LAYER_VECTOR_KMZ = "vector_kmz";
+
 export const ALERTS = {
 	LAYER_AVAILABILITY_LIST_LOAD_FAILED: {
 		title: "Layer Availability List Loading Failed",

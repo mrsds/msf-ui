@@ -2,8 +2,20 @@ import appConfig from "constants/appConfig";
 import MapUtil from "_core/utils/MapUtil";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import * as appStrings from "constants/appStrings_Extended.js";
+import { MapWrapper_openlayers_Extended as MapWrapper_openlayers } from "utils/MapWrapper_openlayers_Extended";
 
 export default class MapUtil_Extended extends MapUtil {
+	parseCapabilities(capabilitiesString) {
+		return MapWrapper_openlayers.parseCapabilities(capabilitiesString);
+	}
+
+	// generates a set of wmts options for a layer
+	// NOTE: uses openlayers to do the actual info gathering
+	getWmtsOptions(options) {
+		MapWrapper_openlayers.prepProjection();
+		return MapWrapper_openlayers.getWmtsOptions(options);
+	}
+
 	buildVistaFeatureQueryString(extent, sidebarState) {
 		const [lonMax, latMax] = this.constrainCoordinates([
 			parseFloat(extent.get(2)),

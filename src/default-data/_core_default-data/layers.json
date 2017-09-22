@@ -193,6 +193,18 @@
         },
 
         {
+            "id": "GRIDDED_EMISSIONS_V1",
+            "title": "Vineet gridded emissions v1",
+            "type": "data",
+            "handleAs": "vector_kmz",
+            "isDefault": false,
+            "url":
+                "http://100.64.114.155/data/gridded/v1/kmz/vista_emissions.kmz",
+            "thumbnailImage":
+                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
+        },
+
+        {
             "id": "Reference_Labels",
             "title": "Reference Labels",
             "type": "reference",
