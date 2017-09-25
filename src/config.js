@@ -24,5 +24,5 @@ APPLICATION_CONFIG = {
 */
 
 APPLICATION_CONFIG = {
-	APP_TITLE: 'Methane Source Finder';
+	APP_TITLE: "Methane Source Finder"
 };
