@@ -37,7 +37,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 			case appStrings.LAYER_VECTOR_GEOJSON:
 				mapLayer = this.createVectorLayer(layer, fromCache);
 				break;
-			case appStrings.LAYER_AVIRIS:
+			case appStrings_Extended.LAYER_AVIRIS:
 				mapLayer = this.createAvirisLayers(layer, fromCache);
 				//mapLayer = this.createVectorLayer(layer, fromCache);
 				break;
