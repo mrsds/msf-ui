@@ -68,53 +68,9 @@ export class PlumesContainer extends Component {
 		return listItems;
 	}
 
-	// makeFacilityFilterList() {
-	// 	const listItems = [];
-	// 	const listGroups = Object.keys(
-	// 		layerSidebarTypes.INFRASTRUCTURE_GROUPS
-	// 	).forEach(group => {
-	// 		listItems.push(
-	// 			<ListSubHeader
-	// 				key={group}
-	// 				caption={group}
-	// 				className="facility-filter-category-label"
-	// 			/>
-	// 		);
-	// 		layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].forEach(category => {
-	// 			const categoryName = mapUtil.getInfrastructureCategoryHumanName(
-	// 				category
-	// 			);
-	// 			const checked =
-	// 				this.props.activeInfrastructureSubCategories.get(
-	// 					category
-	// 				) || false;
-	// 			listItems.push(
-	// 				<ListCheckbox
-	// 					key={categoryName}
-	// 					caption={categoryName}
-	// 					className="facility-filter-list-item"
-	// 					theme={{ check: "facility-filter-list-item-check" }}
-	// 					checked={checked}
-	// 					onChange={this.props.updateInfrastructureCategoryFilter.bind(
-	// 						null,
-	// 						category
-	// 					)}
-	// 				/>
-	// 			);
-	// 		});
-	// 	});
-	// 	return (
-	// 		<div id="infrastructureFilters">
-	// 			<List selectable ripple className="facility-filter-list">
-	// 				{listItems}
-	// 			</List>
-	// 		</div>
-	// 	);
-	// }
-
 	makeSearchResults() {
 		return (
-			<div id="plumeResults">
+			<div id="plumeResults" className="sidebar-content">
 				<List selectable ripple className="feature-item-list">
 					{this.makeListItems()}
 				</List>
@@ -138,29 +94,6 @@ export class PlumesContainer extends Component {
 		return this.makeSearchResults();
 		// 	}
 	}
-
-	// makeFacilityFilterButton() {
-	// 	const isActive = this.props.searchState.get(
-	// 		"filterOptionsVisible"
-	// 	);
-	// 	const buttonLabel = "Filter By Facility";
-	// 	return (
-	// 		<Button
-	// 			className="button"
-	// 			theme={{
-	// 				button: "button-content",
-	// 				primary: "button-content-primary"
-	// 			}}
-	// 			primary={isActive}
-	// 			onClick={
-	// 				this.props.toggleInfrastructurefilterOptionsVisible
-	// 			}
-	// 		>
-	// 			<span className="factory-icon" />
-	// 			<label>{buttonLabel}</label>
-	// 		</Button>
-	// 	);
-	// }
 
 	makePageControls() {
 		const totalFeatures = this.props.searchState.get("searchResults").size;
@@ -200,31 +133,6 @@ export class PlumesContainer extends Component {
 			</div>
 		);
 	}
-
-	// this.makeFacilityFilterList();
-	// return (
-	// 	<div className="feature-item-container">
-	// 		<div id="infrastructureSearch">
-	// 			<input
-	// 				type="text"
-	// 				placeholder="Search for Infrastructure"
-	// 				onChange={this.props.updateFeatureSearchText.bind(
-	// 					null,
-	// 					layerSidebarTypes.CATEGORY_INFRASTRUCTURE
-	// 				)}
-	// 			/>
-	// 			{this.makeFacilityFilterButton()}
-	// 			<Button
-	// 				className="button"
-	// 				theme={{ button: "button-content" }}
-	// 			>
-	// 				<span className="plane-icon" />
-	// 				<label>Any number of flyovers</label>
-	// 			</Button>
-	// 		</div>
-	// 		{this.makeResultsArea()}
-	// 	</div>
-	// );
 
 	render() {
 		return (

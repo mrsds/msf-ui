@@ -145,13 +145,6 @@
 		align-items: baseline;
 		padding: 0 5px;
 
-		.factory-icon {
-			margin: 0 10px;
-			width: 12px;
-			height: 12px;
-			background-size: auto;
-			background: url(resources/img/factory_icon.svg);
-		}
 		.plane-icon {
 			margin: 0 10px;
 			width: 12px;
@@ -186,8 +179,6 @@
 }
 
 #infrastructureFilters {
-	overflow: auto;
-	max-height: calc(80vh - 50px);
 	.facility-filter-list {
 		background-color: #fff;
 	}
@@ -216,9 +207,12 @@
 	}
 }
 
-#infrastructureResults {
+.sidebar-content {
 	overflow: auto;
 	max-height: calc(80vh - 80px);
+}
+
+#infrastructureResults {
 	.no-results {
 		margin-top: 125px;
 		color: #a0a0a0;

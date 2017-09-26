@@ -111,7 +111,7 @@ export class InfrastructureContainer extends Component {
 			});
 		});
 		return (
-			<div id="infrastructureFilters">
+			<div id="infrastructureFilters" className="sidebar-content">
 				<List selectable ripple className="facility-filter-list">
 					{listItems}
 				</List>
@@ -122,7 +122,7 @@ export class InfrastructureContainer extends Component {
 	makeSearchResults() {
 		if (this.props.searchState.get("searchResults").size) {
 			return (
-				<div id="infrastructureResults">
+				<div id="infrastructureResults" className="sidebar-content">
 					<List selectable ripple className="feature-item-list">
 						{this.makeListItems()}
 					</List>
