@@ -93,40 +93,6 @@ export class LayerSidebarContainer extends Component {
                 );
         }
     }
-    // getPageControls(category) {
-    //     const totalFeatures = this.props.searchState.getIn([
-    //         category,
-    //         "searchResults"
-    //     ]).size;
-    //     const currentPageIndex = this.props.pageIndices.get(category);
-    //     const endIndex =
-    //         currentPageIndex + layerSidebarTypes.FEATURES_PER_PAGE >
-    //         totalFeatures
-    //             ? totalFeatures
-    //             : currentPageIndex + layerSidebarTypes.FEATURES_PER_PAGE;
-    //     const counterLabel =
-    //         totalFeatures !== 0
-    //             ? `Showing ${currentPageIndex + 1} to ${endIndex}`
-    //             : "No features found in the current viewport";
-
-    //     return (
-    //         <div className="feature-results-page-row">
-    //             <div className="layer-sidebar-page-label">{counterLabel}</div>
-    //             <IconButton
-    //                 icon="chevron_left"
-    //                 onClick={() => this.props.pageBackward(category)}
-    //                 disabled={currentPageIndex === 0}
-    //                 theme={{ icon: "layer-sidebar-page-icon" }}
-    //             />
-    //             <IconButton
-    //                 icon="chevron_right"
-    //                 onClick={() => this.props.pageForward(category)}
-    //                 disabled={endIndex === totalFeatures}
-    //                 theme={{ icon: "layer-sidebar-page-icon" }}
-    //             />
-    //         </div>
-    //     );
-    // }
 
     render() {
         const containerStyle = this.props.availableFeatures.get(

@@ -31,8 +31,40 @@ export class FeatureDetailContainer extends Component {
         }
     }
 
+    makeInfoFields(fieldInfo) {
+        const fields = fieldInfo.map(field => {
+            const unit = field.unit ? <unit>{" " + field.unit}</unit> : null;
+            if (field.subtitle) {
+                return (
+                    <div key={field.name + field.subtitle}>
+                        <label className="stacked">
+                            <span className="main">{field.name}</span>
+                            <span className="sub">{field.subtitle}</span>
+                        </label>
+                        <span>
+                            {field.value}
+                            {unit}
+                        </span>
+                    </div>
+                );
+            }
+            return (
+                <div key={field.name}>
+                    <label>{field.name}</label>
+                    <span>
+                        {field.value}
+                        {unit}
+                    </span>
+                </div>
+            );
+        });
+        return <div className="info-box">{fields}</div>;
+    }
+
     makeInfrastructureDetail() {
         if (!this.props.feature.size) return null;
+
+        // Get all the properties we'll be using later on using metadata searches
         const name = this.props.feature.get("name");
         const category = this.props.feature.get("category");
         const city = metadataUtil.getCity(this.props.feature, "(no city)");
@@ -53,6 +85,43 @@ export class FeatureDetailContainer extends Component {
             this.props.feature,
             "(no area)"
         );
+
+        // Bin together the various field:value pairs
+        const observationDataFields = [
+            { name: "Facility Type", value: category, unit: null },
+            { name: "Facility Location", value: `${lat}, ${long}`, unit: null },
+            { name: "Number of Flyovers", value: "(n/a)", unit: null },
+            { name: "Facility Address", value: address, unit: null }
+        ];
+
+        const vistaFacilityFields = [
+            { name: "Name", value: category },
+            { name: "Year Commissioned", value: `${lat}, ${long}` },
+            { name: "Area", value: areaSqMi, unit: "square miles" },
+            {
+                name: "Waste",
+                value: "(not present in metadata specs)"
+            },
+            {
+                name: "Methane Emission Factor",
+                value: "(not present in metadata specs)"
+            },
+            {
+                name: "Control Type",
+                value: "(not present in metadata specs)"
+            },
+            {
+                name: "Methane Emission",
+                subtitle: "(Metric Tons of CO2 Equivalent)",
+                value: "(not present in metadata specs)"
+            },
+            {
+                name: "Methane Emission",
+                subtitle: "(Gigagrams of Methane)",
+                value: "(not present in metadata specs)"
+            }
+        ];
+
         return (
             <div className="feature-detail-card-container">
                 <Card className="feature-detail-card">
@@ -75,106 +144,26 @@ export class FeatureDetailContainer extends Component {
                         }}
                     />
                     <CardText className="section">
-                        <h2>Facility Overview</h2>
-                        <div className="row">
-                            <div>
-                                <label>Facility Type</label>
-                                <span>{category}</span>
-                            </div>
-                            <div>
-                                <label>Facility Location</label>
-                                <span>{`${lat}, ${long}`}</span>
-                            </div>
+                        <div className="section-body">
+                            <h2>Facility Overview</h2>
+                            {this.makeInfoFields(observationDataFields)}
+                            <hr />
+                            <CardActions className="button-box">
+                                <Button
+                                    disabled={!googleMapsUri}
+                                    href={googleMapsUri}
+                                    target="_blank"
+                                    className="button"
+                                >
+                                    View In Google Maps
+                                </Button>
+                            </CardActions>
                         </div>
-                        <div className="row">
-                            <div>
-                                <label>Number of Flyovers</label>
-                                <span>(n/a)</span>
-                            </div>
-                            <div>
-                                <label>Facility Address</label>
-                                <span>{address}</span>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <label>Nearby Plumes</label>
-                            <span>(n/a)</span>
-                        </div>
-                        <div className="row">
-                            <label>County</label>
-                            <span>{county}</span>
-                        </div>
-                        <hr />
-                        <CardActions>
-                            <Button
-                                disabled={!googleMapsUri}
-                                href={googleMapsUri}
-                                target="_blank"
-                                className="button"
-                            >
-                                View In Google Maps
-                            </Button>
-                        </CardActions>
                     </CardText>
                     <CardText className="section">
-                        <h2>VISTA Facility Metadata</h2>
-                        <div className="row">
-                            <div>
-                                <label>Name</label>
-                                <span>{name}</span>
-                            </div>
-                            <div>
-                                <label>Year Commissioned</label>
-                                <span>(not present in metadata specs)</span>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div>
-                                <label>Area</label>
-                                <span>
-                                    {areaSqMi} <unit>square miles</unit>
-                                </span>
-                            </div>
-                            <div>
-                                <label>Waste</label>
-                                <span>(not present in metadata specs)</span>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div>
-                                <label>Methane Emission Factor</label>
-                                <span>(not present in metadata specs)</span>
-                            </div>
-                            <div>
-                                <label>Control Type</label>
-                                <span>(not present in metadata specs)</span>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div>
-                                <label className="stacked">
-                                    <span className="main">
-                                        Methane Emission
-                                    </span>
-                                    <span className="sub">
-                                        (Metric Tons of CO2 Equivalent)
-                                    </span>
-                                </label>
-                                <span>(not present in metadata specs)</span>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div>
-                                <label className="stacked">
-                                    <span className="main">
-                                        Methane Emission
-                                    </span>
-                                    <span className="sub">
-                                        (Gigagrams of Methane)
-                                    </span>
-                                </label>
-                                <span>(not present in metadata specs)</span>
-                            </div>
+                        <div className="section-body">
+                            <h2>VISTA Facility Metadata</h2>
+                            {this.makeInfoFields(vistaFacilityFields)}
                         </div>
                     </CardText>
                 </Card>
@@ -184,6 +173,8 @@ export class FeatureDetailContainer extends Component {
 
     makePlumeDetail() {
         if (!this.props.feature.size) return null;
+
+        // Get all the properties we'll be using later on using metadata searches
         const name = this.props.feature.get("name");
         const category = this.props.feature.get("category");
         const city = metadataUtil.getCity(this.props.feature, "(no city)");
@@ -204,6 +195,20 @@ export class FeatureDetailContainer extends Component {
             this.props.feature,
             "(no area)"
         );
+
+        // Bin together the various field:value pairs
+        const observationDataFields = [
+            { name: "Methane Flux", value: "(not specified in metadata)" },
+            { name: "Observation Time", value: "(not specified in metadata)" },
+            { name: "Plume IME", value: "(not specified in metadata)" },
+            { name: "Observation Location", value: `${lat}, ${long}` },
+            { name: "Gas Detected", value: "(not specified in metadata)" },
+            {
+                name: "Observation Altitude",
+                value: "(not specified in metadata)"
+            }
+        ];
+
         return (
             <div className="feature-detail-card-container">
                 <Card className="feature-detail-card">
@@ -226,41 +231,20 @@ export class FeatureDetailContainer extends Component {
                         }}
                     />
                     <CardText className="section">
-                        <h2>Observation Data</h2>
-                        <div className="row">
-                            <div>
-                                <label>Methane Flux</label>
-                                <span>(not specified in metadata)</span>
-                            </div>
-                            <div>
-                                <label>Observation Time</label>
-                                <span>(not specified in metadata)</span>
-                            </div>
+                        <div className="section-body">
+                            <h2>Observation Data</h2>
+                            {this.makeInfoFields(observationDataFields)}
+                            <hr />
+                            <CardActions className="button-box">
+                                <Button
+                                    disabled
+                                    target="_blank"
+                                    className="button"
+                                >
+                                    Download Observation Data
+                                </Button>
+                            </CardActions>
                         </div>
-                        <div className="row">
-                            <div>
-                                <label>Plume IME</label>
-                                <span>(not specified in metadata)</span>
-                            </div>
-                            <div>
-                                <label>Observation Location</label>
-                                <span>{`${lat}, ${long}`}</span>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <label>Gas Detected</label>
-                            <span>(not specified in metadata)</span>
-                        </div>
-                        <div className="row">
-                            <label>Observation Altitude</label>
-                            <span>(not specified in metadata)</span>
-                        </div>
-                        <hr />
-                        <CardActions>
-                            <Button disabled target="_blank" className="button">
-                                Download Observation Data
-                            </Button>
-                        </CardActions>
                     </CardText>
                 </Card>
             </div>

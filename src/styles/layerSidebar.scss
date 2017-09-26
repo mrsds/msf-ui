@@ -141,8 +141,9 @@
 		margin: 5px 10px;
 		flex-grow: 1;
 		display: flex;
-		justify-content: flex-start;
+		justify-content: space-around;
 		align-items: baseline;
+		padding: 0 5px;
 
 		.factory-icon {
 			margin: 0 10px;
@@ -158,6 +159,13 @@
 			background-size: auto;
 			background: url(resources/img/plane_icon.svg);
 		}
+		svg {
+			width: 12px;
+			height: 12px;
+			path {
+				fill: #393939;
+			}
+		}
 	}
 	.button-content {
 		font-size: 14px;
@@ -169,11 +177,17 @@
 	}
 
 	.button-content-primary {
-		border-color: #3367d6;
+		color: #fff;
+		background-color: #1976d2;
+		svg path {
+			fill: #fff;
+		}
 	}
 }
 
 #infrastructureFilters {
+	overflow: auto;
+	max-height: calc(80vh - 50px);
 	.facility-filter-list {
 		background-color: #fff;
 	}
@@ -203,6 +217,8 @@
 }
 
 #infrastructureResults {
+	overflow: auto;
+	max-height: calc(80vh - 80px);
 	.no-results {
 		margin-top: 125px;
 		color: #a0a0a0;
@@ -255,7 +271,7 @@
 	flex-wrap: wrap;
 	background-color: #f9f9f9;
 	justify-content: flex-start;
-	padding-top: 10px;
+	padding: 10px 0;
 	width: 100%;
 	input {
 		flex-basis: 100%;
@@ -287,6 +303,7 @@
 
 .feature-item-list {
 	margin-top: 0;
+	padding: 0;
 	background-color: #fff;
 }
 
