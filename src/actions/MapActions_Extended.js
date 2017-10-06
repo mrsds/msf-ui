@@ -1,4 +1,3 @@
-import appConfig from "constants/appConfig";
 import * as types from "_core/constants/actionTypes";
 import * as types_extended from "constants/actionTypes_Extended";
 import MiscUtil from "_core/utils/MiscUtil";

@@ -8,6 +8,7 @@ import Ol_Format_KML from "ol/format/kml";
 
 import MapWrapper_openlayers from "_core/utils/MapWrapper_openlayers";
 import MiscUtil_Extended from "utils/MiscUtil_Extended";
+import appConfig from "constants/appConfig";
 
 const JSZip = require("jszip");
 
@@ -73,8 +74,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 		return mapLayer;
 	}
 
-	createAvirisLayer(scope, layerJson) {
-		console.info(layerJson);
+	createAvirisLayer(scope, layerJson, topLayer) {
 		let plume_url = layerJson.plume_url;
 		let shape = layerJson.shape;
 		let extent = [shape[0][0], shape[1][1], shape[2][0], shape[0][1]];
@@ -88,7 +88,8 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 			source: staticPlumeImage
 		});
 
-		plumeLayer.set("_layerId", layerJson.id);
+		plumeLayer.set("_layerId", topLayer.get("id"));
+		plumeLayer.set("_layerType", topLayer.get("type"));
 
 		let index = scope.findTopInsertIndexForLayer(plumeLayer);
 		scope.map.getLayers().insertAt(index, plumeLayer);
@@ -114,20 +115,12 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
       };
       */
 
-		// TODO: DON'T hardcode this. Really.
-		let url = "http://100.64.114.155:9090/aviris?maxObjects=1000";
-
-		if (url.indexOf("?") == -1) {
-			url += "?";
-		} else {
-			url += "&";
-		}
-
-		let extent = this.getExtent();
-		url += "minLon=" + extent[0];
-		url += "&minLat=" + extent[1];
-		url += "&maxLon=" + extent[2];
-		url += "&maxLat=" + extent[3];
+		const extent = this.getExtent();
+		const url = appConfig.URLS.avirisEndpoint
+			.replace("{latMax}", extent[3])
+			.replace("{lonMax}", extent[2])
+			.replace("{latMin}", extent[1])
+			.replace("{lonMin}", extent[0]);
 
 		let scope = this;
 		fetch(url)
@@ -138,12 +131,12 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 				console.info(json);
 				for (let i = 0; i < json.length; i++) {
 					let layerJson = json[i];
-					scope.createAvirisLayer(scope, layerJson);
+					scope.createAvirisLayer(scope, layerJson, layer);
 				}
 			});
 
 		// Returns a blank image layer to make the openlayers stuff up above happy.
-		return new Ol_Layer_Image({});
+		// return new Ol_Layer_Image({});
 
 		/*
        let extent = [-118.409132561, 33.9107045204, -118.397865128, 33.9013096592];
@@ -246,6 +239,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 	}
 
 	activateLayer(layer) {
+		// debugger;
 		try {
 			let mapLayers = this.map.getLayers().getArray();
 
@@ -281,22 +275,39 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 		try {
 			// find the layer on the map
 			let mapLayers = this.map.getLayers().getArray();
-			let mapLayer = this.miscUtil.findObjectInArray(
-				mapLayers,
-				"_layerId",
-				layer.get("id")
-			);
-
-			// remove the layer
-			if (mapLayer) {
-				return this.removeLayer(mapLayer);
-			}
+			this.miscUtil
+				.findAllMatchingObjectsInArray(
+					mapLayers,
+					"_layerId",
+					layer.get("id")
+				)
+				.forEach(l => this.removeLayer(l));
 
 			// Layer is already not active
 			return true;
 		} catch (err) {
 			console.warn(
 				"Error in MapWrapper_openlayers.deactivateLayer:",
+				err
+			);
+			return false;
+		}
+	}
+
+	setLayerOpacity(layer, opacity) {
+		try {
+			let mapLayers = this.map.getLayers().getArray();
+			this.miscUtil
+				.findAllMatchingObjectsInArray(
+					mapLayers,
+					"_layerId",
+					layer.get("id")
+				)
+				.forEach(l => l.setOpacity(opacity));
+			return true;
+		} catch (err) {
+			console.warn(
+				"Error in MapWrapper_openlayers.setLayerOpacity:",
 				err
 			);
 			return false;
