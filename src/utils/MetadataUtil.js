@@ -70,4 +70,9 @@ export default class MetadataUtil {
 		const fields = ["AREA_ACRE"];
 		return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
 	}
+
+	getPlumeDatetime(feature, errTxt = null) {
+		const fields = ["datetime"];
+		return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
+	}
 }

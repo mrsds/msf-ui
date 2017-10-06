@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
@@ -195,11 +196,18 @@ export class FeatureDetailContainer extends Component {
             this.props.feature,
             "(no area)"
         );
+        const datetime = metadataUtil.getPlumeDatetime(this.props.feature);
+        const dateString = datetime
+            ? moment(datetime).format("dddd, MMMM Do, YYYY")
+            : "(no date)";
+        const timeString = datetime
+            ? moment(datetime).format("MMM D, ha, YYYY")
+            : "(no time)";
 
         // Bin together the various field:value pairs
         const observationDataFields = [
             { name: "Methane Flux", value: "(not specified in metadata)" },
-            { name: "Observation Time", value: "(not specified in metadata)" },
+            { name: "Observation Time", value: timeString },
             { name: "Plume IME", value: "(not specified in metadata)" },
             { name: "Observation Location", value: `${lat}, ${long}` },
             { name: "Gas Detected", value: "(not specified in metadata)" },
@@ -224,7 +232,7 @@ export class FeatureDetailContainer extends Component {
                     <CardTitle
                         className="header"
                         title={name}
-                        subtitle="(No date specified in metadata)"
+                        subtitle={dateString}
                         theme={{
                             title: "title",
                             subtitle: "title"
