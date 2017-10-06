@@ -146,8 +146,8 @@
         },
 
         {
-            "id": "AVIRIS_TEST",
-            "title": "AVIRIS Test",
+            "id": "AVIRIS",
+            "title": "Methane Plume Observations",
             "type": "data",
             "handleAs": "aviris_plume",
             "isDefault": false,
@@ -155,22 +155,9 @@
             "thumbnailImage":
                 "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
         },
-
-        {
-            "id": "GRIDDED_EMISSIONS_TEST",
-            "title": "Emissions Test",
-            "type": "data",
-            "handleAs": "vector_geojson",
-            "isDefault": false,
-            "url":
-                "https://s3-us-gov-west-1.amazonaws.com/methane/GriddedEPA/gridded_emissions.json",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
-        },
-
         {
             "id": "GRIDDED_EMISSIONS_V1",
-            "title": "Vineet gridded emissions v1",
+            "title": "Gridded Methane",
             "type": "data",
             "handleAs": "vector_kmz",
             "isDefault": false,

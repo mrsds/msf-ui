@@ -57,7 +57,7 @@ export function updateFeatureList(category) {
 
         // Routine for getting AVIRIS (plume) features
         const plumeLayerVisible = mapState
-            .getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA, "AVIRIS_TEST"])
+            .getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA, "AVIRIS"])
             .get("isActive");
         if (!category || category === layerSidebarTypes.CATEGORY_PLUMES) {
             dispatch(

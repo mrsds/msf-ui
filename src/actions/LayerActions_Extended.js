@@ -12,7 +12,7 @@ const miscUtil = new MiscUtil();
 
 export function updateFeatureList(layer, active) {
 	return (dispatch, getState) => {
-		if (layer === "AVIRIS_TEST")
+		if (layer === "AVIRIS")
 			dispatch(
 				MapActions_Extended.updateFeatureList(
 					layerSidebarTypes.CATEGORY_PLUMES

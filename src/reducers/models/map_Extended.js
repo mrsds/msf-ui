@@ -7,7 +7,7 @@ export const mapState_Extended = mapState.mergeDeep(
 			{
 				id: "VISTA",
 				isActive: false,
-				title: "VISTA Layers",
+				title: "Infrastructure",
 				opacity: 100,
 				displayIndex: 0
 			}
