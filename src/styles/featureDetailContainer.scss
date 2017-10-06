@@ -4,6 +4,8 @@
 	left: 370px;
 	width: calc(100% - 370px);
 	height: 100%;
+	overflow: auto;
+	// max-height: calc(80vh - 80px);
 	.feature-detail-card {
 		.exit-button {
 			position: absolute;
@@ -77,6 +79,12 @@
 				}
 				hr {
 					border: 1px solid #f2f2f2;
+				}
+				.observation-image {
+					margin-left: 10px;
+					img {
+						width: 650px;
+					}
 				}
 			}
 		}

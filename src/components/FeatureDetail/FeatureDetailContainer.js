@@ -216,6 +216,7 @@ export class FeatureDetailContainer extends Component {
                 value: "(not specified in metadata)"
             }
         ];
+        const observationImageryUrl = this.props.feature.get("png_url");
 
         return (
             <div className="feature-detail-card-container">
@@ -252,6 +253,14 @@ export class FeatureDetailContainer extends Component {
                                     Download Observation Data
                                 </Button>
                             </CardActions>
+                        </div>
+                    </CardText>
+                    <CardText className="section">
+                        <div className="section-body">
+                            <h2>Observation Imagery</h2>
+                            <div className="observation-image">
+                                <img src={observationImageryUrl} />
+                            </div>
                         </div>
                     </CardText>
                 </Card>
