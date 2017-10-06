@@ -85,18 +85,6 @@
             "group": "VISTA"
         },
         {
-            "id": "VISTA_2017_NAT_GAS_COMP_STAT",
-            "title": "Vista 2017 - Natural Gas Compressor Stations",
-            "type": "data",
-            "handleAs": "vector_geojson",
-            "isDefault": false,
-            "url":
-                "http://100.64.114.155:9090/vista?category=7&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
-            "group": "VISTA"
-        },
-        {
             "id": "VISTA_2017_PETRO_REFINE",
             "title": "Vista 2017 - Petroleum Refineries",
             "type": "data",
@@ -140,18 +128,6 @@
             "isDefault": false,
             "url":
                 "http://100.64.114.155:9090/vista?category=11&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
-            "group": "VISTA"
-        },
-        {
-            "id": "VISTA_2017_NATGAS_PIPES",
-            "title": "Vista 2017 - Natural Gas Pipelines",
-            "type": "data",
-            "handleAs": "vector_geojson",
-            "isDefault": false,
-            "url":
-                "http://100.64.114.155:9090/vista?category=12&maxObjects=10000",
             "thumbnailImage":
                 "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA"

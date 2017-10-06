@@ -22,12 +22,10 @@ export const INFRASTRUCTURE_FACILITY_TYPE_TO_NAME = {
 		"Natural Gas Storage Fields",
 	[layerSidebarTypes.VISTA_2017_NAT_GAS_PROC_PLANT]:
 		"Natural Gas Processing Plants",
-	[layerSidebarTypes.VISTA_2017_NAT_GAS_COMP_STAT]: "NG Compressor Stations",
 	[layerSidebarTypes.VISTA_2017_PETRO_REFINE]: "Petroleum Refineries",
 	[layerSidebarTypes.VISTA_2017_WASTEWTR_TREAT_PLNT]:
 		"Wastewater Treatment Plants",
 	[layerSidebarTypes.VISTA_2017_POWER_PLANT]: "Power Plants",
 	[layerSidebarTypes.VISTA_2017_LANDFILL]: "Landfills",
-	[layerSidebarTypes.VISTA_2017_NATGAS_PIPES]: "Natural Gas Pipes",
 	[layerSidebarTypes.VISTA_2017_SOCAB_BOUND]: "SOCAB Bound"
 };

@@ -15,12 +15,10 @@ export const layerSidebarState = Immutable.fromJS({
         [layerSidebarTypes.VISTA_2017_LNG_FUELING_STATIONS]: false,
         [layerSidebarTypes.VISTA_2017_NAT_GAS_STORE_FIELDS]: false,
         [layerSidebarTypes.VISTA_2017_NAT_GAS_PROC_PLANT]: false,
-        [layerSidebarTypes.VISTA_2017_NAT_GAS_COMP_STAT]: false,
         [layerSidebarTypes.VISTA_2017_PETRO_REFINE]: false,
         [layerSidebarTypes.VISTA_2017_WASTEWTR_TREAT_PLNT]: false,
         [layerSidebarTypes.VISTA_2017_POWER_PLANT]: false,
         [layerSidebarTypes.VISTA_2017_LANDFILL]: false,
-        [layerSidebarTypes.VISTA_2017_NATGAS_PIPES]: false,
         [layerSidebarTypes.VISTA_2017_SOCAB_BOUND]: false
     },
     searchState: {
