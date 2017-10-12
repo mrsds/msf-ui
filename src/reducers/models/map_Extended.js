@@ -18,7 +18,8 @@ export const mapState_Extended = mapState.mergeDeep(
 export const layerModel_Extended = layerModel.mergeDeep(
 	Immutable.fromJS({
 		group: "",
-		visibleInGroup: false
+		visibleInGroup: false,
+		layerOrder: null
 	})
 );
 

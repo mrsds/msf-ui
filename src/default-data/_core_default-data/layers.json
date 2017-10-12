@@ -164,7 +164,9 @@
             "url":
                 "http://100.64.114.155/data/gridded/v1/kmz/vista_emissions.kmz",
             "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
+                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "layerOrder": 0,
+            "opacity": 0.3
         },
 
         {

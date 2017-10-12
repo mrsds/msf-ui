@@ -212,7 +212,9 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 				const kmlLayer = layer.set("handleAs", "vector_kml");
 				const layerSource = this.createLayerSource(kmlLayer, { url });
 				const mapLayer = new Ol_Layer_Vector({
-					source: layerSource
+					source: layerSource,
+					opacity: layer.get("opacity")
+
 					// style: this.vectorStyleSelector,
 				});
 				mapLayer.set("_layerId", layer.get("id"));

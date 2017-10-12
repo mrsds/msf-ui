@@ -30,6 +30,14 @@ export class LayerMenuContainer extends CoreLayerMenuContainer {
             "hidden-fade-out": this.props.distractionFreeMode,
             "hidden-fade-in": !this.props.distractionFreeMode
         });
+        layerList.sort((a, b) => {
+            const aOrder = a.get("layerOrder");
+            const bOrder = b.get("layerOrder");
+            if (!aOrder && !bOrder) return 0;
+            if (!aOrder) return -1;
+            if (!bOrder) return 1;
+            return aOrder - bOrder;
+        });
         return (
             <div id="layerMenu" className={layerMenuClasses}>
                 <div id="layerHeaderRow" className="row middle-xs">
@@ -64,19 +72,21 @@ export class LayerMenuContainer extends CoreLayerMenuContainer {
                     </div>
                 </div>
                 <div id="layerMenuContent">
-                    {layerList.map(layer => (
-                        <LayerControlContainer
-                            key={layer.get("id") + "_layer_listing"}
-                            layer={layer}
-                            activeNum={activeNum}
-                            palette={this.props.palettes.get(
-                                layer.getIn(["palette", "name"])
-                            )}
-                        />
-                    ))}
                     {this.props.groups.map(group => (
                         <GroupControlContainer key={group} group={group} />
                     ))}
+                    {layerList
+                        .reverse()
+                        .map(layer => (
+                            <LayerControlContainer
+                                key={layer.get("id") + "_layer_listing"}
+                                layer={layer}
+                                activeNum={activeNum}
+                                palette={this.props.palettes.get(
+                                    layer.getIn(["palette", "name"])
+                                )}
+                            />
+                        ))}
                 </div>
             </div>
         );
