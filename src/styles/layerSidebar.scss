@@ -188,17 +188,23 @@
 		text-transform: capitalize;
 		font-size: 20px;
 		margin-top: 0px;
-		div {
-			display: flex;
+		display: inline-block;
+	}
 
-			svg {
-				width: 48px;
-				height: 48px;
-				circle {
-					r: 8;
-					cy: 25;
-					cx: 18;
-				}
+	.facility-filter-category-label-icon {
+		display: inline-block;
+		margin: 0;
+		width: 18px;
+		height: 23px;
+		margin-left: 10px;
+		vertical-align: middle;
+		svg {
+			width: 18px;
+			height: 18px;
+			circle {
+				r: 8;
+				cy: 9;
+				cx: 9;
 			}
 		}
 	}

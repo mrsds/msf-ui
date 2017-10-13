@@ -28,12 +28,9 @@ export class InfrastructureContainer extends Component {
 
 	getCircleIcon(group, color) {
 		return (
-			<div>
-				<span>{group}</span>
-				<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
-					<circle stroke={color} fill={color} />
-				</svg>
-			</div>
+			<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+				<circle stroke={color} fill={color} />
+			</svg>
 		);
 	}
 
@@ -95,13 +92,21 @@ export class InfrastructureContainer extends Component {
 			listItems.push(
 				<ListSubHeader
 					key={group}
-					caption={this.getCircleIcon(
+					caption={group}
+					className="facility-filter-category-label"
+				/>
+			);
+			listItems.push(
+				<div
+					key={group + "_icon"}
+					className="facility-filter-category-label-icon"
+				>
+					{this.getCircleIcon(
 						group,
 						layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].colors
 							.stroke
 					)}
-					className="facility-filter-category-label"
-				/>
+				</div>
 			);
 			layerSidebarTypes.INFRASTRUCTURE_GROUPS[
 				group
@@ -235,10 +240,9 @@ export class InfrastructureContainer extends Component {
 
 	render() {
 		this.makeFacilityFilterList();
-		const testText = this.props.isLoading ? "LOADING" : "";
+		// const testText = this.props.isLoading ? "LOADING" : "";
 		return (
 			<div className="feature-item-container">
-				<div>{testText}</div>
 				<div id="infrastructureSearch">
 					<input
 						type="text"
@@ -279,8 +283,8 @@ InfrastructureContainer.propTypes = {
 	toggleInfrastructureFacilityFilterOptionsVisible: PropTypes.func.isRequired,
 	pageForward: PropTypes.func.isRequired,
 	pageBackward: PropTypes.func.isRequired,
-	toggleFeatureDetail: PropTypes.func.isRequired,
-	isLoading: PropTypes.bool.isRequired
+	toggleFeatureDetail: PropTypes.func.isRequired
+	// isLoading: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
