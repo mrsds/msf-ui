@@ -74,6 +74,9 @@ export class LayerSidebarContainer extends Component {
                         activeInfrastructureSubCategories={
                             this.props.activeInfrastructureSubCategories
                         }
+                        isLoading={this.props.featureLoadingState.get(
+                            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                        )}
                     />
                 );
             case layerSidebarTypes.CATEGORY_PLUMES:
@@ -89,12 +92,16 @@ export class LayerSidebarContainer extends Component {
                         activeInfrastructureSubCategories={
                             this.props.activeInfrastructureSubCategories
                         }
+                        isLoading={this.props.featureLoadingState.get(
+                            layerSidebarTypes.CATEGORY_PLUMES
+                        )}
                     />
                 );
         }
     }
 
     render() {
+        console.log(this.props.featureLoadingState.toJS());
         const containerStyle = this.props.availableFeatures.get(
             this.props.activeFeatureCategory
         ).size
@@ -147,7 +154,8 @@ function mapStateToProps(state) {
         searchState: state.layerSidebar.get("searchState"),
         activeInfrastructureSubCategories: state.layerSidebar.get(
             "activeInfrastructureSubCategories"
-        )
+        ),
+        featureLoadingState: state.asynchronous.get("loadingFeatures")
     };
 }
 

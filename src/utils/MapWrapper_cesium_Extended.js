@@ -24,6 +24,10 @@ export default class MapWrapper_cesium_Extended extends MapWrapper_cesium {
 				return this.createVectorLayer(layer);
 			case appStrings_Extended.LAYER_AVIRIS:
 				return this.createVectorLayer(layer);
+			case appStrings_Extended.LAYER_VISTA_GEOJSON:
+				return this.createVectorLayer(
+					layer.set("handleAs", appStrings.LAYER_VECTOR_GEOJSON)
+				);
 			case appStrings.LAYER_VECTOR_TOPOJSON:
 				return this.createVectorLayer(layer);
 			case appStrings.LAYER_VECTOR_KML:

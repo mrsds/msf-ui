@@ -5,10 +5,16 @@ import Ol_Layer_Image from "ol/layer/image";
 import Ol_Source_StaticImage from "ol/source/imagestatic";
 import Ol_Layer_Vector from "ol/layer/vector";
 import Ol_Format_KML from "ol/format/kml";
+import Ol_Source_Cluster from "ol/source/cluster";
+import Ol_Style from "ol/style/style";
+import Ol_Style_Fill from "ol/style/fill";
+import Ol_Style_Stroke from "ol/style/stroke";
+import Ol_Style_Circle from "ol/style/circle";
 
 import MapWrapper_openlayers from "_core/utils/MapWrapper_openlayers";
 import MiscUtil_Extended from "utils/MiscUtil_Extended";
 import appConfig from "constants/appConfig";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
 const JSZip = require("jszip");
 
@@ -37,6 +43,9 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 				break;
 			case appStrings.LAYER_VECTOR_GEOJSON:
 				mapLayer = this.createVectorLayer(layer, fromCache);
+				break;
+			case appStrings_Extended.LAYER_VISTA_GEOJSON:
+				mapLayer = this.createVistaLayer(layer, fromCache);
 				break;
 			case appStrings_Extended.LAYER_AVIRIS:
 				mapLayer = this.createAvirisLayers(layer, fromCache);
@@ -310,6 +319,62 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 		} catch (err) {
 			console.warn(
 				"Error in MapWrapper_openlayers.setLayerOpacity:",
+				err
+			);
+			return false;
+		}
+	}
+
+	createVistaLayer(layer, fromCache = true) {
+		try {
+			let layerSource = this.createLayerSource(
+				layer.set("handleAs", appStrings.LAYER_VECTOR_GEOJSON),
+				{
+					url: layer.get("url")
+				}
+			);
+			if (layer.get("clusterVector")) {
+				layerSource = new Ol_Source_Cluster({ source: layerSource });
+			}
+
+			const { fill, stroke } = Object.keys(
+				layerSidebarTypes.INFRASTRUCTURE_GROUPS
+			).reduce((acc, groupName) => {
+				const group =
+					layerSidebarTypes.INFRASTRUCTURE_GROUPS[groupName];
+				if (acc) return acc;
+				const categoryInGroup = group.categories.some(
+					category => category === layer.get("id")
+				);
+				if (categoryInGroup) return group.colors;
+			}, null);
+
+			const style = new Ol_Style({
+				fill: new Ol_Style_Fill({
+					color: fill
+				}),
+				stroke: new Ol_Style_Stroke({
+					color: stroke,
+					width: 1
+				}),
+				image: new Ol_Style_Circle({
+					radius: 4,
+					fill: new Ol_Style_Fill({
+						color: stroke
+					})
+				})
+			});
+
+			return new Ol_Layer_Vector({
+				source: layerSource,
+				opacity: layer.get("opacity"),
+				visible: layer.get("isActive"),
+				extent: appConfig.DEFAULT_MAP_EXTENT,
+				style
+			});
+		} catch (err) {
+			console.warn(
+				"Error in MapWrapper_openlayers.createVectorLayer:",
 				err
 			);
 			return false;

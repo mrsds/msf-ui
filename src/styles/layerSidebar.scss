@@ -188,6 +188,19 @@
 		text-transform: capitalize;
 		font-size: 20px;
 		margin-top: 0px;
+		div {
+			display: flex;
+
+			svg {
+				width: 48px;
+				height: 48px;
+				circle {
+					r: 8;
+					cy: 25;
+					cx: 18;
+				}
+			}
+		}
 	}
 
 	.facility-filter-list-item {
@@ -206,12 +219,10 @@
 		}
 	}
 }
-
 .sidebar-content {
 	overflow: auto;
 	max-height: calc(80vh - 80px);
 }
-
 #infrastructureResults {
 	.no-results {
 		margin-top: 125px;
@@ -235,7 +246,6 @@
 		}
 	}
 }
-
 #plumeResults {
 	.no-results {
 		margin-top: 125px;
@@ -259,7 +269,6 @@
 		}
 	}
 }
-
 #plumeSearch {
 	display: flex;
 	flex-wrap: wrap;
@@ -289,25 +298,21 @@
 		border: solid 0.8px #d2d2d2;
 		background-color: #fff;
 	}
-
 	.button-content-primary {
 		border-color: #3367d6;
 	}
 }
-
 .feature-item-list {
 	margin-top: 0;
 	padding: 0;
 	background-color: #fff;
 }
-
 .feature-item-container-list-item {
 	span:first-of-type {
 		color: #373737;
 		font-size: 23px;
 		font-weight: 300;
 	}
-
 	span:last-of-type {
 		color: #a0a0a0;
 		font-size: 13px;
@@ -315,13 +320,11 @@
 	&:hover span {
 		color: #4285f4;
 	}
-
 	&.selected {
 		background-color: #4285f4;
 		span {
 			color: #fff;
 		}
-
 		&:hover span {
 			color: #4285f4;
 		}

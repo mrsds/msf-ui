@@ -4,7 +4,7 @@
             "id": "VISTA_2017_OILGAS_WELLS",
             "title": "Vista 2017 - Oil & Gas Wells",
             "type": "data",
-            "handleAs": "vector_geojson",
+            "handleAs": "vista_geojson",
             "isDefault": false,
             "url":
                 "http://100.64.114.155:9090/vista?category=0&maxObjects=10000",
@@ -16,7 +16,7 @@
             "id": "VISTA_2017_LIVESTOCK_DAIRIES",
             "title": "Vista 2017 - Livestock Dairies",
             "type": "data",
-            "handleAs": "vector_geojson",
+            "handleAs": "vista_geojson",
             "isDefault": false,
             "url":
                 "http://100.64.114.155:9090/vista?category=1&maxObjects=10000",
@@ -28,7 +28,7 @@
             "id": "VISTA_2017_ANAEROBIC_LAGOONS",
             "title": "Vista 2017 - Anaerobic Lagoons",
             "type": "data",
-            "handleAs": "vector_geojson",
+            "handleAs": "vista_geojson",
             "isDefault": false,
             "url":
                 "http://100.64.114.155:9090/vista?category=2&maxObjects=10000",
@@ -40,7 +40,7 @@
             "id": "VISTA_2017_CNG_FUELING_STATIONS",
             "title": "Vista 2017 - CNG Fueling Stations",
             "type": "data",
-            "handleAs": "vector_geojson",
+            "handleAs": "vista_geojson",
             "isDefault": false,
             "url":
                 "http://100.64.114.155:9090/vista?category=3&maxObjects=10000",
@@ -52,7 +52,7 @@
             "id": "VISTA_2017_LNG_FUELING_STATIONS",
             "title": "Vista 2017 - LNG Fueling Stations",
             "type": "data",
-            "handleAs": "vector_geojson",
+            "handleAs": "vista_geojson",
             "isDefault": false,
             "url":
                 "http://100.64.114.155:9090/vista?category=4&maxObjects=10000",
@@ -64,7 +64,7 @@
             "id": "VISTA_2017_NAT_GAS_STORE_FIELDS",
             "title": "Vista 2017 - Natural Gas Storage Fields",
             "type": "data",
-            "handleAs": "vector_geojson",
+            "handleAs": "vista_geojson",
             "isDefault": false,
             "url":
                 "http://100.64.114.155:9090/vista?category=5&maxObjects=10000",
@@ -76,7 +76,7 @@
             "id": "VISTA_2017_NAT_GAS_PROC_PLANT",
             "title": "Vista 2017 - Natural Gas Processing Plants",
             "type": "data",
-            "handleAs": "vector_geojson",
+            "handleAs": "vista_geojson",
             "isDefault": false,
             "url":
                 "http://100.64.114.155:9090/vista?category=6&maxObjects=10000",
@@ -88,7 +88,7 @@
             "id": "VISTA_2017_PETRO_REFINE",
             "title": "Vista 2017 - Petroleum Refineries",
             "type": "data",
-            "handleAs": "vector_geojson",
+            "handleAs": "vista_geojson",
             "isDefault": false,
             "url":
                 "http://100.64.114.155:9090/vista?category=8&maxObjects=10000",
@@ -100,7 +100,7 @@
             "id": "VISTA_2017_WASTEWTR_TREAT_PLNT",
             "title": "Vista 2017 - Wastewater Treatment Plants",
             "type": "data",
-            "handleAs": "vector_geojson",
+            "handleAs": "vista_geojson",
             "isDefault": false,
             "url":
                 "http://100.64.114.155:9090/vista?category=9&maxObjects=10000",
@@ -112,7 +112,7 @@
             "id": "VISTA_2017_POWER_PLANT",
             "title": "Vista 2017 - Power Plants",
             "type": "data",
-            "handleAs": "vector_geojson",
+            "handleAs": "vista_geojson",
             "isDefault": false,
             "url":
                 "http://100.64.114.155:9090/vista?category=10&maxObjects=10000",
@@ -124,7 +124,7 @@
             "id": "VISTA_2017_LANDFILL",
             "title": "Vista 2017 - Landfills",
             "type": "data",
-            "handleAs": "vector_geojson",
+            "handleAs": "vista_geojson",
             "isDefault": false,
             "url":
                 "http://100.64.114.155:9090/vista?category=11&maxObjects=10000",
@@ -136,7 +136,7 @@
             "id": "VISTA_2017_SOCAB_BOUND",
             "title": "Vista 2017 - SoCAB Boundary",
             "type": "data",
-            "handleAs": "vector_geojson",
+            "handleAs": "vista_geojson",
             "isDefault": false,
             "url":
                 "http://100.64.114.155:9090/vista?category=13&maxObjects=10000",

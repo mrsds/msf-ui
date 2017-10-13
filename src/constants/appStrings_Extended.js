@@ -2,6 +2,7 @@ import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
 export const LAYER_VECTOR_KMZ = "vector_kmz";
 export const LAYER_AVIRIS = "aviris_plume";
+export const LAYER_VISTA_GEOJSON = "vista_geojson";
 
 export const ALERTS = {
 	LAYER_AVAILABILITY_LIST_LOAD_FAILED: {
