@@ -32,6 +32,8 @@ export default function layerSidebar(
                 state,
                 action
             );
+        case actionTypes_Extended.SET_PLUME_DATE_RANGE:
+            return opt_reducer.setPlumeFilterDateRange(state, action);
         default:
             return state;
     }

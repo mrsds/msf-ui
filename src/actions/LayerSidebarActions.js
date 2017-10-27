@@ -82,3 +82,14 @@ export function toggleInfrastructureFacilityFilterOptionsVisible(category) {
 		category
 	};
 }
+
+export function updatePlumeDateRange(position, date) {
+	return dispatch => {
+		dispatch(updatePlumeDateRangeState(position, date));
+		dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
+	};
+}
+
+function updatePlumeDateRangeState(position, date) {
+	return { type: types.SET_PLUME_DATE_RANGE, position, date };
+}

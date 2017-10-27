@@ -1,3 +1,4 @@
+import moment from "moment";
 const Fuse = require("fuse.js");
 import Immutable from "immutable";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
@@ -42,6 +43,7 @@ export default class LayerSidebarReducer {
                       name: feature.name,
                       flight_id: feature.flight_id,
                       id: feature.id,
+                      date: feature.data_date_dt,
                       metadata: [
                         {
                           name: "latitude",
@@ -117,6 +119,13 @@ export default class LayerSidebarReducer {
     return state.set("activeInfrastructureSubCategories", newSubcategoryState);
   }
 
+  static setPlumeFilterDateRange(state, action) {
+    return state.setIn(
+      ["searchState", layerSidebarTypes.CATEGORY_PLUMES, action.position],
+      action.date
+    );
+  }
+
   static getSearchResultsHelper(category, featureList, searchString) {
     if (!searchString || !featureList.size) return featureList;
     const searchObject = new Fuse(
@@ -140,11 +149,26 @@ export default class LayerSidebarReducer {
       "searchString"
     ]);
     const featureList = state.getIn(["availableFeatures", action.category]);
-    const searchResults = LayerSidebarReducer.getSearchResultsHelper(
+    let searchResults = LayerSidebarReducer.getSearchResultsHelper(
       action.category,
       featureList,
       searchString
     );
+
+    if (action.category === layerSidebarTypes.CATEGORY_PLUMES) {
+      const startDate = moment.utc(
+        state.getIn(["searchState", action.category, "startDate"])
+      );
+      const endDate = moment.utc(
+        state.getIn(["searchState", action.category, "endDate"])
+      );
+      searchResults = searchResults.filter(feature =>
+        moment
+          .utc(feature.get("date"))
+          .isBetween(startDate, endDate, "day", "[]")
+      );
+    }
+
     return state.setIn(
       ["searchState", action.category, "searchResults"],
       searchResults

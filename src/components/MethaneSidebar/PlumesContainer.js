@@ -14,9 +14,12 @@ import MiscUtil_Extended from "utils/MiscUtil_Extended";
 import MapUtil_Extended from "utils/MapUtil_Extended";
 import { Button, IconButton } from "react-toolbox/lib/button";
 import ProgressBar from "react-toolbox/lib/progress_bar";
-
+import DatePicker from "react-toolbox/lib/date_picker";
+import FontIcon from "react-toolbox/lib/font_icon";
+import appConfig from "constants/appConfig";
 const miscUtil = new MiscUtil_Extended();
 const mapUtil = new MapUtil_Extended();
+import moment from "moment";
 
 export class PlumesContainer extends Component {
 	isActiveFeature(feature) {
@@ -80,17 +83,24 @@ export class PlumesContainer extends Component {
 		return null;
 	}
 
+	formatDate(date) {
+		const format = "MMM D, Y";
+		return moment.utc(date).format(format);
+	}
+
 	makeResultsArea() {
+		const hasResults = this.props.searchState.get("searchResults").size;
+		const resultsClass = miscUtil.generateStringFromSet({
+			"sidebar-content": true,
+			"no-results": !hasResults
+		});
 		return (
-			<div id="plumeResults" className="sidebar-content">
+			<div id="plumeResults" className={resultsClass}>
 				{this.makeLoadingModal()}
 				<List selectable ripple className="feature-item-list">
 					{this.makeListItems()}
 				</List>
-				<div
-					className="no-results"
-					hidden={this.props.searchState.get("searchResults").size}
-				>
+				<div className="no-results-info" hidden={hasResults}>
 					<div className="icon" />
 					<h1>No Plumes Found</h1>
 					<h2>Try widening some search parameters</h2>
@@ -140,6 +150,8 @@ export class PlumesContainer extends Component {
 	}
 
 	render() {
+		const startDate = this.props.searchState.get("startDate");
+		const endDate = this.props.searchState.get("endDate");
 		return (
 			<div className="feature-item-container">
 				<div id="plumeSearch">
@@ -151,6 +163,40 @@ export class PlumesContainer extends Component {
 							layerSidebarTypes.CATEGORY_PLUMES
 						)}
 					/>
+					<div id="plumeDatePicker">
+						<DatePicker
+							inputClassName="date-picker"
+							sundayFirstDayOfWeek
+							value={startDate}
+							onChange={this.props.updatePlumeDateRange.bind(
+								null,
+								"startDate"
+							)}
+							inputFormat={this.formatDate}
+							minDate={appConfig.PLUME_START_DATE}
+							maxDate={endDate}
+						/>
+						<FontIcon
+							value="date_range"
+							className="calendar-icon"
+						/>
+						<DatePicker
+							inputClassName="date-picker"
+							sundayFirstDayOfWeek
+							value={this.props.searchState.get("endDate")}
+							onChange={this.props.updatePlumeDateRange.bind(
+								null,
+								"endDate"
+							)}
+							inputFormat={this.formatDate}
+							minDate={startDate}
+							maxDate={appConfig.PLUME_END_DATE}
+						/>
+						<FontIcon
+							value="date_range"
+							className="calendar-icon"
+						/>
+					</div>
 				</div>
 				{this.makeResultsArea()}
 			</div>
@@ -160,7 +206,6 @@ export class PlumesContainer extends Component {
 
 PlumesContainer.propTypes = {
 	isVisible: PropTypes.bool.isRequired,
-	// activeFeature: PropTypes.object.isRequired,
 	activeFeature: function(props, propName, componentName) {
 		const propValue = props[propName];
 		if (propValue === null) return;
@@ -172,7 +217,8 @@ PlumesContainer.propTypes = {
 	pageForward: PropTypes.func.isRequired,
 	pageBackward: PropTypes.func.isRequired,
 	toggleFeatureDetail: PropTypes.func.isRequired,
-	isLoading: PropTypes.bool.isRequired
+	isLoading: PropTypes.bool.isRequired,
+	updatePlumeDateRange: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -197,6 +243,10 @@ function mapDispatchToProps(dispatch) {
 		),
 		toggleFeatureDetail: bindActionCreators(
 			layerSidebarActions.toggleFeatureDetail,
+			dispatch
+		),
+		updatePlumeDateRange: bindActionCreators(
+			layerSidebarActions.updatePlumeDateRange,
 			dispatch
 		)
 	};

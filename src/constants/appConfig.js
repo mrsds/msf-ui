@@ -16,7 +16,9 @@ const APP_CONFIG = Immutable.fromJS({
 		avirisEndpoint:
 			"http://100.64.114.155:9090/aviris?maxObjects=1000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}"
 	},
-	DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35]
+	DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
+	PLUME_START_DATE: new Date(2010, 0, 1),
+	PLUME_END_DATE: new Date(Date.now())
 });
 
 // define and export the final config

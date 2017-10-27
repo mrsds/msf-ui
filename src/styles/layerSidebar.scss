@@ -230,6 +230,10 @@
 	overflow: auto;
 	max-height: calc(80vh - 80px);
 
+	&.no-results {
+		max-height: unset;
+	}
+
 	.loading-modal {
 		position: absolute;
 		top: 0;
@@ -267,7 +271,7 @@
 	}
 }
 #plumeResults {
-	.no-results {
+	.no-results-info {
 		margin-top: 125px;
 		color: #a0a0a0;
 		text-align: center;
@@ -289,6 +293,7 @@
 		}
 	}
 }
+
 #plumeSearch {
 	display: flex;
 	flex-wrap: wrap;
@@ -302,6 +307,9 @@
 		margin: 0 10px;
 		border: solid 0.8px #d2d2d2;
 		padding-left: 5px;
+		color: #373737;
+		font-size: 14px;
+		background-color: #fff;
 	}
 	.button {
 		margin: 5px 10px;
@@ -320,6 +328,26 @@
 	}
 	.button-content-primary {
 		border-color: #3367d6;
+	}
+	#plumeDatePicker {
+		flex-basis: 100%;
+		margin: 0;
+		margin-right: 2px;
+		margin-top: 10px;
+		padding: 0;
+		display: flex;
+		justify-content: space-between;
+
+		.calendar-icon {
+			font-size: 18px;
+			position: relative;
+			top: 9px;
+			left: -152px;
+		}
+
+		input {
+			padding-left: 27px;
+		}
 	}
 }
 .feature-item-list {

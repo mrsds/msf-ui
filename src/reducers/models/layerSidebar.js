@@ -1,5 +1,6 @@
 import Immutable from "immutable";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import appConfig from "constants/appConfig";
 
 export const layerSidebarState = Immutable.fromJS({
     activeFeatureCategory: layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
@@ -32,7 +33,9 @@ export const layerSidebarState = Immutable.fromJS({
             searchString: "",
             searchResults: {},
             filterOptionsVisible: false,
-            pageIndex: 0
+            pageIndex: 0,
+            startDate: appConfig.PLUME_START_DATE,
+            endDate: appConfig.PLUME_END_DATE
         }
     }
 });
