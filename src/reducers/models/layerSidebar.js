@@ -35,7 +35,8 @@ export const layerSidebarState = Immutable.fromJS({
             filterOptionsVisible: false,
             pageIndex: 0,
             startDate: appConfig.PLUME_START_DATE,
-            endDate: appConfig.PLUME_END_DATE
+            endDate: appConfig.PLUME_END_DATE,
+            selectedFlightCampaign: null
         }
     }
 });

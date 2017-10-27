@@ -37,13 +37,13 @@ export default class LayerSidebarReducer {
             !action.featureList
               ? []
               : action.featureList.reduce((keys, feature) => {
-                  // console.log(feature);
                   keys.push(
                     Immutable.fromJS({
                       name: feature.name,
                       flight_id: feature.flight_id,
                       id: feature.id,
                       date: feature.data_date_dt,
+                      flight_campaign: feature.airborne_flight_run_number.toString(),
                       metadata: [
                         {
                           name: "latitude",
@@ -143,11 +143,8 @@ export default class LayerSidebarReducer {
   }
 
   static updateSearchResults(state, action) {
-    const searchString = state.getIn([
-      "searchState",
-      action.category,
-      "searchString"
-    ]);
+    const searchState = state.getIn(["searchState", action.category]);
+    const searchString = searchState.get("searchString");
     const featureList = state.getIn(["availableFeatures", action.category]);
     let searchResults = LayerSidebarReducer.getSearchResultsHelper(
       action.category,
@@ -156,16 +153,16 @@ export default class LayerSidebarReducer {
     );
 
     if (action.category === layerSidebarTypes.CATEGORY_PLUMES) {
-      const startDate = moment.utc(
-        state.getIn(["searchState", action.category, "startDate"])
-      );
-      const endDate = moment.utc(
-        state.getIn(["searchState", action.category, "endDate"])
-      );
-      searchResults = searchResults.filter(feature =>
-        moment
-          .utc(feature.get("date"))
-          .isBetween(startDate, endDate, "day", "[]")
+      const startDate = moment.utc(state.get(searchState, "startDate"));
+      const endDate = moment.utc(state.get(searchState, "endDate"));
+      const selectedCampaign = searchState.get("selectedFlightCampaign");
+      searchResults = searchResults.filter(
+        feature =>
+          moment
+            .utc(feature.get("date"))
+            .isBetween(startDate, endDate, "day", "[]") &&
+          (!selectedCampaign ||
+            feature.get("flight_campaign") === selectedCampaign)
       );
     }
 
@@ -182,5 +179,16 @@ export default class LayerSidebarReducer {
       "facilityFilterOptionsVisible"
     ];
     return state.setIn(path, !state.getIn(path));
+  }
+
+  static updateSelectedFlightCampaign(state, action) {
+    return state.setIn(
+      [
+        "searchState",
+        layerSidebarTypes.CATEGORY_PLUMES,
+        "selectedFlightCampaign"
+      ],
+      action.flight_campaign
+    );
   }
 }

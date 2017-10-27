@@ -16,6 +16,7 @@ import { Button, IconButton } from "react-toolbox/lib/button";
 import ProgressBar from "react-toolbox/lib/progress_bar";
 import DatePicker from "react-toolbox/lib/date_picker";
 import FontIcon from "react-toolbox/lib/font_icon";
+import Dropdown from "react-toolbox/lib/dropdown";
 import appConfig from "constants/appConfig";
 const miscUtil = new MiscUtil_Extended();
 const mapUtil = new MapUtil_Extended();
@@ -88,6 +89,22 @@ export class PlumesContainer extends Component {
 		return moment.utc(date).format(format);
 	}
 
+	getAvailableFlightCampaigns() {
+		const campaigns = this.props.availableFeatures
+			.reduce(
+				(acc, feature) =>
+					acc.includes(feature.get("flight_campaign"))
+						? acc
+						: acc.concat(feature.get("flight_campaign")),
+				[]
+			)
+			.sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
+			.map(value => {
+				return { value, label: value };
+			});
+		return [{ value: null, label: "All" }].concat(campaigns);
+	}
+
 	makeResultsArea() {
 		const hasResults = this.props.searchState.get("searchResults").size;
 		const resultsClass = miscUtil.generateStringFromSet({
@@ -156,6 +173,7 @@ export class PlumesContainer extends Component {
 			<div className="feature-item-container">
 				<div id="plumeSearch">
 					<input
+						className="search-input"
 						type="text"
 						placeholder="Search for Plumes"
 						onChange={this.props.updateFeatureSearchText.bind(
@@ -165,7 +183,7 @@ export class PlumesContainer extends Component {
 					/>
 					<div id="plumeDatePicker">
 						<DatePicker
-							inputClassName="date-picker"
+							inputClassName="date-picker search-input"
 							sundayFirstDayOfWeek
 							value={startDate}
 							onChange={this.props.updatePlumeDateRange.bind(
@@ -181,7 +199,7 @@ export class PlumesContainer extends Component {
 							className="calendar-icon"
 						/>
 						<DatePicker
-							inputClassName="date-picker"
+							inputClassName="date-picker search-input"
 							sundayFirstDayOfWeek
 							value={this.props.searchState.get("endDate")}
 							onChange={this.props.updatePlumeDateRange.bind(
@@ -195,6 +213,20 @@ export class PlumesContainer extends Component {
 						<FontIcon
 							value="date_range"
 							className="calendar-icon"
+						/>
+					</div>
+					<div id="plumeFilterDropdowns">
+						<Dropdown
+							auto
+							allowBlank={false}
+							value={this.props.searchState.get(
+								"selectedFlightCampaign"
+							)}
+							source={this.getAvailableFlightCampaigns()}
+							className="dropdown"
+							onChange={this.props.selectFlightCampaign}
+							label="Flight Campaign"
+							theme={{ values: "values" }}
 						/>
 					</div>
 				</div>
@@ -218,7 +250,9 @@ PlumesContainer.propTypes = {
 	pageBackward: PropTypes.func.isRequired,
 	toggleFeatureDetail: PropTypes.func.isRequired,
 	isLoading: PropTypes.bool.isRequired,
-	updatePlumeDateRange: PropTypes.func.isRequired
+	updatePlumeDateRange: PropTypes.func.isRequired,
+	selectFlightCampaign: PropTypes.func.isRequired,
+	availableFeatures: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -247,6 +281,10 @@ function mapDispatchToProps(dispatch) {
 		),
 		updatePlumeDateRange: bindActionCreators(
 			layerSidebarActions.updatePlumeDateRange,
+			dispatch
+		),
+		selectFlightCampaign: bindActionCreators(
+			layerSidebarActions.selectFlightCampaign,
 			dispatch
 		)
 	};

@@ -34,6 +34,8 @@ export default function layerSidebar(
             );
         case actionTypes_Extended.SET_PLUME_DATE_RANGE:
             return opt_reducer.setPlumeFilterDateRange(state, action);
+        case actionTypes_Extended.UPDATE_FLIGHT_CAMPAIGN:
+            return opt_reducer.updateSelectedFlightCampaign(state, action);
         default:
             return state;
     }

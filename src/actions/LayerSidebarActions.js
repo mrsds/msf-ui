@@ -93,3 +93,17 @@ export function updatePlumeDateRange(position, date) {
 function updatePlumeDateRangeState(position, date) {
 	return { type: types.SET_PLUME_DATE_RANGE, position, date };
 }
+
+export function selectFlightCampaign(flight_campaign) {
+	return dispatch => {
+		dispatch(updateFlightCampaign(flight_campaign));
+		dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
+	};
+}
+
+function updateFlightCampaign(flight_campaign) {
+	return {
+		type: types.UPDATE_FLIGHT_CAMPAIGN,
+		flight_campaign
+	};
+}
