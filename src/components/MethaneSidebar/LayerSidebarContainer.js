@@ -74,9 +74,9 @@ export class LayerSidebarContainer extends Component {
                         activeInfrastructureSubCategories={
                             this.props.activeInfrastructureSubCategories
                         }
-                        // isLoading={this.props.featureLoadingState.get(
-                        //     layerSidebarTypes.CATEGORY_INFRASTRUCTURE
-                        // )}
+                        isLoading={this.props.featureLoadingState.get(
+                            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                        )}
                     />
                 );
             case layerSidebarTypes.CATEGORY_PLUMES:
@@ -92,9 +92,9 @@ export class LayerSidebarContainer extends Component {
                         activeInfrastructureSubCategories={
                             this.props.activeInfrastructureSubCategories
                         }
-                        // isLoading={this.props.featureLoadingState.get(
-                        //     layerSidebarTypes.CATEGORY_PLUMES
-                        // )}
+                        isLoading={this.props.featureLoadingState.get(
+                            layerSidebarTypes.CATEGORY_PLUMES
+                        )}
                     />
                 );
         }
@@ -143,7 +143,8 @@ LayerSidebarContainer.propTypes = {
     pageBackward: PropTypes.func.isRequired,
     changeSidebarCategory: PropTypes.func.isRequired,
     searchState: PropTypes.object.isRequired,
-    activeInfrastructureSubCategories: PropTypes.object.isRequired
+    activeInfrastructureSubCategories: PropTypes.object.isRequired,
+    featureLoadingState: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -153,8 +154,8 @@ function mapStateToProps(state) {
         searchState: state.layerSidebar.get("searchState"),
         activeInfrastructureSubCategories: state.layerSidebar.get(
             "activeInfrastructureSubCategories"
-        )
-        // featureLoadingState: state.asynchronous.get("loadingFeatures")
+        ),
+        featureLoadingState: state.asynchronous.get("loadingFeatures")
     };
 }
 

@@ -1,14 +1,19 @@
 import AsyncReducer from "_core/reducers/reducerFunctions/AsyncReducer";
 import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
 export default class AsyncReducer_Extended extends AsyncReducer {
-	static availableLayerListLoading(state, action) {
-		return state.set("loadingLayerAvailabilityData", true);
+	static availableFeatureListLoading(state, action) {
+		return state
+			.set("loadingLayerAvailabilityData", true)
+			.setIn(["loadingFeatures", action.category], true);
 	}
 
-	static availableLayerListLoaded(state, action) {
-		return state.set("loadingLayerAvailabilityData", false);
+	static availableFeatureListLoaded(state, action) {
+		return state
+			.set("loadingLayerAvailabilityData", false)
+			.setIn(["loadingFeatures", action.category], false);
 	}
 
 	static featureFocusListLoading(state, action) {

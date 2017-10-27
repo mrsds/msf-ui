@@ -150,7 +150,7 @@
             "title": "Methane Plume Observations",
             "type": "data",
             "handleAs": "aviris_plume",
-            "isDefault": false,
+            "isDefault": true,
             "url": "http://100.64.114.155:9090/aviris",
             "thumbnailImage":
                 "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"

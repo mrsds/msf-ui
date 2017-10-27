@@ -13,6 +13,7 @@ import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import MiscUtil_Extended from "utils/MiscUtil_Extended";
 import MapUtil_Extended from "utils/MapUtil_Extended";
 import { Button, IconButton } from "react-toolbox/lib/button";
+import ProgressBar from "react-toolbox/lib/progress_bar";
 
 const miscUtil = new MiscUtil_Extended();
 const mapUtil = new MapUtil_Extended();
@@ -142,10 +143,22 @@ export class InfrastructureContainer extends Component {
 		);
 	}
 
+	makeLoadingModal() {
+		if (this.props.isLoading) {
+			return (
+				<div className="loading-modal">
+					<ProgressBar type="circular" mode="indeterminate" />
+				</div>
+			);
+		}
+		return null;
+	}
+
 	makeSearchResults() {
 		if (this.props.searchState.get("searchResults").size) {
 			return (
 				<div id="infrastructureResults" className="sidebar-content">
+					{this.makeLoadingModal()}
 					<List selectable ripple className="feature-item-list">
 						{this.makeListItems()}
 					</List>
@@ -283,8 +296,8 @@ InfrastructureContainer.propTypes = {
 	toggleInfrastructureFacilityFilterOptionsVisible: PropTypes.func.isRequired,
 	pageForward: PropTypes.func.isRequired,
 	pageBackward: PropTypes.func.isRequired,
-	toggleFeatureDetail: PropTypes.func.isRequired
-	// isLoading: PropTypes.bool.isRequired
+	toggleFeatureDetail: PropTypes.func.isRequired,
+	isLoading: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {

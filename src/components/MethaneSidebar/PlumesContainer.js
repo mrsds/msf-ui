@@ -13,6 +13,7 @@ import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import MiscUtil_Extended from "utils/MiscUtil_Extended";
 import MapUtil_Extended from "utils/MapUtil_Extended";
 import { Button, IconButton } from "react-toolbox/lib/button";
+import ProgressBar from "react-toolbox/lib/progress_bar";
 
 const miscUtil = new MiscUtil_Extended();
 const mapUtil = new MapUtil_Extended();
@@ -68,9 +69,21 @@ export class PlumesContainer extends Component {
 		return listItems;
 	}
 
-	makeSearchResults() {
+	makeLoadingModal() {
+		if (this.props.isLoading) {
+			return (
+				<div className="loading-modal">
+					<ProgressBar type="circular" mode="indeterminate" />
+				</div>
+			);
+		}
+		return null;
+	}
+
+	makeResultsArea() {
 		return (
 			<div id="plumeResults" className="sidebar-content">
+				{this.makeLoadingModal()}
 				<List selectable ripple className="feature-item-list">
 					{this.makeListItems()}
 				</List>
@@ -85,14 +98,6 @@ export class PlumesContainer extends Component {
 				{this.makePageControls()}
 			</div>
 		);
-	}
-
-	makeResultsArea() {
-		// 	if (this.props.searchState.get("filterOptionsVisible")) {
-		// 		return this.makeFacilityFilterList();
-		// 	} else {
-		return this.makeSearchResults();
-		// 	}
 	}
 
 	makePageControls() {
@@ -166,7 +171,8 @@ PlumesContainer.propTypes = {
 	searchState: PropTypes.object.isRequired,
 	pageForward: PropTypes.func.isRequired,
 	pageBackward: PropTypes.func.isRequired,
-	toggleFeatureDetail: PropTypes.func.isRequired
+	toggleFeatureDetail: PropTypes.func.isRequired,
+	isLoading: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {

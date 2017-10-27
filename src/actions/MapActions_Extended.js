@@ -39,6 +39,11 @@ export function updateFeatureList(category) {
 
             if (!infrastructureVisible) {
                 dispatch(updateAvailableFeatures(category, null));
+                dispatch(
+                    availableFeatureListLoaded(
+                        layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                    )
+                );
             } else {
                 requestAvailableFeatures(
                     layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
@@ -47,12 +52,6 @@ export function updateFeatureList(category) {
                     dispatch
                 );
             }
-
-            dispatch(
-                availableFeatureListLoaded(
-                    layerSidebarTypes.CATEGORY_INFRASTRUCTURE
-                )
-            );
         }
 
         // Routine for getting AVIRIS (plume) features
@@ -66,6 +65,11 @@ export function updateFeatureList(category) {
 
             if (!plumeLayerVisible) {
                 dispatch(updateAvailableFeatures(category, null));
+                dispatch(
+                    availableFeatureListLoaded(
+                        layerSidebarTypes.CATEGORY_PLUMES
+                    )
+                );
             } else {
                 requestAvailableFeatures(
                     layerSidebarTypes.CATEGORY_PLUMES,
@@ -74,10 +78,6 @@ export function updateFeatureList(category) {
                     dispatch
                 );
             }
-
-            dispatch(
-                availableFeatureListLoaded(layerSidebarTypes.CATEGORY_PLUMES)
-            );
         }
     };
 }
