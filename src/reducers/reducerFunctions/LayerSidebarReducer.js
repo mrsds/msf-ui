@@ -42,8 +42,9 @@ export default class LayerSidebarReducer {
                       name: feature.name,
                       flight_id: feature.flight_id,
                       id: feature.id,
-                      date: feature.data_date_dt,
+                      datetime: feature.data_date_dt,
                       flight_campaign: feature.airborne_flight_run_number.toString(),
+                      ime: null,
                       metadata: [
                         {
                           name: "latitude",
@@ -52,10 +53,6 @@ export default class LayerSidebarReducer {
                         {
                           name: "longitude",
                           value: feature.location[1]
-                        },
-                        {
-                          name: "datetime",
-                          value: feature.data_date_dt
                         }
                       ],
                       png_url: feature.png_url
@@ -153,13 +150,13 @@ export default class LayerSidebarReducer {
     );
 
     if (action.category === layerSidebarTypes.CATEGORY_PLUMES) {
-      const startDate = moment.utc(state.get(searchState, "startDate"));
-      const endDate = moment.utc(state.get(searchState, "endDate"));
+      const startDate = moment.utc(searchState.get("startDate"));
+      const endDate = moment.utc(searchState.get("endDate"));
       const selectedCampaign = searchState.get("selectedFlightCampaign");
       searchResults = searchResults.filter(
         feature =>
           moment
-            .utc(feature.get("date"))
+            .utc(feature.get("datetime"))
             .isBetween(startDate, endDate, "day", "[]") &&
           (!selectedCampaign ||
             feature.get("flight_campaign") === selectedCampaign)

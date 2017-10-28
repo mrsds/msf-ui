@@ -14,9 +14,12 @@ import MiscUtil_Extended from "utils/MiscUtil_Extended";
 import MapUtil_Extended from "utils/MapUtil_Extended";
 import { Button, IconButton } from "react-toolbox/lib/button";
 import ProgressBar from "react-toolbox/lib/progress_bar";
+import MetadataUtil from "utils/MetadataUtil";
+import * as mapActions_Extended from "actions/MapActions_Extended";
 
 const miscUtil = new MiscUtil_Extended();
 const mapUtil = new MapUtil_Extended();
+const metadataUtil = new MetadataUtil();
 
 export class InfrastructureContainer extends Component {
 	getFactoryIcon() {
@@ -44,16 +47,74 @@ export class InfrastructureContainer extends Component {
 		);
 	}
 
+	isActiveDetailFeature(feature) {
+		return (
+			this.props.activeDetailFeature.get("category") ===
+				layerSidebarTypes.CATEGORY_INFRASTRUCTURE &&
+			feature.get("id") ===
+				this.props.activeDetailFeature.getIn(["feature", "id"])
+		);
+	}
+
 	getCountyLabel(feature) {
 		const countyName = miscUtil.getCountyFromFeature(feature, null);
 		return countyName ? countyName + " County" : "(no county)";
 	}
 
-	getListItemClass(feature) {
-		return miscUtil.generateStringFromSet({
+	truncateName(nameString) {
+		return nameString.length > 20
+			? nameString.slice(0, 17) + "..."
+			: nameString;
+	}
+
+	makeListItem(feature) {
+		const isActive = this.isActiveFeature(feature);
+		const isActiveDetail = this.isActiveDetailFeature(feature);
+		const itemClass = miscUtil.generateStringFromSet({
 			"feature-item-container-list-item": true,
-			selected: this.isActiveFeature(feature)
+			selected: isActive || isActiveDetail
 		});
+		const toggleLabelAction = this.props.toggleFeatureLabel.bind(
+			null,
+			layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+			feature
+		);
+		const toggleDetailAction = this.props.toggleFeatureDetail.bind(
+			null,
+			layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+			feature
+		);
+		const lat = metadataUtil.getLat(feature, null);
+		const long = metadataUtil.getLong(feature, null);
+		const centerMapAction =
+			lat && long
+				? this.props.centerMapOnPoint.bind(null, [long, lat])
+				: null;
+		return (
+			<ListItem
+				key={feature.get("id")}
+				caption={this.truncateName(feature.get("name"))}
+				className={itemClass}
+				legend={this.getCountyLabel(feature)}
+				onClick={
+					isActiveDetail ? toggleDetailAction : toggleLabelAction
+				}
+				rightActions={[
+					<IconButton
+						key={feature.get("id") + "_snap_icon"}
+						icon="my_location"
+						hidden={!lat || !long}
+						onClick={centerMapAction}
+					/>,
+					<IconButton
+						key={feature.get("id") + "_info_icon"}
+						icon="info_outline"
+						onClick={toggleDetailAction}
+					/>
+				]}
+				theme={{ itemAction: "itemAction" }}
+			/>
+		);
 	}
 
 	makeListItems() {
@@ -64,25 +125,10 @@ export class InfrastructureContainer extends Component {
 				? this.props.searchState.get("searchResults").size
 				: currentPageIndex + layerSidebarTypes.FEATURES_PER_PAGE;
 		const listItems = [];
-		this.props.searchState
+		return this.props.searchState
 			.get("searchResults")
 			.slice(currentPageIndex, endIndex)
-			.forEach(feature =>
-				listItems.push(
-					<ListItem
-						key={feature.get("id")}
-						caption={feature.get("name")}
-						className={this.getListItemClass(feature)}
-						legend={this.getCountyLabel(feature)}
-						onClick={() =>
-							this.props.toggleFeatureDetail(
-								layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-								feature
-							)}
-					/>
-				)
-			);
-		return listItems;
+			.map(feature => this.makeListItem(feature));
 	}
 
 	makeFacilityFilterList() {
@@ -282,8 +328,13 @@ export class InfrastructureContainer extends Component {
 
 InfrastructureContainer.propTypes = {
 	isVisible: PropTypes.bool.isRequired,
-	// activeFeature: PropTypes.object.isRequired,
 	activeFeature: function(props, propName, componentName) {
+		const propValue = props[propName];
+		if (propValue === null) return;
+		if (typeof propValue === "object") return;
+		return new Error(`${componentName} only accepts null or object`);
+	},
+	activeDetailFeature: function(props, propName, componentName) {
 		const propValue = props[propName];
 		if (propValue === null) return;
 		if (typeof propValue === "object") return;
@@ -297,12 +348,15 @@ InfrastructureContainer.propTypes = {
 	pageForward: PropTypes.func.isRequired,
 	pageBackward: PropTypes.func.isRequired,
 	toggleFeatureDetail: PropTypes.func.isRequired,
-	isLoading: PropTypes.bool.isRequired
+	isLoading: PropTypes.bool.isRequired,
+	centerMapOnPoint: PropTypes.func.isRequired,
+	toggleFeatureLabel: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
 	return {
-		activeFeature: state.featureDetail
+		activeFeature: state.map.get("activeFeature"),
+		activeDetailFeature: state.featureDetail
 	};
 }
 
@@ -330,6 +384,14 @@ function mapDispatchToProps(dispatch) {
 		),
 		toggleFeatureDetail: bindActionCreators(
 			layerSidebarActions.toggleFeatureDetail,
+			dispatch
+		),
+		centerMapOnPoint: bindActionCreators(
+			mapActions_Extended.centerMapOnPoint,
+			dispatch
+		),
+		toggleFeatureLabel: bindActionCreators(
+			mapActions_Extended.toggleFeatureLabel,
 			dispatch
 		)
 	};

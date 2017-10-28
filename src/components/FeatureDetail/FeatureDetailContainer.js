@@ -97,7 +97,10 @@ export class FeatureDetailContainer extends Component {
 
         const vistaFacilityFields = [
             { name: "Name", value: category },
-            { name: "Year Commissioned", value: `${lat}, ${long}` },
+            {
+                name: "Year Commissioned",
+                value: "(not present in metadata specs)"
+            },
             { name: "Area", value: areaSqMi, unit: "square miles" },
             {
                 name: "Waste",

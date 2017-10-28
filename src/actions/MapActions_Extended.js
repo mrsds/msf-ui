@@ -154,3 +154,11 @@ function getQueryString(category, extent, layerSidebarState) {
             return mapUtil.buildAvirisFeatureQueryString(extent);
     }
 }
+
+export function centerMapOnPoint(coords) {
+    return { type: types_extended.CENTER_MAP_ON_POINT, coords };
+}
+
+export function toggleFeatureLabel(category, feature) {
+    return { type: types_extended.TOGGLE_FEATURE_LABEL, category, feature };
+}

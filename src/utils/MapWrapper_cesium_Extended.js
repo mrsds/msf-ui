@@ -156,4 +156,12 @@ export default class MapWrapper_cesium_Extended extends MapWrapper_cesium {
 			return false;
 		}
 	}
+
+	setCenter(coords) {
+		console.log("TODO: make cesium center");
+	}
+
+	setFeatureLabel(category, id, toggleOn) {
+		console.log("TODO: add labels to cesium");
+	}
 }

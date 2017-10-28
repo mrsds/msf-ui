@@ -1,6 +1,9 @@
 import Immutable from "immutable";
 import * as coreConfig from "_core/constants/appConfig";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import Ol_Style from "ol/style/style";
+import Ol_Style_Fill from "ol/style/fill";
+import Ol_Style_Stroke from "ol/style/stroke";
 
 // the config as defined by CMC Core
 const CORE_CONFIG = Immutable.fromJS(coreConfig);

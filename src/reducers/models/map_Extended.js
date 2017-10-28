@@ -1,5 +1,6 @@
 import Immutable from "immutable";
 import { mapState, layerModel } from "_core/reducers/models/map";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
 export const mapState_Extended = mapState.mergeDeep(
 	Immutable.fromJS({
@@ -11,7 +12,11 @@ export const mapState_Extended = mapState.mergeDeep(
 				opacity: 100,
 				displayIndex: 0
 			}
-		]
+		],
+		activeFeature: {
+			feature: null,
+			category: null
+		}
 	})
 );
 

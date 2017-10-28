@@ -42,12 +42,20 @@ export default class MetadataUtil {
 
 	getLat(feature, errTxt) {
 		const fields = ["latitude", "latitude_1"];
-		return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
+		const res = this.tryFields(fields, this.getMetadata(feature));
+		if (res) {
+			return typeof res === "number" ? res.toString() : res;
+		}
+		return errTxt;
 	}
 
 	getLong(feature, errTxt) {
 		const fields = ["longitude", "longitude_1"];
-		return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
+		const res = this.tryFields(fields, this.getMetadata(feature));
+		if (res) {
+			return typeof res === "number" ? res.toString() : res;
+		}
+		return errTxt;
 	}
 
 	getAddress(feature, errTxt) {

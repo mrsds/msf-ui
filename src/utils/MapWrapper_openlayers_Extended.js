@@ -10,6 +10,9 @@ import Ol_Style from "ol/style/style";
 import Ol_Style_Fill from "ol/style/fill";
 import Ol_Style_Stroke from "ol/style/stroke";
 import Ol_Style_Circle from "ol/style/circle";
+import Ol_Style_Text from "ol/style/text";
+import Ol_Overlay from "ol/overlay";
+import Ol_Extent from "ol/extent";
 
 import MapWrapper_openlayers from "_core/utils/MapWrapper_openlayers";
 import MiscUtil_Extended from "utils/MiscUtil_Extended";
@@ -99,6 +102,8 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 
 		plumeLayer.set("_layerId", topLayer.get("id"));
 		plumeLayer.set("_layerType", topLayer.get("type"));
+		plumeLayer.set("_featureId", layerJson.id);
+		plumeLayer.set("_featureExtent", extent.map(val => parseFloat(val)));
 
 		let index = scope.findTopInsertIndexForLayer(plumeLayer);
 		scope.map.getLayers().insertAt(index, plumeLayer);
@@ -365,18 +370,154 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 				})
 			});
 
-			return new Ol_Layer_Vector({
+			const vistaLayer = new Ol_Layer_Vector({
 				source: layerSource,
 				opacity: layer.get("opacity"),
 				visible: layer.get("isActive"),
 				extent: appConfig.DEFAULT_MAP_EXTENT,
 				style
 			});
+			vistaLayer.set("_layerId", "VISTA");
+			return vistaLayer;
 		} catch (err) {
 			console.warn(
 				"Error in MapWrapper_openlayers.createVectorLayer:",
 				err
 			);
+			return false;
+		}
+	}
+
+	setCenter(coords) {
+		this.map.getView().setCenter(coords.map(val => parseFloat(val)));
+	}
+
+	handleAVIRISLabelToggle(pickedFeature, currentMapExtent, toggleOn) {
+		this.map.getLayers().forEach(layer => {
+			if (layer.get("_featureId") !== pickedFeature.get("id")) return;
+
+			const featureExtent = layer.get("_featureExtent");
+			const isVisible = Ol_Extent.containsExtent(
+				currentMapExtent,
+				featureExtent
+			);
+			const featureLabelId = pickedFeature.get("id") + "_label";
+			if (toggleOn) {
+				if (!isVisible) this.map.getView().setCenter(featureExtent);
+				const center = Ol_Extent.getCenter(featureExtent);
+				this.addFeatureLabel(
+					featureLabelId,
+					pickedFeature.get("name"),
+					center
+				);
+				return;
+			}
+			const labelToRemove = document.getElementById(featureLabelId);
+			labelToRemove.parentElement.removeChild(labelToRemove);
+			return;
+		});
+	}
+
+	handleVISTALabelToggle(pickedFeature, currentMapExtent, toggleOn) {
+		const selectedFeatureStyle = new Ol_Style({
+			fill: new Ol_Style_Fill({
+				color: "rgba(255,255,255,0.4)"
+			}),
+			stroke: new Ol_Style_Stroke({
+				color: "#3399CC",
+				width: 1.25
+			})
+		});
+		this.map.getLayers().forEach(layer => {
+			if (!layer.get("_layerId").includes("VISTA")) return;
+
+			layer.getSource().forEachFeature(feature => {
+				if (feature.getProperties().id === pickedFeature.get("id")) {
+					const featureLabelId = pickedFeature.get("id") + "_label";
+					const featureExtent = feature.getGeometry().getExtent();
+					const center = Ol_Extent.getCenter(featureExtent);
+
+					// If we're adding a label, we change the styling of the feature to be highlighted,
+					// center the map to the feature if it's not entirely in the map, and create/place a tooltip.
+					if (toggleOn) {
+						if (
+							!Ol_Extent.containsExtent(
+								currentMapExtent,
+								featureExtent
+							)
+						) {
+							this.map.getView().setCenter(featureExtent);
+						}
+
+						this.addFeatureLabel(
+							featureLabelId,
+							pickedFeature.get("name"),
+							center
+						);
+						feature.setStyle(selectedFeatureStyle);
+						return;
+					}
+
+					// If we're deselecting a feature, destroy the tooltip and revert the feature styling to default.
+					const labelToRemove = document.getElementById(
+						featureLabelId
+					);
+					labelToRemove.parentElement.removeChild(labelToRemove);
+					feature.setStyle(null);
+					return;
+				}
+			});
+		});
+	}
+
+	setFeatureLabel(category, pickedFeature, toggleOn) {
+		const currentMapExtent = this.map.getView().calculateExtent();
+		switch (category) {
+			case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
+				this.handleVISTALabelToggle(
+					pickedFeature,
+					currentMapExtent,
+					toggleOn
+				);
+				break;
+			case layerSidebarTypes.CATEGORY_PLUMES:
+				this.handleAVIRISLabelToggle(
+					pickedFeature,
+					currentMapExtent,
+					toggleOn
+				);
+				break;
+		}
+	}
+
+	addFeatureLabel(id, label, coords, opt_meta = {}) {
+		try {
+			// Create label domNode
+			let measureLabelEl = document.createElement("div");
+			measureLabelEl.className = "tooltip tooltip-static";
+			measureLabelEl.innerHTML = label;
+			measureLabelEl.id = id;
+
+			// create ol overlay
+			let measureLabel = new Ol_Overlay({
+				element: measureLabelEl,
+				offset: [0, -15],
+				positioning: "bottom-center"
+			});
+
+			// store meta opt_meta
+			for (let key in opt_meta) {
+				if (opt_meta.hasOwnProperty(key)) {
+					measureLabel.set(key, opt_meta[key], true);
+				}
+			}
+
+			// position and place
+			measureLabel.setPosition(coords);
+			this.map.addOverlay(measureLabel);
+			return true;
+		} catch (err) {
+			console.warn("Error in MapWrapper_openlayers.addLabel:", err);
 			return false;
 		}
 	}
