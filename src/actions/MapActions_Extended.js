@@ -162,3 +162,62 @@ export function centerMapOnPoint(coords) {
 export function toggleFeatureLabel(category, feature) {
     return { type: types_extended.TOGGLE_FEATURE_LABEL, category, feature };
 }
+
+export function selectFeatureInSidebar(id) {
+    return { type: types_extended.SELECT_FEATURE_IN_SIDEBAR, id };
+}
+
+export function pixelClick(clickEvt) {
+    return (dispatch, getState) => {
+        const category = getState().layerSidebar.get("activeFeatureCategory");
+        const selectedFeatureId = getPixelFeatureID(
+            clickEvt,
+            getState().map,
+            category
+        );
+        const selectedFeature = getFeatureById(
+            getState().layerSidebar,
+            category,
+            selectedFeatureId
+        );
+        if (selectedFeature)
+            dispatch(updateFeatureLabel(category, selectedFeature));
+        return { type: types.PIXEL_CLICK, clickEvt };
+    };
+}
+
+function getPixelFeatureID(clickEvt, mapState, category) {
+    if (mapState.getIn(["view", "in3DMode"])) {
+        console.log("TODO: setup pixel listener for cesium");
+        return;
+    }
+    switch (category) {
+        case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
+            return mapState
+                .getIn(["maps", "openlayers"])
+                .map.forEachFeatureAtPixel(clickEvt.pixel, feature => {
+                    return feature.getProperties().id;
+                });
+
+        case layerSidebarTypes.CATEGORY_PLUMES:
+            return mapState
+                .getIn(["maps", "openlayers"])
+                .map.forEachLayerAtPixel(clickEvt.pixel, layer => {
+                    return layer.get("_featureId");
+                });
+    }
+}
+
+function updateFeatureLabel(category, feature) {
+    return {
+        type: types_extended.TOGGLE_FEATURE_LABEL,
+        category,
+        feature
+    };
+}
+
+function getFeatureById(sidebarState, category, id) {
+    return sidebarState
+        .getIn(["searchState", category, "searchResults"])
+        .find(feature => feature.get("id") === id);
+}

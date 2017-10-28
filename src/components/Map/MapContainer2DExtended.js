@@ -25,6 +25,13 @@ export class MapContainer2D extends CoreMapContainer2D {
             );
         }
     }
+
+    handlePixelClick(map, clickEvt) {
+        // Only fire move event if this map is active
+        if (map.isActive) {
+            this.props.actions_extended.pixelClick(clickEvt);
+        }
+    }
 }
 
 MapContainer2D.propTypes = {

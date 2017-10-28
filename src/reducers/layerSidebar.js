@@ -36,6 +36,8 @@ export default function layerSidebar(
             return opt_reducer.setPlumeFilterDateRange(state, action);
         case actionTypes_Extended.UPDATE_FLIGHT_CAMPAIGN:
             return opt_reducer.updateSelectedFlightCampaign(state, action);
+        case actionTypes_Extended.TOGGLE_FEATURE_LABEL:
+            return opt_reducer.selectFeatureInSidebar(state, action);
         default:
             return state;
     }

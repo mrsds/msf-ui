@@ -13,6 +13,7 @@ import Ol_Style_Circle from "ol/style/circle";
 import Ol_Style_Text from "ol/style/text";
 import Ol_Overlay from "ol/overlay";
 import Ol_Extent from "ol/extent";
+import Ol_Source_XYZ from "ol/source/xyz";
 
 import MapWrapper_openlayers from "_core/utils/MapWrapper_openlayers";
 import MiscUtil_Extended from "utils/MiscUtil_Extended";
@@ -93,7 +94,8 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 
 		let staticPlumeImage = new Ol_Source_StaticImage({
 			url: plume_url,
-			imageExtent: extent
+			imageExtent: extent,
+			crossOrigin: "anonymous"
 		});
 
 		let plumeLayer = new Ol_Layer_Image({
@@ -520,5 +522,17 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 			console.warn("Error in MapWrapper_openlayers.addLabel:", err);
 			return false;
 		}
+	}
+
+	createXYZSource(layer, options) {
+		return new Ol_Source_XYZ({
+			url: options.url,
+			projection: options.projection,
+			maxZoom: options.tileGrid.maxZoom,
+			minZoom: options.tileGrid.minZoom,
+			tileSize: options.tileGrid.tileSize,
+			wrapX: true,
+			crossOrigin: "anonymous"
+		});
 	}
 }

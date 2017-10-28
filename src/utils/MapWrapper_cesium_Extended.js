@@ -164,4 +164,8 @@ export default class MapWrapper_cesium_Extended extends MapWrapper_cesium {
 	setFeatureLabel(category, id, toggleOn) {
 		console.log("TODO: add labels to cesium");
 	}
+
+	getFeatureAtClick(pixel) {
+		console.log("TODO: add click handler to cesium");
+	}
 }

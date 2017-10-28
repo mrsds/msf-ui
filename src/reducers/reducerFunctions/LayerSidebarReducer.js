@@ -73,9 +73,15 @@ export default class LayerSidebarReducer {
       action.category,
       "pageIndex"
     ]);
+    const resultsCount = state.getIn([
+      "searchState",
+      action.category,
+      "searchResults"
+    ]).size;
+    const newIndex = currentIndex + layerSidebarTypes.FEATURES_PER_PAGE;
     return state.setIn(
       ["searchState", action.category, "pageIndex"],
-      currentIndex + layerSidebarTypes.FEATURES_PER_PAGE
+      newIndex > resultsCount - 1 ? resultsCount : newIndex
     );
   }
 
@@ -85,9 +91,10 @@ export default class LayerSidebarReducer {
       action.category,
       "pageIndex"
     ]);
+    const newIndex = currentIndex - layerSidebarTypes.FEATURES_PER_PAGE;
     return state.setIn(
       ["searchState", action.category, "pageIndex"],
-      currentIndex - layerSidebarTypes.FEATURES_PER_PAGE
+      newIndex < 0 ? 0 : newIndex
     );
   }
 
@@ -186,6 +193,16 @@ export default class LayerSidebarReducer {
         "selectedFlightCampaign"
       ],
       action.flight_campaign
+    );
+  }
+
+  static selectFeatureInSidebar(state, action) {
+    const selectedFeatureIndex = state
+      .getIn(["searchState", action.category, "searchResults"])
+      .findIndex(feature => feature.get("id") === action.feature.get("id"));
+    return state.setIn(
+      ["searchState", action.category, "pageIndex"],
+      selectedFeatureIndex
     );
   }
 }
