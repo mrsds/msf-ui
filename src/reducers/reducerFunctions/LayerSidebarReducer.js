@@ -197,6 +197,7 @@ export default class LayerSidebarReducer {
   }
 
   static selectFeatureInSidebar(state, action) {
+    if (!action.shuffleList) return state;
     const selectedFeatureIndex = state
       .getIn(["searchState", action.category, "searchResults"])
       .findIndex(feature => feature.get("id") === action.feature.get("id"));

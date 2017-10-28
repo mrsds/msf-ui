@@ -6,6 +6,7 @@ import * as appStrings_Extended from "constants/appStrings_Extended";
 import * as AlertActions from "_core/actions/AlertActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import * as appStrings from "_core/constants/appStrings";
+import * as FeatureDetailActions from "actions/FeatureDetailActions";
 
 const miscUtil = new MiscUtil();
 const mapUtil = new MapUtil_Extended();
@@ -160,7 +161,10 @@ export function centerMapOnPoint(coords) {
 }
 
 export function toggleFeatureLabel(category, feature) {
-    return { type: types_extended.TOGGLE_FEATURE_LABEL, category, feature };
+    return dispatch => {
+        dispatch(FeatureDetailActions.hideFeatureDetailContainer());
+        dispatch(updateFeatureLabel(category, feature, false));
+    };
 }
 
 export function selectFeatureInSidebar(id) {
@@ -181,7 +185,7 @@ export function pixelClick(clickEvt) {
             selectedFeatureId
         );
         if (selectedFeature)
-            dispatch(updateFeatureLabel(category, selectedFeature));
+            dispatch(updateFeatureLabel(category, selectedFeature, true));
         return { type: types.PIXEL_CLICK, clickEvt };
     };
 }
@@ -208,11 +212,12 @@ function getPixelFeatureID(clickEvt, mapState, category) {
     }
 }
 
-function updateFeatureLabel(category, feature) {
+function updateFeatureLabel(category, feature, shuffleList) {
     return {
         type: types_extended.TOGGLE_FEATURE_LABEL,
         category,
-        feature
+        feature,
+        shuffleList
     };
 }
 

@@ -19,6 +19,8 @@ export default function map_Extended(
 			return opt_reducer.centerMapOnPoint(state, action);
 		case actionTypes_Extended.TOGGLE_FEATURE_LABEL:
 			return opt_reducer.toggleFeatureLabel(state, action);
+		case actionTypes_Extended.UPDATE_FEATURE_DETAIL:
+			return opt_reducer.toggleFeatureLabel(state, action);
 		default:
 			return map.call(this, state, action, opt_reducer);
 	}

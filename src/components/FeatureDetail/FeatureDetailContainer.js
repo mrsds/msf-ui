@@ -199,12 +199,12 @@ export class FeatureDetailContainer extends Component {
             this.props.feature,
             "(no area)"
         );
-        const datetime = metadataUtil.getPlumeDatetime(this.props.feature);
+        const datetime = this.props.feature.get("datetime");
         const dateString = datetime
             ? moment(datetime).format("dddd, MMMM Do, YYYY")
             : "(no date)";
         const timeString = datetime
-            ? moment(datetime).format("MMM D, ha, YYYY")
+            ? moment(datetime).format("MMM D, ha [UTC], YYYY")
             : "(no time)";
 
         // Bin together the various field:value pairs
