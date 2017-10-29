@@ -26,11 +26,11 @@
         text-transform: none;
         font-size: 1.8rem;
         margin: 0px;
+        color: $palette-grey-50;
     }
     #appSubtitle {
         font-family: "Roboto Mono";
         font-size: 1.2rem;
-        color: $color-medium;
         margin-left: 9px;
         text-transform: lowercase;
         font-feature-settings: "onum";
@@ -39,7 +39,7 @@
         text-align: right;
         color: $color-medium;
         .toggle-button {
-            color: $color-text
+            color: $palette-grey-50;
         }
     }
 }
