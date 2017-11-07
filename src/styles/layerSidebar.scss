@@ -1,11 +1,10 @@
 #layerSidebar {
-	display: inline-block;
-	float: left;
+	// display: inline-block;
 	margin-top: 42px;
 	// position: absolute;
 	// top: 42px;
 	// left: 0px;
-	width: 370px;
+	flex: 0 0 370px;
 	height: 100%;
 	background-color: #f9f9f9;
 	padding: 0;

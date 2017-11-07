@@ -169,11 +169,12 @@ export default class LayerSidebarReducer {
             feature.get("flight_campaign") === selectedCampaign)
       );
     }
-
-    return state.setIn(
+    const newState = state.setIn(
       ["searchState", action.category, "searchResults"],
       searchResults
     );
+
+    return this.updatePageIndex(newState, action.category);
   }
 
   static setInfrastructureFacilityFilterOptionsVisible(state, action) {
@@ -198,12 +199,29 @@ export default class LayerSidebarReducer {
 
   static selectFeatureInSidebar(state, action) {
     if (!action.shuffleList) return state;
+    return this.updatePageIndex(
+      state
+        .setIn(["activeFeature", "category"], action.category)
+        .setIn(["activeFeature", "feature"], action.feature),
+      action.category
+    );
+  }
+
+  static updatePageIndex(state, category) {
+    // If no active feature, set the page index to the first page
+    const activeFeature = state.getIn([("activeFeature", "feature")]);
+    if (!activeFeature) {
+      return state.setIn(["searchState", category, "pageIndex"], 0);
+    }
+
+    // Get the index of the selected feature in this set of search results.
     const selectedFeatureIndex = state
-      .getIn(["searchState", action.category, "searchResults"])
-      .findIndex(feature => feature.get("id") === action.feature.get("id"));
+      .getIn(["searchState", category, "searchResults"])
+      .findIndex(feature => feature.get("id") === activeFeature.get("id"));
+
     return state.setIn(
-      ["searchState", action.category, "pageIndex"],
-      selectedFeatureIndex
+      ["searchState", category, "pageIndex"],
+      selectedFeatureIndex > -1 ? selectedFeatureIndex : 0
     );
   }
 }

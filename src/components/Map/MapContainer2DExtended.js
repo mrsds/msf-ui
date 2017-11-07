@@ -14,7 +14,6 @@ export class MapContainer2D extends CoreMapContainer2D {
     handleMapMoveEnd(map) {
         // Only fire move event if this map is active
         // and target inactive map
-        this.props.actions_extended.updateFeatureList();
         if (map.isActive) {
             this.props.actions.setMapView(
                 {
@@ -24,6 +23,7 @@ export class MapContainer2D extends CoreMapContainer2D {
                 false
             );
         }
+        this.props.actions_extended.updateFeatureList();
     }
 
     handlePixelClick(map, clickEvt) {

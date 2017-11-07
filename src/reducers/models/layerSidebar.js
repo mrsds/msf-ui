@@ -38,5 +38,9 @@ export const layerSidebarState = Immutable.fromJS({
             endDate: appConfig.PLUME_END_DATE,
             selectedFlightCampaign: null
         }
+    },
+    activeFeature: {
+        category: null,
+        feature: null
     }
 });
