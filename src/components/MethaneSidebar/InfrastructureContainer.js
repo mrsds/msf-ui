@@ -79,11 +79,13 @@ export class InfrastructureContainer extends Component {
 			layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
 			feature
 		);
-		const toggleDetailAction = this.props.toggleFeatureDetail.bind(
-			null,
-			layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-			feature
-		);
+		const toggleDetailAction = isActiveDetail
+			? this.props.hideFeatureDetail
+			: this.props.setFeatureDetail.bind(
+					null,
+					layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+					feature
+				);
 		const lat = metadataUtil.getLat(feature, null);
 		const long = metadataUtil.getLong(feature, null);
 		const centerMapAction =
@@ -347,7 +349,8 @@ InfrastructureContainer.propTypes = {
 	toggleInfrastructureFacilityFilterOptionsVisible: PropTypes.func.isRequired,
 	pageForward: PropTypes.func.isRequired,
 	pageBackward: PropTypes.func.isRequired,
-	toggleFeatureDetail: PropTypes.func.isRequired,
+	setFeatureDetail: PropTypes.func.isRequired,
+	hideFeatureDetail: PropTypes.func.isRequired,
 	isLoading: PropTypes.bool.isRequired,
 	centerMapOnPoint: PropTypes.func.isRequired,
 	toggleFeatureLabel: PropTypes.func.isRequired
@@ -382,8 +385,12 @@ function mapDispatchToProps(dispatch) {
 			layerSidebarActions.pageBackward,
 			dispatch
 		),
-		toggleFeatureDetail: bindActionCreators(
-			layerSidebarActions.toggleFeatureDetail,
+		setFeatureDetail: bindActionCreators(
+			layerSidebarActions.setFeatureDetail,
+			dispatch
+		),
+		hideFeatureDetail: bindActionCreators(
+			layerSidebarActions.hideFeatureDetail,
 			dispatch
 		),
 		centerMapOnPoint: bindActionCreators(

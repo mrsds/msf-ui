@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import view from "_core/reducers/view";
 import map_Extended from "reducers/map_Extended";
 import settings from "_core/reducers/settings";
 import help from "_core/reducers/help";
@@ -11,9 +10,10 @@ import analytics from "_core/reducers/analytics";
 import alerts from "_core/reducers/alerts";
 import layerSidebar from "reducers/layerSidebar";
 import featureDetail from "reducers/featureDetail";
+import view_Extended from "reducers/view_Extended";
 
 const rootReducer = combineReducers({
-    view,
+    view: view_Extended,
     map: map_Extended,
     settings,
     help,

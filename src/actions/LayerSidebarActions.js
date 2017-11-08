@@ -16,8 +16,12 @@ export function changeSidebarCategory(category) {
 	return { type: types.CHANGE_LAYER_SIDEBAR_CATEGORY, category };
 }
 
-export function toggleFeatureDetail(category, feature) {
+export function setFeatureDetail(category, feature) {
 	return { type: types.UPDATE_FEATURE_DETAIL, category, feature };
+}
+
+export function hideFeatureDetail() {
+	return { type: types.HIDE_FEATURE_DETAIL };
 }
 
 function featureFocusInfoLoading() {

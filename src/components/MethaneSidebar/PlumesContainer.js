@@ -75,23 +75,31 @@ export class PlumesContainer extends Component {
 			layerSidebarTypes.CATEGORY_PLUMES,
 			feature
 		);
-		const toggleDetailAction = this.props.toggleFeatureDetail.bind(
-			null,
-			layerSidebarTypes.CATEGORY_PLUMES,
-			feature
-		);
+		const toggleDetailAction = isActiveDetail
+			? this.props.hideFeatureDetail
+			: this.props.setFeatureDetail.bind(
+					null,
+					layerSidebarTypes.CATEGORY_PLUMES,
+					feature
+				);
 		const lat = metadataUtil.getLat(feature, null);
 		const long = metadataUtil.getLong(feature, null);
 		const centerMapAction =
 			lat && long
 				? this.props.centerMapOnPoint.bind(null, [long, lat])
 				: null;
+
+		const datetime = feature.get("datetime");
+		const dateString = datetime
+			? moment(datetime).format("H:mm [UTC], MMMM Do, YYYY")
+			: "(no date)";
+
 		return (
 			<ListItem
 				key={feature.get("id")}
-				caption={this.truncateName(feature.get("name"))}
+				caption={dateString}
 				className={itemClass}
-				legend={this.getCountyLabel(feature)}
+				legend={feature.get("name")}
 				onClick={
 					isActiveDetail ? toggleDetailAction : toggleLabelAction
 				}
@@ -308,7 +316,8 @@ PlumesContainer.propTypes = {
 	searchState: PropTypes.object.isRequired,
 	pageForward: PropTypes.func.isRequired,
 	pageBackward: PropTypes.func.isRequired,
-	toggleFeatureDetail: PropTypes.func.isRequired,
+	setFeatureDetail: PropTypes.func.isRequired,
+	hideFeatureDetail: PropTypes.func.isRequired,
 	isLoading: PropTypes.bool.isRequired,
 	updatePlumeDateRange: PropTypes.func.isRequired,
 	selectFlightCampaign: PropTypes.func.isRequired,
@@ -338,8 +347,12 @@ function mapDispatchToProps(dispatch) {
 			layerSidebarActions.pageBackward,
 			dispatch
 		),
-		toggleFeatureDetail: bindActionCreators(
-			layerSidebarActions.toggleFeatureDetail,
+		setFeatureDetail: bindActionCreators(
+			layerSidebarActions.setFeatureDetail,
+			dispatch
+		),
+		hideFeatureDetail: bindActionCreators(
+			layerSidebarActions.hideFeatureDetail,
 			dispatch
 		),
 		updatePlumeDateRange: bindActionCreators(

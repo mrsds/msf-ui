@@ -28,7 +28,7 @@ import appConfig from "constants/appConfig";
 import MiscUtil from "_core/utils/MiscUtil";
 import MapContainerExtended from "components/Map/MapContainerExtended";
 import MapContextMenu from "_core/components/Map/MapContextMenu";
-import MapControlsContainer from "_core/components/Map/MapControlsContainer";
+import MapControlsContainerExtended from "components/Map/MapControlsContainerExtended";
 import SettingsContainer from "_core/components/Settings/SettingsContainer";
 import ShareContainer from "_core/components/Share/ShareContainer";
 import LayerInfoContainer from "_core/components/LayerInfo/LayerInfoContainer";
@@ -150,7 +150,7 @@ export class AppContainer extends Component {
                     delayShow={600}
                 />
                 <FeatureDetailContainer />
-                <MapControlsContainer />
+                <MapControlsContainerExtended />
             </div>
         );
     }

@@ -75,7 +75,7 @@
         margin-top: 0.5rem;
     }
     .layer-toggle.active > span {
-        background: rgba($color-primary, .5);
+        background: rgba($color-primary, 0.5);
     }
     .layer-toggle span[role="thumb"] {
         top: -0.26rem;
@@ -257,7 +257,7 @@ button.position-control-button {
     top: unset;
     width: 370px;
     position: fixed;
-    left: 390px;
+    left: 470px;
     bottom: 0;
     z-index: 0;
     background: $color-light;
