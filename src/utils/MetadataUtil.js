@@ -19,7 +19,7 @@ export default class MetadataUtil {
 	}
 
 	tryFields(fields, metadata) {
-		console.log(metadata.toJS());
+		// console.log(metadata.toJS());
 		return fields.reduce((res, field) => {
 			return res ? res : this.getValueForField(field, metadata);
 		}, null);

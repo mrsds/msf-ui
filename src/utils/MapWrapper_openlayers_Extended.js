@@ -396,26 +396,29 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 
 	handleAVIRISLabelToggle(pickedFeature, currentMapExtent, toggleOn) {
 		this.map.getLayers().forEach(layer => {
-			if (layer.get("_featureId") !== pickedFeature.get("id")) return;
+			const featureId = pickedFeature.get("id");
+			if (layer.get("_featureId") !== featureId) return;
 
 			const featureExtent = layer.get("_featureExtent");
 			const isVisible = Ol_Extent.containsExtent(
 				currentMapExtent,
 				featureExtent
 			);
-			const featureLabelId = pickedFeature.get("id") + "_label";
 			if (toggleOn) {
 				if (!isVisible) this.map.getView().setCenter(featureExtent);
 				const center = Ol_Extent.getCenter(featureExtent);
 				this.addFeatureLabel(
-					featureLabelId,
+					featureId,
 					pickedFeature.get("name"),
 					center
 				);
 				return;
 			}
-			const labelToRemove = document.getElementById(featureLabelId);
-			labelToRemove.parentElement.removeChild(labelToRemove);
+			this.map.getOverlays().forEach(overlay => {
+				if (overlay.getId() === featureId) {
+					this.map.removeOverlay(overlay);
+				}
+			});
 			return;
 		});
 	}
@@ -434,8 +437,8 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 			if (!layer.get("_layerId").includes("VISTA")) return;
 
 			layer.getSource().forEachFeature(feature => {
-				if (feature.getProperties().id === pickedFeature.get("id")) {
-					const featureLabelId = pickedFeature.get("id") + "_label";
+				const featureId = pickedFeature.get("id");
+				if (feature.getProperties().id === featureId) {
 					const featureExtent = feature.getGeometry().getExtent();
 					const center = Ol_Extent.getCenter(featureExtent);
 
@@ -452,7 +455,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 						}
 
 						this.addFeatureLabel(
-							featureLabelId,
+							featureId,
 							pickedFeature.get("name"),
 							center
 						);
@@ -461,10 +464,11 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 					}
 
 					// If we're deselecting a feature, destroy the tooltip and revert the feature styling to default.
-					const labelToRemove = document.getElementById(
-						featureLabelId
-					);
-					labelToRemove.parentElement.removeChild(labelToRemove);
+					this.map.getOverlays().forEach(overlay => {
+						if (overlay.getId() === featureId) {
+							this.map.removeOverlay(overlay);
+						}
+					});
 					feature.setStyle(null);
 					return;
 				}
@@ -498,13 +502,15 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 			let measureLabelEl = document.createElement("div");
 			measureLabelEl.className = "tooltip tooltip-static";
 			measureLabelEl.innerHTML = label;
-			measureLabelEl.id = id;
 
 			// create ol overlay
 			let measureLabel = new Ol_Overlay({
+				id: id,
 				element: measureLabelEl,
 				offset: [0, -15],
-				positioning: "bottom-center"
+				positioning: "bottom-center",
+				autoPan: true,
+				stopEvent: false
 			});
 
 			// store meta opt_meta
@@ -515,8 +521,8 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 			}
 
 			// position and place
-			measureLabel.setPosition(coords);
 			this.map.addOverlay(measureLabel);
+			measureLabel.setPosition(coords);
 			return true;
 		} catch (err) {
 			console.warn("Error in MapWrapper_openlayers.addLabel:", err);
@@ -534,5 +540,9 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 			wrapX: true,
 			crossOrigin: "anonymous"
 		});
+	}
+
+	updateSize() {
+		this.map.updateSize();
 	}
 }
