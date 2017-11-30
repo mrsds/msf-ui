@@ -21,7 +21,8 @@ const APP_CONFIG = Immutable.fromJS({
 	},
 	DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
 	PLUME_START_DATE: new Date(2010, 0, 1),
-	PLUME_END_DATE: new Date(Date.now())
+  PLUME_END_DATE: new Date(Date.now()),
+  MAX_ZOOM: 25
 });
 
 // define and export the final config
