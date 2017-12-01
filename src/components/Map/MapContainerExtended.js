@@ -7,7 +7,6 @@ import * as appStrings from "_core/constants/appStrings";
 import * as actions from "_core/actions/MapActions";
 import MapContainer from "_core/components/Map/MapContainer";
 import MapContainer2DExtended from "components/Map/MapContainer2DExtended";
-import MapContainer3D from "_core/components/Map/MapContainer3D";
 
 export class MapContainerExtended extends MapContainer {
     render() {
@@ -15,7 +14,6 @@ export class MapContainerExtended extends MapContainer {
             <div id="mapContainer" ref="container">
                 <ContextMenuTrigger id={appStrings.MAP_CONTEXT_MENU_ID} holdToDisplay={-1}>
                     <MapContainer2DExtended />
-                    <MapContainer3D />
                 </ContextMenuTrigger>
             </div>
         );
