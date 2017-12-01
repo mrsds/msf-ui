@@ -32,9 +32,9 @@ function featureFocusInfoLoaded() {
 	return { type: types.FEATURE_FOCUS_INFO_LOADED };
 }
 
-export function updateFeatureSearchText(category, evt) {
-	return (dispatch, getState) => {
-		dispatch(updateFeatureSearchTextState(category, evt.target.value));
+export function updateFeatureSearchText(category, value) {
+	return (dispatch) => {
+		dispatch(updateFeatureSearchTextState(category, value));
 		dispatch(updateFeatureSearchResults(category));
 	};
 }
