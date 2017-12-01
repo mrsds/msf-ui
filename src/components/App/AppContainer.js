@@ -41,7 +41,7 @@ import AppBarContainer from "components/AppBar/AppBarContainer";
 import LayerMenuContainer from "components/LayerMenu/LayerMenuContainerExtended";
 import MouseFollowerContainer from "_core/components/MouseFollower/MouseFollowerContainer";
 import AnalyticsContainer from "_core/components/Analytics/AnalyticsContainer";
-import KeyboardControlsContainer from "_core/components/KeyboardControls/KeyboardControlsContainer";
+import KeyboardControlsContainer from "components/KeyboardControls/KeyboardControlsContainer_Extended";
 import CoordinateTracker from "_core/components/Map/CoordinateTracker";
 import LayerSidebarContainer from "components/MethaneSidebar/LayerSidebarContainer";
 import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContainer";
