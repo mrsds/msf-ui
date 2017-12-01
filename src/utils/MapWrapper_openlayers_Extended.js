@@ -53,7 +53,6 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 				break;
 			case appStrings_Extended.LAYER_AVIRIS:
 				mapLayer = this.createAvirisLayers(layer, fromCache);
-				//mapLayer = this.createVectorLayer(layer, fromCache);
 				break;
 			case appStrings.LAYER_VECTOR_TOPOJSON:
 				mapLayer = this.createVectorLayer(layer, fromCache);
@@ -112,26 +111,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 	}
 
 	createAvirisLayers(layer, options) {
-		/*
-      let createPlumeVector = function(vectorSource, jsonUrl) {
-        jsonUrl = "https://s3-us-gov-west-1.amazonaws.com/methane/AVIRIS/test.json";
-        let format = new Ol_Format_GeoJSON();
-
-        fetch(jsonUrl).then((response) => {
-            return response.json();
-        }).then(function(json) {
-
-            console.info(json);
-            let features = format.readFeatures(json, {featureProjection: 'EPSG:4326'});
-            features[0].setId(jsonUrl);
-            console.info(features);
-            vectorSource.addFeatures(features);
-        });
-
-      };
-      */
-
-		const extent = this.getExtent();
+		const extent = [-180, -90, 180, 90];
 		const url = appConfig.URLS.avirisEndpoint
 			.replace("{latMax}", extent[3])
 			.replace("{lonMax}", extent[2])
@@ -150,62 +130,6 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 					scope.createAvirisLayer(scope, layerJson, layer);
 				}
 			});
-
-		// Returns a blank image layer to make the openlayers stuff up above happy.
-		// return new Ol_Layer_Image({});
-
-		/*
-       let extent = [-118.409132561, 33.9107045204, -118.397865128, 33.9013096592];
-      let plume = new Ol_Source_StaticImage({
-        url : "https://s3-us-gov-west-1.amazonaws.com/methane/AVIRIS/ang20160910t193531_S00009_r7078_c866_ctr.png",
-        imageExtent: extent
-      });
-      let imageLayer = new Ol_Layer_Image({
-        source:plume
-      });
-      return imageLayer;
-      */
-		/*
-      let format = new Ol_Format_GeoJSON();
-      let vectorSource = new Ol_Source_Vector({
-        url: options.url,
-        loader: function(extent, resolution, projection) {
-          this.resolution = resolution;
-
-          let url = options.url;
-
-          if (url.indexOf("?") == -1) {
-            url += "?";
-          } else {
-            url += "&";
-          }
-
-          url += "minLon" + extent[0];
-          url += "&minLat" + extent[1];
-          url += "&maxLon" + extent[2];
-          url += "&maxLat" + extent[3];
-
-          fetch(url).then((response) => {
-            return response.json();
-          }).then(function(json) {
-            console.info(json);
-
-            //for (let i = 0; i < json.length; i++) {
-            //  createPlumeVector(vectorSource, json[i].json_url);
-           // }
-
-          });
-        }//,
-        //strategy: function(extent, resolution) {
-          //if(this.resolution && this.resolution != resolution){
-          //  this.loadedExtentsRtree_.clear();
-          //}
-          //return [extent];
-        //}
-      });
-
-      return vectorSource;
-      */
 	}
 
 	createKMZLayer(layer, fromCache = false) {
