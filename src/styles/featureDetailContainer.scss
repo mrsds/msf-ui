@@ -10,9 +10,10 @@
   top: 42px;
   background: $color-background;
   .floating-back-button {
-    position: absolute;
-    top: 15px;
-    left: 15px;
+    position: fixed;
+    z-index: 1;
+    left: 465px;
+    top: 57px;
     color: $color-primary !important;
     padding: 0rem 1rem;
   }
