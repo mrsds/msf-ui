@@ -9,10 +9,10 @@ export default function view_Extended(
     opt_reducer = ViewReducer_Extended
 ) {
     switch (action.type) {
-        case actionTypes_Extended.UPDATE_FEATURE_DETAIL:
-            return opt_reducer.hideMapControlContainer(state, action);
-        case actionTypes_Extended.HIDE_FEATURE_DETAIL:
-            return opt_reducer.showMapControlContainer(state, action);
+        // case actionTypes_Extended.UPDATE_FEATURE_DETAIL:
+        //     return opt_reducer.hideMapControlContainer(state, action);
+        // case actionTypes_Extended.HIDE_FEATURE_DETAIL:
+        //     return opt_reducer.showMapControlContainer(state, action);
         default:
             return view.call(this, state, action, opt_reducer);
     }
