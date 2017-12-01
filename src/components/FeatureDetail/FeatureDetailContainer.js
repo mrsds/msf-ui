@@ -239,7 +239,7 @@ export class FeatureDetailContainer extends Component {
                         subtitle={dateString}
                         theme={{
                             title: "title",
-                            subtitle: "title"
+                            subtitle: "subtitle"
                         }}
                     />
                     <CardText className="section">

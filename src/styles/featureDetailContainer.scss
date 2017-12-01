@@ -7,6 +7,7 @@
 	overflow: auto;
 	// max-height: calc(80vh - 80px);
 	.feature-detail-card {
+		user-select: text;
 		.exit-button {
 			position: absolute;
 			z-index: 2;
@@ -30,6 +31,11 @@
 
 		.title {
 			margin: 0;
+		}
+
+		.subtitle {
+			margin: 0;
+			color: #ccc;
 		}
 
 		.section {
