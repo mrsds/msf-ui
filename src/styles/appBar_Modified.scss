@@ -1,45 +1,23 @@
 #titleContainer {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    background: $color-primary;
-    z-index: 1;
-    color: $color-text;
-    @include light-shadow();
-    .row {
-        height: 42px;
-    }
-    .title-button {
-        margin-right: 0.3rem;
-        margin-left: 0.7rem;
-    }
-    .title-button:last-child {
-        margin-right: 0.7rem;
-    }
-    #appTitle {
-        padding-left: 31px;
-        display: inline-block;
-        font-family: "Roboto Mono";
-        font-weight: 500;
-        letter-spacing: 0.1rem;
-        text-transform: none;
-        font-size: 1.8rem;
-        margin: 0px;
-        color: $palette-grey-50;
-    }
-    #appSubtitle {
-        font-family: "Roboto Mono";
-        font-size: 1.2rem;
-        margin-left: 9px;
-        text-transform: lowercase;
-        font-feature-settings: "onum";
-    }
-    .buttons-container {
-        text-align: right;
-        color: $color-medium;
-        .toggle-button {
-            color: $palette-grey-50;
-        }
-    }
+  background: $color-primary-light;
+  color: white;
+  z-index: 3;
+  #appTitle {
+    padding-left: 31px;
+    display: inline-block;
+    font-family: "Roboto Mono";
+    font-weight: 500;
+    letter-spacing: 0rem;
+    text-transform: none;
+    font-size: 1.8rem;
+    margin: 0px;
+  }
+  #appSubtitle {
+    font-family: "Roboto Mono";
+    font-size: 1.2rem;
+    margin-left: 9px;
+    text-transform: lowercase;
+    font-feature-settings: "onum";
+    color: rgba(255, 255, 255, 0.637);
+  }
 }
