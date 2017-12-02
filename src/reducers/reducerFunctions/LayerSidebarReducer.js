@@ -45,7 +45,7 @@ export default class LayerSidebarReducer {
                       datetime: feature.data_date_dt,
                       flight_campaign: feature.airborne_flight_run_number.toString(),
                       ime: null,
-                      metadata: [
+                      metadata: feature.metadata.concat([
                         {
                           name: "latitude",
                           value: feature.location[0]
@@ -54,8 +54,9 @@ export default class LayerSidebarReducer {
                           name: "longitude",
                           value: feature.location[1]
                         }
-                      ],
-                      png_url: feature.png_url
+                      ]),
+                      png_url: feature.png_url,
+                      rgbqlctr_url: feature.rgbqlctr_url
                     })
                   );
                   return keys;
