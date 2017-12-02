@@ -40,11 +40,17 @@
   .feature-detail-body {
     padding: 10px;
   }
-  .card {
-    margin-bottom: 10px;
-  }
   .card-title {
     margin: 0;
+  }
+  .image-cards-container {
+    display: flex;
+    .card:first-child {
+      margin-right: 10px;
+    }
+  }
+  .card {
+    margin-top: 15px;
   }
   .observation-image {
     display: flex;

@@ -203,18 +203,17 @@ export class FeatureDetailContainer extends Component {
       : "(No Date)";
 
     // Bin together the various field:value pairs
-    const observationDataFields = [
-      { name: "Methane Flux", value: "(not specified in metadata)" },
-      { name: "Observation Time", value: "" },
-      { name: "Plume IME", value: "(not specified in metadata)" },
-      { name: "Observation Location", value: `${lat}, ${long}` },
-      { name: "Gas Detected", value: "(not specified in metadata)" },
-      {
-        name: "Observation Altitude",
-        value: "(not specified in metadata)"
-      }
-    ];
-    const observationImageryUrl = this.props.feature.get("png_url");
+    // const observationDataFields = [
+    //   { name: "Methane Flux", value: "(not specified in metadata)" },
+    //   { name: "Observation Time", value: "" },
+    //   { name: "Plume IME", value: "(not specified in metadata)" },
+    //   { name: "Observation Location", value: `${lat}, ${long}` },
+    //   { name: "Gas Detected", value: "(not specified in metadata)" },
+    //   {
+    //     name: "Observation Altitude",
+    //     value: "(not specified in metadata)"
+    //   }
+    // ];
 
     let featureTitle = dateString;
     let featureSubtitle = name;
@@ -226,7 +225,14 @@ export class FeatureDetailContainer extends Component {
             title={"Observation Data"}
             theme={{ title: "card-title" }}
           />
-          <CardText>{this.makeInfoFields(observationDataFields)}</CardText>
+          <CardText>
+            {this.makeInfoFields(
+              this.props.feature
+                .get("metadata")
+                .sortBy(x => x.get("name"))
+                .toJS()
+            )}
+          </CardText>
           <CardActions>
             <Button
               disabled={!googleMapsUri}
@@ -239,15 +245,26 @@ export class FeatureDetailContainer extends Component {
             </Button>
           </CardActions>
         </Card>
-        <Card theme={{ card: "card" }}>
-          <CardTitle
-            title={"Observation Imagery"}
-            theme={{ title: "card-title" }}
-          />
-          <div className="observation-image">
-            <img src={observationImageryUrl} />
-          </div>
-        </Card>
+        <div className="image-cards-container">
+          <Card theme={{ card: "card" }}>
+            <CardTitle
+              title={"Observation Plume Imagery"}
+              theme={{ title: "card-title" }}
+            />
+            <div className="observation-image">
+              <img src={this.props.feature.get("rgbqlctr_url")} />
+            </div>
+          </Card>
+          <Card theme={{ card: "card" }}>
+            <CardTitle
+              title={"Observation RGB Imagery"}
+              theme={{ title: "card-title" }}
+            />
+            <div className="observation-image">
+              <img src={this.props.feature.get("png_url")} />
+            </div>
+          </Card>
+        </div>
       </div>
     );
 
