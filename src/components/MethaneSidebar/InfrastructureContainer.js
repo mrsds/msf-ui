@@ -34,11 +34,7 @@ export class InfrastructureContainer extends Component {
   }
 
   getCircleIcon(group, color) {
-    return (
-      <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
-        <circle stroke={color} fill={color} />
-      </svg>
-    );
+    return <div className="category-circle" style={{ background: color }} />;
   }
 
   isActiveFeature(feature) {
@@ -140,6 +136,9 @@ export class InfrastructureContainer extends Component {
   }
 
   makeFacilityFilterList() {
+    if (!this.props.searchState.get("facilityFilterOptionsVisible")) {
+      return <div />;
+    }
     const listItems = [];
     const listGroups = Object.keys(
       layerSidebarTypes.INFRASTRUCTURE_GROUPS
@@ -153,14 +152,13 @@ export class InfrastructureContainer extends Component {
       );
       listItems.push(
         <div
-          key={group + "_icon"}
-          className="facility-filter-category-label-icon"
-        >
-          {this.getCircleIcon(
-            group,
-            layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].colors.stroke
-          )}
-        </div>
+          key={group + "_color"}
+          className="category-circle"
+          style={{
+            background:
+              layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].colors.stroke
+          }}
+        />
       );
       layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].categories.forEach(
         category => {
@@ -186,7 +184,19 @@ export class InfrastructureContainer extends Component {
       );
     });
     return (
-      <div id="infrastructureFilters" className="sidebar-content">
+      <div className="filters-overlay flexbox-parent">
+        <div className="header-bar">
+          <div className="header-title">Select Infrastructure</div>
+          <Button
+            className="back-button"
+            flat
+            primary
+            label="Done"
+            onClick={
+              this.props.toggleInfrastructureFacilityFilterOptionsVisible
+            }
+          />
+        </div>
         <List selectable ripple className="facility-filter-list">
           {listItems}
         </List>
@@ -205,7 +215,9 @@ export class InfrastructureContainer extends Component {
     return <div />;
   }
 
-  makeSearchResults() {
+  makeSearchResults() {}
+
+  makeResultsArea() {
     const hasResults = this.props.searchState.get("searchResults").size;
     const resultsClass = miscUtil.generateStringFromSet({
       "sidebar-content": true
@@ -237,32 +249,24 @@ export class InfrastructureContainer extends Component {
     );
   }
 
-  makeResultsArea() {
-    if (this.props.searchState.get("facilityFilterOptionsVisible")) {
-      return this.makeFacilityFilterList();
-    } else {
-      return this.makeSearchResults();
-    }
-  }
-
-  makeFacilityFilterButton() {
-    const isActive = this.props.searchState.get("facilityFilterOptionsVisible");
-    const buttonLabel = "Filter By Facility";
-    return (
-      <Button
-        className="button"
-        theme={{
-          button: "button-content",
-          primary: "button-content-primary"
-        }}
-        primary={isActive}
-        onClick={this.props.toggleInfrastructureFacilityFilterOptionsVisible}
-      >
-        {this.getFactoryIcon()}
-        <label>{buttonLabel}</label>
-      </Button>
-    );
-  }
+  // makeFacilityFilterButton() {
+  //   const isActive = this.props.searchState.get("facilityFilterOptionsVisible");
+  //   const buttonLabel = "Filter By Facility";
+  //   return (
+  //     <Button
+  //       className="button"
+  //       theme={{
+  //         button: "button-content",
+  //         primary: "button-content-primary"
+  //       }}
+  //       primary={isActive}
+  //       onClick={this.props.toggleInfrastructureFacilityFilterOptionsVisible}
+  //     >
+  //       {this.getFactoryIcon()}
+  //       <label>{buttonLabel}</label>
+  //     </Button>
+  //   );
+  // }
 
   makePageControls() {
     return (
@@ -298,12 +302,18 @@ export class InfrastructureContainer extends Component {
             primaryDataTip="Search Plumes by ID"
             primaryDataPlace="top"
           />
-          {this.makeFacilityFilterButton()}
-          <Button className="button" theme={{ button: "button-content" }}>
+          <Button
+            label="Select Infrastructure Types"
+            onClick={
+              this.props.toggleInfrastructureFacilityFilterOptionsVisible
+            }
+          />
+          {/* <Button className="button" theme={{ button: "button-content" }}>
             <span className="plane-icon" />
             <label>Any number of flyovers</label>
-          </Button>
+          </Button> */}
         </div>
+        {this.makeFacilityFilterList()}
         {this.makeResultsArea()}
       </div>
     );

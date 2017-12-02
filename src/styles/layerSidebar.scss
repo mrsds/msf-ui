@@ -147,71 +147,113 @@
       }
     }
   }
-  .button-content {
-    font-size: 14px;
-    font-weight: normal;
-    text-transform: none;
-    color: #222222;
-    border: solid 0.8px #d2d2d2;
-    background-color: #fff;
-  }
+  // .button-content {
+  //   font-size: 14px;
+  //   font-weight: normal;
+  //   text-transform: none;
+  //   color: #222222;
+  //   border: solid 0.8px #d2d2d2;
+  //   background-color: #fff;
+  // }
 
-  .button-content-primary {
-    color: #fff;
-    background-color: #1976d2;
-    svg path {
-      fill: #fff;
-    }
-  }
+  // .button-content-primary {
+  //   color: #fff;
+  //   background-color: #1976d2;
+  //   svg path {
+  //     fill: #fff;
+  //   }
+  // }
 }
 
-#infrastructureFilters {
+.filters-overlay {
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  background-color: white;
+  z-index: 2;
+  // .filters-overlay-content {
+  //   position: absolute;
+  //   // padding: 10px;
+  //   height: 100%;
+  //   width: 100%;
+  //   top: 0px;
+  // }
+  // .filters-overlay-background {
+  //   border-radius: 3px;
+  //   background: white;
+  // }
+  .header-bar {
+    padding: 10px;
+    text-align: right;
+    border-bottom: 1px solid $color-divider;
+    .header-title {
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 3.6rem;
+      float: left;
+      display: block;
+    }
+  }
   .facility-filter-list {
-    background-color: #fff;
+    overflow: auto;
+    height: 100%;
+    margin: 0;
+    width: 100%;
+  }
+  .category-circle {
+    border-radius: 50%;
+    height: 15px;
+    width: 15px;
+    margin-left: 11px;
+    display: inline-block;
+    position: relative;
+    top: 1px;
   }
 
   .facility-filter-category-label {
-    color: #222;
+    color: black;
     text-transform: capitalize;
-    font-size: 20px;
-    margin-top: 0px;
+    font-size: 2rem;
+    margin-top: 10px;
     display: inline-block;
   }
 
-  .facility-filter-category-label-icon {
-    display: inline-block;
-    margin: 0;
-    width: 18px;
-    height: 23px;
-    margin-left: 10px;
-    vertical-align: middle;
-    svg {
-      width: 18px;
-      height: 18px;
-      circle {
-        r: 8;
-        cy: 9;
-        cx: 9;
-      }
-    }
-  }
+  // .facility-filter-category-label-icon {
+  //   display: inline-block;
+  //   margin: 0;
+  //   width: 18px;
+  //   height: 23px;
+  //   margin-left: 10px;
+  //   vertical-align: middle;
+  //   svg {
+  //     width: 18px;
+  //     height: 18px;
+  //     circle {
+  //       r: 8;
+  //       cy: 9;
+  //       cx: 9;
+  //     }
+  //   }
+  // }
 
-  .facility-filter-list-item {
-    height: 32px;
-    min-height: 0;
-    padding-left: 25px;
-    span {
-      color: #222;
-      font-size: 21px;
-    }
-    div:first-of-type {
-      margin-right: 10px;
-    }
-    input {
-      height: 32px;
-    }
-  }
+  // .facility-filter-list-item {
+  //   height: 32px;
+  //   min-height: 0;
+  //   padding-left: 25px;
+  //   span {
+  //     color: #222;
+  //     font-size: 21px;
+  //   }
+  //   div:first-of-type {
+  //     margin-right: 10px;
+  //   }
+  //   input {
+  //     height: 32px;
+  //   }
+  // }
 }
+
 .sidebar-content {
   position: relative;
   overflow: auto;
@@ -277,24 +319,24 @@
     //   font-size: 14px;
     //   background-color: #fff;
   }
-  .button {
-    margin: 5px 10px;
-    flex-grow: 1;
-    display: flex;
-    justify-content: flex-start;
-    align-items: baseline;
-  }
-  .button-content {
-    font-size: 14px;
-    font-weight: normal;
-    text-transform: none;
-    color: #222222;
-    border: solid 0.8px #d2d2d2;
-    background-color: #fff;
-  }
-  .button-content-primary {
-    border-color: #3367d6;
-  }
+  // .button {
+  //   margin: 5px 10px;
+  //   flex-grow: 1;
+  //   display: flex;
+  //   justify-content: flex-start;
+  //   align-items: baseline;
+  // }
+  // .button-content {
+  //   font-size: 14px;
+  //   font-weight: normal;
+  //   text-transform: none;
+  //   color: #222222;
+  //   border: solid 0.8px #d2d2d2;
+  //   background-color: #fff;
+  // }
+  // .button-content-primary {
+  //   border-color: #3367d6;
+  // }
 }
 
 #plumeDatePicker {
