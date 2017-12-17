@@ -2,9 +2,9 @@
 
 /* colors */
 
-$color-primary: $palette-blue-400;
-$color-primary-dark: $palette-blue-700;
-$color-primary-light: $palette-blue-200;
+$color-primary: #3367D6;
+// $color-primary-dark: $palette-blue-700;
+$color-primary-light: #4285F4;
 $color-primary-contrast: $color-dark-contrast;
 
 /* neutrals */
@@ -23,4 +23,4 @@ $color-light: $palette-grey-50;
 /* misc */
 
 $color-background: $color-light;
-$color-divider: $palette-grey-300;
+$color-divider: $palette-grey-200;

@@ -3,27 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, IconButton } from 'react-toolbox/lib/button';
+import {AppBarContainer as CoreAppBarContainer} from "_core/components/AppBar/AppBarContainer";
 import * as actions from '_core/actions/AppActions';
 import MiscUtil from '_core/utils/MiscUtil';
 import Modernizr from 'modernizr';
 
 const miscUtil = new MiscUtil();
 
-export class AppBarContainer extends Component {
-    componentDidMount() {
-        // have to retroactively sync the state given browser specific hardware options to enter/exit full screen
-        document.addEventListener("fullscreenchange", () => { this.handleFullScreenChange(); }, false);
-        document.addEventListener("webkitfullscreenchange", () => { this.handleFullScreenChange(); }, false);
-        document.addEventListener("mozfullscreenchange", () => { this.handleFullScreenChange(); }, false);
-    }
-
-    handleFullScreenChange() {
-        if (miscUtil.getIsInFullScreenMode()) {
-            this.props.actions.setFullScreenMode(true);
-        } else {
-            this.props.actions.setFullScreenMode(false);
-        }
-    }
+export class AppBarContainer extends CoreAppBarContainer {
     render() {
         let containerClasses = miscUtil.generateStringFromSet({
             "hidden-fade-out": this.props.distractionFreeMode,
@@ -38,39 +25,39 @@ export class AppBarContainer extends Component {
                     </div>
                     <div className="buttons-container col-xs-6">
                         <IconButton
-                            neutral
+                            inverse
                             icon="help"
-                            className="title-button mini-xs" 
-                            onClick={() => this.props.actions.setHelpOpen(true)} 
+                            className="title-button mini-xs"
+                            onClick={() => this.props.actions.setHelpOpen(true)}
                             data-tip="Help"
                             data-place="bottom"
                             theme={{"toggle":"toggle-button"}}
                         />
                         <IconButton
-                            neutral
+                            inverse
                             icon="share"
                             className="title-button mini-xs"
-                            onClick={() => this.props.actions.setShareOpen(true)} 
+                            onClick={() => this.props.actions.setShareOpen(true)}
                             data-tip="Share"
                             data-place="bottom"
                             theme={{"toggle":"toggle-button"}}
                         />
                         <IconButton
-                            neutral
+                            inverse
                             icon="settings"
                             className="title-button mini-xs"
-                            onClick={() => this.props.actions.setSettingsOpen(true)} 
+                            onClick={() => this.props.actions.setSettingsOpen(true)}
                             data-tip="Settings"
                             data-place="bottom"
                             theme={{"toggle":"toggle-button"}}
                         />
                         <IconButton
-                            neutral
+                            inverse
                             disabled={!Modernizr.fullscreen}
-                            icon={this.props.isFullscreen ? "fullscreen_exit" : "fullscreen"} 
-                            className="title-button mini-xs" 
-                            onClick={() => this.props.actions.setFullScreenMode(!this.props.isFullscreen)} 
-                            data-tip={this.props.isFullscreen ? "Exit Fullscreen" : "Fullscreen"} 
+                            icon={this.props.isFullscreen ? "fullscreen_exit" : "fullscreen"}
+                            className="title-button mini-xs"
+                            onClick={() => this.props.actions.setFullScreenMode(!this.props.isFullscreen)}
+                            data-tip={this.props.isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
                             data-place="left"
                             theme={{"toggle":"toggle-button"}}
                         />

@@ -89,10 +89,10 @@ export class AppContainer extends Component {
                         appStrings.MAP_LIB_2D,
                         "map2D"
                     );
-                    this.props.actions.initializeMap(
-                        appStrings.MAP_LIB_3D,
-                        "map3D"
-                    );
+                    // this.props.actions.initializeMap(
+                    //     appStrings.MAP_LIB_3D,
+                    //     "map3D"
+                    // );
 
                     // set initial view
                     this.props.actions.setMapView(
