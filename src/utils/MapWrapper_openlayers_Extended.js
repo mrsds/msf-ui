@@ -6,14 +6,19 @@ import Ol_Source_StaticImage from "ol/source/imagestatic";
 import Ol_Layer_Vector from "ol/layer/vector";
 import Ol_Format_KML from "ol/format/kml";
 import Ol_Source_Cluster from "ol/source/cluster";
+import Ol_Source_Vector from "ol/source/vector";
 import Ol_Style from "ol/style/style";
 import Ol_Style_Fill from "ol/style/fill";
 import Ol_Style_Stroke from "ol/style/stroke";
 import Ol_Style_Circle from "ol/style/circle";
 import Ol_Style_Text from "ol/style/text";
+import Ol_Style_Icon from "ol/style/icon";
 import Ol_Overlay from "ol/overlay";
 import Ol_Extent from "ol/extent";
 import Ol_Source_XYZ from "ol/source/xyz";
+import Ol_Layer_Group from "ol/layer/group";
+import Ol_Feature from "ol/feature";
+import Ol_Geom_Point from "ol/geom/point";
 
 import MapWrapper_openlayers from "_core/utils/MapWrapper_openlayers";
 import MiscUtil_Extended from "utils/MiscUtil_Extended";
@@ -86,7 +91,8 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 		return mapLayer;
 	}
 
-	createAvirisLayer(scope, layerJson, topLayer) {
+	createAvirisLayer(scope, layerJson) {
+		// Create plume raster layer
 		let plume_url = layerJson.plume_url;
 		let shape = layerJson.shape;
 		let extent = [shape[0][0], shape[1][1], shape[2][0], shape[0][1]];
@@ -100,14 +106,31 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 		let plumeLayer = new Ol_Layer_Image({
 			source: staticPlumeImage
 		});
-
-		plumeLayer.set("_layerId", topLayer.get("id"));
-		plumeLayer.set("_layerType", topLayer.get("type"));
 		plumeLayer.set("_featureId", layerJson.id);
 		plumeLayer.set("_featureExtent", extent.map(val => parseFloat(val)));
 
-		let index = scope.findTopInsertIndexForLayer(plumeLayer);
-		scope.map.getLayers().insertAt(index, plumeLayer);
+		return plumeLayer;
+	}
+
+	createAvirisIconLayer(layerJson) {
+		const shape = layerJson.shape;
+		const extent = [shape[0][0], shape[1][1], shape[2][0], shape[0][1]];
+
+		const iconFeature = new Ol_Feature({
+			geometry: new Ol_Geom_Point(
+				Ol_Extent.getCenter(extent.map(val => parseFloat(val)))
+			)
+		});
+
+		const iconStyle = new Ol_Style({
+			image: new Ol_Style_Icon({
+				src: "styles/resources/img/icon.svg"
+			})
+		});
+
+		iconFeature.setStyle(iconStyle);
+
+		return iconFeature;
 	}
 
 	createAvirisLayers(layer, options) {
@@ -118,17 +141,39 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 			.replace("{latMin}", extent[1])
 			.replace("{lonMin}", extent[0]);
 
-		let scope = this;
 		fetch(url)
 			.then(response => {
 				return response.json();
 			})
-			.then(function(json) {
+			.then(json => {
 				console.info(json);
-				for (let i = 0; i < json.length; i++) {
-					let layerJson = json[i];
-					scope.createAvirisLayer(scope, layerJson, layer);
-				}
+
+				// Create an icon layer for each AVIRIS feature
+				const avirisIconLayer = new Ol_Layer_Vector({
+					source: new Ol_Source_Vector({
+						features: json.map(json =>
+							this.createAvirisIconLayer(json)
+						)
+					}),
+					minResolution: 0.00005966144664679565
+				});
+
+				// Create layers for each AVIRIS feature and add the layer group (along with the icon layer) to the map
+				const avirisLayerGroup = new Ol_Layer_Group({
+					layers: [
+						...json.map(json => this.createAvirisLayer(this, json)),
+						avirisIconLayer
+					]
+				});
+				avirisLayerGroup.set("_layerId", "AVIRIS");
+				avirisLayerGroup.set("_layerType", layer.get("type"));
+
+				this.map
+					.getLayers()
+					.insertAt(
+						this.findTopInsertIndexForLayer(avirisLayerGroup),
+						avirisLayerGroup
+					);
 			});
 	}
 
@@ -237,6 +282,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 	}
 
 	setLayerOpacity(layer, opacity) {
+		console.log(layer.toJS());
 		try {
 			let mapLayers = this.map.getLayers().getArray();
 			this.miscUtil

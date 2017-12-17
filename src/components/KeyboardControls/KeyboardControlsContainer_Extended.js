@@ -39,7 +39,7 @@ KeyboardControlsContainer.propTypes = {
         if (typeof propValue === "object") return;
         return new Error(`${componentName} only accepts null or object`);
     },
-    featureDetailActions: PropTypes.func.isRequired
+    featureDetailActions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
