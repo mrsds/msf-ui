@@ -17,7 +17,7 @@
             "title": "Vista 2017 - Livestock Dairies",
             "type": "data",
             "handleAs": "vista_geojson",
-            "isDefault": false,
+            "isDefault": true,
             "url":
                 "http://100.64.114.155:9090/vista?category=1&maxObjects=10000",
             "thumbnailImage":
@@ -29,7 +29,7 @@
             "title": "Vista 2017 - Anaerobic Lagoons",
             "type": "data",
             "handleAs": "vista_geojson",
-            "isDefault": false,
+            "isDefault": true,
             "url":
                 "http://100.64.114.155:9090/vista?category=2&maxObjects=10000",
             "thumbnailImage":
@@ -41,7 +41,7 @@
             "title": "Vista 2017 - CNG Fueling Stations",
             "type": "data",
             "handleAs": "vista_geojson",
-            "isDefault": false,
+            "isDefault": true,
             "url":
                 "http://100.64.114.155:9090/vista?category=3&maxObjects=10000",
             "thumbnailImage":
@@ -53,7 +53,7 @@
             "title": "Vista 2017 - LNG Fueling Stations",
             "type": "data",
             "handleAs": "vista_geojson",
-            "isDefault": false,
+            "isDefault": true,
             "url":
                 "http://100.64.114.155:9090/vista?category=4&maxObjects=10000",
             "thumbnailImage":
@@ -65,7 +65,7 @@
             "title": "Vista 2017 - Natural Gas Storage Fields",
             "type": "data",
             "handleAs": "vista_geojson",
-            "isDefault": false,
+            "isDefault": true,
             "url":
                 "http://100.64.114.155:9090/vista?category=5&maxObjects=10000",
             "thumbnailImage":
@@ -77,7 +77,7 @@
             "title": "Vista 2017 - Natural Gas Processing Plants",
             "type": "data",
             "handleAs": "vista_geojson",
-            "isDefault": false,
+            "isDefault": true,
             "url":
                 "http://100.64.114.155:9090/vista?category=6&maxObjects=10000",
             "thumbnailImage":
@@ -89,7 +89,7 @@
             "title": "Vista 2017 - Petroleum Refineries",
             "type": "data",
             "handleAs": "vista_geojson",
-            "isDefault": false,
+            "isDefault": true,
             "url":
                 "http://100.64.114.155:9090/vista?category=8&maxObjects=10000",
             "thumbnailImage":
@@ -101,7 +101,7 @@
             "title": "Vista 2017 - Wastewater Treatment Plants",
             "type": "data",
             "handleAs": "vista_geojson",
-            "isDefault": false,
+            "isDefault": true,
             "url":
                 "http://100.64.114.155:9090/vista?category=9&maxObjects=10000",
             "thumbnailImage":
@@ -113,7 +113,7 @@
             "title": "Vista 2017 - Power Plants",
             "type": "data",
             "handleAs": "vista_geojson",
-            "isDefault": false,
+            "isDefault": true,
             "url":
                 "http://100.64.114.155:9090/vista?category=10&maxObjects=10000",
             "thumbnailImage":
@@ -125,7 +125,7 @@
             "title": "Vista 2017 - Landfills",
             "type": "data",
             "handleAs": "vista_geojson",
-            "isDefault": false,
+            "isDefault": true,
             "url":
                 "http://100.64.114.155:9090/vista?category=11&maxObjects=10000",
             "thumbnailImage":
