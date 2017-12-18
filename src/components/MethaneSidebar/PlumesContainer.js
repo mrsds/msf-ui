@@ -221,7 +221,7 @@ export class PlumesContainer extends Component {
           <SearchInput
             icon="search"
             placeholder="Search Plumes by ID"
-            value=""
+            value={this.props.searchState.get("searchString")}
             disabled={false}
             onUpdate={valueStr =>
               this.props.updateFeatureSearchText(
@@ -232,6 +232,13 @@ export class PlumesContainer extends Component {
             validate={valueStr => true}
             primaryDataTip="Search Plumes by ID"
             primaryDataPlace="top"
+            actionIcon="clear"
+            onActionIconClick={() =>
+              this.props.updateFeatureSearchText(
+                layerSidebarTypes.CATEGORY_PLUMES,
+                ""
+              )
+            }
           />
           <div id="plumeDatePicker">
             <div className="date-picker">
