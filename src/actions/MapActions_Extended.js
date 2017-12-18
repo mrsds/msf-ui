@@ -174,7 +174,7 @@ export function selectFeatureInSidebar(id) {
 export function pixelClick(clickEvt) {
     return (dispatch, getState) => {
         const category = getState().layerSidebar.get("activeFeatureCategory");
-        const selectedFeatureId = getPixelFeatureID(
+        const selectedFeatureId = getPixelFeatureId(
             clickEvt,
             getState().map,
             category
@@ -190,26 +190,44 @@ export function pixelClick(clickEvt) {
     };
 }
 
-function getPixelFeatureID(clickEvt, mapState, category) {
+function getPixelFeatureId(clickEvt, mapState, category) {
     if (mapState.getIn(["view", "in3DMode"])) {
         console.log("TODO: setup pixel listener for cesium");
         return;
     }
+
+    let featureId;
     switch (category) {
         case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
-            return mapState
+            featureId = mapState
                 .getIn(["maps", "openlayers"])
                 .map.forEachFeatureAtPixel(clickEvt.pixel, feature => {
                     return feature.getProperties().id;
                 });
+            break;
 
         case layerSidebarTypes.CATEGORY_PLUMES:
-            return mapState
+            // First check to see if user has clicked an icon
+            featureId = mapState
                 .getIn(["maps", "openlayers"])
-                .map.forEachLayerAtPixel(clickEvt.pixel, layer => {
-                    return layer.get("_featureId");
+                .map.forEachFeatureAtPixel(clickEvt.pixel, feature => {
+                    if (feature.get("_featureType") === "icon")
+                        return feature.get("_featureId");
                 });
+
+            // If no icon has been clicked, check to see if a plume has been clicked instead
+            featureId =
+                featureId ||
+                mapState
+                    .getIn(["maps", "openlayers"])
+                    .map.forEachLayerAtPixel(clickEvt.pixel, layer => {
+                        if (layer.get("_featureType") === "plume") {
+                            return layer.get("_featureId");
+                        }
+                    });
+            break;
     }
+    return featureId;
 }
 
 function updateFeatureLabel(category, feature, shuffleList) {

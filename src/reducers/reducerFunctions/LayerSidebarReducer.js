@@ -210,7 +210,8 @@ export default class LayerSidebarReducer {
 
   static updatePageIndex(state, category) {
     // If no active feature, set the page index to the first page
-    const activeFeature = state.getIn([("activeFeature", "feature")]);
+    const activeFeature = state.getIn(["activeFeature", "feature"]);
+
     if (!activeFeature) {
       return state.setIn(["searchState", category, "pageIndex"], 0);
     }

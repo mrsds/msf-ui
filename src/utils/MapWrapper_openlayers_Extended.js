@@ -108,6 +108,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 		});
 		plumeLayer.set("_featureId", layerJson.id);
 		plumeLayer.set("_featureExtent", extent.map(val => parseFloat(val)));
+		plumeLayer.set("_featureType", "plume");
 
 		return plumeLayer;
 	}
@@ -132,6 +133,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 
 		iconFeature.setStyle(this.getAvirisIconStyle());
 		iconFeature.set("_featureId", layerJson.id);
+		iconFeature.set("_featureType", "icon");
 
 		return iconFeature;
 	}
@@ -286,7 +288,6 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 	}
 
 	setLayerOpacity(layer, opacity) {
-		console.log(layer.toJS());
 		try {
 			let mapLayers = this.map.getLayers().getArray();
 			this.miscUtil
@@ -501,7 +502,6 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 				stopEvent: false
 			});
 			measureLabel.set("_featureId", id);
-			console.log(id);
 
 			// store meta opt_meta
 			for (let key in opt_meta) {
