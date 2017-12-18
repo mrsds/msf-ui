@@ -112,7 +112,15 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 		return plumeLayer;
 	}
 
-	createAvirisIconLayer(layerJson) {
+	getAvirisIconStyle() {
+		return new Ol_Style({
+			image: new Ol_Style_Icon({
+				src: "styles/resources/img/icon.svg"
+			})
+		});
+	}
+
+	createAvirisIconFeature(layerJson) {
 		const shape = layerJson.shape;
 		const extent = [shape[0][0], shape[1][1], shape[2][0], shape[0][1]];
 
@@ -122,13 +130,8 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 			)
 		});
 
-		const iconStyle = new Ol_Style({
-			image: new Ol_Style_Icon({
-				src: "styles/resources/img/icon.svg"
-			})
-		});
-
-		iconFeature.setStyle(iconStyle);
+		iconFeature.setStyle(this.getAvirisIconStyle());
+		iconFeature.set("_featureId", layerJson.id);
 
 		return iconFeature;
 	}
@@ -152,11 +155,12 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 				const avirisIconLayer = new Ol_Layer_Vector({
 					source: new Ol_Source_Vector({
 						features: json.map(json =>
-							this.createAvirisIconLayer(json)
+							this.createAvirisIconFeature(json)
 						)
 					}),
 					minResolution: 0.00005966144664679565
 				});
+				avirisIconLayer.set("_layerId", "icons");
 
 				// Create layers for each AVIRIS feature and add the layer group (along with the icon layer) to the map
 				const avirisLayerGroup = new Ol_Layer_Group({
@@ -365,32 +369,47 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 	}
 
 	handleAVIRISLabelToggle(pickedFeature, currentMapExtent, toggleOn) {
-		this.map.getLayers().forEach(layer => {
-			const featureId = pickedFeature.get("id");
-			if (layer.get("_featureId") !== featureId) return;
+		const avirisLayerGroup = this.map
+			.getLayers()
+			.getArray()
+			.find(l => l.get("_layerId") === "AVIRIS");
 
-			const featureExtent = layer.get("_featureExtent");
-			const isVisible = Ol_Extent.containsExtent(
-				currentMapExtent,
-				featureExtent
-			);
-			if (toggleOn) {
-				if (!isVisible) this.map.getView().setCenter(featureExtent);
-				const center = Ol_Extent.getCenter(featureExtent);
-				this.addFeatureLabel(
-					featureId,
-					pickedFeature.get("name"),
-					center
-				);
-				return;
-			}
-			this.map.getOverlays().forEach(overlay => {
-				if (overlay.getId() === featureId) {
-					this.map.removeOverlay(overlay);
-				}
-			});
+		const featureId = pickedFeature.get("id");
+		const featureLayer = avirisLayerGroup
+			.getLayers()
+			.getArray()
+			.find(layer => layer.get("_featureId") === featureId);
+		const iconFeature = avirisLayerGroup
+			.getLayers()
+			.getArray()
+			.find(layer => layer.get("_layerId") === "icons")
+			.getSource()
+			.getFeatures()
+			.find(f => f.get("_featureId") === featureId);
+
+		// Add or remove label
+		const featureExtent = featureLayer.get("_featureExtent");
+		const isVisible = Ol_Extent.containsExtent(
+			currentMapExtent,
+			featureExtent
+		);
+
+		if (toggleOn) {
+			// Add label and remove reference icon
+			if (!isVisible) this.map.getView().setCenter(featureExtent);
+			const center = Ol_Extent.getCenter(featureExtent);
+			this.addFeatureLabel(featureId, pickedFeature.get("name"), center);
+			iconFeature.setStyle(new Ol_Style({ display: "none" }));
 			return;
-		});
+		}
+
+		// If toggling off, remove old overlay and restore the reference icon feature
+		const oldOverlay = this.map
+			.getOverlays()
+			.getArray()
+			.find(overlay => overlay.get("_featureId") === featureId);
+		this.map.removeOverlay(oldOverlay);
+		iconFeature.setStyle(this.getAvirisIconStyle());
 	}
 
 	handleVISTALabelToggle(pickedFeature, currentMapExtent, toggleOn) {
@@ -475,13 +494,14 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 
 			// create ol overlay
 			let measureLabel = new Ol_Overlay({
-				id: id,
 				element: measureLabelEl,
-				offset: [0, -15],
+				// offset: [0, -15],
 				positioning: "bottom-center",
 				autoPan: true,
 				stopEvent: false
 			});
+			measureLabel.set("_featureId", id);
+			console.log(id);
 
 			// store meta opt_meta
 			for (let key in opt_meta) {
