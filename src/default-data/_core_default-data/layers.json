@@ -153,7 +153,13 @@
             "isDefault": true,
             "url": "http://100.64.114.155:9090/aviris",
             "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png"
+                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "palette": {
+                "name": "AVIRIS_plumes",
+                "handleAs": "json-fixed"
+            },
+            "min": 0,
+            "max": 4000
         },
         {
             "id": "GRIDDED_EMISSIONS_V1",
