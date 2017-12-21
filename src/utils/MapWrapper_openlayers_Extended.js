@@ -115,8 +115,14 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 
 	getAvirisIconStyle() {
 		return new Ol_Style({
-			image: new Ol_Style_Icon({
-				src: "styles/resources/img/icon.svg"
+			image: new Ol_Style_Circle({
+				radius: 10,
+				stroke: new Ol_Style_Stroke({
+					color: "#fff"
+				}),
+				fill: new Ol_Style_Fill({
+					color: "#3399CC"
+				})
 			})
 		});
 	}
