@@ -175,7 +175,8 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 					layers: [
 						...json.map(json => this.createAvirisLayer(this, json)),
 						avirisIconLayer
-					]
+					],
+					opacity: layer.get("opacity")
 				});
 				avirisLayerGroup.set("_layerId", "AVIRIS");
 				avirisLayerGroup.set("_layerType", layer.get("type"));
@@ -238,7 +239,6 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
 	}
 
 	activateLayer(layer) {
-		// debugger;
 		try {
 			let mapLayers = this.map.getLayers().getArray();
 
