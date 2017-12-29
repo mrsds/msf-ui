@@ -107,6 +107,9 @@ export default class MapWrapper_cesium extends MapWrapper {
                 "minZoomDistance3D"
             ]);
 
+            // disable right click zoom weirdness
+            map.scene.screenSpaceCameraController.zoomEventTypes = this.cesium.CameraEventType.WHEEL;
+
             map.scene.globe.baseColor = this.cesium.Color.BLACK;
 
             //remove all preloaded earth layers
@@ -570,7 +573,8 @@ export default class MapWrapper_cesium extends MapWrapper {
                 let primitiveToAdd = new this.drawHelper.CirclePrimitive({
                     center: cesiumCenter,
                     radius: cesiumRadius,
-                    material: material
+                    material: material,
+                    showDrawingOutline: true
                 });
                 this.map.scene.primitives.add(primitiveToAdd);
                 primitiveToAdd._interactionType = interactionType;
@@ -596,14 +600,16 @@ export default class MapWrapper_cesium extends MapWrapper {
                     );
                     return false;
                 }
-                let material = this.cesium.Material.fromType(this.cesium.Material.RimLightingType);
-                material.uniforms.rimColor = new this.cesium.Color.fromCssColorString(
+                let material = this.cesium.Material.fromType(this.cesium.Material.ColorType);
+                material.uniforms.color = new this.cesium.Color.fromCssColorString(
                     appConfig.GEOMETRY_STROKE_COLOR
                 );
                 let primitiveToAdd = new this.drawHelper.PolylinePrimitive({
                     positions: cartesianCoords,
-                    width: appConfig.GEOMETRY_STROKE_WEIGHT,
+                    // width: appConfig.GEOMETRY_STROKE_WEIGHT,
+                    width: 1.0, // match the other shapes
                     material: material,
+                    showDrawingOutline: true,
                     geodesic: true
                 });
                 primitiveToAdd._interactionType = interactionType;
@@ -635,7 +641,8 @@ export default class MapWrapper_cesium extends MapWrapper {
                 );
                 let primitiveToAdd = new this.drawHelper.PolygonPrimitive({
                     positions: cartesianCoords,
-                    material: material
+                    material: material,
+                    showDrawingOutline: true
                 });
                 this.map.scene.primitives.add(primitiveToAdd);
                 primitiveToAdd._interactionType = interactionType;

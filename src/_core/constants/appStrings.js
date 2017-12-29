@@ -66,6 +66,10 @@ export const MEASURE_AREA = "Area";
 export const INTERACTION_DRAW = "Draw";
 export const INTERACTION_MEASURE = "Measure";
 
+// Shape types
+export const SHAPE_DISTANCE = "Shape_Distance";
+export const SHAPE_AREA = "Shape_Area";
+
 // event types
 export const EVENT_MOUSE_HOVER = "mousemove";
 export const EVENT_MOVE_END = "moveend";

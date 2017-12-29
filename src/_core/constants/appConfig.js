@@ -127,12 +127,11 @@ export const TERRAIN_EXAGGERATION_OPTIONS = [
     { value: 10, label: "10" }
 ];
 
-export const GEOMETRY_FILL_COLOR = "rgba(255, 255, 255, 0.2)";
-export const GEOMETRY_STROKE_COLOR = "rgba(255, 204, 0, 1)";
-export const GEOMETRY_STROKE_WEIGHT = 3;
+export const GEOMETRY_FILL_COLOR = "rgba(255, 255, 255, 0.1)";
+export const GEOMETRY_STROKE_COLOR = "rgba(255, 255, 255, 1)";
+export const GEOMETRY_STROKE_WEIGHT = 2;
+export const GEOMETRY_OUTLINE_COLOR = "rgba(0, 0, 0, 1)";
 
-export const MEASURE_FILL_COLOR = "rgba(255, 255, 255, 0.2)";
-export const MEASURE_STROKE_COLOR = "rgba(255, 255, 255, 0.75)";
 /* END MAP */
 
 /* WORKERS */

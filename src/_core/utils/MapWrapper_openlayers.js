@@ -23,6 +23,7 @@ import Ol_Feature from "ol/feature";
 import Ol_Geom_Circle from "ol/geom/circle";
 import Ol_Geom_Linestring from "ol/geom/linestring";
 import Ol_Geom_Polygon from "ol/geom/polygon";
+import OL_Geom_GeometryType from "ol/geom/geometrytype";
 import Ol_Format_GeoJSON from "ol/format/geojson";
 import Ol_Format_TopoJSON from "ol/format/topojson";
 import Ol_Format_KML from "ol/format/kml";
@@ -46,40 +47,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
         this.mapUtil = MapUtil;
         this.miscUtil = MiscUtil;
         this.cachedGeometry = null;
-        this.defaultGeometryStyle = new Ol_Style({
-            fill: new Ol_Style_Fill({
-                color: appConfig.GEOMETRY_FILL_COLOR
-            }),
-            stroke: new Ol_Style_Stroke({
-                color: appConfig.GEOMETRY_STROKE_COLOR,
-                width: appConfig.GEOMETRY_STROKE_WEIGHT
-            }),
-            image: new Ol_Style_Circle({
-                radius: 7,
-                fill: new Ol_Style_Fill({
-                    color: "#ffcc33"
-                })
-            })
-        });
-        this.defaultMeasureStyle = new Ol_Style({
-            fill: new Ol_Style_Fill({
-                color: appConfig.MEASURE_FILL_COLOR
-            }),
-            stroke: new Ol_Style_Stroke({
-                color: appConfig.MEASURE_STROKE_COLOR,
-                lineDash: [10, 10],
-                width: 2
-            }),
-            image: new Ol_Style_Circle({
-                radius: 7,
-                stroke: new Ol_Style_Stroke({
-                    color: "rgba(255, 255, 255, 0.75)"
-                }),
-                fill: new Ol_Style_Fill({
-                    color: "rgba(255, 255, 255, 0.5)"
-                })
-            })
-        });
+        this.configureStyles();
         this.map = this.createMap(container, options);
 
         this.initializationSuccess = this.map ? true : false;
@@ -125,6 +93,141 @@ export default class MapWrapper_openlayers extends MapWrapper {
             console.warn("Error in MapWrapper_openlayers.createMap:", err);
             return false;
         }
+    }
+
+    configureStyles() {
+        let geometryStyles = {};
+        geometryStyles[OL_Geom_GeometryType.POLYGON] = [
+            new Ol_Style({
+                stroke: new Ol_Style_Stroke({
+                    color: appConfig.GEOMETRY_OUTLINE_COLOR,
+                    width: appConfig.GEOMETRY_STROKE_WEIGHT + 1
+                })
+            }),
+            new Ol_Style({
+                fill: new Ol_Style_Fill({
+                    color: appConfig.GEOMETRY_FILL_COLOR
+                }),
+                stroke: new Ol_Style_Stroke({
+                    color: appConfig.GEOMETRY_STROKE_COLOR,
+                    width: appConfig.GEOMETRY_STROKE_WEIGHT
+                })
+            })
+        ];
+        geometryStyles[OL_Geom_GeometryType.POINT] = [
+            new Ol_Style({
+                image: new Ol_Style_Circle({
+                    radius: 4,
+                    fill: new Ol_Style_Fill({
+                        color: appConfig.GEOMETRY_STROKE_COLOR
+                    }),
+                    stroke: new Ol_Style_Stroke({
+                        color: appConfig.GEOMETRY_OUTLINE_COLOR,
+                        width: 2
+                    })
+                }),
+                zIndex: Infinity
+            })
+        ];
+        geometryStyles[OL_Geom_GeometryType.MULTI_LINE_STRING] = geometryStyles[
+            OL_Geom_GeometryType.LINE_STRING
+        ] = [
+            new Ol_Style({
+                stroke: new Ol_Style_Stroke({
+                    color: appConfig.GEOMETRY_OUTLINE_COLOR,
+                    width: appConfig.GEOMETRY_STROKE_WEIGHT + 1
+                })
+            }),
+            new Ol_Style({
+                stroke: new Ol_Style_Stroke({
+                    color: appConfig.GEOMETRY_STROKE_COLOR,
+                    width: appConfig.GEOMETRY_STROKE_WEIGHT
+                })
+            })
+        ];
+        geometryStyles[OL_Geom_GeometryType.CIRCLE] = geometryStyles[OL_Geom_GeometryType.POLYGON];
+        this.defaultGeometryStyle = (feature, resolution) => {
+            return geometryStyles[feature.getGeometry().getType()];
+        };
+
+        let drawingAreaStyles = {};
+        let drawingDistanceStyles = {};
+        let drawingStyles = {
+            [appStrings.SHAPE_DISTANCE]: drawingDistanceStyles,
+            [appStrings.SHAPE_AREA]: drawingAreaStyles
+        };
+        drawingAreaStyles[OL_Geom_GeometryType.POLYGON] = [
+            new Ol_Style({
+                stroke: new Ol_Style_Stroke({
+                    lineDash: [15, 10],
+                    color: appConfig.GEOMETRY_OUTLINE_COLOR,
+                    width: appConfig.GEOMETRY_STROKE_WEIGHT + 1
+                })
+            }),
+            new Ol_Style({
+                fill: new Ol_Style_Fill({
+                    color: appConfig.GEOMETRY_FILL_COLOR
+                }),
+                stroke: new Ol_Style_Stroke({
+                    lineDash: [15, 10],
+                    color: appConfig.GEOMETRY_STROKE_COLOR,
+                    width: appConfig.GEOMETRY_STROKE_WEIGHT
+                })
+            })
+        ];
+        drawingAreaStyles[OL_Geom_GeometryType.POINT] = [
+            new Ol_Style({
+                image: new Ol_Style_Circle({
+                    radius: 4,
+                    fill: new Ol_Style_Fill({
+                        color: appConfig.GEOMETRY_STROKE_COLOR
+                    }),
+                    stroke: new Ol_Style_Stroke({
+                        color: appConfig.GEOMETRY_OUTLINE_COLOR,
+                        width: 1
+                    })
+                }),
+                zIndex: Infinity
+            })
+        ];
+        drawingAreaStyles[OL_Geom_GeometryType.MULTI_LINE_STRING] = drawingAreaStyles[
+            OL_Geom_GeometryType.LINE_STRING
+        ] = [];
+        drawingAreaStyles[OL_Geom_GeometryType.CIRCLE] =
+            drawingAreaStyles[OL_Geom_GeometryType.POLYGON];
+
+        drawingDistanceStyles[OL_Geom_GeometryType.MULTI_LINE_STRING] = drawingDistanceStyles[
+            OL_Geom_GeometryType.LINE_STRING
+        ] = [
+            new Ol_Style({
+                stroke: new Ol_Style_Stroke({
+                    lineDash: [15, 10],
+                    color: appConfig.GEOMETRY_OUTLINE_COLOR,
+                    width: appConfig.GEOMETRY_STROKE_WEIGHT + 1
+                })
+            }),
+            new Ol_Style({
+                stroke: new Ol_Style_Stroke({
+                    lineDash: [15, 10],
+                    color: appConfig.GEOMETRY_STROKE_COLOR,
+                    width: appConfig.GEOMETRY_STROKE_WEIGHT
+                })
+            })
+        ];
+        drawingDistanceStyles[OL_Geom_GeometryType.POINT] =
+            drawingAreaStyles[OL_Geom_GeometryType.POINT];
+        drawingDistanceStyles[OL_Geom_GeometryType.POLYGON] =
+            drawingAreaStyles[OL_Geom_GeometryType.POLYGON];
+        drawingDistanceStyles[OL_Geom_GeometryType.CIRCLE] =
+            drawingAreaStyles[OL_Geom_GeometryType.CIRCLE];
+
+        this.defaultDrawingStyle = (
+            feature,
+            resolution,
+            measureType = appStrings.MEASURE_DISTANCE
+        ) => {
+            return drawingStyles[measureType][feature.getGeometry().getType()];
+        };
     }
 
     getMapSize() {
@@ -771,6 +874,11 @@ export default class MapWrapper_openlayers extends MapWrapper {
                         return acc;
                     }, []);
 
+                    // add last leg
+                    if (newCoords.length > 1) {
+                        newCoords.push(newCoords[0]);
+                    }
+
                     let lineCoords = this.mapUtil.generateGeodesicArcsForLineString(newCoords);
                     geom.setCoordinates([lineCoords]);
                     geom.set("originalCoordinates", newCoords, true);
@@ -778,17 +886,30 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 };
 
                 let geometryFunction = undefined;
+                let shapeType = appStrings.SHAPE_AREA;
                 if (interactionType === appStrings.INTERACTION_MEASURE) {
                     if (geometryType === appStrings.GEOMETRY_LINE_STRING) {
                         geometryFunction = measureDistGeom;
+                        shapeType = appStrings.SHAPE_DISTANCE;
                     } else if (geometryType === appStrings.GEOMETRY_POLYGON) {
                         geometryFunction = measureAreaGeom;
+                        shapeType = appStrings.SHAPE_AREA;
+                    } else if (geometryType === appStrings.GEOMETRY_CIRCLE) {
+                        geometryFunction = measureAreaGeom;
+                        shapeType = appStrings.SHAPE_DISTANCE;
+                    }
+                } else {
+                    if (geometryType === appStrings.GEOMETRY_LINE_STRING) {
+                        shapeType = appStrings.SHAPE_DISTANCE;
+                    } else if (geometryType === appStrings.GEOMETRY_POLYGON) {
+                        shapeType = appStrings.SHAPE_AREA;
+                    } else if (geometryType === appStrings.GEOMETRY_CIRCLE) {
+                        shapeType = appStrings.SHAPE_DISTANCE;
                     }
                 }
-                let drawStyle =
-                    interactionType === appStrings.INTERACTION_MEASURE
-                        ? this.defaultMeasureStyle
-                        : this.defaultGeometryStyle;
+                let drawStyle = (feature, resolution) => {
+                    return this.defaultDrawingStyle(feature, resolution, shapeType);
+                };
                 let drawInteraction = new Ol_Interaction_Draw({
                     source: mapLayer.getSource(),
                     type: geometryType,
