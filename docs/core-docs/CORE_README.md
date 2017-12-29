@@ -1,8 +1,6 @@
-[![Build Status](https://travis.jpl.nasa.gov/CommonMappingClient/cmc-core.svg?token=kcPVkrUjSKF8FJtoQYEw&branch=master)](https://travis.jpl.nasa.gov/CommonMappingClient/cmc-core)
-
 # Common Mapping Client Core README
 
-## Welcome to the Common Mapping Client 2.0!
+## Welcome to the Common Mapping Client 2!
 
 #### Overview
 The Common Mapping Client (CMC) is a foundation for web-based mapping applications that leverages, combines, and abstracts certain commonly used mapping functionalities, enabling developers to spend less time reinventing the wheel and more time solving their specific problems.
@@ -68,3 +66,35 @@ who have the same problem down the road may find a solution faster.
 * [FAQ](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/docs/core-docs/FAQ.md)
 * [Developer Guide](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/docs/core-docs/DEVELOPER_MANUAL.md)
 * [Example Projects](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/docs/core-docs/EXAMPLE_PROJECTS.md)
+
+
+## Copyright and Export Classification
+
+```
+Copyright 2017, by the California Institute of Technology. ALL RIGHTS RESERVED.
+United States Government Sponsorship acknowledged. Any commercial use must be
+negotiated with the Office of Technology Transfer at the California Institute
+of Technology.
+
+This software may be subject to U.S. export control laws. By accepting this software,
+the user agrees to comply with all applicable U.S. export laws and regulations.
+User has the responsibility to obtain export licenses, or other export authority
+as may be required before exporting such information to foreign countries or
+providing access to foreign persons.
+```
+
+## Licensing
+
+```
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ ```
