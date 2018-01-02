@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Input from "react-toolbox/lib/input";
+import Input from "material-ui/Input";
 import MiscUtil from "_core/utils/MiscUtil";
 import appConfig from "constants/appConfig";
+import styles from "_core/components/DatePicker/DatePicker.scss";
 
 const MAX_LENGTH = 3;
 
@@ -50,19 +51,25 @@ export class MonthPicker extends Component {
         this.month = monthStr;
         this.updateFromInternal = false;
         let containerClasses = MiscUtil.generateStringFromSet({
-            "date-picker-selection col-xs-4": true,
-            error: this.error
+            [styles.datePickerSelector]: true,
+            [styles.datePickerSelectorError]: this.error
         });
         return (
             <div className={containerClasses}>
                 <Input
-                    ref="input"
                     type="text"
                     tabIndex="0"
                     value={monthStr}
-                    onBlur={evt => this.handleBlur(evt)}
-                    onKeyPress={evt => this.handleKeyPress(evt)}
-                    onChange={evt => this.handleChange(evt)}
+                    inputProps={{
+                        onBlur: evt => {
+                            this.handleBlur(evt.target.value);
+                        },
+                        onKeyPress: evt => {
+                            this.handleKeyPress(evt);
+                        }
+                    }}
+                    onChange={evt => this.handleChange(evt.target.value)}
+                    classes={{ input: styles.selectionInput }}
                 />
             </div>
         );

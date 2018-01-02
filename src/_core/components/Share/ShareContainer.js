@@ -2,25 +2,19 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Button, IconButton } from "react-toolbox/lib/button";
-import {
-    List,
-    ListItem,
-    ListSubHeader,
-    ListCheckbox,
-    ListDivider
-} from "react-toolbox/lib/list";
+import moment from "moment";
+import Button from "material-ui/Button";
+import Facebook from "mdi-material-ui/Facebook";
+import Twitter from "mdi-material-ui/Twitter";
+import Email from "mdi-material-ui/Email";
+import Reddit from "mdi-material-ui/Reddit";
+import Grid from "material-ui/Grid";
 import * as actions from "_core/actions/AppActions";
 import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
 import MiscUtil from "_core/utils/MiscUtil";
-import ModalMenuContainer from "_core/components/ModalMenu/ModalMenuContainer";
-import moment from "moment";
-import {
-    FacebookIcon,
-    GooglePlusIcon,
-    TwitterIcon
-} from "_core/components/Reusables/CustomIcons";
+import { ModalMenu } from "_core/components/ModalMenu";
+import styles from "_core/components/Share/ShareContainer.scss";
 
 export class ShareContainer extends Component {
     componentDidMount() {
@@ -97,11 +91,7 @@ export class ShareContainer extends Component {
                         ")"
                     );
                 });
-                return (
-                    appConfig.URL_KEYS.ACTIVE_LAYERS +
-                    "=" +
-                    idsWithOpacity.join(",")
-                );
+                return appConfig.URL_KEYS.ACTIVE_LAYERS + "=" + idsWithOpacity.join(",");
             }
         }
         return "";
@@ -110,14 +100,12 @@ export class ShareContainer extends Component {
         return (
             appConfig.URL_KEYS.BASEMAP +
             "=" +
-            this.props.layers
-                .get(appStrings.LAYER_GROUP_TYPE_BASEMAP)
-                .reduce((acc, layer) => {
-                    if (layer.get("isActive")) {
-                        acc = layer.get("id");
-                    }
-                    return acc;
-                }, "")
+            this.props.layers.get(appStrings.LAYER_GROUP_TYPE_BASEMAP).reduce((acc, layer) => {
+                if (layer.get("isActive")) {
+                    acc = layer.get("id");
+                }
+                return acc;
+            }, "")
         );
     }
     getPlaceLabelsString() {
@@ -139,37 +127,24 @@ export class ShareContainer extends Component {
         return (
             appConfig.URL_KEYS.ENABLE_POLITICAL_BOUNDARIES +
             "=" +
-            (politicalBoundariesLayer &&
-                politicalBoundariesLayer.get("isActive"))
+            (politicalBoundariesLayer && politicalBoundariesLayer.get("isActive"))
         );
     }
     getViewModeString() {
         return (
             appConfig.URL_KEYS.VIEW_MODE +
             "=" +
-            (this.props.in3DMode
-                ? appStrings.MAP_VIEW_MODE_3D
-                : appStrings.MAP_VIEW_MODE_2D)
+            (this.props.in3DMode ? appStrings.MAP_VIEW_MODE_3D : appStrings.MAP_VIEW_MODE_2D)
         );
     }
     getExtentString() {
-        return (
-            appConfig.URL_KEYS.VIEW_EXTENT + "=" + this.props.extent.join(",")
-        );
+        return appConfig.URL_KEYS.VIEW_EXTENT + "=" + this.props.extent.join(",");
     }
     getTerrainString() {
-        return (
-            appConfig.URL_KEYS.ENABLE_3D_TERRAIN +
-            "=" +
-            this.props.enableTerrain
-        );
+        return appConfig.URL_KEYS.ENABLE_3D_TERRAIN + "=" + this.props.enableTerrain;
     }
     getDateString() {
-        return (
-            appConfig.URL_KEYS.DATE +
-            "=" +
-            moment(this.props.mapDate).format("YYYY-MM-DD")
-        );
+        return appConfig.URL_KEYS.DATE + "=" + moment(this.props.mapDate).format("YYYY-MM-DD");
     }
     getDateSliderResolutionString() {
         return (
@@ -188,8 +163,7 @@ export class ShareContainer extends Component {
     }
     shareFacebook(url) {
         MiscUtil.openLinkInNewTab(
-            "https://www.facebook.com/sharer/sharer.php?u=" +
-                encodeURIComponent(url)
+            "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url)
         );
     }
     shareTwitter(url) {
@@ -200,10 +174,8 @@ export class ShareContainer extends Component {
                 appConfig.APP_TITLE
         );
     }
-    shareGooglePlus(url) {
-        MiscUtil.openLinkInNewTab(
-            "https://plus.google.com/share?url=" + encodeURIComponent(url)
-        );
+    shareReddit(url) {
+        MiscUtil.openLinkInNewTab("https://www.reddit.com/submit?url=" + encodeURIComponent(url));
     }
 
     render() {
@@ -221,63 +193,66 @@ export class ShareContainer extends Component {
             window.history.replaceState(undefined, undefined, "#");
         }
         return (
-            <ModalMenuContainer
+            <ModalMenu
                 small
                 title="Share"
                 active={this.props.isOpen}
                 closeFunc={() => this.props.actions.setShareOpen(false)}
             >
-                <div className="share-container">
+                <div className={styles.shareContainer}>
                     <p>
-                        This URL contains the information to reproduce this
-                        current view of the map.
+                        This URL contains the information to reproduce this current view of the map.
                     </p>
-                    <p>Please copy and share it to your heart's content.</p>
                     <input
                         type="text"
                         ref={ref => (this.urlText = ref)}
                         readOnly="readonly"
                         defaultValue={shareUrl}
-                        className="permalink-text"
+                        className={styles.permalink}
                         onClick={() => this.focusTextArea()}
                     />
-                    <div className="text-center row">
-                        <Button
-                            floating
-                            neutral
-                            className="emailIcon"
-                            style={{ color: "white", background: "#505050" }}
-                            icon="email"
-                            onClick={() => this.shareEmail(shareUrl)}
-                        />
-                        <Button
-                            floating
-                            neutral
-                            style={{ background: "#3B5998" }}
-                            className="FacebookIcon"
-                            onClick={() => this.shareFacebook(shareUrl)}
-                        >
-                            <FacebookIcon />
-                        </Button>
-                        <Button
-                            floating
-                            neutral
-                            style={{ background: "#55ACEE" }}
-                            onClick={() => this.shareTwitter(shareUrl)}
-                        >
-                            <TwitterIcon />
-                        </Button>
-                        <Button
-                            floating
-                            neutral
-                            style={{ background: "#DD4B39" }}
-                            onClick={() => this.shareGooglePlus(shareUrl)}
-                        >
-                            <GooglePlusIcon />
-                        </Button>
+                    <div className={styles.buttons}>
+                        <Grid container spacing={0}>
+                            <Grid item xs>
+                                <Button
+                                    fab
+                                    style={{ color: "white", background: "#505050" }}
+                                    onClick={() => this.shareEmail(shareUrl)}
+                                >
+                                    <Email />
+                                </Button>
+                            </Grid>
+                            <Grid item xs>
+                                <Button
+                                    fab
+                                    style={{ color: "white", background: "#3B5998" }}
+                                    onClick={() => this.shareFacebook(shareUrl)}
+                                >
+                                    <Facebook />
+                                </Button>
+                            </Grid>
+                            <Grid item xs>
+                                <Button
+                                    fab
+                                    style={{ color: "white", background: "#55ACEE" }}
+                                    onClick={() => this.shareTwitter(shareUrl)}
+                                >
+                                    <Twitter />
+                                </Button>
+                            </Grid>
+                            <Grid item xs>
+                                <Button
+                                    fab
+                                    style={{ color: "white", background: "#DD4B39" }}
+                                    onClick={() => this.shareReddit(shareUrl)}
+                                >
+                                    <Reddit />
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </div>
                 </div>
-            </ModalMenuContainer>
+            </ModalMenu>
         );
     }
 }

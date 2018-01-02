@@ -5,6 +5,8 @@ import { bindActionCreators } from "redux";
 import * as actions from "_core/actions/MapActions";
 import * as appStrings from "_core/constants/appStrings";
 import MiscUtil from "_core/utils/MiscUtil";
+import styles from "_core/components/Map/MapContainer.scss";
+import displayStyles from "_core/styles/display.scss";
 
 export class MapContainer2D extends Component {
     constructor(props) {
@@ -114,12 +116,15 @@ export class MapContainer2D extends Component {
         }
 
         let containerClass = MiscUtil.generateStringFromSet({
-            inactive: this.props.in3DMode
+            [styles.mapRenderWrapper]: true,
+            [displayStyles.hidden]: this.props.in3DMode,
+            [displayStyles.animationFadeIn]: !this.props.in3DMode,
+            [displayStyles.animationFadeOut]: this.props.in3DMode
         });
 
         return (
-            <div id="mapContainer2D" className={containerClass}>
-                <div id="map2D" />
+            <div className={containerClass}>
+                <div id="map2D" className={styles.mapRender} />
             </div>
         );
     }

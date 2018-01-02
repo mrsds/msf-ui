@@ -1,0 +1,36 @@
+.datePickerSelection {
+    position: relative;
+    text-align: center;
+    padding: 0.25rem 1rem;
+}
+
+.datePickerSelectionError {
+    border: 1px solid red;
+}
+
+.selectionInput {
+    text-align: center;
+    font-weight: 400;
+    padding: 0px;
+}
+
+.datePicker {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    line-height: 1rem;
+}
+
+.incrementButtonWrapper {
+    text-align: center;
+}
+
+.incrementButton {
+    opacity: 0.2;
+    transition: opacity 0.1s linear 0s;
+}
+
+.datePicker:hover .incrementButton {
+    opacity: 1;
+}

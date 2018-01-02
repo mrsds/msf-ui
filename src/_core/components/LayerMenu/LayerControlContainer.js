@@ -1,24 +1,30 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ReactTooltip from "react-tooltip";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button, IconButton } from "react-toolbox/lib/button";
-import Switch from "react-toolbox/lib/switch";
-import Slider from "react-toolbox/lib/slider";
+import { ListItem, ListItemSecondaryAction, ListItemText } from "material-ui/List";
+import Divider from "material-ui/Divider";
+import InfoOutlineIcon from "material-ui-icons/InfoOutline";
+import Typography from "material-ui/Typography";
+import Tooltip from "material-ui/Tooltip";
+import Collapse from "material-ui/transitions/Collapse";
+import Popover from "material-ui/Popover";
+import Grow from "material-ui/transitions/Grow";
+import ClickAwayListener from "material-ui/utils/ClickAwayListener";
+import { Manager, Target, Popper } from "react-popper";
+import { EnhancedSwitch, IconButtonSmall } from "_core/components/Reusables";
 import * as layerActions from "_core/actions/LayerActions";
-import Colorbar from "_core/components/LayerMenu/Colorbar";
-import MiscUtil from "_core/utils/MiscUtil";
 import {
-    OpacityIcon0,
-    OpacityIcon25,
-    OpacityIcon50,
-    OpacityIcon75,
-    OpacityIcon100,
-    LayerIconTop,
-    LayerIconMiddle,
-    LayerIconBottom
-} from "_core/components/Reusables/CustomIcons";
+    Colorbar,
+    LayerPositionIcon,
+    LayerPositionControl,
+    LayerOpacityIcon,
+    LayerOpacityControl
+} from "_core/components/LayerMenu";
+import MiscUtil from "_core/utils/MiscUtil";
+import styles from "_core/components/LayerMenu/LayerControlContainer.scss";
+import textStyles from "_core/styles/text.scss";
+import displayStyles from "_core/styles/display.scss";
 
 export class LayerControlContainer extends Component {
     constructor(props) {
@@ -26,6 +32,7 @@ export class LayerControlContainer extends Component {
 
         this.isChangingOpacity = false;
         this.isChangingPosition = false;
+        this.opacityButton = null;
     }
 
     shouldComponentUpdate(nextProps) {
@@ -53,7 +60,7 @@ export class LayerControlContainer extends Component {
     setLayerActive(active) {
         this.isChangingPosition = false;
         this.isChangingOpacity = false;
-        this.props.actions.setLayerActive(this.props.layer.get("id"), active);
+        this.props.actions.setLayerActive(this.props.layer.get("id"), !active);
     }
 
     changeOpacity(value) {
@@ -97,206 +104,165 @@ export class LayerControlContainer extends Component {
         this.props.actions.moveLayerDown(this.props.layer.get("id"));
     }
 
-    render() {
-        let containerClasses = MiscUtil.generateStringFromSet({
-            "layer-control pos-rel": true,
-            active: this.props.layer.get("isActive")
-        });
-        let switchClasses = MiscUtil.generateStringFromSet({
-            "layer-toggle": true,
-            active: this.props.layer.get("isActive")
-        });
-        let sliderContainerClasses = MiscUtil.generateStringFromSet({
-            "opacity-slider-container row middle-xs": true,
-            active: this.isChangingOpacity
-        });
-        let positionContainerClasses = MiscUtil.generateStringFromSet({
-            "position-controls-container": true,
-            active: this.isChangingPosition
-        });
-        let colorbarRangeClasses = MiscUtil.generateStringFromSet({
-            "row middle-xs colorbar-range-wrapper": true,
-            active: this.props.layer.getIn(["palette", "handleAs"]) !== ""
-        });
-        let currOpacity = Math.floor(this.props.layer.get("opacity") * 100);
-        let layerOrderClassName = MiscUtil.generateStringFromSet({
-            "layer-order-label": true,
-            active: this.isChangingPosition
-        });
-        let opacityIcon =
-            currOpacity === 0 ? (
-                <OpacityIcon0 />
-            ) : currOpacity < 50 ? (
-                <OpacityIcon25 />
-            ) : currOpacity < 75 ? (
-                <OpacityIcon50 />
-            ) : currOpacity < 100 ? (
-                <OpacityIcon75 />
-            ) : (
-                <OpacityIcon100 />
-            );
-
-        let layerOrderIcon =
-            this.props.layer.get("displayIndex") === 1 ? (
-                <LayerIconTop />
-            ) : this.props.layer.get("displayIndex") === this.props.activeNum ? (
-                <LayerIconBottom />
-            ) : (
-                <LayerIconMiddle />
-            );
-
+    renderTopContent() {
         return (
-            <div className={containerClasses}>
-                <div className="row middle-xs">
-                    <div className="col-xs-2 text-left toggle">
-                        <div
-                            data-tip={
-                                this.props.layer.get("isActive") ? "Hide Layer" : "Show Layer"
-                            }
-                            data-place="left"
-                        >
-                            <Switch
-                                className={switchClasses}
-                                checked={this.props.layer.get("isActive")}
-                                onChange={active => this.setLayerActive(active)}
-                                theme={{
-                                    on: "switch-thumb-on",
-                                    off: "switch-thumb-off",
-                                    thumb: "switch-thumb"
-                                }}
-                            />
-                        </div>
-                    </div>
-                    <span
-                        className="layer-header text-ellipsis col-xs-9"
-                        data-tip={this.props.layer.get("title")}
-                        data-place="left"
-                    >
-                        {this.props.layer.get("title")}
-                    </span>
-                    <span className="col-xs-1 inactive-info-btn">
-                        <IconButton
-                            icon="info_outline"
-                            className="no-padding mini-xs-waysmall"
-                            data-tip="Layer information"
-                            data-place="left"
-                            onClick={() => this.openLayerInfo()}
+            <ListItem dense={true} classes={{ dense: styles.dense }}>
+                <Tooltip
+                    title={this.props.layer.get("isActive") ? "Hide Layer" : "Show Layer"}
+                    placement="top"
+                >
+                    <EnhancedSwitch
+                        checked={this.props.layer.get("isActive")}
+                        onChange={(value, checked) => this.setLayerActive(!checked)}
+                        onClick={evt => this.setLayerActive(evt.target.checked)}
+                    />
+                </Tooltip>
+                <span className={textStyles.textEllipsis}>
+                    <ListItemText primary={this.props.layer.get("title")} />
+                </span>
+                <ListItemSecondaryAction
+                    classes={{
+                        root: `${styles.secondaryActionRoot} ${this.props.layer.get("isActive")
+                            ? displayStyles.invisible
+                            : displayStyles.hiddenFadeIn}`
+                    }}
+                >
+                    <Tooltip title="Layer information" placement="left">
+                        <IconButtonSmall onClick={() => this.openLayerInfo()}>
+                            <InfoOutlineIcon />
+                        </IconButtonSmall>
+                    </Tooltip>
+                </ListItemSecondaryAction>
+            </ListItem>
+        );
+    }
+
+    renderBottomContent() {
+        return (
+            <div>
+                <Collapse
+                    in={this.props.layer.get("isActive")}
+                    timeout="auto"
+                    className={styles.layerControl}
+                    classes={{ entered: styles.collapseEntered }}
+                >
+                    <div className={styles.layerControlContent}>
+                        <Colorbar
+                            palette={this.props.palette}
+                            min={parseFloat(this.props.layer.get("min"))}
+                            max={parseFloat(this.props.layer.get("max"))}
+                            units={this.props.layer.get("units")}
+                            displayMin={parseFloat(this.props.layer.getIn(["palette", "min"]))}
+                            displayMax={parseFloat(this.props.layer.getIn(["palette", "max"]))}
+                            handleAs={this.props.layer.getIn(["palette", "handleAs"])}
+                            url={this.props.layer.getIn(["palette", "url"])}
+                            className={styles.colorbar}
                         />
-                    </span>
-                </div>
-                <div className="lower-content">
-                    <div className="row middle-xs">
-                        <div className="col-xs-9 text-left no-padding">
-                            <Colorbar
-                                palette={this.props.palette}
-                                min={parseFloat(this.props.layer.get("min"))}
-                                max={parseFloat(this.props.layer.get("max"))}
-                                displayMin={parseFloat(this.props.layer.getIn(["palette", "min"]))}
-                                displayMax={parseFloat(this.props.layer.getIn(["palette", "max"]))}
-                                handleAs={this.props.layer.getIn(["palette", "handleAs"])}
-                                url={this.props.layer.getIn(["palette", "url"])}
-                            />
-                        </div>
-                        <div className="col-xs-3 text-right no-padding">
-                            <IconButton
-                                primary={this.isChangingPosition}
-                                disabled={!this.props.layer.get("isActive")}
-                                className="no-padding mini-xs-waysmall"
-                                data-tip={
-                                    !this.isChangingPosition ? "Adjust layer positioning" : null
-                                }
-                                data-place="left"
-                                tabIndex={this.props.layer.get("isActive") ? 0 : -1}
+                        {this.renderIconRow()}
+                    </div>
+                </Collapse>
+                <Divider />
+            </div>
+        );
+    }
+
+    renderIconRow() {
+        return (
+            <span className={styles.layerControlIconRow}>
+                <Manager style={{ display: "inline-block" }}>
+                    <Target style={{ display: "inline-block" }}>
+                        <Tooltip title={"Set Layer Position"} placement="top">
+                            <LayerPositionIcon
+                                displayIndex={this.props.layer.get("displayIndex")}
+                                activeNum={this.props.activeNum}
+                                className={styles.iconButtonSmall}
+                                color={this.isChangingPosition ? "primary" : "default"}
                                 onClick={() => this.toggleChangingPosition()}
-                            >
-                                {/*<i className="button-icon ms ms-fw ms-layers-overlay" />*/}
-                                {layerOrderIcon}
-                                <span className={layerOrderClassName}>
-                                    {this.props.layer.get("displayIndex")}
-                                </span>
-                            </IconButton>
-                            <div className={positionContainerClasses}>
-                                <div className="popover-label">Layer Positioning</div>
-                                <div className="position-control-content row middle-xs">
-                                    <Button
-                                        primary
-                                        label="Top"
-                                        className="position-control-button col-xs-6"
-                                        onClick={() => this.moveToTop()}
+                            />
+                        </Tooltip>
+                    </Target>
+                    <Popper
+                        placement="left"
+                        modifiers={{
+                            computeStyle: {
+                                gpuAcceleration: false
+                            }
+                        }}
+                        eventsEnabled={this.isChangingPosition}
+                        className={!this.isChangingPosition ? displayStyles.noPointer : ""}
+                    >
+                        <Grow appear={false} in={this.isChangingPosition}>
+                            <div>
+                                <ClickAwayListener
+                                    onClickAway={() => {
+                                        if (this.isChangingPosition) {
+                                            this.toggleChangingPosition();
+                                        }
+                                    }}
+                                >
+                                    <LayerPositionControl
+                                        isActive={this.isChangingPosition}
+                                        moveToTop={() => this.moveToTop()}
+                                        moveToBottom={() => this.moveToBottom()}
+                                        moveUp={() => this.moveUp()}
+                                        moveDown={() => this.moveDown()}
                                     />
-                                    <Button
-                                        primary
-                                        label="Up"
-                                        className="position-control-button col-xs-6"
-                                        onClick={() => this.moveUp()}
-                                    />
-                                    <Button
-                                        primary
-                                        label="Bottom"
-                                        className="position-control-button col-xs-6"
-                                        onClick={() => this.moveToBottom()}
-                                    />
-                                    <Button
-                                        primary
-                                        label="Down"
-                                        className="position-control-button col-xs-6"
-                                        onClick={() => this.moveDown()}
-                                    />
-                                </div>
+                                </ClickAwayListener>
                             </div>
-                            <IconButton
-                                primary={this.isChangingOpacity}
-                                disabled={!this.props.layer.get("isActive")}
-                                className="no-padding mini-xs-waysmall"
-                                data-tip={!this.isChangingOpacity ? "Adjust layer opacity" : null}
-                                data-place="left"
-                                tabIndex={this.props.layer.get("isActive") ? 0 : -1}
-                                onClick={() => this.toggleChangingOpacity()}
-                            >
-                                {opacityIcon}
-                            </IconButton>
-                            <div className={sliderContainerClasses}>
-                                <div className="popover-label">Layer Opacity</div>
-                                <div className="opacity-slider-content row middle-xs">
-                                    <Slider
-                                        min={0}
-                                        max={100}
-                                        step={10}
-                                        value={this.props.layer.get("opacity") * 100}
-                                        className="react-toolbox-slider-overrides col-xs-9 no-padding"
+                        </Grow>
+                    </Popper>
+                    <Target style={{ display: "inline-block" }}>
+                        <LayerOpacityIcon
+                            opacity={this.props.layer.get("opacity")}
+                            className={styles.iconButtonSmall}
+                            color={this.isChangingOpacity ? "primary" : "default"}
+                            onClick={() => this.toggleChangingOpacity()}
+                        />
+                    </Target>
+                    <Popper
+                        placement="left"
+                        modifiers={{
+                            computeStyle: {
+                                gpuAcceleration: false
+                            }
+                        }}
+                        className={!this.isChangingOpacity ? displayStyles.noPointer : ""}
+                        eventsEnabled={this.isChangingOpacity}
+                    >
+                        <Grow appear={false} in={this.isChangingOpacity}>
+                            <div>
+                                <ClickAwayListener
+                                    onClickAway={() => {
+                                        if (this.isChangingOpacity) {
+                                            this.toggleChangingOpacity();
+                                        }
+                                    }}
+                                >
+                                    <LayerOpacityControl
+                                        isActive={this.isChangingOpacity}
+                                        opacity={this.props.layer.get("opacity")}
                                         onChange={value => this.changeOpacity(value)}
                                     />
-                                    <span className="opacity-label col-xs-3 no-padding">
-                                        {currOpacity}%
-                                    </span>
-                                </div>
+                                </ClickAwayListener>
                             </div>
-                            <IconButton
-                                icon="info_outline"
-                                className="no-padding mini-xs-waysmall"
-                                data-tip="Layer information"
-                                data-place="left"
-                                tabIndex={this.props.layer.get("isActive") ? 0 : -1}
-                                onClick={() => this.openLayerInfo()}
-                            />
-                        </div>
-                    </div>
-                    <div className={colorbarRangeClasses}>
-                        <div className="col-xs-12 no-padding">
-                            <div className="colorbar-label-container pos-rel">
-                                <span className="colorbar-label min">
-                                    {this.props.layer.get("min")}
-                                </span>
-                                <span className="colorbar-label mid">
-                                    {this.props.layer.get("units")}
-                                </span>
-                                <span className="colorbar-label max">
-                                    {this.props.layer.get("max")}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        </Grow>
+                    </Popper>
+                </Manager>
+                <IconButtonSmall
+                    className={styles.iconButtonSmall}
+                    onClick={() => this.openLayerInfo()}
+                >
+                    <InfoOutlineIcon />
+                </IconButtonSmall>
+            </span>
+        );
+    }
+
+    render() {
+        return (
+            <div>
+                {this.renderTopContent()}
+                {this.renderBottomContent()}
             </div>
         );
     }

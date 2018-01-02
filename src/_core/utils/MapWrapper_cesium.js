@@ -8,7 +8,7 @@ import MapUtil from "_core/utils/MapUtil";
 import TileHandler from "_core/utils/TileHandler";
 import "assets/cesium/Cesium.js";
 import "_core/utils/CesiumDrawHelper.js";
-import "assets/cesium/Widgets/widgets.css";
+// import "assets/cesium/Widgets/widgets.css";
 import Modernizr from "modernizr";
 
 export default class MapWrapper_cesium extends MapWrapper {

@@ -1,0 +1,23 @@
+@import "~styles/colors";
+
+.preview {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    float: left;
+    background: $color-light;
+}
+
+/* MUI overrides */
+.menuItemRoot {
+    padding: 20px 10px;
+}
+
+.selectMenu {
+    height: 60px;
+    padding-top: 10px;
+}
+
+.selectMenuIcon {
+    top: 24px;
+}

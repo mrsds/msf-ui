@@ -2,31 +2,46 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import ReactTooltip from "react-tooltip";
+import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
+import { pink } from "material-ui/colors";
 import * as actions from "_core/actions/AppActions";
 import * as mapActions from "_core/actions/MapActions";
 import * as layerActions from "_core/actions/LayerActions";
 import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
 import MiscUtil from "_core/utils/MiscUtil";
-import MapContainer from "_core/components/Map/MapContainer";
-import MapContextMenu from "_core/components/Map/MapContextMenu";
-import MapControlsContainer from "_core/components/Map/MapControlsContainer";
-import SettingsContainer from "_core/components/Settings/SettingsContainer";
-import ShareContainer from "_core/components/Share/ShareContainer";
-import LayerInfoContainer from "_core/components/LayerInfo/LayerInfoContainer";
-import LoadingContainer from "_core/components/Loading/LoadingContainer";
-import HelpContainer from "_core/components/Help/HelpContainer";
-import AlertsContainer from "_core/components/Alerts/AlertsContainer";
-import DateSliderContainer from "_core/components/DateSlider/DateSliderContainer";
-import DatePickerContainer from "_core/components/DatePicker/DatePickerContainer";
-import AppBarContainer from "_core/components/AppBar/AppBarContainer";
-import LayerMenuContainer from "_core/components/LayerMenu/LayerMenuContainer";
-import MouseFollowerContainer from "_core/components/MouseFollower/MouseFollowerContainer";
-import AnalyticsContainer from "_core/components/Analytics/AnalyticsContainer";
-import KeyboardControlsContainer from "_core/components/KeyboardControls/KeyboardControlsContainer";
-import CoordinateTracker from "_core/components/Map/CoordinateTracker";
-import "styles/styles.scss";
+import {
+    MapContainer,
+    MapContextMenu,
+    MapControlsContainer,
+    CoordinateTracker
+} from "_core/components/Map";
+import { SettingsContainer } from "_core/components/Settings";
+import { ShareContainer } from "_core/components/Share";
+import { LayerInfoContainer } from "_core/components/LayerInfo";
+import { LoadingContainer } from "_core/components/Loading";
+import { HelpContainer } from "_core/components/Help";
+import { AlertsContainer } from "_core/components/Alerts";
+import { TimelineContainer } from "_core/components/Timeline";
+import { DatePickerContainer } from "_core/components/DatePicker";
+import { AppBarContainer } from "_core/components/AppBar";
+import { LayerMenuContainer } from "_core/components/LayerMenu";
+import { MouseFollowerContainer } from "_core/components/MouseFollower";
+import { AnalyticsContainer } from "_core/components/Analytics";
+import { KeyboardControlsContainer } from "_core/components/KeyboardControls";
+import styles from "_core/components/App/AppContainer.scss";
+import displayStyles from "_core/styles/display.scss";
+
+function theme() {
+    return createMuiTheme({
+        typography: {
+            htmlFontSize: 10
+        },
+        palette: {
+            primary: pink
+        }
+    });
+}
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -81,38 +96,41 @@ export class AppContainer extends Component {
 
                     // ReactTooltip needs to be rebuilt to account
                     // for dynamic lists in LayerMenuContainer
-                    ReactTooltip.rebuild();
+                    // ReactTooltip.rebuild();
                 }, 0);
             });
         });
     }
 
     render() {
+        let hideMouse = this.props.mapControlsHidden && this.props.distractionFreeMode;
         let containerClasses = MiscUtil.generateStringFromSet({
-            "mouse-hidden": this.props.mapControlsHidden && this.props.distractionFreeMode,
-            "mouse-shown": !this.props.mapControlsHidden && this.props.distractionFreeMode
+            [styles.appContainer]: true,
+            [displayStyles.mouseVisible]: !hideMouse,
+            [displayStyles.mouseHidden]: hideMouse
         });
         return (
-            <div id="appContainer" className={containerClasses}>
-                <DatePickerContainer />
-                <HelpContainer />
-                <MapContainer />
-                <MapControlsContainer />
-                <AppBarContainer />
-                <SettingsContainer />
-                <ShareContainer />
-                <LayerInfoContainer />
-                <LayerMenuContainer />
-                <DateSliderContainer />
-                <AlertsContainer />
-                <LoadingContainer />
-                <MapContextMenu />
-                <MouseFollowerContainer />
-                <AnalyticsContainer />
-                <KeyboardControlsContainer />
-                <CoordinateTracker />
-                <ReactTooltip effect="solid" globalEventOff="click" delayShow={600} />
-            </div>
+            <MuiThemeProvider theme={theme}>
+                <div className={containerClasses}>
+                    <DatePickerContainer />
+                    <HelpContainer />
+                    <MapContainer />
+                    <LoadingContainer />
+                    <MapControlsContainer />
+                    <AppBarContainer />
+                    <SettingsContainer />
+                    <ShareContainer />
+                    <LayerInfoContainer />
+                    <LayerMenuContainer />
+                    <TimelineContainer />
+                    <AlertsContainer />
+                    <MapContextMenu />
+                    <MouseFollowerContainer />
+                    <AnalyticsContainer />
+                    <KeyboardControlsContainer />
+                    <CoordinateTracker />
+                </div>
+            </MuiThemeProvider>
         );
     }
 }

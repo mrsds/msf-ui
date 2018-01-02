@@ -1,0 +1,25 @@
+.root {
+    width: 50px;
+    height: 34px;
+}
+
+.default {
+    width: 34px;
+    height: 34px;
+}
+
+.bar {
+    width: 27px;
+    height: 11px;
+    margin-top: -5px;
+    margin-left: -16px;
+}
+
+.checked {
+    transform: translateX(12px);
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+}

@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import Typography from "material-ui/Typography";
 import MiscUtil from "_core/utils/MiscUtil";
+import styles from "_core/components/MouseFollower/MouseCoordinates.scss";
 
 export class MouseCoordinates extends Component {
     render() {
@@ -27,8 +29,9 @@ export class MouseCoordinates extends Component {
         });
 
         return (
-            <div
-                className={containerClasses}
+            <Typography
+                type="body1"
+                className={styles.text}
                 // eslint-disable-next-line react/no-danger
                 dangerouslySetInnerHTML={{ __html: displayText }}
             />

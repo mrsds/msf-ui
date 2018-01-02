@@ -1,0 +1,27 @@
+@import "~styles/colors";
+
+.root {
+    display: block;
+}
+
+.severity {
+    border-bottom: 1px solid $color-light;
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.severity1 {
+    composes: severity;
+    border-left: 3rem solid #fdd835;
+}
+
+.severity2 {
+    composes: severity;
+    border-left: 3rem solid #fb8c00;
+}
+
+.severity3 {
+    composes: severity;
+    border-left: 3rem solid #e53935;
+}

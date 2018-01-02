@@ -36,6 +36,7 @@ import MiscUtil from "_core/utils/MiscUtil";
 import MapUtil from "_core/utils/MapUtil";
 import TileHandler from "_core/utils/TileHandler";
 import Cache from "_core/utils/Cache";
+import tooltipStyles from "_core/components/Map/MapTooltip.scss";
 
 export default class MapWrapper_openlayers extends MapWrapper {
     constructor(container, options) {
@@ -753,7 +754,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
         try {
             // Create label domNode
             let measureLabelEl = document.createElement("div");
-            measureLabelEl.className = "tooltip tooltip-static";
+            measureLabelEl.className = tooltipStyles.tooltip;
             measureLabelEl.innerHTML = label;
 
             // create ol overlay

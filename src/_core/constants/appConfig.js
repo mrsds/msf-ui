@@ -70,12 +70,42 @@ export const MAX_DATE = moment(new Date())
     .add(1, "month")
     .toDate();
 export const DATE_SLIDER_RESOLUTIONS = [
-    { label: appStrings.SECONDS, resolution: 55900000, format: "YYYY MMM DD, hh:mm:ssa" },
-    { label: appStrings.MINUTES, resolution: 960000, format: "YYYY MMM DD, hh:mm:ssa" },
-    { label: appStrings.HOURS, resolution: 23500, format: "YYYY MMM DD, hh:mm:ssa" },
-    { label: appStrings.DAYS, resolution: 640, format: "YYYY MMM DD" },
-    { label: appStrings.MONTHS, resolution: 22, format: "YYYY MMM DD" },
-    { label: appStrings.YEARS, resolution: 1.6, format: "YYYY MMM DD" }
+    {
+        label: appStrings.SECONDS,
+        resolution: appStrings.SECONDS,
+        format: "YYYY MMM DD, HH:mm:ss",
+        visMajorFormat: "D MMMM HH:mm"
+    },
+    {
+        label: appStrings.MINUTES,
+        resolution: appStrings.MINUTES,
+        format: "YYYY MMM DD, HH:mm:ss",
+        visMajorFormat: "ddd D MMMM"
+    },
+    {
+        label: appStrings.HOURS,
+        resolution: appStrings.HOURS,
+        format: "YYYY MMM DD, HH:mm:ss",
+        visMajorFormat: "ddd D MMMM"
+    },
+    {
+        label: appStrings.DAYS,
+        resolution: appStrings.DAYS,
+        format: "YYYY MMM DD",
+        visMajorFormat: "MMMM YYYY"
+    },
+    {
+        label: appStrings.MONTHS,
+        resolution: appStrings.MONTHS,
+        format: "YYYY MMM DD",
+        visMajorFormat: "YYYY"
+    },
+    {
+        label: appStrings.YEARS,
+        resolution: appStrings.YEARS,
+        format: "YYYY MMM DD",
+        visMajorFormat: "YYYY"
+    }
 ];
 export const DEFAULT_DATE_SLIDER_RESOLUTION = DATE_SLIDER_RESOLUTIONS[3];
 /* END DATE */

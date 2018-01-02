@@ -1,0 +1,15 @@
+@import "~styles/colors";
+
+.menu {
+    position: relative;
+    z-index: 1;
+}
+
+.versionTagContainer {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    user-select: text;
+    background: $color-light;
+    padding: 5px 10px;
+}

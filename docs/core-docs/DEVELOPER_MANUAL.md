@@ -17,7 +17,8 @@ A detailed guide on getting starting with the Common Mapping Client. This guide 
         1. [How CMC Uses Webpack](#cmc-build-process-cmc-webpack)
         2. [Development Mode](#cmc-build-process-development-mode)
         3. [Production Mode](#cmc-build-process-production-mode)
-        4. [Brief Note on Cesium + Webpack Integration](#cmc-build-process-cesium-integration)
+        4. [Changing the Build](#cmc-build-changing-the-build)
+        5. [Brief Note on Cesium + Webpack Integration](#cmc-build-process-cesium-integration)
     3. [Brief Note on ESLint](#cmc-build-process-eslint)
     4. [Brief Note on Prettier](#cmc-build-process-prettier)
     5. [Brief Note on Serving CMC](#cmc-build-process-serving-cmc)
@@ -38,7 +39,7 @@ A detailed guide on getting starting with the Common Mapping Client. This guide 
     2. [CMC React & Redux Idioms](#cmc-react-redux-idioms)
         1. [In the Store](#cmc-react-redux-idioms-store)
         2. [With Maps](#cmc-react-redux-idioms-maps)
-        3. [With D3](#cmc-react-redux-idioms-d3)
+        3. [With vis.js](#cmc-react-redux-idioms-visjs)
     3. [Notes on Optimizing React/Redux Performance](#optimizing-react-redux-performance)
         1. [Key Performance Areas](#optimizing-react-redux-performance-key-areas)
         2. [Additional Techniques in Improving Performance](#optimizing-react-redux-performance-additional-techniques)
@@ -113,16 +114,15 @@ The scripts defined in `package.json` are used to control various aspects of app
 | **Script** | **Description** |
 |----------|-------|
 | postinstall | Copies over certain node_module files, libraries, sets up other stuff, etc. |
-| prestart | Runs automatically before start. Cleans previous build and builds `index.html` for serving. |
+| prestart | Runs automatically before start. Cleans previous build. |
 | precommit | Runs prettier code formatting automatically after commits have been staged. |
 | start | Builds a development version of the app in memory and serves it from a local node server. |
 | start:dist | Builds a production version of the app and serves it from a local node server. |
 | open:src | Serve development version of the app from a local node server |
 | open:dist | Serve production version of the app using a local node server|
-| prebuild | Runs automatically before build script. Cleans the previous build and builds `index.html` for serving |
+| prebuild | Runs automatically before build script. Cleans the previous build. |
 | build | Bundles all JavaScript using webpack and writes it to `/dist` |
 | postbuild | Runs the postbuild script moving external assets into dist |
-| build:html | Copies `src/index.html` into `dist/index.html` and inlines `src/styles/inline_style.css` |
 | prep:dist | Deletes the `dist/` and creates a new one |
 | clean:dist | Removes `dist/` |
 | clean:test | Removes `test-results/` |
@@ -276,9 +276,9 @@ After `npm install` runs successfully, npm automatically looks for a script call
 In short:
 > webpack takes modules with dependencies and generates static assets representing those modules.
 
-Webpack is one of the most popular module bundlers or build systems for web applications (as of early 2017) and continues to increase in popularity and stability. Webpack was chosen for CMC over other build systems because almost every React/Redux starter kit and project uses Webpack. Alternatively you could use a combo of grunt/gulp/browserify/etc/etc if you really think some other combo is better.
+Webpack is one of the most popular module bundlers or build systems for web applications (as of late 2017) and continues to increase in popularity and stability. Webpack was chosen for CMC over other build systems because almost every React/Redux starter kit and project uses Webpack. Alternatively you could use a combo of grunt/gulp/browserify/etc/etc if you really think some other combo is better.
 
-CMC uses webpack version 2. Read more about webpack version 2 over in the docs [here](https://webpack.github.io/docs/).
+CMC uses webpack version 2. Read more about webpack version 2 over in the docs [here](https://webpack.js.org/concepts/).
 
 Webpack is complicated and does a lot but once you get over the learning curve (or avoid it entirely and just tweak existing configurations) it's great, very flexible, and does a lot right out of the box. Webpack is driven from a JS configuration file (or multiple files in our case for development and production).
 
@@ -286,11 +286,11 @@ Webpack is complicated and does a lot but once you get over the learning curve (
 ##### How CMC Uses Webpack
 CMC uses two Webpack configurations (three really, the last one is a clone of webpack.config.dev.js living inside of karma.conf.js but ignore that for now).
 
-`webpack.config.helper.js`, is the main webpack configuration file. It defines a general build pipeline for CMC assets and includes specific options for the dev/prod configs to override. It outputs built assets under the `dist` directory. When configured for dev, it includes [JS/CSS sourcemaps](http://blog.teamtreehouse.com/introduction-source-maps) for debugging as well as [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html) and live reloading via [BrowserSync](https://browsersync.io/) for automatic reloading of certain pieces of code and CSS while maintaining application state and without refreshing the page. In production mode, it creates the optimized, minified, uglified, duplicate dependency reduced, static application output.
+`webpack.config.helper.js`, is the main webpack configuration file. It defines a general build pipeline for CMC assets and includes specific options for the dev/prod configs to override. It outputs built assets under the `dist` directory. When configured for dev, it includes [JS/CSS sourcemaps](http://blog.teamtreehouse.com/introduction-source-maps) for debugging as well as [hot module replacement](https://webpack.js.org/guides/hot-module-replacement/) and live reloading via [BrowserSync](https://browsersync.io/) for automatic reloading of certain pieces of code and CSS while maintaining application state and without refreshing the page. In production mode, it creates the optimized, minified, uglified, duplicate dependency reduced, static application output.
 
 <a id="cmc-build-process-development-mode"></a>
 ##### Development Mode
-When you are developing an application using CMC, you will most often want to use the development webpack configuration. This configuration is most easily used by running the `npm start` command which in turn runs `npm run open:src` which runs `scripts/srcServer.js` using node. This script imports the development webpack configuration and uses browserSync to serve the output files and enable hot module reloading. If you take a look at the size of the output bundle in a browser development tool you'll see that it's quite large. This is normal since the bundle is not optimized at all and contains many sourcemaps. Not to worry though, the final production bundle will be much smaller. When you first boot up the development server it may take a few seconds but will then be fairly quick to live reload (e.g. if you change and save some CSS you should see the actual page CSS change almost instantly). Also note that no files are actually output during the development build and are instead served in-memory. For more information on development webpack configuration please view [https://webpack.github.io/docs/](webpack documentation). The development configuration is also thoroughly commented.
+When you are developing an application using CMC, you will most often want to use the development webpack configuration. This configuration is most easily used by running the `npm start` command which in turn runs `npm run open:src` which runs `scripts/srcServer.js` using node. This script imports the development webpack configuration and uses browserSync to serve the output files and enable hot module reloading. If you take a look at the size of the output bundle in a browser development tool you'll see that it's quite large. This is normal since the bundle is not optimized at all and contains many sourcemaps. Not to worry though, the final production bundle will be much smaller. When you first boot up the development server it may take a few seconds but will then be fairly quick to live reload (e.g. if you change and save some CSS you should see the actual page CSS change almost instantly). Also note that no files are actually output during the development build and are instead served in-memory. For more information on development webpack configuration please view [https://webpack.js.org/concepts](webpack documentation). The development configuration is also thoroughly commented.
 
 <a id="cmc-build-process-production-mode"></a>
 ##### Production Mode
@@ -298,7 +298,7 @@ The production webpack configuration is useful for creating optimized static bui
 - Determine the final file size of output resources like bundle.js and styles.css
 - Profile performance-critical parts of your application since the built version of the app will generally be slightly more performant than the development version
 
-The production configuration is most easily used by running `npm run build`. However, npm is aware of the keyword `build` and will run the `prebuild` command if one exists. In our case we use `prebuild` to clean the output distribution area using `npm run clean-dist` and then run `npm run build:html` which runs `scripts/buildHtml.js` which reads in `src/index.html` and moves it into `dist`, modify this script if you ever want to modify `index.html` during the build process.
+The production configuration is most easily used by running `npm run build`. However, npm is aware of the keyword `build` and will run the `prebuild` command if one exists. In our case we use `prebuild` to clean the output distribution area using `npm run clean-dist`.
 
 After `prebuild` has successfully run, npm will run `scripts/build.js`. This script configures webpack using the production configuration and runs webpack to create the final bundled output. 
 
@@ -306,9 +306,17 @@ After the build has run, npm automatically looks for a script called `postbuild`
 
 Now you should have a completed production application inside of `dist` that you can run anywhere. If you would like to open the production application using the server provided by CMC you can run `npm run open:dist` which uses browserSync (with hot module replacement and livereload disabled). You can also run `npm run build:open` to have the server automatically start after build success.
 
+<a id="cmc-build-changing-the-build"></a>
+##### Changing the Build
+If you decide to use a new filetype, or a new loader, or a library that requires specific build configurations, it may be necessary to change the cmc-core webpack configuration. To enable that, we have created `webpack.config.mod.js`. That file defines a function that takes the cmc-core generated config as input and then returns a new (possibly altered) version of that config object. So to change the cmc-core webpack config, simply modify that file to perform the necessary modifications. If you check `webpack.config.dev.js` or `webpack.config.prod.js` you'll see that this `webpack.config.mod.js` file is already integrated so you don't need to do anything more to enable it.
+
 <a id="cmc-build-process-cesium-integration"></a>
 ##### Brief Note on Cesium + Webpack Integration
 Most libraries are easily used with Webpack but on occasion some libraries require a bit more work, such as complex libraries like CesiumJS. CesiumJS uses lots of extra assets and doesn't fit the typical mold of a modular javascript library, meaning you can't just `import cesium` and be done. The following steps from CesiumJS.org were used as basis for integration with CMC webpack setup [https://cesiumjs.org/2016/01/26/Cesium-and-Webpack/](https://cesiumjs.org/2016/01/26/Cesium-and-Webpack/). In short, webpack receives a few config tweaks, the main CesiumJS file is loaded using the webpack script loader which executes the script once in global context, Cesium requests extra static resources on demand from the assets folder, and CMC maps the global cesium variable to a instance variables for consistency.
+
+<a id="cmc-build-process-index-template"></a>
+##### Brief Note on Inlined Styles, index_template.html, and cache-busting
+Using a combination of webpack plugins, mainly [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin) and [style-ext-html-webpack-plugin](https://github.com/numical/script-ext-html-webpack-plugin), we automatically generate our root index.html file that serves as the entry point to the built application. With `html-webpack-plugin` we transform `index_template.html` into `index.html`, telling the plugin where to inject the css and js bundles via `lodash` templating (supplied by the plugin). We also enable the addition of the webpack build hash to these bundle files in order to provide a mechanism for cache busting. These hashes are unique to every build. Finally, we use `style-ext-html-webpack-plugin` to inline a few global css rules as well as small amount of css we would like to apply to the loading screen for the application.
 
 <a id="cmc-build-process-eslint"></a>
 ### Brief Note on ESLint
@@ -397,7 +405,7 @@ Roboto is recommended for everything from titles to labels to paragraphs. CMC on
 
 <a id="styling-cmc-using-roboto-mono"></a>
 ##### When to use Roboto Mono
-Roboto Mono is recommended for use as a contrasting font in limited cases including title font, numerical displays (like dates, slider amounts, counters, timeline labels, etc.) but should be avoided for default use. CMC uses three weights of Roboto Mono – 300, 400, and 700. 
+Roboto Mono is recommended for use as a contrasting font in limited cases including title font, numerical displays (like dates, slider amounts, counters, etc.) but should be avoided for default use. CMC uses three weights of Roboto Mono – 300, 400, and 700. 
 
 <a id="styling-cmc-postcss"></a>
 ### postCSS
@@ -530,16 +538,16 @@ This deviation in data flow is shown below. In this diagram, we use the same pre
 
 ![Data flow diagram - map](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/data_flow_maps.png)
 
-<a id="cmc-react-redux-idioms-d3"></a>
-#### With D3
+<a id="cmc-react-redux-idioms-visjs"></a>
+#### With vis.js
 
-[D3](https://d3js.org/) is a big, powerful graphics/math/data library. In this application it is primarily responsible for rendering the TimeAxis and associated components, though it has capabilities far beyond that which we encourage you to use. In relation to React/Redux, D3 essentially replaces the React rendering functions. We create a React component to manage the data flow between D3 and the rest of the application as well as provide a sane DOM entry point for D3. D3 then takes the DOM node and data from the state machine to perform its own rendering.
+[vis.js](http://visjs.org/) is a fairly powerful visualization library. It's made to be easier to work with than something like D3 and provides a number of high level abstractions to make basic visualizations simple. In this application it is primarily responsible for rendering the Timeline and associated components, though it has capabilities beyond that which we encourage you to use. In relation to React/Redux, VisJS essentially replaces the React rendering functions. We create a React component to manage the data flow between VisJS and the rest of the application as well as provide a sane DOM entry point for VisJS. VisJS then takes the DOM node and data from the state machine to perform its own rendering.
 
-This flow is very similar to how maps are handled in CMC with the main difference being that updates are handled from within the component instead of the reducer. In this way, the React component acts essentially as a wrapper around the D3 component that it creates as an instance variable.
+This flow is very similar to how maps are handled in CMC with the main difference being that updates are handled from within the component instead of the reducer. In this way, the React component acts essentially as a wrapper around the VisJS component that it creates as an instance variable.
 
-Here is a data flow diagram to demonstrate this. In this example we are again toggling on a switch, however here we are assuming the switch is a D3 component. Notice how the render cycle behaves normally up until component render time at which point the changes to the DOM are offloaded to D3 and React does not need to do anything.
+Here is a data flow diagram to demonstrate this. In this example we are again toggling on a switch, however here we are assuming the switch is a VisJS component. Notice how the render cycle behaves normally up until component render time at which point the changes to the DOM are offloaded to VisJS and React does not need to do anything.
 
-![Data flow diagram - D3](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/data_flow_d3.png)
+![Data flow diagram - VisJS](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/data_flow_visjs.png)
 
 <a id="optimizing-react-redux-performance"></a>
 ### Notes on Optimizing React/Redux Performance
@@ -561,7 +569,7 @@ This is a collection of things CMC has run into in its development but there is 
   * **Layer Rendering on the Map**: For a layer to render, the mapping library will need to fetch the resources (images/data files) necessary, decode those resources, then draw them onto the canvas. It must repeat that process whenever the map view changes or layers are added/removed. Ways to improve this are:
     * Use tiled datasets. This allows the library to parallelize resource gathering and cache resources more efficiently
     * Don't use large vector datasets. This goes along with tiling but large vector datasets require a greater amount of computation to render.
-  * **Beware D3 Renderings**: Rendering in D3, if done too often with fancy transitions can easily hog CPU power since (unlike React) there is no DOM diffing done to avoid unnecessary renderings. Pay attention to your D3 components to ensure they render only when needed and that your svg transitions are simple.
+  * **Beware VisJS Renderings**: Rendering in VisJS, if done too often with fancy transitions can easily hog CPU power since (unlike React) there is no DOM diffing done to avoid unnecessary renderings. Pay attention to your VisJS components to ensure they render only when needed and that your svg transitions are simple.
 
 <a id="optimizing-react-redux-performance-additional-techniques"></a>
 #### Additional Techniques in Improving Performance
@@ -629,7 +637,6 @@ and it is, everything is going to be fine, yes this is a lot of stuff, but you'l
 ├── scripts                   # Node scripts that run build related tools
 │   ├── deployAssets          # Folder containing files used for deployment of CMC in a Dockerized NGINX server
 │   ├── build.js              # Runs the production build
-│   ├── buildHtml.js          # Builds index.html
 │   ├── distServer.js         # Starts webserver and opens final built app that's in dist in your default browser
 │   ├── deploy.bash           # Script for deploying built app to Github Pages
 │   ├── dockerDeploy.bash     # Script for deploying built app (with branch support) in Docker
@@ -1235,7 +1242,7 @@ Github pages are a great way to host static content right out of your Github rep
 
 ![Node dependencies](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/node_dependencies.png)
 
-Main tech under the hood. **Yes**, this is a lot of dependencies _(actually this isn't even the [full list](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/package.json))_ but that's modern web development for you. We've tried to limit the number of unnecessary dependencies included in CMC but you may find that for your own application you may be able to remove some dependencies that your application does not require (e.g. Cesium, d3, react-ga, etc.)
+Main tech under the hood. **Yes**, this is a lot of dependencies _(actually this isn't even the [full list](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/package.json))_ but that's modern web development for you. We've tried to limit the number of unnecessary dependencies included in CMC but you may find that for your own application you may be able to remove some dependencies that your application does not require (e.g. Cesium, VisJS, react-ga, etc.)
 
 
 | **Tech** | **Description** |**Learn More**|
@@ -1244,7 +1251,7 @@ Main tech under the hood. **Yes**, this is a lot of dependencies _(actually this
 | [Redux](http://redux.js.org) |  Enforces unidirectional data flows and immutable, hot reloadable store. Supports time-travel debugging. Lean alternative to [Facebook's Flux](https://facebook.github.io/flux/docs/overview.html).  |
 | [Cesium](http://cesiumjs.org) | An open-source JavaScript library for world-class 3D globes and maps. |
 | [Openlayers](http://openlayers.org) | A high-performance, feature-packed library for all your mapping needs. |
-| [d3](https://d3js.org/) | D3.js is a JavaScript library for manipulating documents based on data. |
+| [vis.js](http://visjs.org/) | vis.js is a library for creating lightweight, dynamic data visualizations. |
 | [fetch](https://github.com/github/fetch) | An easier Javascript request library adhering to the new Fetch standard. |
 | [Moment](http://momentjs.com/) | Parse, validate, manipulate, and display dates in JavaScript. |
 | [React-Toolbox](http://react-toolbox.com/) | Bootstrap your application with beautiful Material Design Components. |

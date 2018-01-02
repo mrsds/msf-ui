@@ -8,6 +8,7 @@ import * as dateSliderActions from "_core/actions/DateSliderActions";
 import appConfig from "constants/appConfig";
 import * as appStrings from "_core/constants/appStrings";
 import KeyHandler, { KEYUP, KEYDOWN } from "react-key-handler";
+import displayStyles from "_core/styles/display.scss";
 
 const SPEED_FAST = 100;
 const SPEED_SLOW = 500;
@@ -174,20 +175,20 @@ export class KeyboardControlsContainer extends Component {
 
     handleKeyDown_ArrowUp() {
         // Key conflicts: Timeline resolution and layer menu opacity slider
-        let focusEl = document.activeElement.getAttribute("data-react-toolbox");
+        // let focusEl = document.activeElement.getAttribute("data-react-toolbox");
         // If we're focused on slider, do not adjust timeline
-        if (focusEl !== "slider") {
-            this.adjustDateSliderTimeResolution(true);
-        }
+        // if (focusEl !== "slider") {
+        this.adjustDateSliderTimeResolution(false);
+        // }
     }
 
     handleKeyDown_ArrowDown() {
         // Key conflicts: Timeline resolution and layer menu opacity slider
-        let focusEl = document.activeElement.getAttribute("data-react-toolbox");
+        // let focusEl = document.activeElement.getAttribute("data-react-toolbox");
         // If we're focused on slider, do not adjust timeline
-        if (focusEl !== "slider") {
-            this.adjustDateSliderTimeResolution(false);
-        }
+        // if (focusEl !== "slider") {
+        this.adjustDateSliderTimeResolution(true);
+        // }
     }
 
     zoomIn() {
@@ -220,7 +221,7 @@ export class KeyboardControlsContainer extends Component {
 
     render() {
         return (
-            <div className="hidden">
+            <div className={displayStyles.hidden}>
                 <KeyHandler
                     keyEventName={KEYUP}
                     keyValue="Escape"

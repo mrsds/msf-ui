@@ -1,0 +1,10 @@
+/* colors */
+$color-primary: #e91e63;
+$color-secondary: #2196f3;
+
+/* neutrals */
+$color-dark: #212121;
+$color-light: #fafafa;
+$color-medium-dark: lighten($color-dark, 15%);
+$color-medium: lighten($color-dark, 20%);
+$color-medium-light: darken($color-light, 15%);

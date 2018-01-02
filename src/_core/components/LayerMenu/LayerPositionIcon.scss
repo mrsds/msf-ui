@@ -1,0 +1,19 @@
+.orderLabel {
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    text-shadow: 1px 1px 0px white, -1px -1px 0px white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    left: -22px;
+    top: -7px;
+    color: rgb(0, 0, 0);
+    font-size: 1.3rem;
+    font-weight: 600;
+    width: 2px;
+    height: 8px;
+    display: inline-block;
+    -webkit-font-smoothing: subpixel-antialiased;
+    background: white;
+    pointer-events: none;
+}

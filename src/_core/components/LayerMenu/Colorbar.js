@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import MiscUtil from "_core/utils/MiscUtil";
 import * as actions from "_core/actions/LayerActions";
 import * as appStrings from "_core/constants/appStrings";
+import styles from "_core/components/LayerMenu/Colorbar.scss";
 
 const CANVAS_WIDTH = 255;
 const CANVAS_HEIGHT = 12;
@@ -42,46 +43,53 @@ export class Colorbar extends Component {
                 let valueEntry = paletteValues.get(valueIndex);
                 let color = valueEntry.get("color");
                 ctx.fillStyle = color;
-                ctx.fillRect(
-                    Math.floor(binWidth * i),
-                    0,
-                    drawWidth,
-                    CANVAS_HEIGHT
-                );
+                ctx.fillRect(Math.floor(binWidth * i), 0, drawWidth, CANVAS_HEIGHT);
             }
         }
     }
 
-    render() {
-        let containerClass = MiscUtil.generateStringFromSet({
-            "colorbar-container": true,
-            "no-colorbar": this.props.handleAs === ""
-        });
-        let canvasClass = MiscUtil.generateStringFromSet({
-            colorbar: true,
-            hidden:
-                this.props.handleAs !== appStrings.COLORBAR_JSON_FIXED &&
-                this.props.handleAs !== appStrings.COLORBAR_JSON_RELATIVE
-        });
-        let imageClass = MiscUtil.generateStringFromSet({
-            colorbar: true,
-            hidden: this.props.handleAs !== appStrings.COLORBAR_IMAGE
-        });
-        let warningClass = MiscUtil.generateStringFromSet({
-            "colorbar-warning": true,
-            hidden: this.props.handleAs !== ""
-        });
+    renderColorbar() {
+        if (!this.props.handleAs) {
+            return (
+                <div className={styles.typeNone}>
+                    <span className={styles.warning}>No Colorbar Available</span>
+                </div>
+            );
+        } else if (
+            this.props.handleAs === appStrings.COLORBAR_JSON_FIXED ||
+            this.props.handleAs === appStrings.COLORBAR_JSON_RELATIVE
+        ) {
+            return <canvas ref="canvas" width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />;
+        } else if (this.props.handleAs !== appStrings.COLORBAR_IMAGE) {
+            return <img src={this.props.url} />;
+        } else {
+            return (
+                <div className={styles.typeNone}>
+                    <span className={styles.warning}>Unrecognized Colorbar Type</span>
+                </div>
+            );
+        }
+    }
 
+    renderRange() {
+        if (this.props.handleAs) {
+            return (
+                <div className={styles.labelContainer}>
+                    <span className={styles.min}>{this.props.displayMin || this.props.min}</span>
+                    <span className={styles.units}>{this.props.units}</span>
+                    <span className={styles.max}>{this.props.displayMax || this.props.max}</span>
+                </div>
+            );
+        } else {
+            return <div />;
+        }
+    }
+
+    render() {
         return (
-            <div className={containerClass}>
-                <canvas
-                    ref="canvas"
-                    width={CANVAS_WIDTH}
-                    height={CANVAS_HEIGHT}
-                    className={canvasClass}
-                />
-                <img src={this.props.url} className={imageClass} />
-                <span className={warningClass}>No Colorbar Available</span>
+            <div className={`${styles.colorbar} ${this.props.className}`}>
+                {this.renderColorbar()}
+                {this.renderRange()}
             </div>
         );
     }
@@ -92,10 +100,12 @@ Colorbar.propTypes = {
     palette: PropTypes.object,
     min: PropTypes.number,
     max: PropTypes.number,
+    units: PropTypes.string,
     displayMin: PropTypes.number,
     displayMax: PropTypes.number,
     handleAs: PropTypes.string,
-    url: PropTypes.string
+    url: PropTypes.string,
+    className: PropTypes.string
 };
 
 function mapDispatchToProps(dispatch) {

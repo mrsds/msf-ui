@@ -1,0 +1,46 @@
+@import "~styles/colors";
+
+.mapControlsContainer {
+    position: absolute;
+    bottom: 75px;
+    right: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: column wrap;
+    align-content: flex-start;
+}
+
+.mapToolsMenu {
+    overflow: visible;
+    margin-left: -32px;
+}
+
+.buttonGroup {
+    margin-top: 10px;
+}
+
+.firstButton {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.lineButton {
+    margin-bottom: 1px;
+    &:after {
+        content: " ";
+        border-bottom: 1px solid #e5e5df;
+        width: 21px;
+        position: absolute;
+        height: 0px;
+        bottom: -1px;
+    }
+}
+
+.lastButton {
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.singleButton {
+    border-radius: 2px;
+}

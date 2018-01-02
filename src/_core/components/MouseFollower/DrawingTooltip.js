@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as appStrings from "_core/constants/appStrings";
+import styles from "_core/components/MouseFollower/DrawingTooltip.scss";
 
 export class DrawingTooltip extends Component {
     render() {
@@ -26,9 +27,9 @@ export class DrawingTooltip extends Component {
 
         // TODO - make a data display component
         return (
-            <div className="drawing-tooltip">
-                <div className="begin-hint">{beginHint}</div>
-                <div className="end-hint">{endHint}</div>
+            <div className={styles.drawingTooltip}>
+                <div className={styles.beginHint}>{beginHint}</div>
+                <div className={styles.endHint}>{endHint}</div>
             </div>
         );
     }

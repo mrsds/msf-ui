@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import DrawingTooltip from "_core/components/MouseFollower/DrawingTooltip";
 import MiscUtil from "_core/utils/MiscUtil";
-import MouseCoordinates from "_core/components/MouseFollower/MouseCoordinates";
+import { DrawingTooltip, MouseCoordinates } from "_core/components/MouseFollower";
+import styles from "_core/components/MouseFollower/MouseFollowerContainer.scss";
 
 export class MouseFollowerContainer extends Component {
     shouldComponentUpdate(nextProps) {
@@ -30,18 +30,20 @@ export class MouseFollowerContainer extends Component {
             this.props.measuring.get("isMeasuringEnabled");
 
         let containerClasses = MiscUtil.generateStringFromSet({
-            "mouse-follower-container dark": true,
-            active: drawOrMeasure,
-            right: left > maxLeft
+            [styles.mouseFollowerContainer]: true,
+            [styles.active]: drawOrMeasure,
+            [styles.right]: left > maxLeft
         });
 
         // TODO - make a data display component
         return (
             <div className={containerClasses} style={style}>
-                <div className="content-container">
+                <div className={styles.content}>
                     <DrawingTooltip drawing={this.props.drawing} measuring={this.props.measuring} />
                 </div>
-                <MouseCoordinates />
+                <div className={styles.footer}>
+                    <MouseCoordinates />
+                </div>
             </div>
         );
     }
