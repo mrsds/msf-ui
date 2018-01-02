@@ -1665,7 +1665,7 @@ export const StoreMapSpec = {
                         ),
                         mapActions.addMeasurementLabelToGeometry(
                             geometryPolygon,
-                            appStrings.MEASURE_DISTANCE,
+                            appStrings.MEASURE_AREA,
                             "metric"
                         )
                     ];
@@ -1785,7 +1785,7 @@ export const StoreMapSpec = {
                         ),
                         mapActions.addMeasurementLabelToGeometry(
                             geometryPolygon,
-                            appStrings.MEASURE_DISTANCE,
+                            appStrings.MEASURE_AREA,
                             "metric"
                         )
                     ];
