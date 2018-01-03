@@ -11,17 +11,16 @@ import Button from "material-ui/Button";
 import PlusIcon from "material-ui-icons/Add";
 import RemoveIcon from "material-ui-icons/Remove";
 import HomeIcon from "material-ui-icons/Home";
-import BuildIcon from "material-ui-icons/Build";
 import { MenuItem, MenuList } from "material-ui/Menu";
 import { ListItemIcon, ListItemText } from "material-ui/List";
 import Paper from "material-ui/Paper";
-import Popover from "material-ui/Popover";
 import * as mapActions from "_core/actions/MapActions";
 import * as appActions from "_core/actions/AppActions";
 import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
 import MiscUtil from "_core/utils/MiscUtil";
-import { MapButton, MapToolsMenu, MapButtonGroup } from "_core/components/Reusables";
+import { MapButton, MapButtonGroup } from "_core/components/Reusables";
+import { MapToolsButton } from "_core/components/Map";
 import styles from "_core/components/Map/MapControlsContainer.scss";
 import displayStyles from "_core/styles/display.scss";
 
@@ -140,50 +139,12 @@ export class MapControlsContainer extends Component {
                                 <Earth />
                             </MapButton>
                         </Tooltip>
-                        <Tooltip title="Tools" placement="right">
-                            <div ref="mapDrawingButtonNode">
-                                <MapButton
-                                    color={this.props.mapControlsToolsOpen ? "primary" : "default"}
-                                    onClick={() => {
-                                        this.props.appActions.setMapControlsToolsOpen(
-                                            !this.props.mapControlsToolsOpen
-                                        );
-                                    }}
-                                    aria-label="Tools"
-                                    className={styles.lastButton}
-                                >
-                                    <BuildIcon />
-                                </MapButton>
-                            </div>
-                        </Tooltip>
-                    </Paper>
-                    <Popover
-                        open={this.props.mapControlsToolsOpen}
-                        anchorEl={this.refs.mapDrawingButtonNode}
-                        anchorReference={"anchorEl"}
-                        anchorOrigin={{
-                            vertical: "top",
-                            horizontal: "right"
-                        }}
-                        transformOrigin={{
-                            vertical: "top",
-                            horizontal: "right"
-                        }}
-                        onRequestClose={() => {
-                            if (this.props.mapControlsToolsOpen) {
-                                this.props.appActions.setMapControlsToolsOpen(false);
-                            }
-                        }}
-                        classes={{ paper: styles.mapToolsMenu }}
-                    >
-                        <MapToolsMenu
-                            handleRequestClose={() => {
-                                if (this.props.mapControlsToolsOpen) {
-                                    this.props.appActions.setMapControlsToolsOpen(false);
-                                }
-                            }}
+                        <MapToolsButton
+                            isOpen={this.props.mapControlsToolsOpen}
+                            setOpen={isOpen =>
+                                this.props.appActions.setMapControlsToolsOpen(isOpen)}
                         />
-                    </Popover>
+                    </Paper>
                     <Paper elevation={2} className={styles.buttonGroup}>
                         <Tooltip title="Home" placement="right">
                             <MapButton
