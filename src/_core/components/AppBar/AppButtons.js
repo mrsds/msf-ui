@@ -22,7 +22,12 @@ export class AppButtons extends Component {
 
         return (
             <div className={rootClasses} {...other}>
-                <Tooltip title="Help" placement="bottom" className={styles.btnWrapper}>
+                <Tooltip
+                    disableTriggerFocus
+                    title="Help"
+                    placement="bottom"
+                    className={styles.btnWrapper}
+                >
                     <IconButtonSmall
                         color="contrast"
                         className={styles.btn}
@@ -31,7 +36,12 @@ export class AppButtons extends Component {
                         <HelpIcon />
                     </IconButtonSmall>
                 </Tooltip>
-                <Tooltip title="Share" placement="bottom" className={styles.btnWrapper}>
+                <Tooltip
+                    disableTriggerFocus
+                    title="Share"
+                    placement="bottom"
+                    className={styles.btnWrapper}
+                >
                     <IconButtonSmall
                         color="contrast"
                         className={styles.btn}
@@ -40,7 +50,12 @@ export class AppButtons extends Component {
                         <ShareIcon />
                     </IconButtonSmall>
                 </Tooltip>
-                <Tooltip title="Settings" placement="bottom" className={styles.btnWrapper}>
+                <Tooltip
+                    disableTriggerFocus
+                    title="Settings"
+                    placement="bottom"
+                    className={styles.btnWrapper}
+                >
                     <IconButtonSmall
                         color="contrast"
                         className={styles.btn}
@@ -49,7 +64,12 @@ export class AppButtons extends Component {
                         <SettingsIcon />
                     </IconButtonSmall>
                 </Tooltip>
-                <Tooltip title="Fullscreen" placement="bottom" className={styles.btnWrapper}>
+                <Tooltip
+                    disableTriggerFocus
+                    title="Fullscreen"
+                    placement="bottom"
+                    className={styles.btnWrapper}
+                >
                     <FullscreenButton className={styles.btn} />
                 </Tooltip>
             </div>
