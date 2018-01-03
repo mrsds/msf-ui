@@ -191,7 +191,7 @@ export class LayerControlContainer extends Component {
                         eventsEnabled={this.isChangingPosition}
                         className={!this.isChangingPosition ? displayStyles.noPointer : ""}
                     >
-                        <Grow appear={false} in={this.isChangingPosition}>
+                        <Grow style={{ transformOrigin: "right" }} in={this.isChangingPosition}>
                             <div>
                                 <ClickAwayListener
                                     onClickAway={() => {
@@ -212,12 +212,14 @@ export class LayerControlContainer extends Component {
                         </Grow>
                     </Popper>
                     <Target style={{ display: "inline-block" }}>
-                        <LayerOpacityIcon
-                            opacity={this.props.layer.get("opacity")}
-                            className={styles.iconButtonSmall}
-                            color={this.isChangingOpacity ? "primary" : "default"}
-                            onClick={() => this.toggleChangingOpacity()}
-                        />
+                        <Tooltip title={"Set Layer Opacity"} placement="top">
+                            <LayerOpacityIcon
+                                opacity={this.props.layer.get("opacity")}
+                                className={styles.iconButtonSmall}
+                                color={this.isChangingOpacity ? "primary" : "default"}
+                                onClick={() => this.toggleChangingOpacity()}
+                            />
+                        </Tooltip>
                     </Target>
                     <Popper
                         placement="left"
@@ -229,7 +231,7 @@ export class LayerControlContainer extends Component {
                         className={!this.isChangingOpacity ? displayStyles.noPointer : ""}
                         eventsEnabled={this.isChangingOpacity}
                     >
-                        <Grow appear={false} in={this.isChangingOpacity}>
+                        <Grow style={{ transformOrigin: "right" }} in={this.isChangingOpacity}>
                             <div>
                                 <ClickAwayListener
                                     onClickAway={() => {
@@ -248,12 +250,14 @@ export class LayerControlContainer extends Component {
                         </Grow>
                     </Popper>
                 </Manager>
-                <IconButtonSmall
-                    className={styles.iconButtonSmall}
-                    onClick={() => this.openLayerInfo()}
-                >
-                    <InfoOutlineIcon />
-                </IconButtonSmall>
+                <Tooltip title="Layer information" placement="top">
+                    <IconButtonSmall
+                        className={styles.iconButtonSmall}
+                        onClick={() => this.openLayerInfo()}
+                    >
+                        <InfoOutlineIcon />
+                    </IconButtonSmall>
+                </Tooltip>
             </span>
         );
     }
