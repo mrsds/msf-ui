@@ -11,10 +11,8 @@ export class CoordinateTracker extends Component {
     render() {
         let containerClasses = MiscUtil.generateStringFromSet({
             [styles.coordinateTracker]: true,
-            [displayStyles.hiddenFadeOut]:
-                this.props.mapControlsHidden && this.props.distractionFreeMode,
-            [displayStyles.hiddenFadeIn]:
-                !this.props.mapControlsHidden && this.props.distractionFreeMode,
+            [displayStyles.hiddenFadeOut]: this.props.distractionFreeMode,
+            [displayStyles.hiddenFadeIn]: !this.props.distractionFreeMode,
             [this.props.className]: typeof this.props.className !== "undefined"
         });
 
