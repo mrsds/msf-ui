@@ -122,9 +122,11 @@ export class LayerControlContainer extends Component {
                 </span>
                 <ListItemSecondaryAction
                     classes={{
-                        root: `${styles.secondaryActionRoot} ${this.props.layer.get("isActive")
-                            ? displayStyles.invisible
-                            : displayStyles.hiddenFadeIn}`
+                        root: `${styles.secondaryActionRoot} ${
+                            this.props.layer.get("isActive")
+                                ? displayStyles.invisible
+                                : displayStyles.hiddenFadeIn
+                        }`
                     }}
                 >
                     <Tooltip title="Layer information" placement="left">

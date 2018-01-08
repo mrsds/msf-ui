@@ -97,6 +97,7 @@ module.exports = options => {
         },
         plugins: [
             new webpack.DefinePlugin(GLOBALS),
+            new webpack.optimize.ModuleConcatenationPlugin(),
             new webpack.LoaderOptionsPlugin({
                 debug: true
             }),

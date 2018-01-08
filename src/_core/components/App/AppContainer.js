@@ -32,16 +32,14 @@ import { KeyboardControlsContainer } from "_core/components/KeyboardControls";
 import styles from "_core/components/App/AppContainer.scss";
 import displayStyles from "_core/styles/display.scss";
 
-function theme() {
-    return createMuiTheme({
-        typography: {
-            htmlFontSize: 10
-        },
-        palette: {
-            primary: pink
-        }
-    });
-}
+const theme = createMuiTheme({
+    typography: {
+        htmlFontSize: 10
+    },
+    palette: {
+        primary: pink
+    }
+});
 
 export class AppContainer extends Component {
     constructor(props) {

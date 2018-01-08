@@ -22,15 +22,13 @@ browserSync({
             webpackDevMiddleware(bundler, {
                 // Dev middleware can't access config, so we provide publicPath
                 publicPath: config.output.publicPath,
-
-                noInfo: true,
-                quiet: false,
                 stats: {
-                    assets: true,
+                    assets: false,
                     colors: true,
                     version: false,
                     hash: false,
                     timings: false,
+                    modules: false,
                     chunks: false,
                     chunkModules: false
                 }

@@ -45,7 +45,7 @@ export class LayerInfoContainer extends Component {
             <Dialog
                 classes={{ paper: styles.paper }}
                 open={this.props.isOpen}
-                onRequestClose={this.props.actions.closeLayerInfo}
+                onClose={this.props.actions.closeLayerInfo}
             >
                 <DialogContent className={styles.root}>
                     <AsyncImage className={styles.thumbnailImage} src={this.props.thumbnailUrl} />

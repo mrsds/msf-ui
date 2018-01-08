@@ -350,22 +350,27 @@ export default class MapUtil {
     // [ [lon,lat], ... ]
     // Reprojects into EPSG:4326 first
     static calculatePolylineDistance(coords, proj) {
-        // Reproject from source to EPSG:4326
-        let newCoords = coords.map(coord =>
-            proj4js(proj, appStrings.PROJECTIONS.latlon.code, coord)
-        );
-        // Calculate line distance
-        return turfLineDistance(
-            {
-                type: "Feature",
-                properties: {},
-                geometry: {
-                    type: "LineString",
-                    coordinates: newCoords
-                }
-            },
-            "meters"
-        );
+        try {
+            // Reproject from source to EPSG:4326
+            let newCoords = coords.map(coord =>
+                proj4js(proj, appStrings.PROJECTIONS.latlon.code, coord)
+            );
+            // Calculate line distance
+            return turfLineDistance(
+                {
+                    type: "Feature",
+                    properties: {},
+                    geometry: {
+                        type: "LineString",
+                        coordinates: newCoords
+                    }
+                },
+                "meters"
+            );
+        } catch (err) {
+            console.warn("Error in MapUtil.calculatePolylineDistance: ", err);
+            return 0;
+        }
     }
 
     // Calculates area of a polygon using turf

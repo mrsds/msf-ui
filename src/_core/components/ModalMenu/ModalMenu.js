@@ -32,7 +32,8 @@ export class ModalMenu extends Component {
             <Dialog
                 classes={{ paper: paperClasses }}
                 open={this.props.active}
-                onRequestClose={this.props.closeFunc}
+                onClose={this.props.closeFunc}
+                onRendered={this.props.onRendered}
             >
                 <AppBar className={styles.appbar}>
                     <Toolbar>
@@ -68,6 +69,7 @@ ModalMenu.propTypes = {
     closeFunc: PropTypes.func,
     backFunc: PropTypes.func,
     className: PropTypes.string,
+    onRendered: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };
 

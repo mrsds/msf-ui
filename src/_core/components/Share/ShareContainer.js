@@ -39,11 +39,6 @@ export class ShareContainer extends Component {
         }
         return false;
     }
-    componentDidUpdate(prevProps) {
-        if (this.props.isOpen && !prevProps.isOpen) {
-            this.focusTextArea();
-        }
-    }
     focusTextArea() {
         this.urlText.select();
         this.urlText.focus();
@@ -198,6 +193,9 @@ export class ShareContainer extends Component {
                 title="Share"
                 active={this.props.isOpen}
                 closeFunc={() => this.props.actions.setShareOpen(false)}
+                onRendered={() => {
+                    this.focusTextArea();
+                }}
             >
                 <div className={styles.shareContainer}>
                     <p>
@@ -205,7 +203,11 @@ export class ShareContainer extends Component {
                     </p>
                     <input
                         type="text"
-                        ref={ref => (this.urlText = ref)}
+                        ref={input => {
+                            if (typeof input !== "undefined") {
+                                this.urlText = input;
+                            }
+                        }}
                         readOnly="readonly"
                         defaultValue={shareUrl}
                         className={styles.permalink}

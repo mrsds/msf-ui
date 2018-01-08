@@ -142,7 +142,8 @@ export class MapControlsContainer extends Component {
                         <MapToolsButton
                             isOpen={this.props.mapControlsToolsOpen}
                             setOpen={isOpen =>
-                                this.props.appActions.setMapControlsToolsOpen(isOpen)}
+                                this.props.appActions.setMapControlsToolsOpen(isOpen)
+                            }
                         />
                     </Paper>
                     <Paper elevation={2} className={styles.buttonGroup}>

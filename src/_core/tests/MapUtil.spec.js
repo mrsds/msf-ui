@@ -521,7 +521,7 @@ export const MapUtilSpec = {
         },
         calculatePolylineDistance: {
             test1: () => {
-                it("fails on null coordinate input", () => {
+                it("returns 0 for null coordinate input", () => {
                     let proj = "EPSG:4326";
                     let bad1 = [null, null];
                     let bad2 = [null, null];

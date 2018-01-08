@@ -137,7 +137,8 @@ export default class TileHandler {
     }
 
     static _catsInterceptUrl(options) {
-        let tileSize = options.layer.getIn(["wmtsOptions", "tileGrid", "tileSize"]);
+        let tileSize = CAT_SIZES[Math.floor(Math.random() * (CAT_SIZES.length - 1)) + 1];
+        // let tileSize = options.layer.getIn(["wmtsOptions", "tileGrid", "tileSize"]);
         return "http://placekitten.com/g/" + tileSize + "/" + tileSize;
     }
 

@@ -1527,6 +1527,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 matrixIds: options.tileGrid.matrixIds,
                 tileSize: options.tileGrid.tileSize
             }),
+            transition: appConfig.DEFAULT_TILE_TRANSITION_TIME,
             wrapX: true
         });
     }
@@ -1551,6 +1552,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 // matrixIds: options.tileGrid.matrixIds,
                 tileSize: options.tileGrid.tileSize
             }),
+            transition: appConfig.DEFAULT_TILE_TRANSITION_TIME,
             wrapX: true
         });
     }
@@ -1562,6 +1564,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             maxZoom: options.tileGrid.maxZoom,
             minZoom: options.tileGrid.minZoom,
             tileSize: options.tileGrid.tileSize,
+            transition: appConfig.DEFAULT_TILE_TRANSITION_TIME,
             wrapX: true
         });
     }
