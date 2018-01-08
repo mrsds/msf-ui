@@ -308,7 +308,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
         try {
             if (layer && layer.get("wmtsOptions")) {
                 let options = layer.get("wmtsOptions").toJS();
-                let layerSource = this.createLayerSource(layer, options);
+                let layerSource = this.createLayerSource(layer, options, fromCache);
 
                 // set up wrap around extents
                 // let mapProjExtent = this.map.getView().getProjection().getExtent();
@@ -321,23 +321,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
                     extent: appConfig.DEFAULT_MAP_EXTENT
                 });
 
-                // override tile url and load functions
-                let origTileUrlFunc = layerSource.getTileUrlFunction();
-                let origTileLoadFunc = layerSource.getTileLoadFunction();
-                layerSource.setTileUrlFunction((tileCoord, pixelRatio, projectionString) => {
-                    return this.generateTileUrl(
-                        layer,
-                        mapLayer,
-                        layerSource,
-                        tileCoord,
-                        pixelRatio,
-                        projectionString,
-                        origTileUrlFunc
-                    );
-                });
-                layerSource.setTileLoadFunction((tile, url) => {
-                    return this.handleTileLoad(layer, mapLayer, tile, url, origTileLoadFunc);
-                });
+                this.setWMTSLayerOverrides(layerSource, layer, mapLayer);
 
                 return mapLayer;
             }
@@ -346,6 +330,35 @@ export default class MapWrapper_openlayers extends MapWrapper {
             console.warn("Error in MapWrapper_openlayers.createWMTSLayer:", err);
             return false;
         }
+    }
+
+    setWMTSLayerOverrides(layerSource, layer, mapLayer) {
+        // make sure we have these set
+        if (
+            typeof layerSource.get("_defaultUrlFunc") === "undefined" &&
+            typeof layerSource.get("_defaultTileFunc") === "undefined"
+        ) {
+            layerSource.set("_defaultUrlFunc", layerSource.getTileUrlFunction());
+            layerSource.set("_defaultTileFunc", layerSource.getTileLoadFunction());
+        }
+
+        // override tile url and load functions
+        let origTileUrlFunc = layerSource.get("_defaultUrlFunc");
+        let origTileLoadFunc = layerSource.get("_defaultTileFunc");
+        layerSource.setTileUrlFunction((tileCoord, pixelRatio, projectionString) => {
+            return this.generateTileUrl(
+                layer,
+                mapLayer,
+                layerSource,
+                tileCoord,
+                pixelRatio,
+                projectionString,
+                origTileUrlFunc
+            );
+        });
+        layerSource.setTileLoadFunction((tile, url) => {
+            return this.handleTileLoad(layer, mapLayer, tile, url, origTileLoadFunc);
+        });
     }
 
     createVectorLayer(layer, fromCache = true) {
@@ -1071,7 +1084,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
         try {
             let index = this.findTopInsertIndexForLayer(mapLayer);
             this.map.getLayers().insertAt(index, mapLayer);
-            this.layerCache.set(mapLayer.get("_layerCacheHash"), mapLayer);
+            this.addLayerToCache(mapLayer, appConfig.TILE_LAYER_UPDATE_STRATEGY);
             return true;
         } catch (err) {
             console.warn("Error in MapWrapper_openlayers.addLayer:", err);
@@ -1092,7 +1105,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
     replaceLayer(mapLayer, index) {
         try {
             this.map.getLayers().setAt(index, mapLayer);
-            this.layerCache.set(mapLayer.get("_layerCacheHash"), mapLayer);
+            this.addLayerToCache(mapLayer, appConfig.TILE_LAYER_UPDATE_STRATEGY);
             return true;
         } catch (err) {
             console.warn("Error in MapWrapper_openlayers.replaceLayer:", err);
@@ -1262,14 +1275,74 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 layer.get("id")
             );
             if (mapLayerWithIndex) {
-                let mapLayer = this.createLayer(layer);
-                this.replaceLayer(mapLayer, mapLayerWithIndex.index);
+                if (
+                    appConfig.TILE_LAYER_UPDATE_STRATEGY ===
+                        appStrings.TILE_LAYER_UPDATE_STRATEGIES.TILE &&
+                    [
+                        appStrings.LAYER_GIBS_RASTER,
+                        appStrings.LAYER_WMTS_RASTER,
+                        appStrings.LAYER_XYZ_RASTER
+                    ].indexOf(layer.get("handleAs")) !== -1
+                ) {
+                    let mapLayer = mapLayerWithIndex.value;
+
+                    // cache the source for later
+                    this.addLayerToCache(mapLayer, appConfig.TILE_LAYER_UPDATE_STRATEGY);
+
+                    // find a cached source
+                    let cacheHash = this.getCacheHash(layer) + "_source";
+                    let source = this.layerCache.get(cacheHash);
+                    if (!source) {
+                        // create a new source
+                        let options = layer.get("wmtsOptions").toJS();
+                        source = this.createLayerSource(layer, options, false);
+
+                        this.setWMTSLayerOverrides(source, layer, mapLayer);
+                    } else if (appConfig.DEFAULT_TILE_TRANSITION_TIME !== 0) {
+                        // reset the transition tracking for the tiles to enable crossfade
+                        let tileCache = source.getTileCacheForProjection(source.getProjection());
+                        tileCache.forEach(tile => {
+                            tile.transitionStarts_ = {};
+                        });
+                    }
+
+                    // update the layer
+                    mapLayer.set("_layerId", layer.get("id"));
+                    mapLayer.set("_layerType", layer.get("type"));
+                    mapLayer.set("_layerCacheHash", this.getCacheHash(layer));
+                    mapLayer.set(
+                        "_layerTime",
+                        moment(this.mapDate).format(layer.get("timeFormat"))
+                    );
+                    mapLayer.setSource(source);
+                } else {
+                    let updatedMapLayer = this.createLayer(layer);
+                    this.replaceLayer(updatedMapLayer, mapLayerWithIndex.index);
+                }
             }
             return true;
         } catch (err) {
             console.warn("Error in MapWrapper_openlayers.updateLayer:", err);
             return false;
         }
+    }
+
+    addLayerToCache(mapLayer, updateStrategy = appStrings.TILE_LAYER_UPDATE_STRATEGIES.TILE) {
+        // cache the source for later
+        switch (updateStrategy) {
+            case appStrings.TILE_LAYER_UPDATE_STRATEGIES.TILE:
+                this.layerCache.set(
+                    mapLayer.get("_layerCacheHash") + "_source",
+                    mapLayer.getSource()
+                );
+                break;
+            case appStrings.TILE_LAYER_UPDATE_STRATEGIES.LAYER:
+                this.layerCache.set(mapLayer.get("_layerCacheHash"), mapLayer);
+                break;
+            default:
+                this.layerCache.set(mapLayer.get("_layerCacheHash"), mapLayer);
+        }
+        return true;
     }
 
     getLatLonFromPixelCoordinate(pixel) {
@@ -1487,7 +1560,15 @@ export default class MapWrapper_openlayers extends MapWrapper {
             return false;
         }
     }
-    createLayerSource(layer, options) {
+    createLayerSource(layer, options, fromCache = true) {
+        // check cache
+        if (fromCache) {
+            let cacheHash = this.getCacheHash(layer) + "_source";
+            if (this.layerCache.get(cacheHash)) {
+                return this.layerCache.get(cacheHash);
+            }
+        }
+
         switch (layer.get("handleAs")) {
             case appStrings.LAYER_GIBS_RASTER:
                 return this.createGIBSWMTSSource(layer, options);

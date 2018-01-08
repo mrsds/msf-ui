@@ -10,7 +10,7 @@ import * as appStrings from "_core/constants/appStrings";
 import KeyHandler, { KEYUP, KEYDOWN } from "react-key-handler";
 import displayStyles from "_core/styles/display.scss";
 
-const SPEED_FAST = 100;
+const SPEED_FAST = 150;
 const SPEED_SLOW = 500;
 
 export class KeyboardControlsContainer extends Component {

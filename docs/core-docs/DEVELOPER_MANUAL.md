@@ -49,6 +49,7 @@ A detailed guide on getting starting with the Common Mapping Client. This guide 
     2. [Replacing these libraries](#mapping-with-cmc-replacing-libs)
     3. [Overview of the MapWrapper classes](#mapping-with-cmc-mapwrapper)
     4. [Notes on Map Performance](#mapping-with-cmc-note-on-performance)
+    5. [Tidbits](#mapping-with-cmc-tidbits)
 10. [Brief Overview of Application Directory ](#cmc-application-directory)
 11. [How to Write Tests in CMC](#writing-tests)
     1. [Testing Tools](#writing-tests-tools)
@@ -607,6 +608,24 @@ The MapWrapper class provides an abstracted API for the Reducer functions to int
 <a id="mapping-with-cmc-note-on-performance"></a>
 ### Notes on Map Performance
 Openlayers and Cesium are both aware of their visibility in the DOM to some extent. This means that they will delay rendering if their containing domNodes have `display: none;` styling. This allows MapReducers and the MapWrapper to operate on the map while it is not displayed without fear of it rendering in the background. Note however that the instance does not easily give up resources and once initiated Cesium in particular can become a resource hog.
+
+
+<a id="mapping-with-cmc-tidbits"></a>
+### Tidbits
+
+*Openlayers 4 Tile Transitions*
+Openlayers v4.4.0 introduced an optional fade transition for loading tiles in tiled raster layers. This transition smooths the loading display of tiled layers during zooming and panning actions. However, with layers that change over time this transition can become tricky to accomodate when moving between dates and times for those layers. CMC incorporates two configuration variables to adjust how this transition affects the application's display. Note that all configurations attempt to maximize use of the CMC layer cache.
+
+* `TILE_LAYER_UPDATE_STRATEGY`: sets the approach by which a layer is updated over time
+  * `replace_tile`: maintains the previous layer display and incrementally replaces tiles as they load
+  * `replace_layer`: removes the previous layer display and incrementally adds tiles as they load
+* `DEFAULT_TILE_TRANSITION_TIME`: this sets the transtion duration (in ms) of the loaded tiles, set to `0` to disable
+
+CMC defaults use a slightly shortened transition time and uses the tile replacement strategy. To disable the transitions entirely and have an application display that appears as it would have before this feature was introduced, set `TILE_LAYER_UPDATE_STRATEGY` to `replace_layer` and `DEFAULT_TILE_TRANSITION_TIME` to `0`.
+
+*Openlayers Layer Cache*
+Openlayers tiled layer sources maintain a cache of tiles that have been loaded to improve performance during zooming and panning. CMC implements a cache on top of that to improve performance during date/time changes. When the date is changed and a layer is updated on the map, CMC stores a reference to the old layer in it's own layer cache so that the tile resources are maintained. If the date is changed to a date with a cached layer, the layer is pulled from the cache and new requests for tiles are not necessary (unless the view has been changed of course). In the case of the `TILE_LAYER_UPDATE_STRATEGY` being set to `replace_tile` (see above) the openlayers source (not the layer) is cached. To adjust the size of this layer cache, change the `MAX_LAYER_CACHE` configuration variable.
+
 
 # Intermission
 

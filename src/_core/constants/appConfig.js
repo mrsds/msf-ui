@@ -162,7 +162,8 @@ export const GEOMETRY_STROKE_COLOR = "rgba(255, 255, 255, 1)";
 export const GEOMETRY_STROKE_WEIGHT = 2;
 export const GEOMETRY_OUTLINE_COLOR = "rgba(0, 0, 0, 1)";
 
-export const DEFAULT_TILE_TRANSITION_TIME = undefined; // set to 0 to disable, undefined to default http://openlayers.org/en/latest/apidoc/ol.source.WMTS.html
+export const TILE_LAYER_UPDATE_STRATEGY = appStrings.TILE_LAYER_UPDATE_STRATEGIES.TILE; // {openlayers only} strategy for updating tile layers
+export const DEFAULT_TILE_TRANSITION_TIME = 150; // {openlayers only} set to 0 to disable http://openlayers.org/en/latest/apidoc/ol.source.WMTS.html
 
 /* END MAP */
 

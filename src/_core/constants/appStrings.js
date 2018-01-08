@@ -107,6 +107,12 @@ export const PROJECTIONS = {
         extent: [-180, -90, 180, 90]
     }
 };
+
+// tile layer updates
+export const TILE_LAYER_UPDATE_STRATEGIES = {
+    TILE: "replace_tile",
+    LAYER: "replace_layer"
+};
 /* END MAP */
 
 /* MISC */
