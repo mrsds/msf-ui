@@ -309,7 +309,7 @@ export const MapUtilSpec = {
                 it("formats distance in kilometers", () => {
                     expect(MapUtil.formatDistance(1000, "metric")).to.equal("1.00 km");
                     expect(MapUtil.formatDistance(12345.567, "metric")).to.equal("12.35 km");
-                    expect(MapUtil.formatDistance(-10000000, "metric")).to.equal("-10000.00 km");
+                    expect(MapUtil.formatDistance(-10000000, "metric")).to.equal("-10,000.00 km");
                 });
             },
             test4: () => {
@@ -317,7 +317,7 @@ export const MapUtilSpec = {
                     expect(MapUtil.formatDistance(0, "imperial")).to.equal("0.00 ft");
                     expect(MapUtil.formatDistance(0.01, "imperial")).to.equal("0.01 ft");
                     expect(MapUtil.formatDistance(1, "imperial")).to.equal("1.00 ft");
-                    expect(MapUtil.formatDistance(5279.99, "imperial")).to.equal("5279.99 ft");
+                    expect(MapUtil.formatDistance(5279.99, "imperial")).to.equal("5,279.99 ft");
                 });
             },
             test5: () => {
@@ -329,7 +329,7 @@ export const MapUtilSpec = {
             test6: () => {
                 it("formats distance in nautical miles", () => {
                     expect(MapUtil.formatDistance(0, "nautical")).to.equal("0.00 nmi");
-                    expect(MapUtil.formatDistance(1000, "nautical")).to.equal("1000.00 nmi");
+                    expect(MapUtil.formatDistance(1000, "nautical")).to.equal("1,000.00 nmi");
                     expect(MapUtil.formatDistance(-123.543, "nautical")).to.equal("-123.54 nmi");
                 });
             },
@@ -337,7 +337,7 @@ export const MapUtilSpec = {
                 it("formats distance in school buses", () => {
                     expect(MapUtil.formatDistance(0, "schoolbus")).to.equal("0.00 school buses");
                     expect(MapUtil.formatDistance(1000, "schoolbus")).to.equal(
-                        "1000.00 school buses"
+                        "1,000.00 school buses"
                     );
                     expect(MapUtil.formatDistance(123.543, "schoolbus")).to.equal(
                         "123.54 school buses"
@@ -361,8 +361,8 @@ export const MapUtilSpec = {
                     expect(MapUtil.formatArea(0, "metric")).to.equal("0.00 m<sup>2</sup>");
                     expect(MapUtil.formatArea(0.01, "metric")).to.equal("0.01 m<sup>2</sup>");
                     expect(MapUtil.formatArea(100, "metric")).to.equal("100.00 m<sup>2</sup>");
-                    expect(MapUtil.formatArea(1000, "metric")).to.equal("1000.00 m<sup>2</sup>");
-                    expect(MapUtil.formatArea(10000, "metric")).to.equal("10000.00 m<sup>2</sup>");
+                    expect(MapUtil.formatArea(1000, "metric")).to.equal("1,000.00 m<sup>2</sup>");
+                    expect(MapUtil.formatArea(10000, "metric")).to.equal("10,000.00 m<sup>2</sup>");
                 });
             },
             test3: () => {
@@ -396,7 +396,7 @@ export const MapUtilSpec = {
                 it("formats area in nautical miles", () => {
                     expect(MapUtil.formatArea(0, "nautical")).to.equal("0.00 nmi<sup>2</sup>");
                     expect(MapUtil.formatArea(1235, "nautical")).to.equal(
-                        "1235.00 nmi<sup>2</sup>"
+                        "1,235.00 nmi<sup>2</sup>"
                     );
                     expect(MapUtil.formatArea(0.1245, "nautical")).to.equal("0.12 nmi<sup>2</sup>");
                 });
@@ -407,7 +407,7 @@ export const MapUtilSpec = {
                         "0.00 school buses<sup>2</sup>"
                     );
                     expect(MapUtil.formatArea(1235, "schoolbus")).to.equal(
-                        "1235.00 school buses<sup>2</sup>"
+                        "1,235.00 school buses<sup>2</sup>"
                     );
                     expect(MapUtil.formatArea(0.1245, "schoolbus")).to.equal(
                         "0.12 school buses<sup>2</sup>"

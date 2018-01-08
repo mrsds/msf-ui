@@ -268,25 +268,34 @@ export default class MapUtil {
             return null;
         }
 
+        let number, unitsStr;
         if (units === "metric") {
             if (Math.abs(distance) >= 1000) {
-                return (distance / 1000).toFixed(2) + " km";
+                number = distance / 1000;
+                unitsStr = "km";
             } else {
-                return distance.toFixed(2) + " m";
+                number = distance;
+                unitsStr = "m";
             }
         } else if (units === "imperial") {
             if (Math.abs(distance) >= 5280) {
-                return (distance / 5280).toFixed(2) + " mi";
+                number = distance / 5280;
+                unitsStr = "mi";
             } else {
-                return distance.toFixed(2) + " ft";
+                number = distance;
+                unitsStr = "ft";
             }
         } else if (units === "nautical") {
-            return distance.toFixed(2) + " nmi";
+            number = distance;
+            unitsStr = "nmi";
         } else if (units === "schoolbus") {
-            return distance.toFixed(2) + " school buses";
+            number = distance;
+            unitsStr = "school buses";
         } else {
             return null;
         }
+
+        return this.formatNumber(number, { trim: false }) + " " + unitsStr;
     }
 
     // Formats area according to units
@@ -297,25 +306,45 @@ export default class MapUtil {
             return null;
         }
 
+        let number, unitsStr;
         if (units === "metric") {
             if (Math.abs(area) >= 1000000) {
-                return (area / 1000000).toFixed(2) + " km<sup>2</sup>";
+                number = area / 1000000;
+                unitsStr = "km<sup>2</sup>";
             } else {
-                return area.toFixed(2) + " m<sup>2</sup>";
+                number = area;
+                unitsStr = "m<sup>2</sup>";
             }
         } else if (units === "imperial") {
             if (Math.abs(area) >= 27878400) {
-                return (area / 27878400).toFixed(2) + " mi<sup>2</sup>";
+                number = area / 27878400;
+                unitsStr = "mi<sup>2</sup>";
             } else {
-                return area.toFixed(2) + " ft<sup>2</sup>";
+                number = area;
+                unitsStr = "ft<sup>2</sup>";
             }
         } else if (units === "nautical") {
-            return area.toFixed(2) + " nmi<sup>2</sup>";
+            number = area;
+            unitsStr = "nmi<sup>2</sup>";
         } else if (units === "schoolbus") {
-            return area.toFixed(2) + " school buses<sup>2</sup>";
+            number = area;
+            unitsStr = "school buses<sup>2</sup>";
         } else {
             return null;
         }
+
+        return this.formatNumber(number, { trim: false }) + " " + unitsStr;
+    }
+
+    // Format a number
+    static formatNumber(number, options = {}) {
+        let fixedLen = typeof options.fixedLen !== "undefined" ? options.fixedLen : 2;
+        let numberStr = options.trim
+            ? this.trimFloatString(number.toFixed(fixedLen))
+            : number.toFixed(fixedLen);
+        let parts = numberStr.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
     }
 
     // Converts area units
