@@ -781,20 +781,22 @@ export default class MapWrapper_cesium extends MapWrapper {
                     this.map.camera.moveEnd.addEventListener(callback);
                     return;
                 case appStrings.EVENT_MOUSE_HOVER:
-                    new this.cesium.ScreenSpaceEventHandler(
-                        this.map.scene.canvas
-                    ).setInputAction(movement => {
-                        callback([movement.endPosition.x, movement.endPosition.y]);
-                    }, this.cesium.ScreenSpaceEventType.MOUSE_MOVE);
+                    new this.cesium.ScreenSpaceEventHandler(this.map.scene.canvas).setInputAction(
+                        movement => {
+                            callback([movement.endPosition.x, movement.endPosition.y]);
+                        },
+                        this.cesium.ScreenSpaceEventType.MOUSE_MOVE
+                    );
                     return;
                 case appStrings.EVENT_MOUSE_CLICK:
-                    new this.cesium.ScreenSpaceEventHandler(
-                        this.map.scene.canvas
-                    ).setInputAction(movement => {
-                        callback({
-                            pixel: [movement.position.x, movement.position.y]
-                        });
-                    }, this.cesium.ScreenSpaceEventType.LEFT_CLICK);
+                    new this.cesium.ScreenSpaceEventHandler(this.map.scene.canvas).setInputAction(
+                        movement => {
+                            callback({
+                                pixel: [movement.position.x, movement.position.y]
+                            });
+                        },
+                        this.cesium.ScreenSpaceEventType.LEFT_CLICK
+                    );
                     return;
                 default:
                     return;
@@ -1072,9 +1074,9 @@ export default class MapWrapper_cesium extends MapWrapper {
 
                 // override the tile loading for this layer
                 let origTileLoadFunc = mapLayer.imageryProvider.requestImage;
-                mapLayer.imageryProvider._my_origTileLoadFunc = origTileLoadFunc;
-                mapLayer.imageryProvider.requestImage = function(x, y, level) {
-                    return _context.handleTileLoad(layer, mapLayer, x, y, level, this);
+                mapLayer.imageryProvider._origTileLoadFunc = origTileLoadFunc;
+                mapLayer.imageryProvider.requestImage = function(x, y, level, request) {
+                    return _context.handleTileLoad(layer, mapLayer, x, y, level, request, this);
                 };
 
                 return mapLayer;
@@ -1383,7 +1385,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             show: layer.get("isActive")
         });
     }
-    handleTileLoad(layer, mapLayer, x, y, level, context) {
+    handleTileLoad(layer, mapLayer, x, y, level, request, context) {
         let url = layer.getIn(["wmtsOptions", "url"]);
         let customUrlFunction = this.tileHandler.getUrlFunction(
             layer.getIn(["wmtsOptions", "urlFunctions", appStrings.MAP_LIB_3D])
@@ -1399,47 +1401,59 @@ export default class MapWrapper_cesium extends MapWrapper {
 
         if (typeof customUrlFunction === "function") {
             let tileFunc = () => {
-                return new Promise((resolve, reject) => {
-                    // get the customized url
-                    let tileUrl = customUrlFunction({
+                // use cesium's promise library
+                let deferred = this.cesium.when.defer();
+                let resolve = deferred.resolve;
+                let reject = deferred.reject;
+
+                // get the customized url
+                let tileUrl = customUrlFunction({
+                    layer: layer,
+                    mapLayer: mapLayer,
+                    origUrl: layer.getIn(["wmtsOptions", "url"]),
+                    tileCoord: [level, x, y],
+                    context: appStrings.MAP_LIB_3D
+                });
+
+                // run the customized tile creator
+                if (typeof customTileFunction === "function") {
+                    customTileFunction({
                         layer: layer,
                         mapLayer: mapLayer,
-                        origUrl: layer.getIn(["wmtsOptions", "url"]),
+                        url: tileUrl,
                         tileCoord: [level, x, y],
-                        context: appStrings.MAP_LIB_3D
+                        success: resolve,
+                        fail: reject
                     });
+                } else {
+                    // create a standard image and return it
+                    let imgTile = new Image();
+                    imgTile.onload = () => {
+                        resolve(imgTile);
+                    };
+                    imgTile.onerror = err => {
+                        reject(err);
+                    };
 
-                    // run the customized tile creator
-                    if (typeof customTileFunction === "function") {
-                        customTileFunction({
-                            layer: layer,
-                            mapLayer: mapLayer,
-                            url: tileUrl,
-                            tileCoord: [level, x, y],
-                            success: resolve,
-                            fail: reject
-                        });
-                    } else {
-                        // create a standard image and return it
-                        let imgTile = new Image();
-                        imgTile.onload = () => {
-                            resolve(imgTile);
-                        };
-                        imgTile.onerror = err => {
-                            reject(err);
-                        };
-
-                        if (this.miscUtil.urlIsCrossorigin(tileUrl)) {
-                            imgTile.crossOrigin = "";
-                        }
-                        imgTile.src = tileUrl;
+                    if (this.miscUtil.urlIsCrossorigin(tileUrl)) {
+                        imgTile.crossOrigin = "";
                     }
-                });
+                    imgTile.src = tileUrl;
+                }
+
+                return deferred.promise;
             };
+
             // use Cesium's throttling to play nice with the rest of the system
-            return this.cesium.throttleRequestByServer(url, tileFunc);
+            let tileRequest = typeof request !== "undefined" ? request : new this.cesium.Request();
+            request.url = url;
+            request.requestFunction = tileFunc;
+            request.throttle = true;
+            request.throttleByServer = true;
+
+            return this.cesium.RequestScheduler.request(tileRequest);
         } else {
-            return mapLayer.imageryProvider._my_origTileLoadFunc(x, y, level);
+            return mapLayer.imageryProvider._origTileLoadFunc(x, y, level);
         }
     }
     findLayerInMapLayers(mapLayers, layer) {
