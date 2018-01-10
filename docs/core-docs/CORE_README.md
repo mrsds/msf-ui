@@ -1,9 +1,10 @@
-# Common Mapping Client Core README
-
 ## Welcome to the Common Mapping Client 2!
 
 #### Overview
-The Common Mapping Client (CMC) is a foundation for web-based mapping applications that leverages, combines, and abstracts certain commonly used mapping functionalities, enabling developers to spend less time reinventing the wheel and more time solving their specific problems.
+The Common Mapping Client (CMC) is a foundation for web-based mapping applications that
+leverages, combines, and abstracts certain commonly used mapping functionalities,
+enabling developers to spend less time reinventing the wheel and more time solving
+their specific problems.
 
 Over the years, there have been many projects that try to solve the same issue:
 put data on a map and explore it. Unfortunately, there is an increasingly steep
@@ -29,21 +30,60 @@ part of CMC-Core.
 - Check out our live demo http://graywhale:49160/master/
 - GHE code-coverage: http://graywhale:49160/master/test-results/coverage/
 - GHE unit test report: http://graywhale:49160/master/test-results/
-- GHE gh-page demo (Not currently active): https://github.jpl.nasa.gov/pages/CommonMappingClient/cmc-core/branches/master/
-
 
 ![Preview](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/core.png)
 
-#### Getting Started 
+#### Significant CMC Features
+
+* 2D/3D Map library abstraction
+* Map layer controls
+* Map layer ingestion and merging (from JSON and WMTS capabilities XML)
+* Highly customizable user analytics
+* Configurable map projection
+* Basic vector layer support
+* Map extent synchronization across all maps (2D and 3D)
+* Geodesic map geometry synchronization across all maps (2D and 3D)
+* Global time widget, and interactive timeslider
+* Adjustable map layer cache
+* Shareable/loadable application state via url parameters with share widget (facebook, twitter, email, google plus)
+* Core set of UI elements necessary for most basic applications
+* Basemap switching
+* Basic shape drawing tools in 2D and 3D
+* Basic geodesic measurement (distance and area) tools in 2D and 3D
+* Display help documentation from markdown files
+* A preconfigured testing framework
+* A preconfigured build process
+* Handy development tools
+  * Hot reloading
+  * Local dev and production node servers
+  * BrowserSync
+
+#### Quickstart
+
+##### Install
 
 1. Install `NodeJS`
 2. Get the code
    1. Option A: Grab a tag that suits you
    2. Option B: Fork the repo into your new project and get the cutting edge goodness
    3. Option C: Clone the repo, contribute back, and get the cutting edge goodness
-3. Run `npm install`
-4. Run `npm start`
+3. Run: `npm install`
+4. Run: `npm start`
 5. Start building.
+
+##### Build
+
+* `npm run build`
+* `npm run open:dist`
+
+##### Test
+
+* `npm run test`: Single run of tests
+* `npm run test:watch`: Run tests with code watch
+* `npm run test:cover`: Single run of tests with coverage report
+* flags
+  * `--includecoretests`: Include cmc-core tests as well
+  * `--nowebgl`: Run tests in phantomJS and skip tests that require webgl
 
 #### Contributing to the Project
 
@@ -63,7 +103,6 @@ who have the same problem down the road may find a solution faster.
 
 #### Documentation Shortcut
 
-* [FAQ](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/docs/core-docs/FAQ.md)
 * [Developer Guide](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/docs/core-docs/DEVELOPER_MANUAL.md)
 * [Example Projects](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/docs/core-docs/EXAMPLE_PROJECTS.md)
 
