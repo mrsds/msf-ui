@@ -80,6 +80,7 @@ A detailed guide on getting starting with the Common Mapping Client. This guide 
 16. [Deployment to Github Pages](#deployment-to-gh-pages)
 17. [Main Technologies Under the Hood](#main-tech-under-the-hood)
 18. [Contributing to CMC](#contributing-to-cmc)
+19. [Copyright and License](#copyright-and-license)
 
 
 <a id="terminology"></a>
@@ -1301,3 +1302,37 @@ We welcome contributions and ask that you submit pull requests through a fork of
 For issue reporting please visit the github issues page for cmc-core [here](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/issues).
 
 If you use CMC for your project please let us know, we'd love to see what you're doing and add you to our list of projects that use CMC.
+
+
+<a id="copyright-and-license"></a>
+
+## Copyright and Export Classification
+
+```
+Copyright 2017, by the California Institute of Technology. ALL RIGHTS RESERVED.
+United States Government Sponsorship acknowledged. Any commercial use must be
+negotiated with the Office of Technology Transfer at the California Institute
+of Technology.
+
+This software is subject to U.S. export control laws and regulations and has
+been classified as EAR99.  By accepting this software, the user agrees to comply
+with all applicable U.S. export laws and regulations. User has the responsibility
+to obtain export licenses, or other export authority as may be required before
+exporting such information to foreign countries or providing access to foreign persons.
+```
+
+## Licensing
+
+```
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+```
