@@ -2,7 +2,7 @@
 
 ![Preview](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/core.png)
 
-#### Overview
+### Overview
 The Common Mapping Client (CMC) is a foundation for web-based mapping applications that
 leverages, combines, and abstracts certain commonly used mapping functionalities,
 enabling developers to spend less time reinventing the wheel and more time solving
@@ -23,16 +23,16 @@ We maintain a list of further example projects and projects that began from CMC
 so that you can easily get examples of building intricate and detailed workflows
 on top of our client.
 
-#### General Philosophy
+*General Philosophy*
 If a capability or widget is not in 85% of mapping applications, it will not be
 part of CMC-Core.
 
-#### Live Demo
+### Live Demo
 - Check out our live demo http://graywhale:49160/master/
 - GHE code-coverage: http://graywhale:49160/master/test-results/coverage/
 - GHE unit test report: http://graywhale:49160/master/test-results/
 
-#### Significant CMC Features
+### Features
 * 2D/3D Map library abstraction
 * Map layer controls
 * Map layer ingestion and merging (from JSON and WMTS capabilities XML)
@@ -56,7 +56,7 @@ part of CMC-Core.
   * Local dev and production node servers
   * BrowserSync
 
-#### Quickstart
+### Quickstart
 
 ##### Install
 1. Install `NodeJS`
@@ -80,7 +80,7 @@ part of CMC-Core.
   * `--includecoretests`: Include cmc-core tests as well
   * `--nowebgl`: Run tests in phantomJS and skip tests that require webgl
 
-#### Contributing to the Project
+### Contributing to the Project
 
 *Contributing Directly to CMC-Core*
 
@@ -96,7 +96,7 @@ If you create a particularly useful or robust widget in your own CMC descendant,
 please create an example project demonstrating just that widget so that others
 who have the same problem down the road may find a solution faster.
 
-#### Documentation Shortcut
+### Documentation Shortcut
 
 * [Developer Guide](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/docs/core-docs/DEVELOPER_MANUAL.md)
 * [Example Projects](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/docs/core-docs/EXAMPLE_PROJECTS.md)
