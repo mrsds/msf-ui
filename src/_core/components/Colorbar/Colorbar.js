@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MiscUtil from "_core/utils/MiscUtil";
-import { ColorbarJSON, ColorbarImage } from "_core/components/LayerMenu";
+import { ColorbarJSON, ColorbarImage } from "_core/components/Colorbar";
 import * as appStrings from "_core/constants/appStrings";
-import styles from "_core/components/LayerMenu/Colorbar.scss";
+import styles from "_core/components/Colorbar/Colorbar.scss";
 
 export class Colorbar extends Component {
     renderColorbar() {

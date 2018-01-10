@@ -2,6 +2,7 @@ import appConfig from "constants/appConfig";
 import * as types from "_core/constants/actionTypes";
 import * as appStrings from "_core/constants/appStrings";
 import * as AlertActions from "_core/actions/AlertActions";
+import * as AsyncActions from "_core/actions/AsyncActions";
 import MiscUtil from "_core/utils/MiscUtil";
 
 export function setLayerMenuOpen(open) {
@@ -59,7 +60,7 @@ export function setCurrentMetadata(layer, data) {
 export function loadLayerMetadata(layer) {
     return dispatch => {
         // signal loading
-        dispatch(layerMetadataLoading());
+        dispatch(setLayerMetadataLoadingAsync(true, false));
         // open the display
         dispatch(openLayerInfo(layer));
         if (layer.getIn(["metadata", "url"]) && layer.getIn(["metadata", "handleAs"])) {
@@ -72,12 +73,13 @@ export function loadLayerMetadata(layer) {
                     // store the data for display
                     dispatch(setCurrentMetadata(layer, data));
                     // signal loading complete
-                    dispatch(layerMetadataLoaded());
+                    dispatch(setLayerMetadataLoadingAsync(false, false));
                 },
                 err => {
                     console.warn("Error in LayerActions.openLayerInfo:", err);
-                    // signal loading complete
-                    dispatch(layerMetadataLoaded());
+                    // signal loading failed
+                    dispatch(setLayerMetadataLoadingAsync(false, true));
+
                     // display alert
                     dispatch(
                         AlertActions.addAlert({
@@ -92,8 +94,9 @@ export function loadLayerMetadata(layer) {
                 }
             );
         } else {
-            // signal loading complete
-            dispatch(layerMetadataLoaded());
+            // signal loading failed
+            dispatch(setLayerMetadataLoadingAsync(false, true));
+
             // display alert
             dispatch(
                 AlertActions.addAlert({
@@ -112,12 +115,12 @@ export function loadLayerMetadata(layer) {
 export function loadInitialData(callback = null) {
     return dispatch => {
         // Set flag that initial layer data has begun loading
-        dispatch(initialDataLoading());
+        dispatch(setInitialDataLoadingAsync(true, false));
         // Fetch all initial layer data
         return Promise.all([dispatch(loadLayerData()), dispatch(loadPaletteData())]).then(
             () => {
                 // Set flag that initial layer data has finished loading
-                dispatch(initialDataLoaded());
+                dispatch(setInitialDataLoadingAsync(false, false));
                 if (typeof callback === "function") {
                     callback.call(this);
                 }
@@ -132,7 +135,7 @@ export function loadInitialData(callback = null) {
                         time: new Date()
                     })
                 );
-                dispatch(initialDataLoaded());
+                dispatch(setInitialDataLoadingAsync(false, true));
                 if (typeof callback === "function") {
                     callback.call(this);
                 }
@@ -143,7 +146,8 @@ export function loadInitialData(callback = null) {
 
 export function loadPaletteData() {
     return dispatch => {
-        dispatch(paletteDataLoading());
+        dispatch(setPaletteDataLoadingAsync(true, false));
+
         return MiscUtil.asyncFetch({
             url: appConfig.URLS.paletteConfig,
             handleAs: appStrings.FILE_TYPE_JSON,
@@ -151,7 +155,7 @@ export function loadPaletteData() {
         }).then(
             data => {
                 dispatch(ingestLayerPalettes(data));
-                dispatch(paletteDataLoaded());
+                dispatch(setPaletteDataLoadingAsync(false, false));
             },
             err => {
                 console.warn("Error in LayerActions.loadPaletteData:", err);
@@ -163,17 +167,19 @@ export function loadPaletteData() {
 
 export function loadLayerData() {
     return dispatch => {
-        dispatch(layerDataLoading());
+        dispatch(setLayerDataLoadingAsync(true, false));
+
         return Promise.all(
             appConfig.URLS.layerConfig.map(el => {
                 return dispatch(loadSingleLayerSource(el));
             })
         ).then(
             () => {
-                dispatch(mergeLayers());
-                dispatch(layerDataLoaded());
+                dispatch({ type: types.MERGE_LAYERS });
+                dispatch(setLayerDataLoadingAsync(false, false));
             },
             err => {
+                dispatch(setLayerDataLoadingAsync(false, true));
                 console.warn("Error in LayerActions.loadLayerData:", err);
                 throw err;
             }
@@ -199,30 +205,33 @@ export function loadSingleLayerSource(options) {
     };
 }
 
-// async action helpers
-
-function initialDataLoading() {
-    return { type: types.INITIAL_DATA_LOADING };
+// action helpers
+function setInitialDataLoadingAsync(loading, failed) {
+    return AsyncActions.setAsyncLoadingState("initialDataAsync", {
+        loading: loading,
+        failed: failed
+    });
 }
 
-function initialDataLoaded() {
-    return { type: types.INITIAL_DATA_LOADED };
+function setPaletteDataLoadingAsync(loading, failed) {
+    return AsyncActions.setAsyncLoadingState("layerPalettesAsync", {
+        loading: loading,
+        failed: failed
+    });
 }
 
-function paletteDataLoading() {
-    return { type: types.PALETTE_DATA_LOADING };
+function setLayerDataLoadingAsync(loading, failed) {
+    return AsyncActions.setAsyncLoadingState("layerSourcesAsync", {
+        loading: loading,
+        failed: failed
+    });
 }
 
-function paletteDataLoaded() {
-    return { type: types.PALETTE_DATA_LOADED };
-}
-
-function layerDataLoading() {
-    return { type: types.LAYER_DATA_LOADING };
-}
-
-function layerDataLoaded() {
-    return { type: types.LAYER_DATA_LOADED };
+function setLayerMetadataLoadingAsync(loading, failed) {
+    return AsyncActions.setAsyncLoadingState("layerMetadataAsync", {
+        loading: loading,
+        failed: failed
+    });
 }
 
 function ingestLayerConfig(config, options) {
@@ -235,12 +244,4 @@ function mergeLayers() {
 
 function ingestLayerPalettes(paletteConfig) {
     return { type: types.INGEST_LAYER_PALETTES, paletteConfig };
-}
-
-function layerMetadataLoading() {
-    return { type: types.LAYER_METADATA_LOADING };
-}
-
-function layerMetadataLoaded() {
-    return { type: types.LAYER_METADATA_LOADED };
 }

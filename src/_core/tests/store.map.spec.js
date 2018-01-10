@@ -22,6 +22,7 @@ import { webWorkerState } from "_core/reducers/models/webWorker";
 import TestUtil from "_core/tests/TestUtil";
 import MiscUtil from "_core/utils/MiscUtil";
 import moment from "moment";
+import Immutable from "immutable";
 
 const initialState = {
     map: mapState,
@@ -2025,13 +2026,36 @@ export const StoreMapSpec = {
                                 )
                                 .set("layers", mapState.get("layers").merge(initialIngest.LAYERS))
                                 .removeIn(["layers", "partial"]);
+
                             expected.asynchronous = expected.asynchronous
-                                .set("loadingInitialData", false)
-                                .set("initialLoadingAttempted", true)
-                                .set("loadingLayerSources", false)
-                                .set("layerLoadingAttempted", true)
-                                .set("loadingLayerPalettes", false)
-                                .set("paletteLoadingAttempted", true);
+                                .set(
+                                    "initialDataAsync",
+                                    Immutable.fromJS({
+                                        loading: false,
+                                        failed: false
+                                    })
+                                )
+                                .set(
+                                    "layerSourcesAsync",
+                                    Immutable.fromJS({
+                                        loading: false,
+                                        failed: false
+                                    })
+                                )
+                                .set(
+                                    "layerPalettesAsync",
+                                    Immutable.fromJS({
+                                        loading: false,
+                                        failed: false
+                                    })
+                                )
+                                .set(
+                                    "layerMetadataAsync",
+                                    Immutable.fromJS({
+                                        loading: false,
+                                        failed: false
+                                    })
+                                );
 
                             TestUtil.compareFullStates(actual, expected);
                             done();
