@@ -1,5 +1,7 @@
 ## Welcome to the Common Mapping Client 2!
 
+![Preview](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/core.png)
+
 #### Overview
 The Common Mapping Client (CMC) is a foundation for web-based mapping applications that
 leverages, combines, and abstracts certain commonly used mapping functionalities,
@@ -22,7 +24,6 @@ so that you can easily get examples of building intricate and detailed workflows
 on top of our client.
 
 #### General Philosophy
-
 If a capability or widget is not in 85% of mapping applications, it will not be
 part of CMC-Core.
 
@@ -31,10 +32,7 @@ part of CMC-Core.
 - GHE code-coverage: http://graywhale:49160/master/test-results/coverage/
 - GHE unit test report: http://graywhale:49160/master/test-results/
 
-![Preview](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/core.png)
-
 #### Significant CMC Features
-
 * 2D/3D Map library abstraction
 * Map layer controls
 * Map layer ingestion and merging (from JSON and WMTS capabilities XML)
@@ -61,7 +59,6 @@ part of CMC-Core.
 #### Quickstart
 
 ##### Install
-
 1. Install `NodeJS`
 2. Get the code
    1. Option A: Grab a tag that suits you
@@ -72,12 +69,10 @@ part of CMC-Core.
 5. Start building.
 
 ##### Build
-
 * `npm run build`: build production code bundle
 * `npm run open:dist`: serve production code bundle
 
 ##### Test
-
 * `npm run test`: Single run of tests
 * `npm run test:watch`: Run tests with code watch
 * `npm run test:cover`: Single run of tests with coverage report
