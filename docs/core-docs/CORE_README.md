@@ -67,14 +67,14 @@ part of CMC-Core.
    1. Option A: Grab a tag that suits you
    2. Option B: Fork the repo into your new project and get the cutting edge goodness
    3. Option C: Clone the repo, contribute back, and get the cutting edge goodness
-3. Run: `npm install`
-4. Run: `npm start`
+3. `npm install`: install node dependencies
+4. `npm start`: build and server development code bundle
 5. Start building.
 
 ##### Build
 
-* `npm run build`
-* `npm run open:dist`
+* `npm run build`: build production code bundle
+* `npm run open:dist`: serve production code bundle
 
 ##### Test
 
