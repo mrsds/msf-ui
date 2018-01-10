@@ -200,6 +200,11 @@ export const ALERTS = {
         title: "Setting Timeline Resolution Failed",
         formatString: "Could not set the timeline resolution.",
         severity: 1
+    },
+    UNKNOWN_ASYNC_KEY: {
+        title: "Async Data Error",
+        formatString: "Unrecognized async key {KEY}",
+        severity: 2
     }
 };
 /* END ALERTS */

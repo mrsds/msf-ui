@@ -37,8 +37,8 @@ export class LayerInfoContainer extends Component {
             [styles.layerInfoError]: true,
             [styles.active]:
                 !this.props.metadata.get("content") &&
-                !this.props.dataLoading &&
-                this.props.dataLoadingAttempted
+                !this.props.layerMetadataAsync.get("loading") &&
+                this.props.layerMetadataAsync.get("failed")
         });
 
         return (
@@ -113,8 +113,7 @@ LayerInfoContainer.propTypes = {
     layerId: PropTypes.string.isRequired,
     thumbnailUrl: PropTypes.string.isRequired,
     metadata: PropTypes.object.isRequired,
-    dataLoading: PropTypes.bool.isRequired,
-    dataLoadingAttempted: PropTypes.bool.isRequired
+    layerMetadataAsync: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -123,8 +122,7 @@ function mapStateToProps(state) {
         layerId: state.layerInfo.get("activeLayerId"),
         thumbnailUrl: state.layerInfo.get("activeThumbnailUrl"),
         metadata: state.layerInfo.get("metadata"),
-        dataLoading: state.asynchronous.get("loadingLayerMetadata"),
-        dataLoadingAttempted: state.asynchronous.get("loadingMetadataAttempted")
+        layerMetadataAsync: state.asynchronous.get("layerMetadataAsync")
     };
 }
 
