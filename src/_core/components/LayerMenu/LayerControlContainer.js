@@ -15,12 +15,12 @@ import { Manager, Target, Popper } from "react-popper";
 import { EnhancedSwitch, IconButtonSmall } from "_core/components/Reusables";
 import * as layerActions from "_core/actions/LayerActions";
 import {
-    Colorbar,
     LayerPositionIcon,
     LayerPositionControl,
     LayerOpacityIcon,
     LayerOpacityControl
 } from "_core/components/LayerMenu";
+import { Colorbar } from "_core/components/Colorbar";
 import MiscUtil from "_core/utils/MiscUtil";
 import styles from "_core/components/LayerMenu/LayerControlContainer.scss";
 import textStyles from "_core/styles/text.scss";
@@ -122,11 +122,9 @@ export class LayerControlContainer extends Component {
                 </span>
                 <ListItemSecondaryAction
                     classes={{
-                        root: `${styles.secondaryActionRoot} ${
-                            this.props.layer.get("isActive")
-                                ? displayStyles.invisible
-                                : displayStyles.hiddenFadeIn
-                        }`
+                        root: `${styles.secondaryActionRoot} ${this.props.layer.get("isActive")
+                            ? displayStyles.invisible
+                            : displayStyles.hiddenFadeIn}`
                     }}
                 >
                     <Tooltip title="Layer information" placement="left">
