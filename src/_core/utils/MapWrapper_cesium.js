@@ -8,10 +8,23 @@ import MapUtil from "_core/utils/MapUtil";
 import TileHandler from "_core/utils/TileHandler";
 import "assets/cesium/Cesium.js";
 import "_core/utils/CesiumDrawHelper.js";
-// import "assets/cesium/Widgets/widgets.css";
 import Modernizr from "modernizr";
 
+/**
+ * Wrapper class for Cesium
+ *
+ * @export
+ * @class MapWrapper_cesium
+ * @extends {MapWrapper}
+ */
 export default class MapWrapper_cesium extends MapWrapper {
+    /**
+     * Creates an instance of MapWrapper_cesium.
+     *
+     * @param {string|domnode} container the container to render this map into
+     * @param {object} options view options for constructing this map wrapper (usually map state from redux)
+     * @memberof MapWrapper_cesium
+     */
     constructor(container, options) {
         super(container, options);
 
@@ -51,7 +64,14 @@ export default class MapWrapper_cesium extends MapWrapper {
             };
         }
     }
-
+    /**
+     * create a cesium map object
+     *
+     * @param {string|domnode} container the domnode to render to
+     * @param {object} options options for creating this map (usually map state from redux)
+     * @returns {object} cesium viewer object
+     * @memberof MapWrapper_cesium
+     */
     createMap(container, options) {
         try {
             // Check for webgl support
@@ -122,14 +142,35 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * return the size of the rendered map.
+     * Unused, overidden to avoid warning log from parent class
+     *
+     * @returns false
+     * @memberof MapWrapper_cesium
+     */
     getMapSize() {
         return false;
     }
 
+    /**
+     * resize the map to container
+     * Unused, overidden to avoid warning log from parent class
+     *
+     * @returns true
+     * @memberof MapWrapper_cesium
+     */
     resize() {
         return true;
     }
 
+    /**
+     * adjust the level of terrain exagerration on the rendered map
+     *
+     * @param {number} terrainExaggeration scalar value of exagerration
+     * @returns true
+     * @memberof MapWrapper_cesium
+     */
     setTerrainExaggeration(terrainExaggeration) {
         // Set terrain exaggeration on scene
         this.map.scene._terrainExaggeration = terrainExaggeration;
@@ -144,6 +185,13 @@ export default class MapWrapper_cesium extends MapWrapper {
         return true;
     }
 
+    /**
+     * enable or disable 3D terrain display on the map
+     *
+     * @param {boolean} enable true if terrain should be enabled
+     * @returns true
+     * @memberof MapWrapper_cesium
+     */
     enableTerrain(enable) {
         if (enable) {
             this.map.terrainProvider = new this.cesium.CesiumTerrainProvider({
@@ -155,6 +203,12 @@ export default class MapWrapper_cesium extends MapWrapper {
         return true;
     }
 
+    /**
+     * calculate the current center of the map view
+     *
+     * @returns {array|boolean} [lon,lat] of the map center or false if calculation fails
+     * @memberof MapWrapper_cesium
+     */
     getCenter() {
         try {
             return [
@@ -167,6 +221,13 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * set the current view extent of the map
+     *
+     * @param {array} extent set of [minX, minY, maxX, minY] coordinates
+     * @returns true if change succeeds
+     * @memberof MapWrapper_cesium
+     */
     setExtent(extent) {
         try {
             if (!extent) {
@@ -191,6 +252,12 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * get the current view extent of the map
+     *
+     * @returns {array} [minX,minY,maxX,minY] extent constrained to [+-180,+-90]
+     * @memberof MapWrapper_cesium
+     */
     getExtent() {
         try {
             let fallbackExtent = [-180, -90, 180, 90];
@@ -227,7 +294,15 @@ export default class MapWrapper_cesium extends MapWrapper {
             return false;
         }
     }
-
+    /**
+     * pan the map in a given direction by a preset number of degrees
+     * default to 5 degrees, 20 if specified
+     *
+     * @param {string} direction (MAP_PAN_DIRECTION_UP|MAP_PAN_DIRECTION_DOWN|MAP_PAN_DIRECTION_LEFT|MAP_PAN_DIRECTION_RIGHT)
+     * @param {boolean} extraFar true if the map should pan 20 degrees instead of 5
+     * @returns true if pan succeeds
+     * @memberof MapWrapper_cesium
+     */
     panMap(direction, extraFar) {
         try {
             if (!direction) {
@@ -303,6 +378,12 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * zoom the map in by half of the current zoom level
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     zoomIn() {
         try {
             let currPosition = this.map.scene.camera.positionCartographic;
@@ -324,6 +405,12 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * zoom out by doubling the current zoom height
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     zoomOut() {
         try {
             let currPosition = this.map.scene.camera.positionCartographic;
@@ -345,6 +432,13 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * reset the orientation of the map view to North up, non-tilted view
+     *
+     * @param {number} duration time (in ms) of the transition
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     resetOrientation(duration) {
         try {
             this.map.camera.flyTo({
@@ -359,6 +453,15 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * add a handler to the map for a given type of drawing
+     *
+     * @param {string} geometryType (Circle|LineString|Polygon)
+     * @param {function} onDrawEnd callback for when the drawing completes
+     * @param {string} interactionType (Draw|Measure)
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     addDrawHandler(geometryType, onDrawEnd, interactionType) {
         try {
             if (geometryType === appStrings.GEOMETRY_CIRCLE) {
@@ -477,6 +580,13 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * enable the draw interaction for a type of geometry
+     *
+     * @param {string} geometryType (Circle|LineString|Polygon)
+     * @returns true if enabling the interaction succeeds
+     * @memberof MapWrapper_cesium
+     */
     enableDrawing(geometryType) {
         try {
             // Enable drawing for geometryType
@@ -494,6 +604,12 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * turn off current drawing interaction
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     disableDrawing() {
         try {
             this.drawHandler.stopDrawing();
@@ -504,6 +620,14 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * enable the measure interaction for a type of geometry
+     *
+     * @param {string} geometryType (Circle|LineString|Polygon)
+     * @param {string} measurementType (Distance|Area)
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     enableMeasuring(geometryType, measurementType) {
         try {
             // Enable drawing for geometryType
@@ -521,6 +645,12 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * turn off the current measuring interaction
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     disableMeasuring() {
         try {
             this.drawHandler.stopDrawing();
@@ -531,6 +661,13 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * enable or disable all draw interactions
+     *
+     * @param {boolean} active true if draw interactions should be enabled
+     * @returns true if a draw handler is present
+     * @memberof MapWrapper_cesium
+     */
     enableActiveListeners(active) {
         if (this.drawHandler) {
             this.drawHandler._isActive = active;
@@ -539,6 +676,20 @@ export default class MapWrapper_cesium extends MapWrapper {
         return false;
     }
 
+    /**
+     * add a geometry to the map
+     *
+     * @param {object} geometry geometry to add to the map
+     * - type - {string} (Circle|LineString|Polygon)
+     * - coordinateType - {string} (Cartesian|Cartographic)
+     * - center - {object} center coordinate of circle {lon,lat}
+     * - radius - {number} radius of circle
+     * - coordinates - {array} set of coordinates for shape [{lat,lon}]
+     * @param {string} interactionType (Draw|Measure)
+     * @param {boolean} [geodesic=false] true if the shape be processed into geodesic arcs
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     addGeometry(geometry, interactionType, geodesic = false) {
         try {
             if (geometry.type === appStrings.GEOMETRY_CIRCLE) {
@@ -660,6 +811,15 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * add a label to the map
+     *
+     * @param {string} label the content of the label
+     * @param {array} coords location of the label on the map [lon,lat]
+     * @param {object} [opt_meta={}] additional data to attach to the label object (optional)
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     addLabel(label, coords, opt_meta = {}) {
         try {
             coords = this.cesium.Cartesian3.fromDegrees(coords[0], coords[1]);
@@ -696,6 +856,13 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * create an overlay image for text on the map
+     *
+     * @param {string} text content of the overlay display
+     * @returns {array} display nodes [image, canvas]
+     * @memberof MapWrapper_cesium
+     */
     createOverlayImage(text) {
         let canvas = document.createElement("canvas");
         canvas.width = 300;
@@ -732,6 +899,12 @@ export default class MapWrapper_cesium extends MapWrapper {
         return [image, canvas];
     }
 
+    /**
+     * remove all drawing geometries from the map
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     removeAllDrawings() {
         try {
             // Find primitives to remove
@@ -752,6 +925,12 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * remove all measurement geometries from the map
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     removeAllMeasurements() {
         try {
             // Find primitives to remove
@@ -774,12 +953,20 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * add a listener to the map for a given interaction
+     *
+     * @param {string} eventStr event type to listen for (mousemove|moveend|click)
+     * @param {function} callback function to call when the event is fired
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     addEventListener(eventStr, callback) {
         try {
             switch (eventStr) {
                 case appStrings.EVENT_MOVE_END:
                     this.map.camera.moveEnd.addEventListener(callback);
-                    return;
+                    return true;
                 case appStrings.EVENT_MOUSE_HOVER:
                     new this.cesium.ScreenSpaceEventHandler(this.map.scene.canvas).setInputAction(
                         movement => {
@@ -787,7 +974,7 @@ export default class MapWrapper_cesium extends MapWrapper {
                         },
                         this.cesium.ScreenSpaceEventType.MOUSE_MOVE
                     );
-                    return;
+                    return true;
                 case appStrings.EVENT_MOUSE_CLICK:
                     new this.cesium.ScreenSpaceEventHandler(this.map.scene.canvas).setInputAction(
                         movement => {
@@ -797,9 +984,9 @@ export default class MapWrapper_cesium extends MapWrapper {
                         },
                         this.cesium.ScreenSpaceEventType.LEFT_CLICK
                     );
-                    return;
+                    return true;
                 default:
-                    return;
+                    return true;
             }
         } catch (err) {
             console.warn("Error in MapWrapper_cesium.addEventListener:", err);
@@ -807,6 +994,14 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * set the opacity of a layer on the map
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {number} opacity value of the opacity [0.0 - 1.0]
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     setLayerOpacity(layer, opacity) {
         try {
             let mapLayers = this.getMapLayers(layer.get("handleAs"));
@@ -853,6 +1048,7 @@ export default class MapWrapper_cesium extends MapWrapper {
                         );
                     }
                 });
+                return true;
             }
             return false;
         } catch (err) {
@@ -861,6 +1057,14 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * adjust the display of all measurement overlays currently on the map
+     * to display in the specified units
+     *
+     * @param {string} units (metric|imperial|nautical|schoolbus)
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     setScaleUnits(units) {
         try {
             // Set measurement units
@@ -899,6 +1103,13 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * add a layer to the map
+     *
+     * @param {object} mapLayer cesium layer object
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     addLayer(mapLayer) {
         try {
             let mapLayers = this.getMapLayers(mapLayer._layerHandleAs);
@@ -911,6 +1122,13 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * remove a layer from the map
+     *
+     * @param {object} mapLayer cesium layer object
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     removeLayer(mapLayer) {
         try {
             let mapLayers = this.getMapLayers(mapLayer._layerHandleAs);
@@ -922,6 +1140,14 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * activate a layer on the map. This will create a new
+     * cesium layer object and add it to the map
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     activateLayer(layer) {
         try {
             let mapLayers = this.getMapLayers(layer.get("handleAs"));
@@ -951,6 +1177,15 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * Remove a layer from the map. This will find the
+     * cesium layer corresponding the specified layer and
+     * remove it from the map
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds or if layer is not active
+     * @memberof MapWrapper_cesium
+     */
     deactivateLayer(layer) {
         try {
             // find the layer on the map
@@ -970,7 +1205,15 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
-    setLayerActive(layer, active) {
+    /**
+     * set a layer active/inactive on the map
+     *
+     * @param {obejct} layer layer from map state in redux
+     * @param {boolean} [active=true] true if the layer should be added to the map
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
+    setLayerActive(layer, active = true) {
         if (active) {
             return this.activateLayer(layer);
         } else {
@@ -978,6 +1221,14 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * update a layer on the map. This creates a new layer
+     * and replaces the layer with a matching id
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     updateLayer(layer) {
         try {
             let mapLayers = this.getMapLayers(layer.get("handleAs"));
@@ -995,6 +1246,14 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * Set the basemap layer on the map.
+     * The basemap is fixed as the bottom layer on the map
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     setBasemap(layer) {
         try {
             let mapLayers = this.getMapLayers(layer.get("handleAs"));
@@ -1018,6 +1277,14 @@ export default class MapWrapper_cesium extends MapWrapper {
             return false;
         }
     }
+
+    /**
+     * Hide the display of the basemap. This does not
+     * remove the basemap layer but makes it invisble.
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     hideBasemap() {
         try {
             let mapLayers = this.getMapLayers();
@@ -1032,6 +1299,15 @@ export default class MapWrapper_cesium extends MapWrapper {
             return false;
         }
     }
+
+    /**
+     * create a cesium layer corresponding to the
+     * given layer
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {object|boolean} cesium layer object or false if it fails
+     * @memberof MapWrapper_cesium
+     */
     createLayer(layer) {
         switch (layer.get("handleAs")) {
             case appStrings.LAYER_GIBS_RASTER:
@@ -1046,8 +1322,6 @@ export default class MapWrapper_cesium extends MapWrapper {
                 return this.createVectorLayer(layer);
             case appStrings.LAYER_VECTOR_KML:
                 return this.createVectorLayer(layer);
-            case appStrings.LAYER_VECTOR_DRAWING:
-                return this.createVectorLayer(layer);
             default:
                 console.warn(
                     "Error in MapWrapper_cesium.createLayer: unknown layer type - " +
@@ -1057,6 +1331,14 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * create a wmts cesium layer corresponding
+     * to the given layer
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {object|boolean} cesium layer object or false if it fails
+     * @memberof MapWrapper_cesium
+     */
     createWMTSLayer(layer) {
         try {
             let _context = this;
@@ -1088,6 +1370,14 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * create a vector cesium layer corresponding
+     * to the given layer
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {object|boolean} cesium layer object or false if it fails
+     * @memberof MapWrapper_cesium
+     */
     createVectorLayer(layer) {
         try {
             let options = { url: layer.get("url") };
@@ -1118,6 +1408,17 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * get the lat-lon corresponding to a given pixel position
+     * within the containing domnode
+     *
+     * @param {array} pixel location on the container [x,y]
+     * @returns {object|boolean} object of position of false if it fails
+     * - lat - {number} latitude of the pixel location
+     * - lon - {number} longitude of the pixel location
+     * - isValid - {boolean} pixel was on the globe
+     * @memberof MapWrapper_cesium
+     */
     getLatLonFromPixelCoordinate(pixel) {
         try {
             let cartesian = this.map.scene.camera.pickEllipsoid(
@@ -1142,6 +1443,13 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * move a layer to the top of the map display stack
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     moveLayerToTop(layer) {
         try {
             let mapLayers = this.getMapLayers(layer.get("handleAs"));
@@ -1162,6 +1470,15 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * Move a layer to the bottom of the map display stack.
+     * The layer will always be above the basemap, which
+     * is always at the absolute bottom of the display
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     moveLayerToBottom(layer) {
         try {
             let mapLayers = this.getMapLayers(layer.get("handleAs"));
@@ -1178,6 +1495,13 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * move a layer up in the display stack
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     moveLayerUp(layer) {
         try {
             let mapLayers = this.getMapLayers(layer.get("handleAs"));
@@ -1197,6 +1521,15 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * move a layer down in the display stack.
+     * The layer will always be above the basemap, which
+     * is always at the absolute bottom of the display
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_cesium
+     */
     moveLayerDown(layer) {
         try {
             let mapLayers = this.getMapLayers(layer.get("handleAs"));
@@ -1215,6 +1548,14 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * retrieve the corresponding viewport pixel from a cesium
+     * click event
+     *
+     * @param {object} clickEvt cesium click event wrapper
+     * @returns {array} pixel coordinates
+     * @memberof MapWrapper_cesium
+     */
     getPixelFromClickEvent(clickEvt) {
         try {
             return clickEvt.pixel;
@@ -1225,6 +1566,14 @@ export default class MapWrapper_cesium extends MapWrapper {
     }
 
     /* methods for Cesium only */
+
+    /**
+     * convert cartesian coordinates to lat-lon coordiantes
+     *
+     * @param {object} point cartesian point {x,y,z}
+     * @returns {object} lat-lon point {lat,lon}
+     * @memberof MapWrapper_cesium
+     */
     cartesianToLatLon(point) {
         let cartographicRadians = this.cesium.Ellipsoid.WGS84.cartesianToCartographic(point);
         return {
@@ -1233,10 +1582,39 @@ export default class MapWrapper_cesium extends MapWrapper {
         };
     }
 
+    /**
+     * convert lat-lon coordinates to cartesian coordinates
+     *
+     * @param {number} lat latitude value
+     * @param {number} lon longitude value
+     * @returns {object} cartesian point {x,y,z}
+     * @memberof MapWrapper_cesium
+     */
     latLonToCartesian(lat, lon) {
         return new this.cesium.Cartesian3.fromDegrees(lon, lat);
     }
 
+    /**
+     * create an imagery provider for a cesium raster layer
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options raster imagery options for layer from redux state
+     * - url - {string} base url for this layer
+     * - layer - {string} layer identifier
+     * - format - {string} tile resouce format
+     * - requestEncoding - {string} url encoding (REST|KVP)
+     * - matrixSet - {string} matrix set for the tile pyramid
+     * - projection - {string} projection string
+     * - extents - {array} bounding box extents for this layer
+     * - tileGrid - {object} of tiling options
+     *   - origin - {array} lat lon coordinates of layer upper left
+     *   - resolutions - {array} list of tile resolutions
+     *   - matrixIds - {array} identifiers for each zoom level
+     *   - tileSize - {number} size of the tiles
+     *
+     * @returns {object} cesium imagery provider
+     * @memberof MapWrapper_cesium
+     */
     createImageryProvider(layer, options) {
         switch (layer.get("handleAs")) {
             case appStrings.LAYER_GIBS_RASTER:
@@ -1253,6 +1631,17 @@ export default class MapWrapper_cesium extends MapWrapper {
                 return false;
         }
     }
+
+    /**
+     * Create a cesium tiling scheme for a tiled raster layer
+     *
+     * @param {object} options specifications for the tiling scheme
+     * - projection - {string} mapping projection of the tiling scheme
+     * - handleAs - {string} type of raster layer (GIBS_raster|wmts_raster|xyz_raster)
+     * @param {object} tileSchemeOptions additional wmts options
+     * @returns {object} cesium tiling scheme
+     * @memberof MapWrapper_cesium
+     */
     createTilingScheme(options, tileSchemeOptions) {
         if (options.projection === appStrings.PROJECTIONS.latlon.code) {
             if (options.handleAs === appStrings.LAYER_GIBS_RASTER) {
@@ -1267,6 +1656,27 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
         return false;
     }
+
+    /**
+     * create GIBS specific wmts imagery provider
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options wmts layer options
+     * - url - {string} base url for this layer
+     * - layer - {string} layer identifier
+     * - format - {string} tile resouce format
+     * - requestEncoding - {string} url encoding (REST|KVP)
+     * - matrixSet - {string} matrix set for the tile pyramid
+     * - projection - {string} projection string
+     * - extents - {array} bounding box extents for this layer
+     * - tileGrid - {object} of tiling options
+     *   - origin - {array} lat lon coordinates of layer upper left
+     *   - resolutions - {array} list of tile resolutions
+     *   - matrixIds - {array} identifiers for each zoom level
+     *   - tileSize - {number} size of the tiles
+     * @returns {object} cesium imagery provider
+     * @memberof MapWrapper_cesium
+     */
     createGIBSWMTSProvider(layer, options) {
         try {
             if (typeof options !== "undefined") {
@@ -1299,6 +1709,27 @@ export default class MapWrapper_cesium extends MapWrapper {
             return false;
         }
     }
+
+    /**
+     * create wmts imagery provider
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options wmts layer options
+     * - url - {string} base url for this layer
+     * - layer - {string} layer identifier
+     * - format - {string} tile resouce format
+     * - requestEncoding - {string} url encoding (REST|KVP)
+     * - matrixSet - {string} matrix set for the tile pyramid
+     * - projection - {string} projection string
+     * - extents - {array} bounding box extents for this layer
+     * - tileGrid - {object} of tiling options
+     *   - origin - {array} lat lon coordinates of layer upper left
+     *   - resolutions - {array} list of tile resolutions
+     *   - matrixIds - {array} identifiers for each zoom level
+     *   - tileSize - {number} size of the tiles
+     * @returns {object} cesium imagery provider
+     * @memberof MapWrapper_cesium
+     */
     createGenericWMTSProvider(layer, options) {
         try {
             if (typeof options !== "undefined") {
@@ -1329,6 +1760,27 @@ export default class MapWrapper_cesium extends MapWrapper {
             return false;
         }
     }
+
+    /**
+     * create xyz tiled imagery provider
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options xyz tiling options
+     * - url - {string} base url for this layer
+     * - layer - {string} layer identifier
+     * - format - {string} tile resouce format
+     * - requestEncoding - {string} url encoding (REST|KVP)
+     * - matrixSet - {string} matrix set for the tile pyramid
+     * - projection - {string} projection string
+     * - extents - {array} bounding box extents for this layer
+     * - tileGrid - {object} of tiling options
+     *   - origin - {array} lat lon coordinates of layer upper left
+     *   - resolutions - {array} list of tile resolutions
+     *   - matrixIds - {array} identifiers for each zoom level
+     *   - tileSize - {number} size of the tiles
+     * @returns {object} cesium imagery provider
+     * @memberof MapWrapper_cesium
+     */
     createGenericXYZProvider(layer, options) {
         try {
             if (typeof options !== "undefined") {
@@ -1358,6 +1810,15 @@ export default class MapWrapper_cesium extends MapWrapper {
         }
     }
 
+    /**
+     * create a cesium vector data source
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options vector data source options
+     * - url - {string} url for the data
+     * @returns {object} a cesium vector data source
+     * @memberof MapWrapper_cesium
+     */
     createVectorSource(layer, options) {
         switch (layer.get("handleAs")) {
             case appStrings.LAYER_VECTOR_GEOJSON:
@@ -1370,6 +1831,16 @@ export default class MapWrapper_cesium extends MapWrapper {
                 return false;
         }
     }
+
+    /**
+     * create a geojson vector data source
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options vector data source options
+     * - url - {string} url for the data
+     * @returns {object} a cesium vector data source
+     * @memberof MapWrapper_cesium
+     */
     createGeoJsonSource(layer, options) {
         return this.cesium.GeoJsonDataSource.load(options.url, {
             stroke: this.cesium.Color.fromCssColorString("#1E90FF"),
@@ -1378,6 +1849,16 @@ export default class MapWrapper_cesium extends MapWrapper {
             show: layer.get("isActive")
         });
     }
+
+    /**
+     * create a kml vector data source
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options vector data source options
+     * - url - {string} url for the data
+     * @returns {object} a cesium vector data source
+     * @memberof MapWrapper_cesium
+     */
     createKmlSource(layer, options) {
         return this.cesium.KmlDataSource.load(options.url, {
             camera: this.map.scene.camera,
@@ -1385,6 +1866,22 @@ export default class MapWrapper_cesium extends MapWrapper {
             show: layer.get("isActive")
         });
     }
+
+    /**
+     * Handle loading a tile for a tile raster layer
+     * This is used to override url creation and
+     * data loading for raster layers.
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} mapLayer cesium layer object
+     * @param {number} x x grid value
+     * @param {number} y y grid value
+     * @param {number} level z grid value
+     * @param {object} request cesium request object
+     * @param {object} context wrapper context for this call
+     * @returns {Promise} for tile request
+     * @memberof MapWrapper_cesium
+     */
     handleTileLoad(layer, mapLayer, x, y, level, request, context) {
         let url = layer.getIn(["wmtsOptions", "url"]);
         let customUrlFunction = this.tileHandler.getUrlFunction(
@@ -1456,6 +1953,16 @@ export default class MapWrapper_cesium extends MapWrapper {
             return mapLayer.imageryProvider._origTileLoadFunc(x, y, level);
         }
     }
+
+    /**
+     * find the cesium map layer corresponding to the
+     * map state layer within the provided cesium layer set
+     *
+     * @param {array} mapLayers list of cesium map layers
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {object|boolean} cesium map layer or false if not found
+     * @memberof MapWrapper_cesium
+     */
     findLayerInMapLayers(mapLayers, layer) {
         let layerId = layer.get("id");
         for (let i = 0; i < mapLayers.length; ++i) {
@@ -1467,6 +1974,16 @@ export default class MapWrapper_cesium extends MapWrapper {
         return false;
     }
 
+    /**
+     * Find the highest index for a layer to be displayed.
+     * Data layers are displayed below reference layers and
+     * above basemaps
+     *
+     * @param {array} mapLayers list of cesium map layers to search in
+     * @param {object} mapLayer cesium map layer to compare
+     * @returns {number} highest index within the provided list for a layer of this type
+     * @memberof MapWrapper_cesium
+     */
     findTopInsertIndexForLayer(mapLayers, mapLayer) {
         let index = mapLayers.length;
 
@@ -1491,6 +2008,13 @@ export default class MapWrapper_cesium extends MapWrapper {
         return index;
     }
 
+    /**
+     * return the set of layers matching the provided type
+     *
+     * @param {string} type (GIBS_raster|wmts_raster|xyz_raster|vector_geojson|vector_topojson|vector_kml)
+     * @returns {array} list of matching cesium map layers
+     * @memberof MapWrapper_cesium
+     */
     getMapLayers(type) {
         switch (type) {
             case appStrings.LAYER_GIBS_RASTER:

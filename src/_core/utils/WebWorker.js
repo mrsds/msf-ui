@@ -2,6 +2,16 @@
 import * as appStrings from "_core/constants/appStrings";
 
 export default class WebWorker {
+    /**
+     * handle a message sent to this worker
+     *
+     * @param {object} message data message posted to this worker
+     * - operation - {string} the task to perform
+     * - {any} additional values for the task
+     * @param {WebWorker} workerRef backing web worker
+     * @returns {Promise} promise resolved when the task is complete
+     * @memberof WebWorker
+     */
     handleMessage(message, workerRef) {
         let operation = message.operation;
         switch (operation) {
@@ -14,6 +24,15 @@ export default class WebWorker {
         }
     }
 
+    /**
+     * handle the test task
+     *
+     * @param {object} message
+     * - delay - {number} how long to delay before resolving
+     * - data - {any} data to resolve
+     * @returns {Promise} promise resolved after a brief timeout
+     * @memberof WebWorker
+     */
     handleTest(message) {
         let data = message.data;
         let delay = typeof message.delay !== "undefined" ? message.delay : 500;

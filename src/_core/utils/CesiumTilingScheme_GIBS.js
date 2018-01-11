@@ -1,5 +1,13 @@
 import "assets/cesium/Cesium.js";
 
+/**
+ * Tiling scheme class for GIBS layers to render in cesium
+ * copied from https://github.com/nasa-gibs/gibs-web-examples/blob/master/lib/gibs/gibs.js
+ *
+ * @export
+ * @class CesiumTilingScheme_GIBS
+ * @extends {window.Cesium.GeographicTilingScheme}
+ */
 export default class CesiumTilingScheme_GIBS extends window.Cesium.GeographicTilingScheme {
     constructor(options, wmtsOptions = {}) {
         super(options);
@@ -25,7 +33,7 @@ export default class CesiumTilingScheme_GIBS extends window.Cesium.GeographicTil
             { width: 2560, height: 1280, resolution: 0.000004793689962142629 }
         ];
 
-        // package the variables I'll need in the overrides below that will be used
+        // package the variables needed in the overrides below that will be used
         this._override_vars = { tilePixels, cesium, rectangle, math, levels };
     }
 

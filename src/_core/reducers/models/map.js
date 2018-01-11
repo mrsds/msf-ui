@@ -74,8 +74,6 @@ export const layerModel = Immutable.fromJS({
     type: "",
     isDefault: false,
     wmtsOptions: {
-        urlFunction: "",
-        tileFunction: "",
         urlFunctions: {},
         tileFunctions: {},
         url: "",

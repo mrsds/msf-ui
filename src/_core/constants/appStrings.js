@@ -30,7 +30,6 @@ export const LAYER_XYZ_RASTER = "xyz_raster";
 export const LAYER_VECTOR_GEOJSON = "vector_geojson";
 export const LAYER_VECTOR_TOPOJSON = "vector_topojson";
 export const LAYER_VECTOR_KML = "vector_kml";
-export const LAYER_VECTOR_DRAWING = "vector_drawing";
 
 // layer colorbar formats
 export const COLORBAR_IMAGE = "image";

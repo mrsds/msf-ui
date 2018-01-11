@@ -38,7 +38,21 @@ import TileHandler from "_core/utils/TileHandler";
 import Cache from "_core/utils/Cache";
 import tooltipStyles from "_core/components/Map/MapTooltip.scss";
 
+/**
+ * Wrapper class for Openlayers
+ *
+ * @export
+ * @class MapWrapper_openlayers
+ * @extends {MapWrapper}
+ */
 export default class MapWrapper_openlayers extends MapWrapper {
+    /**
+     * Creates an instance of MapWrapper_openlayers.
+     *
+     * @param {string|domnode} container the container to render this map into
+     * @param {object} options view options for constructing this map wrapper (usually map state from redux)
+     * @memberof MapWrapper_openlayers
+     */
     constructor(container, options) {
         super(container, options);
         this.is3D = false;
@@ -54,6 +68,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         this.initializationSuccess = this.map ? true : false;
     }
 
+    /**
+     * create an openlayers map object
+     *
+     * @param {string|domnode} container the domnode to render to
+     * @param {object} options options for creating this map (usually map state from redux)
+     * @returns {object} openlayers map object
+     * @memberof MapWrapper_openlayers
+     */
     createMap(container, options) {
         try {
             // create default draw layer
@@ -96,6 +118,12 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * prepare the default style objects that will be used
+     * in drawing/measuring
+     *
+     * @memberof MapWrapper_openlayers
+     */
     configureStyles() {
         let geometryStyles = {};
         geometryStyles[OL_Geom_GeometryType.POLYGON] = [
@@ -231,6 +259,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         };
     }
 
+    /**
+     * get the size of the rendered map
+     *
+     * @returns {obejct|boolean} size of the map or false if it fails
+     *  - width - {number} width of the map
+     *  - height - {number} height of the map
+     * @memberof MapWrapper_openlayers
+     */
     getMapSize() {
         try {
             let size = this.map.getSize();
@@ -245,6 +281,12 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * adjusts the rendered map size to it's container
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     resize() {
         try {
             this.map.updateSize();
@@ -255,6 +297,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * create an openlayers layer object
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {boolean} [fromCache=true] true if the layer may be pulled from the cache
+     * @returns {object|boolean} openlayers layer object or false if it fails
+     * @memberof MapWrapper_openlayers
+     */
     createLayer(layer, fromCache = true) {
         let mapLayer = false;
 
@@ -304,6 +354,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         return mapLayer;
     }
 
+    /**
+     * create an openlayers wmts raster layer
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {boolean} [fromCache=true] true if the layer may be pulled from the cache
+     * @returns {object|boolean} openlayers layer wmts layer object or false if it fails
+     * @memberof MapWrapper_openlayers
+     */
     createWMTSLayer(layer, fromCache = true) {
         try {
             if (layer && layer.get("wmtsOptions")) {
@@ -332,6 +390,16 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * override the url generation function and tile loading functions
+     * for an openlayers wmts layer in order to customize urls and
+     * tile load handling
+     *
+     * @param {object} layerSource openlayers wmts layer source
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} mapLayer openlayers wmts layer
+     * @memberof MapWrapper_openlayers
+     */
     setWMTSLayerOverrides(layerSource, layer, mapLayer) {
         // make sure we have these set
         if (
@@ -361,6 +429,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         });
     }
 
+    /**
+     * create an openlayers vector layer
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {boolean} [fromCache=true] true if the layer may be pulled from the cache
+     * @returns {object} openlayers vector layer
+     * @memberof MapWrapper_openlayers
+     */
     createVectorLayer(layer, fromCache = true) {
         try {
             let layerSource = this.createLayerSource(layer, {
@@ -382,10 +458,23 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * get the center of the current map view
+     *
+     * @returns {array} [x,y] center of the view
+     * @memberof MapWrapper_openlayers
+     */
     getCenter() {
         return [0, 0];
     }
 
+    /**
+     * set the view bounding box extent of the map
+     *
+     * @param {array} extent [minX, minY, maxX, maxY] of the desired extent
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     setExtent(extent) {
         try {
             if (extent) {
@@ -403,6 +492,12 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * get the current view bounding box of the map
+     *
+     * @returns {array} [minX, minY, maxX, maxY] of the current extent
+     * @memberof MapWrapper_openlayers
+     */
     getExtent() {
         try {
             return this.map.getView().calculateExtent(this.map.getSize());
@@ -412,6 +507,15 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * pan the map in a specified direction by a preset number of pixels
+     * default to 100 pixels, 200 if specified
+     *
+     * @param {string} direction (MAP_PAN_DIRECTION_UP|MAP_PAN_DIRECTION_DOWN|MAP_PAN_DIRECTION_LEFT|MAP_PAN_DIRECTION_RIGHT)
+     * @param {boolean} extraFar extraFar true of the map should pan 200 pixels instead of 100 pixels
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     panMap(direction, extraFar) {
         try {
             let deltaX = 0;
@@ -453,6 +557,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * zoom in the map by one zoom level
+     *
+     * @param {number} [duration=175] timing of the zoom animation
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     zoomIn(duration = 175) {
         try {
             if (typeof this.map !== "undefined" && typeof this.map.getView() !== "undefined") {
@@ -470,6 +581,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
             return false;
         }
     }
+
+    /**
+     * zoom out the map by one zoom level
+     *
+     * @param {number} [duration=175] timing of the zoom animation
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     zoomOut(duration = 175) {
         try {
             if (typeof this.map !== "undefined" && typeof this.map.getView() !== "undefined") {
@@ -488,6 +607,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * activate a drawing interaction
+     *
+     * @param {string} geometryType (Circle|LineString|Polygon)
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     enableDrawing(geometryType) {
         try {
             // remove double-click zoom while drawing so we can double-click complete
@@ -512,6 +638,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * turn off current drawing interaction
+     *
+     * @param {boolean} [delayDblClickEnable=true] true if re-enabling double-click interaction should be delayed
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     disableDrawing(delayDblClickEnable = true) {
         try {
             // Call setActive(false) on all handlers
@@ -544,6 +677,12 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * finalize a drawing interaction
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     completeDrawing() {
         try {
             let drawInteractions = this.miscUtil.findAllMatchingObjectsInArray(
@@ -563,6 +702,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * enable a measuring interaction
+     *
+     * @param {string} geometryType (Circle|LineString|Polygon)
+     * @param {string} measurementType (Distance|Area)
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     enableMeasuring(geometryType, measurementType) {
         try {
             // remove double-click zoom while drawing so we can double-click complete
@@ -587,6 +734,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * turn off current measuring interaction
+     *
+     * @param {boolean} [delayDblClickEnable=true] true if re-enabling double-click interaction should be delayed
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     disableMeasuring(delayDblClickEnable = true) {
         try {
             // Call setActive(false) on all handlers
@@ -621,6 +775,12 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * finalize a measuring interaction
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     completeMeasuring() {
         try {
             let measureInteractions = this.miscUtil.findAllMatchingObjectsInArray(
@@ -640,6 +800,15 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * enable or disable the double-click interaction
+     * which can interfere with certain aspects of shape
+     * drawing
+     *
+     * @param {boolean} enabled true if the double-click interaction should be enabled
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     setDoubleClickZoomEnabled(enabled) {
         try {
             let dblClickInteraction = this.miscUtil.findObjectInArray(
@@ -651,16 +820,40 @@ export default class MapWrapper_openlayers extends MapWrapper {
             if (dblClickInteraction) {
                 dblClickInteraction.setActive(enabled);
             }
+            return true;
         } catch (err) {
             console.warn("Error in MapWrapper_openlayers.setDoubleClickZoomEnabled:", err);
             return false;
         }
     }
 
+    /**
+     * Enable or disable all currently active listeners.
+     * Overriden to avoid warning logs from
+     * parent class
+     *
+     * @param {boolean} active true if the listeners should be enabled
+     * @returns {boolean} false
+     * @memberof MapWrapper_openlayers
+     */
     enableActiveListeners(active) {
         return false;
     }
 
+    /**
+     * add a geometry to the map
+     *
+     * @param {object} geometry geometry to add to the map
+     * - type - {string} (Circle|LineString|Polygon)
+     * - coordinateType - {string} (Cartesian|Cartographic)
+     * - center - {object} center coordinate of circle {lon,lat}
+     * - radius - {number} radius of circle
+     * - coordinates - {array} set of coordinates for shape [{lat,lon}]
+     * @param {string} interactionType (Draw|Measure)
+     * @param {boolean} [geodesic=false] true if the shape be processed into geodesic arcs
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     addGeometry(geometry, interactionType, geodesic = false) {
         let mapLayers = this.map.getLayers().getArray();
         let mapLayer = this.miscUtil.findObjectInArray(mapLayers, "_layerId", "_vector_drawings");
@@ -763,6 +956,15 @@ export default class MapWrapper_openlayers extends MapWrapper {
         return false;
     }
 
+    /**
+     * add a label to the map
+     *
+     * @param {string} label the content of the label
+     * @param {array} coords location of the label on the map [lon,lat]
+     * @param {object} [opt_meta={}] additional data to attach to the label object (optional)
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     addLabel(label, coords, opt_meta = {}) {
         try {
             // Create label domNode
@@ -794,6 +996,12 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * remove all drawing geometries from the map
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     removeAllDrawings() {
         let mapLayers = this.map.getLayers().getArray();
         let mapLayer = this.miscUtil.findObjectInArray(mapLayers, "_layerId", "_vector_drawings");
@@ -817,6 +1025,12 @@ export default class MapWrapper_openlayers extends MapWrapper {
         );
     }
 
+    /**
+     * remove all measurement geometries from the map
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     removeAllMeasurements() {
         let mapLayers = this.map.getLayers().getArray();
         let mapLayer = this.miscUtil.findObjectInArray(mapLayers, "_layerId", "_vector_drawings");
@@ -843,10 +1057,27 @@ export default class MapWrapper_openlayers extends MapWrapper {
         );
     }
 
+    /**
+     * Reset the orientation of the map to north up.
+     * Overriden to avoid warning logs from parent class
+     *
+     * @param {number} duration timing of the animation
+     * @returns {boolean} false
+     * @memberof MapWrapper_openlayers
+     */
     resetOrientation(duration) {
         return true;
     }
 
+    /**
+     * add a handler to the map for a given type of drawing
+     *
+     * @param {string} geometryType (Circle|LineString|Polygon)
+     * @param {function} onDrawEnd callback for when the drawing completes
+     * @param {string} interactionType (Draw|Measure)
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     addDrawHandler(geometryType, onDrawEnd, interactionType) {
         try {
             let mapLayers = this.map.getLayers().getArray();
@@ -974,6 +1205,20 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * extract a standard geometry object from an openlayers draw
+     * event
+     *
+     * @param {object} event openalyers draw complete event
+     * @param {string} geometryType (Circle|LineString|Polygon)
+     * @returns {object} standard geometry object
+     * - type - {string} (Circle|LineString|Polygon)
+     * - coordinateType - {string} (Cartesian|Cartographic)
+     * - center - {object} center coordinate of circle {lon,lat}
+     * - radius - {number} radius of circle
+     * - coordinates - {array} set of coordinates for shape [{lat,lon}]
+     * @memberof MapWrapper_openlayers
+     */
     retrieveGeometryFromEvent(event, geometryType) {
         if (geometryType === appStrings.GEOMETRY_CIRCLE) {
             let center = event.feature.getGeometry().getCenter();
@@ -1047,6 +1292,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         return false;
     }
 
+    /**
+     * adjust the display of all measurement overlays currently on the map
+     * to display in the specified units
+     *
+     * @param {string} units (metric|imperial|nautical|schoolbus)
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     setScaleUnits(units) {
         try {
             // Set scalebar units
@@ -1080,6 +1333,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * add an openlayers layer object to the map
+     *
+     * @param {object} mapLayer openlayers layer object
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     addLayer(mapLayer) {
         try {
             let index = this.findTopInsertIndexForLayer(mapLayer);
@@ -1092,6 +1352,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * remove an openlayers layer object from the map
+     *
+     * @param {object} mapLayer openlayers layer object
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     removeLayer(mapLayer) {
         try {
             this.map.removeLayer(mapLayer);
@@ -1102,6 +1369,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * replace a layer on the map
+     *
+     * @param {object} mapLayer openlayers layer object
+     * @param {number} index the display index of the layer to be replaced
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     replaceLayer(mapLayer, index) {
         try {
             this.map.getLayers().setAt(index, mapLayer);
@@ -1113,6 +1388,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * activate a layer on the map. This will create a new
+     * openlayers layer object and add it to the map
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     activateLayer(layer) {
         try {
             let mapLayers = this.map.getLayers().getArray();
@@ -1142,6 +1425,15 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * Remove a layer from the map. This will find the
+     * openlayers layer corresponding the specified layer and
+     * remove it from the map
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds or if layer is not active
+     * @memberof MapWrapper_openlayers
+     */
     deactivateLayer(layer) {
         try {
             // find the layer on the map
@@ -1161,6 +1453,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * set a layer active/inactive on the map
+     *
+     * @param {obejct} layer layer from map state in redux
+     * @param {boolean} [active=true] true if the layer should be added to the map
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     setLayerActive(layer, active) {
         if (active) {
             return this.activateLayer(layer);
@@ -1169,6 +1469,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * set the opacity of a layer on the map
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {number} opacity value of the opacity [0.0 - 1.0]
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     setLayerOpacity(layer, opacity) {
         try {
             let mapLayers = this.map.getLayers().getArray();
@@ -1184,6 +1492,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * Set the basemap layer on the map.
+     * The basemap is fixed as the bottom layer on the map
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     setBasemap(layer) {
         try {
             // create the new basemap layer
@@ -1209,6 +1525,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * Hide the display of the basemap. This does not
+     * remove the basemap layer but makes it invisble.
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     hideBasemap() {
         try {
             let mapLayers = this.map.getLayers();
@@ -1223,6 +1546,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * add a listener to the map for a given interaction
+     *
+     * @param {string} eventStr event type to listen for (mousemove|moveend|click)
+     * @param {function} callback function to call when the event is fired
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     addEventListener(eventStr, callback) {
         try {
             switch (eventStr) {
@@ -1245,6 +1576,12 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * get the current zoom level of the map
+     *
+     * @returns {number|boolean} zoom level or false if it fails
+     * @memberof MapWrapper_openlayers
+     */
     getZoom() {
         try {
             return this.map.getView().getZoom();
@@ -1254,6 +1591,12 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * returns the projection string of the current map projection
+     *
+     * @returns {string} code of the current map projection
+     * @memberof MapWrapper_openlayers
+     */
     getProjection() {
         try {
             return this.map
@@ -1266,6 +1609,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * update a layer on the map. This creates a new layer
+     * and replaces the layer with a matching id
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     updateLayer(layer) {
         try {
             let mapLayers = this.map.getLayers().getArray();
@@ -1327,24 +1678,51 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * add an openlayers layer object, or its source, to a layer cache
+     * to preserve its resources. If updateStrategy is "replace_tile" then
+     * only the layer source is cached, if the updateStrategy is "replace_layer"
+     * then the entire layer object is cached.
+     *
+     * @param {object} mapLayer openlayers layer object
+     * @param {string} [updateStrategy=appStrings.TILE_LAYER_UPDATE_STRATEGIES.TILE] (replace_tile|replace_layer)
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     addLayerToCache(mapLayer, updateStrategy = appStrings.TILE_LAYER_UPDATE_STRATEGIES.TILE) {
-        // cache the source for later
-        switch (updateStrategy) {
-            case appStrings.TILE_LAYER_UPDATE_STRATEGIES.TILE:
-                this.layerCache.set(
-                    mapLayer.get("_layerCacheHash") + "_source",
-                    mapLayer.getSource()
-                );
-                break;
-            case appStrings.TILE_LAYER_UPDATE_STRATEGIES.LAYER:
-                this.layerCache.set(mapLayer.get("_layerCacheHash"), mapLayer);
-                break;
-            default:
-                this.layerCache.set(mapLayer.get("_layerCacheHash"), mapLayer);
+        try {
+            // cache the source for later
+            switch (updateStrategy) {
+                case appStrings.TILE_LAYER_UPDATE_STRATEGIES.TILE:
+                    this.layerCache.set(
+                        mapLayer.get("_layerCacheHash") + "_source",
+                        mapLayer.getSource()
+                    );
+                    break;
+                case appStrings.TILE_LAYER_UPDATE_STRATEGIES.LAYER:
+                    this.layerCache.set(mapLayer.get("_layerCacheHash"), mapLayer);
+                    break;
+                default:
+                    this.layerCache.set(mapLayer.get("_layerCacheHash"), mapLayer);
+            }
+            return true;
+        } catch (err) {
+            console.warn("Error in MapWrapper_openlayer.addLayerToCache: ", err);
+            return false;
         }
-        return true;
     }
 
+    /**
+     * get the lat-lon corresponding to a given pixel position
+     * within the containing domnode
+     *
+     * @param {array} pixel location in the container [x,y]
+     * @returns {object|boolean} object of position of false if it fails
+     * - lat - {number} latitude of the pixel location
+     * - lon - {number} longitude of the pixel location
+     * - isValid - {boolean} pixel was on the globe
+     * @memberof MapWrapper_openlayers
+     */
     getLatLonFromPixelCoordinate(pixel) {
         try {
             let coordinate = this.map.getCoordinateFromPixel(pixel);
@@ -1368,6 +1746,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * move a layer to the top of the map display stack
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     moveLayerToTop(layer) {
         try {
             let mapLayers = this.map.getLayers();
@@ -1391,6 +1776,15 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * Move a layer to the bottom of the map display stack.
+     * The layer will always be above the basemap, which
+     * is always at the absolute bottom of the display
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     moveLayerToBottom(layer) {
         try {
             let mapLayers = this.map.getLayers();
@@ -1413,6 +1807,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * move a layer up in the display stack
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     moveLayerUp(layer) {
         try {
             let mapLayers = this.map.getLayers();
@@ -1437,6 +1838,15 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * move a layer down in the display stack.
+     * The layer will always be above the basemap, which
+     * is always at the absolute bottom of the display
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     moveLayerDown(layer) {
         try {
             let mapLayers = this.map.getLayers();
@@ -1461,6 +1871,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * get a list of the layer ids for layers
+     * that are marked as type "data" and are
+     * currently active
+     *
+     * @returns {array|boolean} list of string layer ids or false if it fails
+     * @memberof MapWrapper_openlayers
+     */
     getActiveLayerIds() {
         try {
             let retList = [];
@@ -1480,6 +1898,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * retrieve the corresponding viewport pixel from an openlayers
+     * click event
+     *
+     * @param {object} clickEvt openlayers click event wrapper
+     * @returns {array|boolean} pixel coordinates or false if it fails
+     * @memberof MapWrapper_openlayers
+     */
     getPixelFromClickEvent(clickEvt) {
         try {
             return clickEvt.pixel;
@@ -1489,6 +1915,12 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * clear the current layer cache
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
     clearCache() {
         try {
             this.layerCache.clear();
@@ -1500,6 +1932,20 @@ export default class MapWrapper_openlayers extends MapWrapper {
     }
 
     /* functions for openlayers only */
+
+    /**
+     * generate a url for a tile for a wmts raster layer
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} mapLayer openlayers layer object
+     * @param {object} layerSource openlayers layer source object
+     * @param {array} tileCoord [x,y,z] tile coordinate
+     * @param {number} pixelRatio map view pixel ratio
+     * @param {string} projectionString projection code
+     * @param {function} origFunc openlayers default tile url generation function (tileCoord, pixelRatio, projectionString) --> {string}
+     * @returns {string} url for this tile
+     * @memberof MapWrapper_openlayers
+     */
     generateTileUrl(
         layer,
         mapLayer,
@@ -1538,6 +1984,17 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * load in a tile for a wmts raster layer
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} mapLayer openlayers layer object
+     * @param {object} tile openlayers tile object
+     * @param {sting} url url used for this tiles raster image
+     * @param {function} origFunc openlayers default tile load function (tile, url) , pixelRatio, projectionString) --> {string}
+     * @returns undefined
+     * @memberof MapWrapper_openlayers
+     */
     handleTileLoad(layer, mapLayer, tile, url, origFunc) {
         try {
             let customTileFunction = this.tileHandler.getTileFunction(
@@ -1560,6 +2017,28 @@ export default class MapWrapper_openlayers extends MapWrapper {
             return false;
         }
     }
+
+    /**
+     * creates an openlayers layer source
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options raster imagery options for layer from redux state
+     * - url - {string} base url for this layer
+     * - layer - {string} layer identifier
+     * - format - {string} tile resouce format
+     * - requestEncoding - {string} url encoding (REST|KVP)
+     * - matrixSet - {string} matrix set for the tile pyramid
+     * - projection - {string} projection string
+     * - extents - {array} bounding box extents for this layer
+     * - tileGrid - {object} of tiling options
+     *   - origin - {array} lat lon coordinates of layer upper left
+     *   - resolutions - {array} list of tile resolutions
+     *   - matrixIds - {array} identifiers for each zoom level
+     *   - tileSize - {number} size of the tiles
+     * @param {boolean} [fromCache=true] true if the source may be pulled from the cache
+     * @returns {object} openlayers source object
+     * @memberof MapWrapper_openlayers
+     */
     createLayerSource(layer, options, fromCache = true) {
         // check cache
         if (fromCache) {
@@ -1582,8 +2061,6 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 return this.createVectorTopojsonSource(layer, options);
             case appStrings.LAYER_VECTOR_KML:
                 return this.createVectorKMLSource(layer, options);
-            case appStrings.LAYER_VECTOR_DRAWING:
-                return this.createVectorDrawingSource(layer, options);
             default:
                 console.warn(
                     "Error in MapWrapper_openlayers.createLayerSource: unknonw layer type - ",
@@ -1593,6 +2070,26 @@ export default class MapWrapper_openlayers extends MapWrapper {
         }
     }
 
+    /**
+     * creates an openlayers wmts layer source
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options raster imagery options for layer from redux state
+     * - url - {string} base url for this layer
+     * - layer - {string} layer identifier
+     * - format - {string} tile resouce format
+     * - requestEncoding - {string} url encoding (REST|KVP)
+     * - matrixSet - {string} matrix set for the tile pyramid
+     * - projection - {string} projection string
+     * - extents - {array} bounding box extents for this layer
+     * - tileGrid - {object} of tiling options
+     *   - origin - {array} lat lon coordinates of layer upper left
+     *   - resolutions - {array} list of tile resolutions
+     *   - matrixIds - {array} identifiers for each zoom level
+     *   - tileSize - {number} size of the tiles
+     * @returns {object} openlayers source object
+     * @memberof MapWrapper_openlayers
+     */
     createWMTSSource(layer, options) {
         return new Ol_Source_WMTS({
             url: options.url,
@@ -1613,6 +2110,26 @@ export default class MapWrapper_openlayers extends MapWrapper {
         });
     }
 
+    /**
+     * creates an openlayers wmts layer source with GIBS specific adjustments
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options raster imagery options for layer from redux state
+     * - url - {string} base url for this layer
+     * - layer - {string} layer identifier
+     * - format - {string} tile resouce format
+     * - requestEncoding - {string} url encoding (REST|KVP)
+     * - matrixSet - {string} matrix set for the tile pyramid
+     * - projection - {string} projection string
+     * - extents - {array} bounding box extents for this layer
+     * - tileGrid - {object} of tiling options
+     *   - origin - {array} lat lon coordinates of layer upper left
+     *   - resolutions - {array} list of tile resolutions
+     *   - matrixIds - {array} identifiers for each zoom level
+     *   - tileSize - {number} size of the tiles
+     * @returns {object} openlayers source object
+     * @memberof MapWrapper_openlayers
+     */
     createGIBSWMTSSource(layer, options) {
         return new Ol_Source_WMTS({
             url: options.url,
@@ -1638,6 +2155,26 @@ export default class MapWrapper_openlayers extends MapWrapper {
         });
     }
 
+    /**
+     * creates an openlayers xyz layer source
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options raster imagery options for layer from redux state
+     * - url - {string} base url for this layer
+     * - layer - {string} layer identifier
+     * - format - {string} tile resouce format
+     * - requestEncoding - {string} url encoding (REST|KVP)
+     * - matrixSet - {string} matrix set for the tile pyramid
+     * - projection - {string} projection string
+     * - extents - {array} bounding box extents for this layer
+     * - tileGrid - {object} of tiling options
+     *   - origin - {array} lat lon coordinates of layer upper left
+     *   - resolutions - {array} list of tile resolutions
+     *   - matrixIds - {array} identifiers for each zoom level
+     *   - tileSize - {number} size of the tiles
+     * @returns {object} openlayers source object
+     * @memberof MapWrapper_openlayers
+     */
     createXYZSource(layer, options) {
         return new Ol_Source_XYZ({
             url: options.url,
@@ -1650,6 +2187,15 @@ export default class MapWrapper_openlayers extends MapWrapper {
         });
     }
 
+    /**
+     * creates an openlayers geojson vector layer source
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options raster imagery options for layer from redux state
+     * - url - {string} base url for this layer
+     * @returns {object} openlayers source object
+     * @memberof MapWrapper_openlayers
+     */
     createVectorGeojsonSource(layer, options) {
         // customize the layer url if needed
         if (
@@ -1671,6 +2217,15 @@ export default class MapWrapper_openlayers extends MapWrapper {
         });
     }
 
+    /**
+     * creates an openlayers topojson vector layer source
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options raster imagery options for layer from redux state
+     * - url - {string} base url for this layer
+     * @returns {object} openlayers source object
+     * @memberof MapWrapper_openlayers
+     */
     createVectorTopojsonSource(layer, options) {
         // customize the layer url if needed
         if (
@@ -1692,6 +2247,15 @@ export default class MapWrapper_openlayers extends MapWrapper {
         });
     }
 
+    /**
+     * creates an openlayers kml vector layer source
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} options raster imagery options for layer from redux state
+     * - url - {string} base url for this layer
+     * @returns {object} openlayers source object
+     * @memberof MapWrapper_openlayers
+     */
     createVectorKMLSource(layer, options) {
         // customize the layer url if needed
         if (
@@ -1713,12 +2277,15 @@ export default class MapWrapper_openlayers extends MapWrapper {
         });
     }
 
-    createVectorDrawingSource(options) {
-        return new Ol_Source_Vector({
-            wrapX: false
-        });
-    }
-
+    /**
+     * Find the highest index for a layer to be displayed.
+     * Data layers are displayed below reference layers and
+     * above basemaps
+     *
+     * @param {object} mapLayer openlayers map layer to compare
+     * @returns {number} highest index display index for a layer of this type
+     * @memberof MapWrapper_openlayers
+     */
     findTopInsertIndexForLayer(mapLayer) {
         let mapLayers = this.map.getLayers();
         let index = mapLayers.getLength();
@@ -1745,6 +2312,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
         return index;
     }
 
+    /**
+     * get the a string representing this layer to be used in the layer cache
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @returns {string} string representing this layer
+     * @memberof MapWrapper_openlayers
+     */
     getCacheHash(layer) {
         return layer.get("id") + moment(this.mapDate).format(layer.get("timeFormat"));
     }
