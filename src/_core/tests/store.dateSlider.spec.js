@@ -1,4 +1,4 @@
-import * as DateSliderActions from "_core/actions/DateSliderActions";
+import * as dateSliderActions from "_core/actions/dateSliderActions";
 import { createStore } from "redux";
 import { expect } from "chai";
 import rootReducer from "_core/reducers";
@@ -35,7 +35,7 @@ export const StoreDateSliderSpec = {
                 it("begins dragging", function() {
                     const store = createStore(rootReducer, initialState);
 
-                    const actions = [DateSliderActions.beginDragging(true)];
+                    const actions = [dateSliderActions.beginDragging(true)];
                     actions.forEach(action => store.dispatch(action));
 
                     const actual = store.getState();
@@ -51,8 +51,8 @@ export const StoreDateSliderSpec = {
                     const store = createStore(rootReducer, initialState);
 
                     const actions = [
-                        DateSliderActions.beginDragging(true),
-                        DateSliderActions.endDragging(false)
+                        dateSliderActions.beginDragging(true),
+                        dateSliderActions.endDragging(false)
                     ];
                     actions.forEach(action => store.dispatch(action));
 

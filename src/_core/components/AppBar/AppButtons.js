@@ -8,13 +8,13 @@ import ShareIcon from "material-ui-icons/Share";
 import SettingsIcon from "material-ui-icons/Settings";
 import { IconButtonSmall } from "_core/components/Reusables";
 import { FullscreenButton } from "_core/components/AppBar";
-import * as actions from "_core/actions/AppActions";
+import * as appActions from "_core/actions/appActions";
 import MiscUtil from "_core/utils/MiscUtil";
 import styles from "_core/components/AppBar/AppButtons.scss";
 
 export class AppButtons extends Component {
     render() {
-        let { className, actions, ...other } = this.props;
+        let { className, appActions, ...other } = this.props;
 
         let rootClasses = MiscUtil.generateStringFromSet({
             [className]: typeof className !== "undefined"
@@ -31,7 +31,7 @@ export class AppButtons extends Component {
                     <IconButtonSmall
                         color="contrast"
                         className={styles.btn}
-                        onClick={() => actions.setHelpOpen(true)}
+                        onClick={() => appActions.setHelpOpen(true)}
                     >
                         <HelpIcon />
                     </IconButtonSmall>
@@ -45,7 +45,7 @@ export class AppButtons extends Component {
                     <IconButtonSmall
                         color="contrast"
                         className={styles.btn}
-                        onClick={() => actions.setShareOpen(true)}
+                        onClick={() => appActions.setShareOpen(true)}
                     >
                         <ShareIcon />
                     </IconButtonSmall>
@@ -59,7 +59,7 @@ export class AppButtons extends Component {
                     <IconButtonSmall
                         color="contrast"
                         className={styles.btn}
-                        onClick={() => actions.setSettingsOpen(true)}
+                        onClick={() => appActions.setSettingsOpen(true)}
                     >
                         <SettingsIcon />
                     </IconButtonSmall>
@@ -78,13 +78,13 @@ export class AppButtons extends Component {
 }
 
 AppButtons.propTypes = {
-    actions: PropTypes.object.isRequired,
+    appActions: PropTypes.object.isRequired,
     className: PropTypes.string
 };
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        appActions: bindActionCreators(appActions, dispatch)
     };
 }
 

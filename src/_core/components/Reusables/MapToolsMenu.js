@@ -13,8 +13,8 @@ import RadioButtonUncheckedIcon from "material-ui-icons/RadioButtonUnchecked";
 import EditIcon from "material-ui-icons/Edit";
 import MiscUtil from "_core/utils/MiscUtil";
 import * as appStrings from "_core/constants/appStrings";
-import * as mapActions from "_core/actions/MapActions";
-import * as appActions from "_core/actions/AppActions";
+import * as mapActions from "_core/actions/mapActions";
+import * as appActions from "_core/actions/appActions";
 import { ContextMenuSubMenu } from "_core/components/Reusables";
 import styles from "_core/components/Reusables/MapToolsMenu.scss";
 

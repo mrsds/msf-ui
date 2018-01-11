@@ -13,7 +13,7 @@ import Grow from "material-ui/transitions/Grow";
 import ClickAwayListener from "material-ui/utils/ClickAwayListener";
 import { Manager, Target, Popper } from "react-popper";
 import { EnhancedSwitch, IconButtonSmall } from "_core/components/Reusables";
-import * as layerActions from "_core/actions/LayerActions";
+import * as mapActions from "_core/actions/mapActions";
 import {
     LayerPositionIcon,
     LayerPositionControl,
@@ -60,12 +60,12 @@ export class LayerControlContainer extends Component {
     setLayerActive(active) {
         this.isChangingPosition = false;
         this.isChangingOpacity = false;
-        this.props.actions.setLayerActive(this.props.layer.get("id"), !active);
+        this.props.mapActions.setLayerActive(this.props.layer.get("id"), !active);
     }
 
     changeOpacity(value) {
         let opacity = value / 100.0;
-        this.props.actions.setLayerOpacity(this.props.layer, opacity);
+        this.props.mapActions.setLayerOpacity(this.props.layer, opacity);
     }
 
     toggleChangingOpacity() {
@@ -81,27 +81,27 @@ export class LayerControlContainer extends Component {
     }
 
     openLayerInfo() {
-        this.props.actions.loadLayerMetadata(this.props.layer);
+        this.props.mapActions.loadLayerMetadata(this.props.layer);
     }
 
     changePalette() {
-        this.props.actions.changeLayerPalette(this.props.layer.get("id"), {});
+        this.props.mapActions.changeLayerPalette(this.props.layer.get("id"), {});
     }
 
     moveToTop() {
-        this.props.actions.moveLayerToTop(this.props.layer.get("id"));
+        this.props.mapActions.moveLayerToTop(this.props.layer.get("id"));
     }
 
     moveToBottom() {
-        this.props.actions.moveLayerToBottom(this.props.layer.get("id"));
+        this.props.mapActions.moveLayerToBottom(this.props.layer.get("id"));
     }
 
     moveUp() {
-        this.props.actions.moveLayerUp(this.props.layer.get("id"));
+        this.props.mapActions.moveLayerUp(this.props.layer.get("id"));
     }
 
     moveDown() {
-        this.props.actions.moveLayerDown(this.props.layer.get("id"));
+        this.props.mapActions.moveLayerDown(this.props.layer.get("id"));
     }
 
     renderTopContent() {
@@ -122,9 +122,11 @@ export class LayerControlContainer extends Component {
                 </span>
                 <ListItemSecondaryAction
                     classes={{
-                        root: `${styles.secondaryActionRoot} ${this.props.layer.get("isActive")
-                            ? displayStyles.invisible
-                            : displayStyles.hiddenFadeIn}`
+                        root: `${styles.secondaryActionRoot} ${
+                            this.props.layer.get("isActive")
+                                ? displayStyles.invisible
+                                : displayStyles.hiddenFadeIn
+                        }`
                     }}
                 >
                     <Tooltip title="Layer information" placement="left">
@@ -273,7 +275,7 @@ export class LayerControlContainer extends Component {
 }
 
 LayerControlContainer.propTypes = {
-    actions: PropTypes.object.isRequired,
+    mapActions: PropTypes.object.isRequired,
     layer: PropTypes.object.isRequired,
     activeNum: PropTypes.number.isRequired,
     palette: PropTypes.object
@@ -281,7 +283,7 @@ LayerControlContainer.propTypes = {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(layerActions, dispatch)
+        mapActions: bindActionCreators(mapActions, dispatch)
     };
 }
 

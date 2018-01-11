@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { bindActionCreators } from "redux";
 import * as appStrings from "_core/constants/appStrings";
-import * as actions from "_core/actions/MapActions";
+import * as mapActions from "_core/actions/mapActions";
 import MapContainer2D from "_core/components/Map/MapContainer2D";
 import MapContainer3D from "_core/components/Map/MapContainer3D";
 import styles from "_core/components/Map/MapContainer.scss";
@@ -12,7 +12,7 @@ import styles from "_core/components/Map/MapContainer.scss";
 export class MapContainer extends Component {
     componentDidMount() {
         this.refs.container.addEventListener("mouseout", evt => {
-            this.props.actions.invalidatePixelHover();
+            this.props.mapActions.invalidatePixelHover();
         });
     }
 
@@ -29,12 +29,12 @@ export class MapContainer extends Component {
 }
 
 MapContainer.propTypes = {
-    actions: PropTypes.object.isRequired
+    mapActions: PropTypes.object.isRequired
 };
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        mapActions: bindActionCreators(mapActions, dispatch)
     };
 }
 

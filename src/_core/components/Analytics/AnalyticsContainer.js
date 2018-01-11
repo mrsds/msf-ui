@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import appConfig from "constants/appConfig";
-import * as actions from "_core/actions/AnalyticsActions";
+import * as analyticsActions from "_core/actions/analyticsActions";
 import ReactGA from "react-ga";
 
 export class AnalyticsContainer extends Component {
@@ -34,7 +34,7 @@ export class AnalyticsContainer extends Component {
                         new Date() - this.props.timeLastSent >=
                         appConfig.ANALYTICS_BATCH_WAIT_TIME_MS
                     ) {
-                        this.props.actions.sendAnalyticsBatch();
+                        this.props.analyticsActions.sendAnalyticsBatch();
                     }
                 }, appConfig.ANALYTICS_BATCH_WAIT_TIME_MS);
             }
@@ -54,7 +54,7 @@ export class AnalyticsContainer extends Component {
 AnalyticsContainer.propTypes = {
     timeLastSent: PropTypes.object.isRequired,
     isEnabled: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired
+    analyticsActions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -66,7 +66,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        analyticsActions: bindActionCreators(analyticsActions, dispatch)
     };
 }
 

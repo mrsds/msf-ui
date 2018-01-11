@@ -1,9 +1,105 @@
 import appConfig from "constants/appConfig";
 import * as types from "_core/constants/actionTypes";
 import * as appStrings from "_core/constants/appStrings";
-import * as AlertActions from "_core/actions/AlertActions";
-import * as AsyncActions from "_core/actions/AsyncActions";
+import * as alertActions from "_core/actions/alertActions";
+import * as asyncActions from "_core/actions/asyncActions";
 import MiscUtil from "_core/utils/MiscUtil";
+
+export function initializeMap(mapType, container) {
+    return { type: types.INITIALIZE_MAP, mapType, container };
+}
+
+export function setMapViewMode(mode) {
+    return { type: types.SET_MAP_VIEW_MODE, mode };
+}
+
+export function resetOrientation(duration) {
+    return { type: types.RESET_ORIENTATION, duration };
+}
+
+export function setMapView(viewInfo, targetActiveMap = true) {
+    return { type: types.SET_MAP_VIEW, viewInfo, targetActiveMap };
+}
+
+export function panMap(direction, extraFar) {
+    return { type: types.PAN_MAP, direction, extraFar };
+}
+
+export function setTerrainEnabled(enabled) {
+    return { type: types.SET_TERRAIN_ENABLED, enabled };
+}
+
+export function setTerrainExaggeration(terrainExaggeration) {
+    return { type: types.SET_TERRAIN_EXAGGERATION, terrainExaggeration };
+}
+
+export function setScaleUnits(units) {
+    return { type: types.SET_SCALE_UNITS, units };
+}
+
+export function zoomIn() {
+    return { type: types.ZOOM_IN };
+}
+
+export function zoomOut() {
+    return { type: types.ZOOM_OUT };
+}
+
+export function setBasemap(layer) {
+    return { type: types.SET_BASEMAP, layer };
+}
+
+export function hideBasemap() {
+    return { type: types.HIDE_BASEMAP };
+}
+
+export function setDate(date) {
+    return { type: types.SET_MAP_DATE, date };
+}
+
+export function pixelHover(pixel) {
+    return { type: types.PIXEL_HOVER, pixel };
+}
+
+export function invalidatePixelHover() {
+    return { type: types.INVALIDATE_PIXEL_HOVER };
+}
+
+export function pixelClick(clickEvt) {
+    return { type: types.PIXEL_CLICK, clickEvt };
+}
+
+export function enableMeasuring(geometryType, measurementType) {
+    return { type: types.ENABLE_MEASURING, geometryType, measurementType };
+}
+
+export function disableMeasuring() {
+    return { type: types.DISABLE_MEASURING };
+}
+
+export function enableDrawing(geometryType) {
+    return { type: types.ENABLE_DRAWING, geometryType };
+}
+
+export function disableDrawing() {
+    return { type: types.DISABLE_DRAWING };
+}
+
+export function addGeometryToMap(geometry, interactionType, geodesic = false) {
+    return { type: types.ADD_GEOMETRY_TO_MAP, geometry, interactionType, geodesic };
+}
+
+export function addMeasurementLabelToGeometry(geometry, measurementType, units) {
+    return { type: types.ADD_MEASUREMENT_LABEL_TO_GEOMETRY, geometry, measurementType, units };
+}
+
+export function removeAllDrawings() {
+    return { type: types.REMOVE_ALL_DRAWINGS };
+}
+
+export function removeAllMeasurements() {
+    return { type: types.REMOVE_ALL_MEASUREMENTS };
+}
 
 export function setLayerMenuOpen(open) {
     return { type: types.SET_LAYER_MENU_OPEN, open };
@@ -76,13 +172,13 @@ export function loadLayerMetadata(layer) {
                     dispatch(setLayerMetadataLoadingAsync(false, false));
                 },
                 err => {
-                    console.warn("Error in LayerActions.openLayerInfo:", err);
+                    console.warn("Error in mapActions.openLayerInfo:", err);
                     // signal loading failed
                     dispatch(setLayerMetadataLoadingAsync(false, true));
 
                     // display alert
                     dispatch(
-                        AlertActions.addAlert({
+                        alertActions.addAlert({
                             title: appStrings.ALERTS.FETCH_METADATA_FAILED.title,
                             body: appStrings.ALERTS.FETCH_METADATA_FAILED.formatString
                                 .split("{LAYER}")
@@ -99,7 +195,7 @@ export function loadLayerMetadata(layer) {
 
             // display alert
             dispatch(
-                AlertActions.addAlert({
+                alertActions.addAlert({
                     title: appStrings.ALERTS.FETCH_METADATA_FAILED.title,
                     body: appStrings.ALERTS.FETCH_METADATA_FAILED.formatString
                         .split("{LAYER}")
@@ -126,9 +222,9 @@ export function loadInitialData(callback = null) {
                 }
             },
             err => {
-                console.warn("Error in LayerActions.loadInitialData:", err);
+                console.warn("Error in mapActions.loadInitialData:", err);
                 dispatch(
-                    AlertActions.addAlert({
+                    alertActions.addAlert({
                         title: appStrings.ALERTS.INITIAL_DATA_LOAD_FAILED.title,
                         body: appStrings.ALERTS.INITIAL_DATA_LOAD_FAILED.formatString,
                         severity: appStrings.ALERTS.INITIAL_DATA_LOAD_FAILED.severity,
@@ -158,7 +254,7 @@ export function loadPaletteData() {
                 dispatch(setPaletteDataLoadingAsync(false, false));
             },
             err => {
-                console.warn("Error in LayerActions.loadPaletteData:", err);
+                console.warn("Error in mapActions.loadPaletteData:", err);
                 throw err;
             }
         );
@@ -180,7 +276,7 @@ export function loadLayerData() {
             },
             err => {
                 dispatch(setLayerDataLoadingAsync(false, true));
-                console.warn("Error in LayerActions.loadLayerData:", err);
+                console.warn("Error in mapActions.loadLayerData:", err);
                 throw err;
             }
         );
@@ -198,7 +294,7 @@ export function loadSingleLayerSource(options) {
                 dispatch(ingestLayerConfig(data, options));
             },
             err => {
-                console.warn("Error in LayerActions.loadSingleLayerSource: ", err);
+                console.warn("Error in mapActions.loadSingleLayerSource: ", err);
                 throw err;
             }
         );
@@ -207,28 +303,28 @@ export function loadSingleLayerSource(options) {
 
 // action helpers
 function setInitialDataLoadingAsync(loading, failed) {
-    return AsyncActions.setAsyncLoadingState("initialDataAsync", {
+    return asyncActions.setAsyncLoadingState("initialDataAsync", {
         loading: loading,
         failed: failed
     });
 }
 
 function setPaletteDataLoadingAsync(loading, failed) {
-    return AsyncActions.setAsyncLoadingState("layerPalettesAsync", {
+    return asyncActions.setAsyncLoadingState("layerPalettesAsync", {
         loading: loading,
         failed: failed
     });
 }
 
 function setLayerDataLoadingAsync(loading, failed) {
-    return AsyncActions.setAsyncLoadingState("layerSourcesAsync", {
+    return asyncActions.setAsyncLoadingState("layerSourcesAsync", {
         loading: loading,
         failed: failed
     });
 }
 
 function setLayerMetadataLoadingAsync(loading, failed) {
-    return AsyncActions.setAsyncLoadingState("layerMetadataAsync", {
+    return asyncActions.setAsyncLoadingState("layerMetadataAsync", {
         loading: loading,
         failed: failed
     });

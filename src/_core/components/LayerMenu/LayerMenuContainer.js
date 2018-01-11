@@ -10,7 +10,7 @@ import KeyboardArrowDownIcon from "material-ui-icons/KeyboardArrowDown";
 import List from "material-ui/List";
 import Paper from "material-ui/Paper";
 import * as appStrings from "_core/constants/appStrings";
-import * as layerActions from "_core/actions/LayerActions";
+import * as mapActions from "_core/actions/mapActions";
 import { LayerControlContainer } from "_core/components/LayerMenu";
 import { IconButtonSmall } from "_core/components/Reusables";
 import MiscUtil from "_core/utils/MiscUtil";
@@ -62,7 +62,8 @@ export class LayerMenuContainer extends Component {
                                     className={collapseIconClasses}
                                     color="default"
                                     onClick={() =>
-                                        this.props.setLayerMenuOpen(!this.props.layerMenuOpen)}
+                                        this.props.setLayerMenuOpen(!this.props.layerMenuOpen)
+                                    }
                                 >
                                     <KeyboardArrowDownIcon />
                                 </IconButtonSmall>
@@ -110,7 +111,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setLayerMenuOpen: bindActionCreators(layerActions.setLayerMenuOpen, dispatch)
+        setLayerMenuOpen: bindActionCreators(mapActions.setLayerMenuOpen, dispatch)
     };
 }
 

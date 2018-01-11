@@ -1,4 +1,4 @@
-import * as appActions from "_core/actions/AppActions";
+import * as appActions from "_core/actions/appActions";
 import { createStore } from "redux";
 import { expect } from "chai";
 import rootReducer from "_core/reducers";

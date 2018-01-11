@@ -9,7 +9,7 @@ import KeyboardArrowUpIcon from "material-ui-icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "material-ui-icons/KeyboardArrowDown";
 import Paper from "material-ui/Paper";
 import { IncrementButton, IncrementIcon } from "_core/components/DatePicker";
-import * as DateSliderActions from "_core/actions/DateSliderActions";
+import * as dateSliderActions from "_core/actions/dateSliderActions";
 import appConfig from "constants/appConfig";
 import MiscUtil from "_core/utils/MiscUtil";
 import styles from "_core/components/Timeline/ResolutionStep.scss";
@@ -32,7 +32,7 @@ export class ResolutionStep extends Component {
                     classes={{ label: styles.stepButtonLabel }}
                     color="contrast"
                     onClick={() => {
-                        this.props.actions.setDateResolution(
+                        this.props.dateSliderActions.setDateResolution(
                             appConfig.DATE_SLIDER_RESOLUTIONS[currentResolution.index + 1],
                             false
                         );
@@ -53,7 +53,7 @@ export class ResolutionStep extends Component {
                     classes={{ label: styles.stepButtonLabel }}
                     color="contrast"
                     onClick={() => {
-                        this.props.actions.setDateResolution(
+                        this.props.dateSliderActions.setDateResolution(
                             appConfig.DATE_SLIDER_RESOLUTIONS[currentResolution.index - 1],
                             false
                         );
@@ -88,13 +88,13 @@ export class ResolutionStep extends Component {
     }
 }
 ResolutionStep.propTypes = {
-    actions: PropTypes.object.isRequired,
+    dateSliderActions: PropTypes.object.isRequired,
     resolution: PropTypes.object.isRequired
 };
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(DateSliderActions, dispatch)
+        dateSliderActions: bindActionCreators(dateSliderActions, dispatch)
     };
 }
 

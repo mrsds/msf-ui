@@ -12,7 +12,7 @@ import ErrorOutlineIcon from "material-ui-icons/ErrorOutline";
 import AccessTimeIcon from "material-ui-icons/AccessTime";
 import Typography from "material-ui/Typography";
 import { AsyncImage } from "_core/components/AsyncImage";
-import * as actions from "_core/actions/AppActions";
+import * as appActions from "_core/actions/appActions";
 import MiscUtil from "_core/utils/MiscUtil";
 import styles from "_core/components/LayerInfo/LayerInfoContainer.scss";
 
@@ -45,7 +45,7 @@ export class LayerInfoContainer extends Component {
             <Dialog
                 classes={{ paper: styles.paper }}
                 open={this.props.isOpen}
-                onClose={this.props.actions.closeLayerInfo}
+                onClose={this.props.appActions.closeLayerInfo}
             >
                 <DialogContent className={styles.root}>
                     <AsyncImage className={styles.thumbnailImage} src={this.props.thumbnailUrl} />
@@ -108,7 +108,7 @@ export class LayerInfoContainer extends Component {
 }
 
 LayerInfoContainer.propTypes = {
-    actions: PropTypes.object.isRequired,
+    appActions: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
     layerId: PropTypes.string.isRequired,
     thumbnailUrl: PropTypes.string.isRequired,
@@ -128,7 +128,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        appActions: bindActionCreators(appActions, dispatch)
     };
 }
 

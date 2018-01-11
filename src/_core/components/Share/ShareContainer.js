@@ -9,7 +9,7 @@ import Twitter from "mdi-material-ui/Twitter";
 import Email from "mdi-material-ui/Email";
 import Reddit from "mdi-material-ui/Reddit";
 import Grid from "material-ui/Grid";
-import * as actions from "_core/actions/AppActions";
+import * as appActions from "_core/actions/appActions";
 import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
 import MiscUtil from "_core/utils/MiscUtil";
@@ -32,7 +32,7 @@ export class ShareContainer extends Component {
         // delay updates to fix performance hit
         if (this.updateTimeout === null) {
             this.updateTimeout = setTimeout(() => {
-                this.props.actions.toggleShareUpdateFlag();
+                this.props.appActions.toggleShareUpdateFlag();
                 clearInterval(this.updateTimeout);
                 this.updateTimeout = null;
             }, 1000);
@@ -192,7 +192,7 @@ export class ShareContainer extends Component {
                 small
                 title="Share"
                 active={this.props.isOpen}
-                closeFunc={() => this.props.actions.setShareOpen(false)}
+                closeFunc={() => this.props.appActions.setShareOpen(false)}
                 onRendered={() => {
                     this.focusTextArea();
                 }}
@@ -260,7 +260,7 @@ export class ShareContainer extends Component {
 }
 
 ShareContainer.propTypes = {
-    actions: PropTypes.object.isRequired,
+    appActions: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
     updateFlag: PropTypes.bool.isRequired,
     autoUpdateUrl: PropTypes.bool.isRequired,
@@ -290,7 +290,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        appActions: bindActionCreators(appActions, dispatch)
     };
 }
 

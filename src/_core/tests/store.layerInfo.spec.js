@@ -1,4 +1,4 @@
-import * as LayerActions from "_core/actions/LayerActions";
+import * as mapActions from "_core/actions/mapActions";
 import { createStore } from "redux";
 import { expect } from "chai";
 import rootReducer from "_core/reducers";
@@ -39,7 +39,7 @@ export const StoreLayerInfoSpec = {
                         id: "TEST_LAYER_1"
                     });
 
-                    const actions = [LayerActions.openLayerInfo(layer)];
+                    const actions = [mapActions.openLayerInfo(layer)];
                     actions.forEach(action => store.dispatch(action));
 
                     const actual = store.getState();
@@ -61,10 +61,7 @@ export const StoreLayerInfoSpec = {
                         id: "TEST_LAYER_1"
                     });
 
-                    const actions = [
-                        LayerActions.openLayerInfo(layer),
-                        LayerActions.closeLayerInfo()
-                    ];
+                    const actions = [mapActions.openLayerInfo(layer), mapActions.closeLayerInfo()];
 
                     actions.forEach(action => store.dispatch(action));
 

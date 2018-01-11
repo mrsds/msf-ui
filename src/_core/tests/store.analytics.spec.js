@@ -1,5 +1,5 @@
 import * as actionTypes from "_core/constants/actionTypes";
-import * as analyticsActions from "_core/actions/AnalyticsActions";
+import * as analyticsActions from "_core/actions/analyticsActions";
 import { createStore } from "redux";
 import { expect } from "chai";
 import rootReducer from "_core/reducers";

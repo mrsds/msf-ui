@@ -4,9 +4,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
 import { pink } from "material-ui/colors";
-import * as actions from "_core/actions/AppActions";
-import * as mapActions from "_core/actions/MapActions";
-import * as layerActions from "_core/actions/LayerActions";
+import * as appActions from "_core/actions/appActions";
+import * as mapActions from "_core/actions/mapActions";
 import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
 import MiscUtil from "_core/utils/MiscUtil";
@@ -66,31 +65,31 @@ export class AppContainer extends Component {
         );
 
         // Perform initial browser functionality check
-        this.props.actions.checkBrowserFunctionalities();
+        this.props.checkBrowserFunctionalities();
 
         // load in initial data
-        this.props.actions.loadInitialData(() => {
+        this.props.loadInitialData(() => {
             // initialize the map. I know this is hacky, but there simply doesn't seem to be a good way to
             // wait for the DOM to complete rendering.
             // see: http://stackoverflow.com/a/34999925
             window.requestAnimationFrame(() => {
                 setTimeout(() => {
                     // initialize the maps
-                    this.props.actions.initializeMap(appStrings.MAP_LIB_2D, "map2D");
-                    this.props.actions.initializeMap(appStrings.MAP_LIB_3D, "map3D");
+                    this.props.initializeMap(appStrings.MAP_LIB_2D, "map2D");
+                    this.props.initializeMap(appStrings.MAP_LIB_3D, "map3D");
 
                     // set initial view
-                    this.props.actions.setMapView({ extent: appConfig.DEFAULT_BBOX_EXTENT }, true);
+                    this.props.setMapView({ extent: appConfig.DEFAULT_BBOX_EXTENT }, true);
 
                     // activate default/url params
                     if (this.urlParams.length === 0) {
-                        this.props.actions.activateDefaultLayers();
+                        this.props.activateDefaultLayers();
                     } else {
-                        this.props.actions.runUrlConfig(this.urlParams);
+                        this.props.runUrlConfig(this.urlParams);
                     }
 
                     // signal complete
-                    this.props.actions.completeInitialLoad();
+                    this.props.completeInitialLoad();
 
                     // ReactTooltip needs to be rebuilt to account
                     // for dynamic lists in LayerMenuContainer
@@ -134,7 +133,13 @@ export class AppContainer extends Component {
 }
 
 AppContainer.propTypes = {
-    actions: PropTypes.object.isRequired,
+    completeInitialLoad: PropTypes.func.isRequired,
+    checkBrowserFunctionalities: PropTypes.func.isRequired,
+    loadInitialData: PropTypes.func.isRequired,
+    activateDefaultLayers: PropTypes.func.isRequired,
+    runUrlConfig: PropTypes.func.isRequired,
+    initializeMap: PropTypes.func.isRequired,
+    setMapView: PropTypes.func.isRequired,
     distractionFreeMode: PropTypes.bool.isRequired,
     mapControlsHidden: PropTypes.bool.isRequired
 };
@@ -148,18 +153,16 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: {
-            completeInitialLoad: bindActionCreators(actions.completeInitialLoad, dispatch),
-            checkBrowserFunctionalities: bindActionCreators(
-                actions.checkBrowserFunctionalities,
-                dispatch
-            ),
-            loadInitialData: bindActionCreators(layerActions.loadInitialData, dispatch),
-            activateDefaultLayers: bindActionCreators(layerActions.activateDefaultLayers, dispatch),
-            runUrlConfig: bindActionCreators(actions.runUrlConfig, dispatch),
-            initializeMap: bindActionCreators(mapActions.initializeMap, dispatch),
-            setMapView: bindActionCreators(mapActions.setMapView, dispatch)
-        }
+        completeInitialLoad: bindActionCreators(appActions.completeInitialLoad, dispatch),
+        checkBrowserFunctionalities: bindActionCreators(
+            appActions.checkBrowserFunctionalities,
+            dispatch
+        ),
+        loadInitialData: bindActionCreators(mapActions.loadInitialData, dispatch),
+        activateDefaultLayers: bindActionCreators(mapActions.activateDefaultLayers, dispatch),
+        runUrlConfig: bindActionCreators(appActions.runUrlConfig, dispatch),
+        initializeMap: bindActionCreators(mapActions.initializeMap, dispatch),
+        setMapView: bindActionCreators(mapActions.setMapView, dispatch)
     };
 }
 

@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import Modernizr from "modernizr";
 import FullscreenIcon from "material-ui-icons/Fullscreen";
 import FullscreenExitIcon from "material-ui-icons/FullscreenExit";
-import * as actions from "_core/actions/AppActions";
+import * as appActions from "_core/actions/appActions";
 import { IconButtonSmall } from "_core/components/Reusables";
 import MiscUtil from "_core/utils/MiscUtil";
 
@@ -37,14 +37,14 @@ export class FullscreenButton extends Component {
 
     handleFullScreenChange() {
         if (MiscUtil.getIsInFullScreenMode()) {
-            this.props.actions.setFullScreenMode(true);
+            this.props.appActions.setFullScreenMode(true);
         } else {
-            this.props.actions.setFullScreenMode(false);
+            this.props.appActions.setFullScreenMode(false);
         }
     }
 
     render() {
-        let { className, isFullscreen, actions, ...other } = this.props;
+        let { className, isFullscreen, appActions, ...other } = this.props;
 
         let rootClasses = MiscUtil.generateStringFromSet({
             [className]: typeof className !== "undefined"
@@ -54,7 +54,7 @@ export class FullscreenButton extends Component {
             <IconButtonSmall
                 color="contrast"
                 className={rootClasses}
-                onClick={() => this.props.actions.setFullScreenMode(!isFullscreen)}
+                onClick={() => this.props.appActions.setFullScreenMode(!isFullscreen)}
                 {...other}
             >
                 {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
@@ -64,7 +64,7 @@ export class FullscreenButton extends Component {
 }
 
 FullscreenButton.propTypes = {
-    actions: PropTypes.object.isRequired,
+    appActions: PropTypes.object.isRequired,
     isFullscreen: PropTypes.bool.isRequired,
     className: PropTypes.string
 };
@@ -77,7 +77,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        appActions: bindActionCreators(appActions, dispatch)
     };
 }
 

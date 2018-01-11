@@ -1,8 +1,7 @@
 import * as actionTypes from "_core/constants/actionTypes";
 import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
-import * as mapActions from "_core/actions/MapActions";
-import * as layerActions from "_core/actions/LayerActions";
+import * as mapActions from "_core/actions/mapActions";
 import * as initialIngest from "_core/tests/data/expectedOutputs/initialIngest";
 import * as activateInactivateLayers from "_core/tests/data/expectedOutputs/activateInactivateLayers";
 import { createStore, compose, applyMiddleware } from "redux";
@@ -1997,9 +1996,7 @@ export const StoreMapSpec = {
             },
 
             test33: () => {
-                it("can injest wmts and json layer configurations as well as palette configurations. Big test.", function(
-                    done
-                ) {
+                it("can injest wmts and json layer configurations as well as palette configurations. Big test.", function(done) {
                     // adjust default timeout
                     this.timeout(30000);
                     let _context = this;
@@ -2012,7 +2009,7 @@ export const StoreMapSpec = {
                     );
 
                     store.dispatch(
-                        layerActions.loadInitialData(function() {
+                        mapActions.loadInitialData(function() {
                             const actual = store.getState();
                             actual.map = actual.map.remove("maps");
 
@@ -2081,12 +2078,9 @@ export const StoreMapSpec = {
                         mapActions.initializeMap(appStrings.MAP_LIB_2D, "map2D"),
                         mapActions.initializeMap(appStrings.MAP_LIB_3D, "map3D"),
                         mapActions.setMapView({ extent: appConfig.DEFAULT_BBOX_EXTENT }, true),
-                        layerActions.setLayerActive("facilities_kml", true),
-                        layerActions.setLayerActive(
-                            "GHRSST_L4_G1SST_Sea_Surface_Temperature",
-                            true
-                        ),
-                        layerActions.setLayerActive("facilities_kml", true)
+                        mapActions.setLayerActive("facilities_kml", true),
+                        mapActions.setLayerActive("GHRSST_L4_G1SST_Sea_Surface_Temperature", true),
+                        mapActions.setLayerActive("facilities_kml", true)
                     ];
                     actions.forEach(action => store.dispatch(action));
 
@@ -2119,12 +2113,9 @@ export const StoreMapSpec = {
 
                     const actions = [
                         mapActions.initializeMap(appStrings.MAP_LIB_2D, "map2D"),
-                        layerActions.setLayerActive("facilities_kml", true),
-                        layerActions.setLayerActive(
-                            "GHRSST_L4_G1SST_Sea_Surface_Temperature",
-                            true
-                        ),
-                        layerActions.setLayerActive("facilities_kml", true)
+                        mapActions.setLayerActive("facilities_kml", true),
+                        mapActions.setLayerActive("GHRSST_L4_G1SST_Sea_Surface_Temperature", true),
+                        mapActions.setLayerActive("facilities_kml", true)
                     ];
                     actions.forEach(action => store.dispatch(action));
 
@@ -2168,15 +2159,15 @@ export const StoreMapSpec = {
                     const initialActions = [
                         mapActions.initializeMap(appStrings.MAP_LIB_2D, "map2D"),
                         mapActions.initializeMap(appStrings.MAP_LIB_3D, "map3D"),
-                        layerActions.setLayerActive("facilities_kml", true),
-                        layerActions.setLayerActive("GHRSST_L4_G1SST_Sea_Surface_Temperature", true)
+                        mapActions.setLayerActive("facilities_kml", true),
+                        mapActions.setLayerActive("GHRSST_L4_G1SST_Sea_Surface_Temperature", true)
                     ];
                     initialActions.forEach(action => store.dispatch(action));
 
                     // use a timeout to give facilities layer time to load
                     setTimeout(() => {
                         store.dispatch(
-                            layerActions.setLayerActive(
+                            mapActions.setLayerActive(
                                 "GHRSST_L4_G1SST_Sea_Surface_Temperature",
                                 false
                             )
@@ -2223,15 +2214,15 @@ export const StoreMapSpec = {
 
                     const initialActions = [
                         mapActions.initializeMap(appStrings.MAP_LIB_2D, "map2D"),
-                        layerActions.setLayerActive("facilities_kml", true),
-                        layerActions.setLayerActive("GHRSST_L4_G1SST_Sea_Surface_Temperature", true)
+                        mapActions.setLayerActive("facilities_kml", true),
+                        mapActions.setLayerActive("GHRSST_L4_G1SST_Sea_Surface_Temperature", true)
                     ];
                     initialActions.forEach(action => store.dispatch(action));
 
                     // use a timeout to give facilities layer time to load
                     setTimeout(() => {
                         store.dispatch(
-                            layerActions.setLayerActive(
+                            mapActions.setLayerActive(
                                 "GHRSST_L4_G1SST_Sea_Surface_Temperature",
                                 false
                             )

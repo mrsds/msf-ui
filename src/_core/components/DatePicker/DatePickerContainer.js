@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as actions from "_core/actions/MapActions";
+import * as mapActions from "_core/actions/mapActions";
 import { DatePicker } from "_core/components/DatePicker";
 import MiscUtil from "_core/utils/MiscUtil";
 import styles from "_core/components/DatePicker/DatePickerContainer.scss";
@@ -17,7 +17,7 @@ export class DatePickerContainer extends Component {
         });
         return (
             <div className={containerClasses}>
-                <DatePicker date={this.props.date} setDate={this.props.actions.setDate} />
+                <DatePicker date={this.props.date} setDate={this.props.mapActions.setDate} />
             </div>
         );
     }
@@ -26,7 +26,7 @@ export class DatePickerContainer extends Component {
 DatePickerContainer.propTypes = {
     date: PropTypes.object.isRequired,
     distractionFreeMode: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired
+    mapActions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -38,7 +38,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        mapActions: bindActionCreators(mapActions, dispatch)
     };
 }
 

@@ -1,10 +1,9 @@
 import * as types from "_core/constants/actionTypes";
 import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
-import * as LayerActions from "_core/actions/LayerActions";
-import * as MapActions from "_core/actions/MapActions";
-import * as DateSliderActions from "_core/actions/DateSliderActions";
-import * as AlertActions from "_core/actions/AlertActions";
+import * as mapActions from "_core/actions/mapActions";
+import * as dateSliderActions from "_core/actions/dateSliderActions";
+import * as alertActions from "_core/actions/alertActions";
 
 export function checkBrowserFunctionalities() {
     return { type: types.CHECK_BROWSER_FUNCTIONALITIES };
@@ -67,9 +66,9 @@ export function runUrlConfig(params) {
                 return dispatch(translateUrlParamToActionDispatch(param));
             })
         ).catch(err => {
-            console.warn("Error in AppActions.runUrlConfig:", err);
+            console.warn("Error in appActions.runUrlConfig:", err);
             dispatch(
-                AlertActions.addAlert({
+                alertActions.addAlert({
                     title: appStrings.ALERTS.URL_CONFIG_FAILED.title,
                     body: appStrings.ALERTS.URL_CONFIG_FAILED.formatString,
                     severity: appStrings.ALERTS.URL_CONFIG_FAILED.severity,
@@ -117,9 +116,9 @@ function setLayersActive(idArr, active) {
                 let id = splitId[0];
                 let opacity = splitId.length === 2 ? splitId[1].split(")")[0] : false;
                 if (opacity) {
-                    dispatch(LayerActions.setLayerOpacity(id, opacity));
+                    dispatch(mapActions.setLayerOpacity(id, opacity));
                 }
-                dispatch(LayerActions.setLayerActive(id, active));
+                dispatch(mapActions.setLayerActive(id, active));
             }
         });
     };
@@ -128,7 +127,7 @@ function setLayersActive(idArr, active) {
 function setViewMode(viewMode) {
     return dispatch => {
         return new Promise(() => {
-            dispatch(MapActions.setMapViewMode(viewMode));
+            dispatch(mapActions.setMapViewMode(viewMode));
         });
     };
 }
@@ -136,7 +135,7 @@ function setViewMode(viewMode) {
 function setBasemap(basemapId) {
     return dispatch => {
         return new Promise(() => {
-            dispatch(MapActions.setBasemap(basemapId));
+            dispatch(mapActions.setBasemap(basemapId));
         });
     };
 }
@@ -144,7 +143,7 @@ function setBasemap(basemapId) {
 function setExtent(extentStrArr) {
     return dispatch => {
         return new Promise(() => {
-            dispatch(MapActions.setMapView({ extent: extentStrArr }, true));
+            dispatch(mapActions.setMapView({ extent: extentStrArr }, true));
         });
     };
 }
@@ -152,7 +151,7 @@ function setExtent(extentStrArr) {
 function setTerrainEnabled(enabled) {
     return dispatch => {
         return new Promise(() => {
-            dispatch(MapActions.setTerrainEnabled(enabled));
+            dispatch(mapActions.setTerrainEnabled(enabled));
         });
     };
 }
@@ -160,7 +159,7 @@ function setTerrainEnabled(enabled) {
 function setDate(dateStr) {
     return dispatch => {
         return new Promise(() => {
-            dispatch(MapActions.setDate(dateStr));
+            dispatch(mapActions.setDate(dateStr));
         });
     };
 }
@@ -168,7 +167,7 @@ function setDate(dateStr) {
 function setTimelineRes(resStr) {
     return dispatch => {
         return new Promise(() => {
-            dispatch(DateSliderActions.setDateResolution(resStr));
+            dispatch(dateSliderActions.setDateResolution(resStr));
         });
     };
 }

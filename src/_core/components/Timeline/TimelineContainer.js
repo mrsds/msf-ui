@@ -7,7 +7,7 @@ import moment from "moment";
 import { DataSet, Timeline } from "vis/index-timeline-graph2d";
 import "vis/dist/vis-timeline-graph2d.min.css";
 import { ResolutionStep } from "_core/components/Timeline";
-import * as MapActions from "_core/actions/MapActions";
+import * as mapActions from "_core/actions/mapActions";
 import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
 import MiscUtil from "_core/utils/MiscUtil";
@@ -580,7 +580,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        mapActions: bindActionCreators(MapActions, dispatch)
+        mapActions: bindActionCreators(mapActions, dispatch)
     };
 }
 

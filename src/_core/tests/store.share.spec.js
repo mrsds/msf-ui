@@ -1,4 +1,4 @@
-import * as AppActions from "_core/actions/AppActions";
+import * as appActions from "_core/actions/appActions";
 import { createStore } from "redux";
 import { expect } from "chai";
 import rootReducer from "_core/reducers";
@@ -35,7 +35,7 @@ export const StoreShareSpec = {
                 it("enables auto update url", function() {
                     const store = createStore(rootReducer, initialState);
 
-                    const actions = [AppActions.setAutoUpdateUrl(true)];
+                    const actions = [appActions.setAutoUpdateUrl(true)];
                     actions.forEach(action => store.dispatch(action));
 
                     const actual = store.getState();
@@ -52,8 +52,8 @@ export const StoreShareSpec = {
                     const store = createStore(rootReducer, initialState);
 
                     const actions = [
-                        AppActions.setAutoUpdateUrl(true),
-                        AppActions.setAutoUpdateUrl(false)
+                        appActions.setAutoUpdateUrl(true),
+                        appActions.setAutoUpdateUrl(false)
                     ];
                     actions.forEach(action => store.dispatch(action));
 
@@ -69,7 +69,7 @@ export const StoreShareSpec = {
                 it("can open the share container.", function() {
                     const store = createStore(rootReducer, initialState);
 
-                    const actions = [AppActions.setShareOpen(true)];
+                    const actions = [appActions.setShareOpen(true)];
                     actions.forEach(action => store.dispatch(action));
 
                     const actual = store.getState();
@@ -84,7 +84,7 @@ export const StoreShareSpec = {
                 it("can close the share container.", function() {
                     const store = createStore(rootReducer, initialState);
 
-                    const actions = [AppActions.setShareOpen(false)];
+                    const actions = [appActions.setShareOpen(false)];
                     actions.forEach(action => store.dispatch(action));
 
                     const actual = store.getState();
@@ -100,7 +100,7 @@ export const StoreShareSpec = {
                 it("can open and close the share container.", function() {
                     const store = createStore(rootReducer, initialState);
 
-                    const actions = [AppActions.setShareOpen(true), AppActions.setShareOpen(false)];
+                    const actions = [appActions.setShareOpen(true), appActions.setShareOpen(false)];
                     actions.forEach(action => store.dispatch(action));
 
                     const actual = store.getState();

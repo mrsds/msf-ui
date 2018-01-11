@@ -6,7 +6,7 @@ import Divider from "material-ui/Divider";
 import Typography from "material-ui/Typography";
 import { ModalMenu } from "_core/components/ModalMenu";
 import { AlertList } from "_core/components/Alerts";
-import * as actions from "_core/actions/AppActions";
+import * as appActions from "_core/actions/appActions";
 import styles from "_core/components/Alerts/AlertsContainer.scss";
 
 export class AlertsContainer extends Component {
@@ -24,7 +24,7 @@ export class AlertsContainer extends Component {
                 active={alertsPresent}
                 className={styles.root}
                 closeFunc={() => {
-                    this.props.actions.dismissAllAlerts(this.props.alerts);
+                    this.props.appActions.dismissAllAlerts(this.props.alerts);
                 }}
             >
                 <AlertList alerts={alerts} />
@@ -34,7 +34,7 @@ export class AlertsContainer extends Component {
 }
 
 AlertsContainer.propTypes = {
-    actions: PropTypes.object.isRequired,
+    appActions: PropTypes.object.isRequired,
     alerts: PropTypes.object.isRequired
 };
 
@@ -61,7 +61,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        appActions: bindActionCreators(appActions, dispatch)
     };
 }
 

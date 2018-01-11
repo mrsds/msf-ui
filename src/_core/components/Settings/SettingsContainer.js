@@ -13,11 +13,10 @@ import Select from "material-ui/Select";
 import SettingsBackupRestoreIcon from "material-ui-icons/SettingsBackupRestore";
 import appConfig from "constants/appConfig";
 import * as appStrings from "_core/constants/appStrings";
-import * as appActions from "_core/actions/AppActions";
-import * as mapActions from "_core/actions/MapActions";
-import * as layerActions from "_core/actions/LayerActions";
-import * as dateSliderActions from "_core/actions/DateSliderActions";
-import * as analyticsActions from "_core/actions/AnalyticsActions";
+import * as appActions from "_core/actions/appActions";
+import * as mapActions from "_core/actions/mapActions";
+import * as dateSliderActions from "_core/actions/dateSliderActions";
+import * as analyticsActions from "_core/actions/analyticsActions";
 import MiscUtil from "_core/utils/MiscUtil";
 import { BaseMapDropdown } from "_core/components/Settings";
 import { ModalMenu } from "_core/components/ModalMenu";
@@ -84,7 +83,8 @@ export class SettingsContainer extends Component {
                             <Select
                                 value={this.props.mapSettings.get("selectedScaleUnits")}
                                 onChange={event =>
-                                    this.props.mapActions.setScaleUnits(event.target.value)}
+                                    this.props.mapActions.setScaleUnits(event.target.value)
+                                }
                                 input={<Input name="Scale Units" id="scale-units-select" />}
                             >
                                 {appConfig.SCALE_OPTIONS.map(x => (
@@ -104,9 +104,8 @@ export class SettingsContainer extends Component {
                             <Select
                                 value={this.props.mapSettings.get("selectedTerrainExaggeration")}
                                 onChange={event =>
-                                    this.props.mapActions.setTerrainExaggeration(
-                                        event.target.value
-                                    )}
+                                    this.props.mapActions.setTerrainExaggeration(event.target.value)
+                                }
                                 input={
                                     <Input
                                         name="Terrain Exaggeration"
@@ -125,7 +124,7 @@ export class SettingsContainer extends Component {
                     <ListItem
                         button
                         onClick={evt => {
-                            this.props.layerActions.setLayerActive(
+                            this.props.mapActions.setLayerActive(
                                 appConfig.POLITICAL_BOUNDARIES_LAYER_ID,
                                 !politicalBoundariesLayer.get("isActive")
                             );
@@ -145,10 +144,11 @@ export class SettingsContainer extends Component {
                     <ListItem
                         button
                         onClick={evt =>
-                            this.props.layerActions.setLayerActive(
+                            this.props.mapActions.setLayerActive(
                                 appConfig.REFERENCE_LABELS_LAYER_ID,
                                 !referenceLabelsLayer.get("isActive")
-                            )}
+                            )
+                        }
                     >
                         <Checkbox
                             disableRipple
@@ -164,7 +164,8 @@ export class SettingsContainer extends Component {
                         onClick={evt =>
                             this.props.mapActions.setTerrainEnabled(
                                 !this.props.mapSettings.get("enableTerrain")
-                            )}
+                            )
+                        }
                     >
                         <Checkbox
                             disableRipple
@@ -181,7 +182,8 @@ export class SettingsContainer extends Component {
                         onClick={evt =>
                             this.props.analyticsActions.setAnalyticsEnabled(
                                 !this.props.analyticsEnabled
-                            )}
+                            )
+                        }
                     >
                         <Checkbox disableRipple checked={this.props.analyticsEnabled} />
                         <ListItemText
@@ -192,9 +194,8 @@ export class SettingsContainer extends Component {
                     <ListItem
                         button
                         onClick={evt =>
-                            this.props.appActions.setAutoUpdateUrl(
-                                !this.props.autoUpdateUrlEnabled
-                            )}
+                            this.props.appActions.setAutoUpdateUrl(!this.props.autoUpdateUrlEnabled)
+                        }
                     >
                         <Checkbox disableRipple checked={this.props.autoUpdateUrlEnabled} />
                         <ListItemText
@@ -226,7 +227,6 @@ SettingsContainer.propTypes = {
     mapSettings: PropTypes.object.isRequired,
     appActions: PropTypes.object.isRequired,
     mapActions: PropTypes.object.isRequired,
-    layerActions: PropTypes.object.isRequired,
     dateSliderActions: PropTypes.object.isRequired,
     analyticsActions: PropTypes.object.isRequired
 };
@@ -246,7 +246,6 @@ function mapDispatchToProps(dispatch) {
     return {
         appActions: bindActionCreators(appActions, dispatch),
         mapActions: bindActionCreators(mapActions, dispatch),
-        layerActions: bindActionCreators(layerActions, dispatch),
         dateSliderActions: bindActionCreators(dateSliderActions, dispatch),
         analyticsActions: bindActionCreators(analyticsActions, dispatch)
     };

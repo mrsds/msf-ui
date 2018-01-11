@@ -5,7 +5,6 @@ import { bindActionCreators } from "redux";
 import { ContextMenu } from "react-contextmenu";
 import { hideMenu } from "react-contextmenu/modules/actions";
 import { MapToolsMenu } from "_core/components/Reusables";
-import * as actions from "_core/actions/MapActions";
 import * as appStrings from "_core/constants/appStrings";
 
 export class MapContextMenu extends Component {
@@ -20,8 +19,7 @@ export class MapContextMenu extends Component {
 
 MapContextMenu.propTypes = {
     drawing: PropTypes.object.isRequired,
-    measuring: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    measuring: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -31,10 +29,4 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MapContextMenu);
+export default connect(mapStateToProps, null)(MapContextMenu);
