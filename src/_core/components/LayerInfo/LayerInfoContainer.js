@@ -30,7 +30,7 @@ export class LayerInfoContainer extends Component {
 
         let loadingClasses = MiscUtil.generateStringFromSet({
             [styles.layerInfoLoading]: true,
-            [styles.active]: this.props.dataLoading
+            [styles.active]: this.props.layerMetadataAsync.get("loading")
         });
 
         let errorClasses = MiscUtil.generateStringFromSet({
