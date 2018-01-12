@@ -1,0 +1,16 @@
+@import "~styles/colors";
+
+.root {
+    background: $color-background;
+    width: 100%;
+    position: relative;
+    padding: 5px 5px;
+    text-align: right;
+}
+.buttons {
+    display: inline-block;
+}
+.label {
+    display: inline-block;
+    margin-right: 14px;
+}

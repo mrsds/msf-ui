@@ -4,14 +4,15 @@ import { connect } from "react-redux";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { bindActionCreators } from "redux";
 import * as appStrings from "_core/constants/appStrings";
-import * as actions from "_core/actions/MapActions";
-import MapContainer from "_core/components/Map/MapContainer";
+import * as actions from "_core/actions/mapActions";
+import { MapContainer } from "_core/components/Map";
 import MapContainer2DExtended from "components/Map/MapContainer2DExtended";
+import styles from "_core/components/Map/MapContainer.scss";
 
 export class MapContainerExtended extends MapContainer {
     render() {
         return (
-            <div id="mapContainer" ref="container">
+            <div ref="container" className={styles.mapContainer}>
                 <ContextMenuTrigger id={appStrings.MAP_CONTEXT_MENU_ID} holdToDisplay={-1}>
                     <MapContainer2DExtended />
                 </ContextMenuTrigger>

@@ -1,0 +1,30 @@
+.modalMenu {
+    max-width: 550px;
+}
+
+.close {
+    margin-right: -12px;
+    margin-left: 20px;
+}
+
+.back {
+    margin-left: -12px;
+    margin-right: 20px;
+}
+
+/* MUI overrides */
+.appbar {
+    position: relative;
+}
+
+.flex {
+    flex: 1;
+}
+
+.root {
+    padding: 0px;
+}
+
+.paper {
+    overflow-y: inherit;
+}

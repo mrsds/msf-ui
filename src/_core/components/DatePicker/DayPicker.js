@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import Input from 'react-toolbox/lib/input';
-import MiscUtil from '_core/utils/MiscUtil';
-import appConfig from 'constants/appConfig';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import Input from "material-ui/Input";
+import MiscUtil from "_core/utils/MiscUtil";
+import appConfig from "constants/appConfig";
+import styles from "_core/components/DatePicker/DatePicker.scss";
 
 const MAX_LENGTH = 2;
-const miscUtil = new MiscUtil();
 
 export class DayPicker extends Component {
     componentDidMount() {
@@ -15,18 +15,19 @@ export class DayPicker extends Component {
         this.updateFromInternal = false;
     }
     shouldComponentUpdate(nextProps) {
-        return (nextProps.day !== this.props.day) || (nextProps.day !== this.day);
+        return nextProps.day !== this.props.day || nextProps.day !== this.day;
     }
     handleKeyPress(evt) {
         let dayStr = this.day;
-        dayStr = miscUtil.padNumber(dayStr, 2);
-        if (evt.charCode === 13) { // enter key
+        dayStr = MiscUtil.padNumber(dayStr, 2);
+        if (evt.charCode === 13) {
+            // enter key
             this.submitDay(dayStr);
         }
     }
     handleBlur(evt) {
         let dayStr = this.day;
-        dayStr = miscUtil.padNumber(dayStr, 2);
+        dayStr = MiscUtil.padNumber(dayStr, 2);
         this.submitDay(dayStr);
     }
     handleChange(dayStr) {
@@ -51,20 +52,27 @@ export class DayPicker extends Component {
         let dayStr = this.updateFromInternal ? this.day : this.props.day;
         this.day = dayStr;
         this.updateFromInternal = false;
-        let containerClasses = miscUtil.generateStringFromSet({
-            "date-picker-selection col-xs-3": true,
-            "error": this.error
+        let containerClasses = MiscUtil.generateStringFromSet({
+            [styles.datePickerSelector]: true,
+            [styles.datePickerSelectorError]: this.error
         });
         return (
             <div className={containerClasses}>
                 <Input
-                    ref="input"
                     type="text"
                     tabIndex="0"
                     value={dayStr}
-                    onBlur={(evt) => this.handleBlur(evt)}
-                    onKeyPress={(evt) => this.handleKeyPress(evt)}
-                    onChange={(evt) => this.handleChange(evt)} />
+                    inputProps={{
+                        onBlur: evt => {
+                            this.handleBlur(evt.target.value);
+                        },
+                        onKeyPress: evt => {
+                            this.handleKeyPress(evt);
+                        }
+                    }}
+                    onChange={evt => this.handleChange(evt.target.value)}
+                    classes={{ input: styles.selectionInput }}
+                />
             </div>
         );
     }

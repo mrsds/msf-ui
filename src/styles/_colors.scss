@@ -1,0 +1,11 @@
+/* colors */
+$color-primary: #3367d6;
+$color-accent: #2196f3;
+$color-background: #fafafa;
+
+/* neutrals */
+$color-dark: #212121;
+$color-light: #fafafa;
+$color-medium-dark: lighten($color-dark, 15%);
+$color-medium: lighten($color-dark, 20%);
+$color-medium-light: darken($color-light, 15%);

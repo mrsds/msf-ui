@@ -1,29 +1,33 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import MiscUtil from '_core/utils/MiscUtil';
-import MouseCoordinates from '_core/components/MouseFollower/MouseCoordinates';
-
-const miscUtil = new MiscUtil();
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import Paper from "material-ui/Paper";
+import MiscUtil from "_core/utils/MiscUtil";
+import { MouseCoordinates } from "_core/components/MouseFollower";
+import styles from "_core/components/Map/CoordinateTracker.scss";
+import displayStyles from "_core/styles/display.scss";
 
 export class CoordinateTracker extends Component {
     render() {
-        let containerClasses = miscUtil.generateStringFromSet({
-            "active": !this.props.mapControlsHidden,
-            "distraction-free": this.props.distractionFreeMode
+        let containerClasses = MiscUtil.generateStringFromSet({
+            [styles.coordinateTracker]: true,
+            [displayStyles.hiddenFadeOut]: this.props.distractionFreeMode,
+            [displayStyles.hiddenFadeIn]: !this.props.distractionFreeMode,
+            [this.props.className]: typeof this.props.className !== "undefined"
         });
 
         return (
-            <div id="mouseCoordinateTracker" className={containerClasses} >
+            <Paper elevation={2} className={containerClasses}>
                 <MouseCoordinates />
-            </div>
+            </Paper>
         );
     }
 }
 
 CoordinateTracker.propTypes = {
     distractionFreeMode: PropTypes.bool.isRequired,
-    mapControlsHidden: PropTypes.bool.isRequired
+    mapControlsHidden: PropTypes.bool.isRequired,
+    className: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -33,7 +37,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    null
-)(CoordinateTracker);
+export default connect(mapStateToProps, null)(CoordinateTracker);

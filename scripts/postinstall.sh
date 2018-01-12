@@ -11,10 +11,6 @@ cp -r ./node_modules/cesium/Build/Cesium/* ./assets/assets/cesium/
 mkdir -p ./assets/assets/CesiumDrawHelper/img
 cp ./src/_core/styles/resources/img/CesiumDrawHelper/*.png ./assets/assets/CesiumDrawHelper/img
 
-# Copy flexbox
-mkdir ./assets/assets/flexboxgrid/
-cp ./node_modules/flexboxgrid/dist/flexboxgrid.min.css ./assets/assets/flexboxgrid/
-
 # Copy normalize.css
 mkdir ./assets/assets/normalize/
 cp ./node_modules/normalize.css/normalize.css ./assets/assets/normalize/

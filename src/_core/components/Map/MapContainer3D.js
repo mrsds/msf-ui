@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as actions from '_core/actions/MapActions';
-import * as appStrings from '_core/constants/appStrings';
-import MiscUtil from '_core/utils/MiscUtil';
-
-const miscUtil = new MiscUtil();
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as mapActions from "_core/actions/mapActions";
+import * as appStrings from "_core/constants/appStrings";
+import MiscUtil from "_core/utils/MiscUtil";
+import styles from "_core/components/Map/MapContainer.scss";
+import displayStyles from "_core/styles/display.scss";
 
 export class MapContainer3D extends Component {
     constructor(props) {
@@ -22,17 +22,41 @@ export class MapContainer3D extends Component {
         if (typeof map !== "undefined") {
             // mouse event listeners
             map.addEventListener(appStrings.EVENT_MOVE_END, () => this.handleMapMoveEnd(map));
-            map.addEventListener(appStrings.EVENT_MOUSE_HOVER, (pixel) => this.handlePixelHover(map, pixel));
-            map.addEventListener(appStrings.EVENT_MOUSE_CLICK, (pixel) => this.handlePixelClick(map, pixel));
+            map.addEventListener(appStrings.EVENT_MOUSE_HOVER, pixel =>
+                this.handlePixelHover(map, pixel)
+            );
+            map.addEventListener(appStrings.EVENT_MOUSE_CLICK, pixel =>
+                this.handlePixelClick(map, pixel)
+            );
 
             // draw handlers
-            map.addDrawHandler(appStrings.GEOMETRY_CIRCLE, (geometry) => this.handleDrawEnd(geometry), appStrings.INTERACTION_DRAW);
-            map.addDrawHandler(appStrings.GEOMETRY_LINE_STRING, (geometry) => this.handleDrawEnd(geometry), appStrings.INTERACTION_DRAW);
-            map.addDrawHandler(appStrings.GEOMETRY_POLYGON, (geometry) => this.handleDrawEnd(geometry), appStrings.INTERACTION_DRAW);
+            map.addDrawHandler(
+                appStrings.GEOMETRY_CIRCLE,
+                geometry => this.handleDrawEnd(geometry),
+                appStrings.INTERACTION_DRAW
+            );
+            map.addDrawHandler(
+                appStrings.GEOMETRY_LINE_STRING,
+                geometry => this.handleDrawEnd(geometry),
+                appStrings.INTERACTION_DRAW
+            );
+            map.addDrawHandler(
+                appStrings.GEOMETRY_POLYGON,
+                geometry => this.handleDrawEnd(geometry),
+                appStrings.INTERACTION_DRAW
+            );
 
             // measurement listeners
-            map.addDrawHandler(appStrings.GEOMETRY_LINE_STRING, (geometry) => this.handleMeasureEnd(geometry, appStrings.MEASURE_DISTANCE), appStrings.INTERACTION_MEASURE);
-            map.addDrawHandler(appStrings.GEOMETRY_POLYGON, (geometry) => this.handleMeasureEnd(geometry, appStrings.MEASURE_AREA), appStrings.INTERACTION_MEASURE);
+            map.addDrawHandler(
+                appStrings.GEOMETRY_LINE_STRING,
+                geometry => this.handleMeasureEnd(geometry, appStrings.MEASURE_DISTANCE),
+                appStrings.INTERACTION_MEASURE
+            );
+            map.addDrawHandler(
+                appStrings.GEOMETRY_POLYGON,
+                geometry => this.handleMeasureEnd(geometry, appStrings.MEASURE_AREA),
+                appStrings.INTERACTION_MEASURE
+            );
         } else {
             console.error("Cannot initialize event listeners: 3D MAP NOT AVAILABLE");
         }
@@ -42,38 +66,45 @@ export class MapContainer3D extends Component {
         // Only fire move event if this map is active
         // and target inactive map
         if (map.isActive) {
-            this.props.actions.setMapView({
-                extent: map.getExtent()
-            }, false);
+            this.props.mapActions.setMapView(
+                {
+                    extent: map.getExtent()
+                },
+                false
+            );
         }
     }
 
     handlePixelHover(map, pixel) {
         // Only fire move event if this map is active
         if (map.isActive) {
-            this.props.actions.pixelHover(pixel);
+            this.props.mapActions.pixelHover(pixel);
         }
     }
 
     handlePixelClick(map, pixel) {
         // Only fire move event if this map is active
         if (map.isActive) {
-            this.props.actions.pixelClick(pixel);
+            this.props.mapActions.pixelClick(pixel);
         }
     }
 
     handleDrawEnd(geometry) {
         // Disable drawing
-        this.props.actions.disableDrawing();
+        this.props.mapActions.disableDrawing();
     }
 
     handleMeasureEnd(geometry, measurementType) {
         // Disable measurement
-        this.props.actions.disableMeasuring();
+        this.props.mapActions.disableMeasuring();
         // Add geometry to other maps
-        this.props.actions.addGeometryToMap(geometry, appStrings.INTERACTION_MEASURE, true);
+        this.props.mapActions.addGeometryToMap(geometry, appStrings.INTERACTION_MEASURE, true);
         // Add label to geometry
-        this.props.actions.addMeasurementLabelToGeometry(geometry, measurementType, this.props.units);
+        this.props.mapActions.addMeasurementLabelToGeometry(
+            geometry,
+            measurementType,
+            this.props.units
+        );
     }
 
     render() {
@@ -83,13 +114,16 @@ export class MapContainer3D extends Component {
             this.listenersInitialized = true;
         }
 
-        let containerClass = miscUtil.generateStringFromSet({
-            "inactive": !this.props.in3DMode
+        let containerClass = MiscUtil.generateStringFromSet({
+            [styles.mapRenderWrapper]: true,
+            [displayStyles.hidden]: !this.props.in3DMode,
+            [displayStyles.animationFadeIn]: this.props.in3DMode,
+            [displayStyles.animationFadeOut]: !this.props.in3DMode
         });
 
         return (
-            <div id="mapContainer3D" className={containerClass}>
-                <div id="map3D" />
+            <div className={containerClass}>
+                <div id="map3D" className={styles.mapRender} />
             </div>
         );
     }
@@ -100,7 +134,7 @@ MapContainer3D.propTypes = {
     units: PropTypes.string.isRequired,
     in3DMode: PropTypes.bool.isRequired,
     initialLoadComplete: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired
+    mapActions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -114,11 +148,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        mapActions: bindActionCreators(mapActions, dispatch)
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(MapContainer3D);
+export default connect(mapStateToProps, mapDispatchToProps)(MapContainer3D);

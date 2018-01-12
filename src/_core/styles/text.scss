@@ -1,0 +1,18 @@
+.fontRoboto {
+    font-family: "Roboto", Helvetica, Arial, sans-serif;
+}
+
+.fontRobotoMono {
+    font-family: "Roboto Mono", monospace;
+}
+
+.textWrap {
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.textEllipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -1,0 +1,18 @@
+@import "~styles/colors";
+
+.title {
+    composes: fontRobotoMono from "_core/styles/text.scss";
+    display: inline-block;
+    color: $color-light;
+    font-size: 1.4rem;
+    letter-spacing: 0.0756em;
+    text-transform: uppercase;
+}
+
+.version {
+    composes: fontRobotoMono from "_core/styles/text.scss";
+    display: inline-block;
+    color: $color-medium-light;
+    letter-spacing: -0.16em;
+    margin-left: 0.5rem;
+}

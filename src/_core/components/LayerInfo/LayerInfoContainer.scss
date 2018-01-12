@@ -1,0 +1,64 @@
+@import "~styles/colors";
+
+.layerInfoLoading,
+.layerInfoError {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: $color-light;
+    z-index: 1;
+    pointer-events: none;
+    display: none;
+    transition: opacity 0.2s linear 0s, visibility 0s linear 0.21s;
+    &.active {
+        display: block;
+        pointer-events: auto;
+    }
+}
+
+.layerInfoSpinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.layerInfoError {
+    text-align: center;
+}
+
+.errorContent {
+    top: 36%;
+    position: relative;
+    svg {
+        width: 75px;
+        height: 75px;
+    }
+}
+
+.thumbnailImage {
+    width: 100%;
+    height: 200px;
+    border-top-right-radius: 0.2rem;
+    border-top-left-radius: 0.2rem;
+}
+
+.layerInfoContent {
+    padding: 2rem 1.6rem;
+    user-select: text;
+}
+
+.layerInfoIcon {
+    font-size: 2.4rem;
+}
+
+/* MUI overrides */
+.root {
+    padding: 0px !important;
+}
+
+.paper {
+    width: 450px;
+}

@@ -1,0 +1,12 @@
+.datePickerContainer {
+    composes: medium from "_core/styles/shadow.scss";
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    z-index: 2;
+    width: 200px;
+    padding: 0px;
+    height: 6rem;
+    background: white;
+    border-top-right-radius: 2px;
+}

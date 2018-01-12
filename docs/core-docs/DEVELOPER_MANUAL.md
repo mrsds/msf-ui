@@ -7,73 +7,80 @@ A detailed guide on getting starting with the Common Mapping Client. This guide 
 3. [Package.json Scripts Overview](#overview-of-commands-from-packagejson)
 4. [Installing/removing packages via npm](#installing-uninstalling-npm)
 5. [The CMC Core Philosophy](#cmc-core-philosophy)
-  - 1. [General](#cmc-core-philosophy-general)
-  - 2. [The "_core" Directory](#cmc-core-philosophy-core-directory)
-  - 3. [Adding, Overriding, and Removing "_core" Functionality & Components](#cmc-core-philosophy-modifying-core)
-  - 4. [Overriding configs](#cmc-core-philosophy-modifying-core-config)
+    1. [General](#cmc-core-philosophy-general)
+    2. [The "\_core" Directory](#cmc-core-philosophy-core-directory)
+    3. [Adding, Overriding, and Removing "\_core" Functionality & Components](#cmc-core-philosophy-modifying-core)
+    4. [Overriding configs](#cmc-core-philosophy-modifying-core-config)
 6. [The CMC Build Process](#cmc-build-process)
-  - 1. [Post-Install](#cmc-build-process-post-install)
-  - 2. [Webpack](#cmc-build-process-webpack)
-    - 1. [How CMC Uses Webpack](#cmc-build-process-cmc-webpack)
-    - 2. [Development Mode](#cmc-build-process-development-mode)
-    - 3. [Production Mode](#cmc-build-process-production-mode)
-    - 4. [Brief Note on Cesium + Webpack Integration](#cmc-build-process-cesium-integration)
-    - 5. [Brief Note on ESLint](#cmc-build-process-eslint)
-  - 3. [Brief Note on Serving CMC](#cmc-build-process-serving-cmc)
+    1. [Post-Install](#cmc-build-process-post-install)
+    2. [Webpack](#cmc-build-process-webpack)
+        1. [How CMC Uses Webpack](#cmc-build-process-cmc-webpack)
+        2. [Development Mode](#cmc-build-process-development-mode)
+        3. [Production Mode](#cmc-build-process-production-mode)
+        4. [Changing the Build](#cmc-build-changing-the-build)
+        5. [Brief Note on Cesium + Webpack Integration](#cmc-build-process-cesium-integration)
+    3. [Brief Note on ESLint](#cmc-build-process-eslint)
+    4. [Brief Note on Prettier](#cmc-build-process-prettier)
+    5. [Brief Note on Serving CMC](#cmc-build-process-serving-cmc)
 7. [Styling CMC](#styling-cmc)
-  - 1. [React UI Component Library (React-Toolbox)](#styling-cmc-react-toolbox)
-  - 2. [SASS Usage](#styling-cmc-sass)
-  - 3. [CMC Style Architecture](#styling-cmc-sass-architecture)
-  - 4. [Overriding Core Styles](#styling-cmc-overrides)
-  - 5. [Overriding React-Toolbox SASS Variables](#styling-cmc-overrides-react-toolbox)
-  - 6. [Fonts](#styling-cmc-fonts)
-    - 1. [When to use Roboto ](#styling-cmc-using-roboto)
-    - 2. [When to use Roboto Mono](#styling-cmc-using-roboto-mono)
-  - 7. [postCSS](#styling-cmc-postcss)
-  - 8. [Favicon Generation](#styling-cmc-favicons)
-  - 9. [Custom Icons](#styling-cmc-custom-icons)
+    1. [React UI Component Library (React-Toolbox)](#styling-cmc-react-toolbox)
+    2. [SASS Usage](#styling-cmc-sass)
+    3. [CMC Style Architecture](#styling-cmc-sass-architecture)
+    4. [Overriding Core Styles](#styling-cmc-overrides)
+    5. [Overriding React-Toolbox SASS Variables](#styling-cmc-overrides-react-toolbox)
+    6. [Fonts](#styling-cmc-fonts)
+        1. [When to use Roboto ](#styling-cmc-using-roboto)
+        2. [When to use Roboto Mono](#styling-cmc-using-roboto-mono)
+    7. [postCSS](#styling-cmc-postcss)
+    8. [Favicon Generation](#styling-cmc-favicons)
+    9. [Custom Icons](#styling-cmc-custom-icons)
 8. [Components and State with React & Redux](#components-and-state-with-react-redux)
-  - 1. [Things to Know about React/Redux](#things-to-know-about-react-redux)
-  - 2. [CMC React & Redux Idioms](#cmc-react-redux-idioms)
-    - 1. [In the Store](#cmc-react-redux-idioms-store)
-    - 2. [With Maps](#cmc-react-redux-idioms-maps)
-    - 3. [With D3](#cmc-react-redux-idioms-d3)
-  3. [Notes on Optimizing React/Redux Performance](#optimizing-react-redux-performance)
-    - 1. [Key Performance Areas](#optimizing-react-redux-performance-key-areas)
-    - 2. [Additional Techniques in Improving Performance](#optimizing-react-redux-performance-additional-techniques)
-    - 3. [Usage of ImmutableJS](#cmc-using-immutablejs)
+    1. [Things to Know about React/Redux](#things-to-know-about-react-redux)
+    2. [CMC React & Redux Idioms](#cmc-react-redux-idioms)
+        1. [In the Store](#cmc-react-redux-idioms-store)
+        2. [With Maps](#cmc-react-redux-idioms-maps)
+        3. [With vis.js](#cmc-react-redux-idioms-visjs)
+    3. [Notes on Optimizing React/Redux Performance](#optimizing-react-redux-performance)
+        1. [Key Performance Areas](#optimizing-react-redux-performance-key-areas)
+        2. [Additional Techniques in Improving Performance](#optimizing-react-redux-performance-additional-techniques)
+        3. [Usage of ImmutableJS](#cmc-using-immutablejs)
 9. [Mapping With CMC](#mapping-with-cmc)
-  - 1. [Why Did CMC Choose Ol3 and Cesium?](#mapping-with-cmc-why-ol3-cesium)
-  - 2. [Replacing these libraries](#mapping-with-cmc-replacing-libs)
-  - 3. [Overview of the MapWrapper classes](#mapping-with-cmc-mapwrapper)
-  - 4. [Notes on Map Performance](#mapping-with-cmc-note-on-performance)
+    1. [Why Did CMC Choose Ol3 and Cesium?](#mapping-with-cmc-why-ol3-cesium)
+    2. [Replacing these libraries](#mapping-with-cmc-replacing-libs)
+    3. [Overview of the MapWrapper classes](#mapping-with-cmc-mapwrapper)
+    4. [Notes on Map Performance](#mapping-with-cmc-note-on-performance)
+    5. [Tidbits](#mapping-with-cmc-tidbits)
 10. [Brief Overview of Application Directory ](#cmc-application-directory)
 11. [How to Write Tests in CMC](#writing-tests)
-  - 1. [Testing Tools](#writing-tests-tools)
-  - 2. [Running Tests](#writing-tests-running-tests)
-  - 3. [Writing Tests for CMC](#writing-tests-cmc)
-    - 1. [Simple Tests](#writing-tests-simple)
-    - 2. [Tests using the Redux Store](#writing-tests-redux-store)
-  - 4. [Writing Tests for CMC Core](#writing-tests-cmc-core)
-  - 5. [Writing Tests for your Application](#writing-tests-your-application)
-    - 1. [Normal Non-Core Test File](#writing-tests-normal-non-core)
-    - 2. [Overriding, Modifying, or Ignoring a CMC Core Test](#writing-tests-modifying-core-tests)
-  - 6. [Asynchronous Local Data Loading in Tests](#writing-tests-async-local-data)
-  - 7. [Using beforeEach and afterEach](#writing-tests-beforeEach-afterEach)
-  - 8. [Testing Asynchronous Behaviors](#writing-tests-async-behavior)
-  - 9. [Test Coverage and Test Results](#writing-tests-code-coverage)
-  - 10. [Karma.conf.js](#writing-tests-karma-conf)
+    1. [Testing Tools](#writing-tests-tools)
+    2. [Running Tests](#writing-tests-running-tests)
+    3. [Writing Tests for CMC](#writing-tests-cmc)
+        1. [Simple Tests](#writing-tests-simple)
+        2. [Tests using the Redux Store](#writing-tests-redux-store)
+    4. [Writing Tests for CMC Core](#writing-tests-cmc-core)
+    5. [Writing Tests for your Application](#writing-tests-your-application)
+        1. [Normal Non-Core Test File](#writing-tests-normal-non-core)
+        2. [Overriding, Modifying, or Ignoring a CMC Core Test](#writing-tests-modifying-core-tests)
+    6. [Asynchronous Local Data Loading in Tests](#writing-tests-async-local-data)
+    7. [Using beforeEach and afterEach](#writing-tests-beforeEach-afterEach)
+    8. [Testing Asynchronous Behaviors](#writing-tests-async-behavior)
+    9. [Test Coverage and Test Results](#writing-tests-code-coverage)
+    10. [Karma.conf.js](#writing-tests-karma-conf)
 12. [User Analytics](#user-analytics)
-  1. [CMC Custom User Analytics](#user-analytics-custom-cmc)
-  2. [Google Analytics](#google-analytics)
+    1. [CMC Custom User Analytics](#user-analytics-custom-cmc)
+    2. [Google Analytics](#google-analytics)
 13. [Upgrading your Project to Latest Version of CMC](#upgrading-cmc)
-  - 1. [When to Upgrade](#upgrading-cmc-when-to-upgrade)
-  - 2. [Files to Watch out For](#upgrading-cmc-files-to-watch)
-  - 3. [Upgrade Steps](#upgrading-cmc-steps)
+    1. [When to Upgrade](#upgrading-cmc-when-to-upgrade)
+    2. [Files to Watch out For](#upgrading-cmc-files-to-watch)
+    3. [Upgrade Steps](#upgrading-cmc-steps)
 14. [Layer Ingestion Additional Services](#layer-ingestion-additional-services)
-15. [Deployment to Github Pages](#deployment-to-gh-pages)
+15. [Additional Tools](#additional-tool-info)
+    1. [Web Workers](#working-with-workers)
+        1. [Web Worker Transferables](#web-worker-transferables)
+16. [Deployment to Github Pages](#deployment-to-gh-pages)
 17. [Main Technologies Under the Hood](#main-tech-under-the-hood)
 18. [Contributing to CMC](#contributing-to-cmc)
+19. [Copyright and License](#copyright-and-license)
 
 
 <a id="terminology"></a>
@@ -109,19 +116,20 @@ The scripts defined in `package.json` are used to control various aspects of app
 | **Script** | **Description** |
 |----------|-------|
 | postinstall | Copies over certain node_module files, libraries, sets up other stuff, etc. |
-| prestart | Runs automatically before start. Cleans previous build and builds `index.html` for serving. |
+| prestart | Runs automatically before start. Cleans previous build. |
+| precommit | Runs prettier code formatting automatically after commits have been staged. |
 | start | Builds a development version of the app in memory and serves it from a local node server. |
 | start:dist | Builds a production version of the app and serves it from a local node server. |
 | open:src | Serve development version of the app from a local node server |
 | open:dist | Serve production version of the app using a local node server|
-| prebuild | Runs automatically before build script. Cleans the previous build and builds `index.html` for serving |
+| prebuild | Runs automatically before build script. Cleans the previous build. |
 | build | Bundles all JavaScript using webpack and writes it to `/dist` |
 | postbuild | Runs the postbuild script moving external assets into dist |
-| build:html | Copies `src/index.html` into `dist/index.html` and inlines `src/styles/inline_style.css` |
 | prep:dist | Deletes the `dist/` and creates a new one |
 | clean:dist | Removes `dist/` |
 | clean:test | Removes `test-results/` |
 | pretest | Runs automatically before test. Cleans previous test results |
+| prettier-all | Run prettier on all js/css/scss files under the `src` directory |
 | test | Runs all tests using karma js |
 | analyze-bundle | Analyzes webpack bundles for production and gives you a breakdown of where modules are used and their sizes via a convenient interactive zoomable treemap |
 
@@ -139,11 +147,11 @@ NPM packages are installed and removed using the following commands. The `--save
 As is stated in the README, the Common Mapping Client aims to be a production-ready starting point for complex mapping applications. To avoid bloat and feature creep, if a capability or widget is not needed in the majority of mapping applications, it will not be part of CMC.
 
 <a id="cmc-core-philosophy-core-directory"></a>
-### The "_core" Directory
+### The "\_core" Directory
 Inside of the `src/_core` directory lives the bulk of the CMC Core application code. This is code that an Application Developer should only need to reference, duplicate and modify, or exclude. Separating Core code out is helpful for maintaining a lean codebase as well as providing a clean method for upgrading to newer versions of the Core codebase without affecting/breaking the Application Developer's work.
 
 <a id="cmc-core-philosophy-modifying-core"></a>
-### Adding, Overriding, and Removing "_core" Functionality & Components
+### Adding, Overriding, and Removing "\_core" Functionality & Components
 It is **strongly** recommended that all of the work you do is **outside** of `src/_core` to avoid future merge conflicts with new versions of CMC Core (upgrading will be discussed later on in this document) and to keep a clean reference to the Core code. It is also recommended that you duplicate whatever folder structure you need from Core in the parent `src` folder. Similar to components, you can swap out utility Reducer functions by changing imports in `src/reducers/index.js`, and change styles by overriding them with SASS in `src/styles.scss`. Also note that to override MapWrapper classes (which are described in more detail later) you should modify the imports in `src/utils/MapCreator.js` and substitute or add your own MapWrapper class. By default uses layer, palette, help information, and metadata from `src/default-data/_core_default-data/`. When you create your own application it is recommended that you not modify the `_core_default-data` folder and instead add your own folder along side containing your own data.
 
 All of the Core Components, Reducers, configurations, styles, tests, utils, etc., are imported (directly or indirectly as dependencies) into the application using the `_core/components/App/AppContainer.js` which is the root React Component in `src/index.js`. Please note that for the Reducer functions (discussed later in the section regarding React & Redux) the Core imports are done in `src/reducers/index.js`.
@@ -270,9 +278,9 @@ After `npm install` runs successfully, npm automatically looks for a script call
 In short:
 > webpack takes modules with dependencies and generates static assets representing those modules.
 
-Webpack is one of the most popular module bundlers or build systems for web applications (as of early 2017) and continues to increase in popularity and stability. Webpack was chosen for CMC over other build systems because almost every React/Redux starter kit and project uses Webpack. Alternatively you could use a combo of grunt/gulp/browserify/etc/etc if you really think some other combo is better.
+Webpack is one of the most popular module bundlers or build systems for web applications (as of late 2017) and continues to increase in popularity and stability. Webpack was chosen for CMC over other build systems because almost every React/Redux starter kit and project uses Webpack. Alternatively you could use a combo of grunt/gulp/browserify/etc/etc if you really think some other combo is better.
 
-CMC uses webpack version 1 for now although weback version 2 is coming out as of early 2017 so CMC may upgrade to the new version if time and stability permit. Read more about webpack version 1 over in the docs [here](https://webpack.github.io/docs/).
+CMC uses webpack version 2. Read more about webpack version 2 over in the docs [here](https://webpack.js.org/concepts/).
 
 Webpack is complicated and does a lot but once you get over the learning curve (or avoid it entirely and just tweak existing configurations) it's great, very flexible, and does a lot right out of the box. Webpack is driven from a JS configuration file (or multiple files in our case for development and production).
 
@@ -280,11 +288,11 @@ Webpack is complicated and does a lot but once you get over the learning curve (
 ##### How CMC Uses Webpack
 CMC uses two Webpack configurations (three really, the last one is a clone of webpack.config.dev.js living inside of karma.conf.js but ignore that for now).
 
-`webpack.config.helper.js`, is the main webpack configuration file. It defines a general build pipeline for CMC assets and includes specific options for the dev/prod configs to override. It outputs built assets under the `dist` directory. When configured for dev, it includes [JS/CSS sourcemaps](http://blog.teamtreehouse.com/introduction-source-maps) for debugging as well as [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html) and live reloading via [BrowserSync](https://browsersync.io/) for automatic reloading of certain pieces of code and CSS while maintaining application state and without refreshing the page. In production mode, it creates the optimized, minified, uglified, duplicate dependency reduced, static application output.
+`webpack.config.helper.js`, is the main webpack configuration file. It defines a general build pipeline for CMC assets and includes specific options for the dev/prod configs to override. It outputs built assets under the `dist` directory. When configured for dev, it includes [JS/CSS sourcemaps](http://blog.teamtreehouse.com/introduction-source-maps) for debugging as well as [hot module replacement](https://webpack.js.org/guides/hot-module-replacement/) and live reloading via [BrowserSync](https://browsersync.io/) for automatic reloading of certain pieces of code and CSS while maintaining application state and without refreshing the page. In production mode, it creates the optimized, minified, uglified, duplicate dependency reduced, static application output.
 
 <a id="cmc-build-process-development-mode"></a>
 ##### Development Mode
-When you are developing an application using CMC, you will most often want to use the development webpack configuration. This configuration is most easily used by running the `npm start` command which in turn runs `npm run open:src` which runs `scripts/srcServer.js` using node. This script imports the development webpack configuration and uses browserSync to serve the output files and enable hot module reloading. If you take a look at the size of the output bundle in a browser development tool you'll see that it's quite large. This is normal since the bundle is not optimized at all and contains many sourcemaps. Not to worry though, the final production bundle will be much smaller. When you first boot up the development server it may take a few seconds but will then be fairly quick to live reload (e.g. if you change and save some CSS you should see the actual page CSS change almost instantly). Also note that no files are actually output during the development build and are instead served in-memory. For more information on development webpack configuration please view [https://webpack.github.io/docs/](webpack documentation). The development configuration is also thoroughly commented.
+When you are developing an application using CMC, you will most often want to use the development webpack configuration. This configuration is most easily used by running the `npm start` command which in turn runs `npm run open:src` which runs `scripts/srcServer.js` using node. This script imports the development webpack configuration and uses browserSync to serve the output files and enable hot module reloading. If you take a look at the size of the output bundle in a browser development tool you'll see that it's quite large. This is normal since the bundle is not optimized at all and contains many sourcemaps. Not to worry though, the final production bundle will be much smaller. When you first boot up the development server it may take a few seconds but will then be fairly quick to live reload (e.g. if you change and save some CSS you should see the actual page CSS change almost instantly). Also note that no files are actually output during the development build and are instead served in-memory. For more information on development webpack configuration please view [https://webpack.js.org/concepts](webpack documentation). The development configuration is also thoroughly commented.
 
 <a id="cmc-build-process-production-mode"></a>
 ##### Production Mode
@@ -292,7 +300,7 @@ The production webpack configuration is useful for creating optimized static bui
 - Determine the final file size of output resources like bundle.js and styles.css
 - Profile performance-critical parts of your application since the built version of the app will generally be slightly more performant than the development version
 
-The production configuration is most easily used by running `npm run build`. However, npm is aware of the keyword `build` and will run the `prebuild` command if one exists. In our case we use `prebuild` to clean the output distribution area using `npm run clean-dist` and then run `npm run build:html` which runs `scripts/buildHtml.js` which reads in `src/index.html` and moves it into `dist`, modify this script if you ever want to modify `index.html` during the build process.
+The production configuration is most easily used by running `npm run build`. However, npm is aware of the keyword `build` and will run the `prebuild` command if one exists. In our case we use `prebuild` to clean the output distribution area using `npm run clean-dist`.
 
 After `prebuild` has successfully run, npm will run `scripts/build.js`. This script configures webpack using the production configuration and runs webpack to create the final bundled output. 
 
@@ -300,12 +308,20 @@ After the build has run, npm automatically looks for a script called `postbuild`
 
 Now you should have a completed production application inside of `dist` that you can run anywhere. If you would like to open the production application using the server provided by CMC you can run `npm run open:dist` which uses browserSync (with hot module replacement and livereload disabled). You can also run `npm run build:open` to have the server automatically start after build success.
 
+<a id="cmc-build-changing-the-build"></a>
+##### Changing the Build
+If you decide to use a new filetype, or a new loader, or a library that requires specific build configurations, it may be necessary to change the cmc-core webpack configuration. To enable that, we have created `webpack.config.mod.js`. That file defines a function that takes the cmc-core generated config as input and then returns a new (possibly altered) version of that config object. So to change the cmc-core webpack config, simply modify that file to perform the necessary modifications. If you check `webpack.config.dev.js` or `webpack.config.prod.js` you'll see that this `webpack.config.mod.js` file is already integrated so you don't need to do anything more to enable it.
+
 <a id="cmc-build-process-cesium-integration"></a>
 ##### Brief Note on Cesium + Webpack Integration
 Most libraries are easily used with Webpack but on occasion some libraries require a bit more work, such as complex libraries like CesiumJS. CesiumJS uses lots of extra assets and doesn't fit the typical mold of a modular javascript library, meaning you can't just `import cesium` and be done. The following steps from CesiumJS.org were used as basis for integration with CMC webpack setup [https://cesiumjs.org/2016/01/26/Cesium-and-Webpack/](https://cesiumjs.org/2016/01/26/Cesium-and-Webpack/). In short, webpack receives a few config tweaks, the main CesiumJS file is loaded using the webpack script loader which executes the script once in global context, Cesium requests extra static resources on demand from the assets folder, and CMC maps the global cesium variable to a instance variables for consistency.
 
+<a id="cmc-build-process-index-template"></a>
+##### Brief Note on Inlined Styles, index_template.html, and cache-busting
+Using a combination of webpack plugins, mainly [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin) and [style-ext-html-webpack-plugin](https://github.com/numical/script-ext-html-webpack-plugin), we automatically generate our root index.html file that serves as the entry point to the built application. With `html-webpack-plugin` we transform `index_template.html` into `index.html`, telling the plugin where to inject the css and js bundles via `lodash` templating (supplied by the plugin). We also enable the addition of the webpack build hash to these bundle files in order to provide a mechanism for cache busting. These hashes are unique to every build. Finally, we use `style-ext-html-webpack-plugin` to inline a few global css rules as well as small amount of css we would like to apply to the loading screen for the application.
+
 <a id="cmc-build-process-eslint"></a>
-##### Brief Note on ESLint
+### Brief Note on ESLint
 CMC uses [ESLint](http://eslint.org/) to report JS syntax and style issues. ESLint is configured via a file at the root of the repository called `.eslintrc` which contains many configuration items that tell ESLint what plugins, rules, and exceptions to use when linting your JS code. Some of these rules you may may want to alter globally from this file if you have different preferences. For example if you want to remove the ESLint rule warning against using `var` in your JS (since you use `const` and `let` instead in ES6) you can set
 ```JSON
 "no-var": 1 
@@ -327,6 +343,11 @@ There may also be situations in which you only want to ignore certain cases in y
 ```
 
 Other forms of ESLint ignore comments are used in CMC. Learn more about ESLint and the different ways to suppress rules [http://eslint.org/docs/user-guide/configuring](http://eslint.org/docs/user-guide/configuring).
+
+<a id="cmc-build-process-prettier"></a>
+### Brief Note on Prettier
+CMC uses [Prettier](https://github.com/prettier/prettier) for consistent, automatic pre-commit-hook formatting of js/css/scss files. Prettier is configured to run automatically on all `.js`, `.css`, and `.scss` files after commits have been staged. This formatting is purely stylistic and does not change any code (other than the occasional addition of missing semicolons). Prettier is used for all relevant Core files but Application Developers may choose to disable this behavior by removing the precommit hook in `package.json`, change the prettier settings included in the `.prettierrc` file, or substitute their own formatter. Prettier can also be invoked manually or on file save from within many editors such as VSCode, Sublime Text, etc. A convenience npm script called `prettier-all` is included for formatting all js/css/scss files located under `src`.
+
 
 <a id="cmc-build-process-serving-cmc"></a>
 ### Brief Note on Serving CMC
@@ -386,7 +407,7 @@ Roboto is recommended for everything from titles to labels to paragraphs. CMC on
 
 <a id="styling-cmc-using-roboto-mono"></a>
 ##### When to use Roboto Mono
-Roboto Mono is recommended for use as a contrasting font in limited cases including title font, numerical displays (like dates, slider amounts, counters, timeline labels, etc.) but should be avoided for default use. CMC uses three weights of Roboto Mono – 300, 400, and 700. 
+Roboto Mono is recommended for use as a contrasting font in limited cases including title font, numerical displays (like dates, slider amounts, counters, etc.) but should be avoided for default use. CMC uses three weights of Roboto Mono – 300, 400, and 700. 
 
 <a id="styling-cmc-postcss"></a>
 ### postCSS
@@ -519,16 +540,16 @@ This deviation in data flow is shown below. In this diagram, we use the same pre
 
 ![Data flow diagram - map](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/data_flow_maps.png)
 
-<a id="cmc-react-redux-idioms-d3"></a>
-#### With D3
+<a id="cmc-react-redux-idioms-visjs"></a>
+#### With vis.js
 
-[D3](https://d3js.org/) is a big, powerful graphics/math/data library. In this application it is primarily responsible for rendering the TimeAxis and associated components, though it has capabilities far beyond that which we encourage you to use. In relation to React/Redux, D3 essentially replaces the React rendering functions. We create a React component to manage the data flow between D3 and the rest of the application as well as provide a sane DOM entry point for D3. D3 then takes the DOM node and data from the state machine to perform its own rendering.
+[vis.js](http://visjs.org/) is a fairly powerful visualization library. It's made to be easier to work with than something like D3 and provides a number of high level abstractions to make basic visualizations simple. In this application it is primarily responsible for rendering the Timeline and associated components, though it has capabilities beyond that which we encourage you to use. In relation to React/Redux, VisJS essentially replaces the React rendering functions. We create a React component to manage the data flow between VisJS and the rest of the application as well as provide a sane DOM entry point for VisJS. VisJS then takes the DOM node and data from the state machine to perform its own rendering.
 
-This flow is very similar to how maps are handled in CMC with the main difference being that updates are handled from within the component instead of the reducer. In this way, the React component acts essentially as a wrapper around the D3 component that it creates as an instance variable.
+This flow is very similar to how maps are handled in CMC with the main difference being that updates are handled from within the component instead of the reducer. In this way, the React component acts essentially as a wrapper around the VisJS component that it creates as an instance variable.
 
-Here is a data flow diagram to demonstrate this. In this example we are again toggling on a switch, however here we are assuming the switch is a D3 component. Notice how the render cycle behaves normally up until component render time at which point the changes to the DOM are offloaded to D3 and React does not need to do anything.
+Here is a data flow diagram to demonstrate this. In this example we are again toggling on a switch, however here we are assuming the switch is a VisJS component. Notice how the render cycle behaves normally up until component render time at which point the changes to the DOM are offloaded to VisJS and React does not need to do anything.
 
-![Data flow diagram - D3](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/data_flow_d3.png)
+![Data flow diagram - VisJS](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/data_flow_visjs.png)
 
 <a id="optimizing-react-redux-performance"></a>
 ### Notes on Optimizing React/Redux Performance
@@ -550,7 +571,7 @@ This is a collection of things CMC has run into in its development but there is 
   * **Layer Rendering on the Map**: For a layer to render, the mapping library will need to fetch the resources (images/data files) necessary, decode those resources, then draw them onto the canvas. It must repeat that process whenever the map view changes or layers are added/removed. Ways to improve this are:
     * Use tiled datasets. This allows the library to parallelize resource gathering and cache resources more efficiently
     * Don't use large vector datasets. This goes along with tiling but large vector datasets require a greater amount of computation to render.
-  * **Beware D3 Renderings**: Rendering in D3, if done too often with fancy transitions can easily hog CPU power since (unlike React) there is no DOM diffing done to avoid unnecessary renderings. Pay attention to your D3 components to ensure they render only when needed and that your svg transitions are simple.
+  * **Beware VisJS Renderings**: Rendering in VisJS, if done too often with fancy transitions can easily hog CPU power since (unlike React) there is no DOM diffing done to avoid unnecessary renderings. Pay attention to your VisJS components to ensure they render only when needed and that your svg transitions are simple.
 
 <a id="optimizing-react-redux-performance-additional-techniques"></a>
 #### Additional Techniques in Improving Performance
@@ -589,6 +610,24 @@ The MapWrapper class provides an abstracted API for the Reducer functions to int
 ### Notes on Map Performance
 Openlayers and Cesium are both aware of their visibility in the DOM to some extent. This means that they will delay rendering if their containing domNodes have `display: none;` styling. This allows MapReducers and the MapWrapper to operate on the map while it is not displayed without fear of it rendering in the background. Note however that the instance does not easily give up resources and once initiated Cesium in particular can become a resource hog.
 
+
+<a id="mapping-with-cmc-tidbits"></a>
+### Tidbits
+
+*Openlayers 4 Tile Transitions*
+Openlayers v4.4.0 introduced an optional fade transition for loading tiles in tiled raster layers. This transition smooths the loading display of tiled layers during zooming and panning actions. However, with layers that change over time this transition can become tricky to accomodate when moving between dates and times for those layers. CMC incorporates two configuration variables to adjust how this transition affects the application's display. Note that all configurations attempt to maximize use of the CMC layer cache.
+
+* `TILE_LAYER_UPDATE_STRATEGY`: sets the approach by which a layer is updated over time
+  * `replace_tile`: maintains the previous layer display and incrementally replaces tiles as they load
+  * `replace_layer`: removes the previous layer display and incrementally adds tiles as they load
+* `DEFAULT_TILE_TRANSITION_TIME`: this sets the transtion duration (in ms) of the loaded tiles, set to `0` to disable
+
+CMC defaults use a slightly shortened transition time and uses the tile replacement strategy. To disable the transitions entirely and have an application display that appears as it would have before this feature was introduced, set `TILE_LAYER_UPDATE_STRATEGY` to `replace_layer` and `DEFAULT_TILE_TRANSITION_TIME` to `0`.
+
+*Openlayers Layer Cache*
+Openlayers tiled layer sources maintain a cache of tiles that have been loaded to improve performance during zooming and panning. CMC implements a cache on top of that to improve performance during date/time changes. When the date is changed and a layer is updated on the map, CMC stores a reference to the old layer in it's own layer cache so that the tile resources are maintained. If the date is changed to a date with a cached layer, the layer is pulled from the cache and new requests for tiles are not necessary (unless the view has been changed of course). In the case of the `TILE_LAYER_UPDATE_STRATEGY` being set to `replace_tile` (see above) the openlayers source (not the layer) is cached. To adjust the size of this layer cache, change the `MAX_LAYER_CACHE` configuration variable.
+
+
 # Intermission
 
 So at this point you're probably feeling like:
@@ -618,7 +657,6 @@ and it is, everything is going to be fine, yes this is a lot of stuff, but you'l
 ├── scripts                   # Node scripts that run build related tools
 │   ├── deployAssets          # Folder containing files used for deployment of CMC in a Dockerized NGINX server
 │   ├── build.js              # Runs the production build
-│   ├── buildHtml.js          # Builds index.html
 │   ├── distServer.js         # Starts webserver and opens final built app that's in dist in your default browser
 │   ├── deploy.bash           # Script for deploying built app to Github Pages
 │   ├── dockerDeploy.bash     # Script for deploying built app (with branch support) in Docker
@@ -693,7 +731,7 @@ Whenever you run tests, a `test-results` directory will be generated that contai
 
 <a id="writing-tests-cmc"></a>
 ### Writing Tests for CMC
-Application tests cover a range of functionalities from testing utility functions to testing Redux state changes. The differences between writing tests for CMC Core and applications built on top of CMC will be covered later. All test files must use the .spec.js file extension and may be written in ES6. As a general rule, try to keep a 1-1 mapping of your *.js files to *.spec.js. Due to time constraints, CMC does not currently have component level tests where the nitty gritty rendering aspects of components are tested using Enzyme and Sinon, but feel free to add your own. 
+Application tests cover a range of functionalities from testing utility functions to testing Redux state changes. The differences between writing tests for CMC Core and applications built on top of CMC will be covered later. All test files must use the .spec.js file extension and may be written in ES6. As a general rule, try to keep a 1-1 mapping of your \*.js files to \*.spec.js. Due to time constraints, CMC does not currently have component level tests where the nitty gritty rendering aspects of components are tested using Enzyme and Sinon, but feel free to add your own. 
 
 <a id="writing-tests-simple"></a>
 ##### Simple Tests
@@ -925,13 +963,13 @@ Each test suite (like setAndGet) contains one or more tests pertaining to the ti
 The testing flow for Core tests is as follows – 
 
 1. Inside of `karma.conf.js` (more about this later) we specify the list of files/patterns to use for testing. Here we specify `src/tests/**/*.spec.js`. Note that this is _not_ the Core directory of files.
-2. In `src/tests/core-test-overrides.spec.js`, the only *.spec.js in the folder, we import all Core tests and use a utility from `TestUtil` to run each test suite. If you write a new Core test suite be sure to add it to this file or else the test will not be run. 
+2. In `src/tests/core-test-overrides.spec.js`, the only \*.spec.js in the folder, we import all Core tests and use a utility from `TestUtil` to run each test suite. If you write a new Core test suite be sure to add it to this file or else the test will not be run. 
 
 <a id="writing-tests-your-application"></a>
 ### Writing Tests for your Application
 
 <a id="writing-tests-normal-non-core"></a>
-Non-Core test files should live in the `src/tests` directory and should end in *.spec.js. In this directory you will find a file named `non-core-test-stub.spec.js` which you should modify for your own use. Inside of this file and any other test files you write you should have something looking like:
+Non-Core test files should live in the `src/tests` directory and should end in \*.spec.js. In this directory you will find a file named `non-core-test-stub.spec.js` which you should modify for your own use. Inside of this file and any other test files you write you should have something looking like:
 
 ```JSX
 import { expect } from 'chai';
@@ -1139,6 +1177,73 @@ This separation between Core and Non-Core is still being tweaked now and then to
 ## Layer Ingestion Additional Services
 As mentioned before, CMC is not expected to be a final product. This extends not only to the front-end application itself, but also the services that power it. CMC Core uses a directory called `default-data` that contains numerous static files that provide CMC with something to display by default. This includes lists of layers, color palettes, vector data, etc. In a real world application, we would not expect this directory to be referenced. Instead, we would expect all of the static data to be replaced by a dynamic service on the backend with some sort of REST API (this could be a solr catalogue or similar). However, for small projects and local development, static file usage is more than adequate.
 
+<a id="additional-tool-info"></a>
+## Additonal Tools
+
+CMC also provides some utility classes that may be useful in creating high performance visualization applications.
+
+<a id="working-with-workers"></a>
+### Web Workers
+CMC includes a few layers of abstraction on top of [Web Workers](https://www.w3schools.com/html/html5_webworkers.asp) to enable threading and moving high demand processing such as image recoloring or large dataset processing off of the main thread. Operations like these can often take several seconds on a typical client computer and while these operations occur, the user is not able to interact with the UI. Moving these operations to Web Workers can free up the main thread and allow it to continue handling the rest of the application logic, unfreezing the UI. By default, an instance of a WorkerManager (see below) is stored in state so that it can be accessed from anywhere in the application.
+- `_core/utils/WorkerManager.js`: Provides an interface to create a pool of workers, a job queue, and clear the pool of workers. Note that each instance of WorkerManager manages a seperate pool of web workers so it is recommended to only create a single instance of the WorkerManager as browsers have differing limits on the number of web workers that can be created. The WorkerManager instance that is stored in state initially populates a pool of workers based on the `DEFAULT_WEB_WORKER_NUM` appConfig variable (which defaults to 0) though you can add workers to the pool at any time using `createWorkers(numer)`. Jobs can be queued using `queueJob(options)` where `options` is an object that must include a string `operation` and any additional data you want sent to the worker. `queueJob()` will return a promise that is resolved when that particular job is completed by the web worker. If you wish to empty the pool of workers, use `clearWorkers()`.
+- `_core/utils/WebWorkerWrapper.js`: This is the actual web worker script and handles the message passing between the worker and main thread. The worker contains an instance of `WebWorker.js` (see below) that contains the functions to actually operate on the data. This class should not need to be edited.
+- `_core/utils/WebWorker.js`: Is a lightweight parent class that provides some default data operations
+- `utils/WebWorker.js`: Modify the `handleMessage(message, workerRef)` function to handle whatever jobs you wish to perform. The `message` parameter is the `options` object that is passed to `WorkerManager.queueJob(options)`, the `workerRef` parameter is a reference to the actual WebWorker instance.
+
+To start using web workers:
+1. Create a component or action to extract the `WorkerManager` from state
+```JS
+let manager = state.webWorker.get("workerManager")
+```
+2. Populate the worker pool or modify `appConfig.DEFAULT_WEB_WORKER_NUM` to prepopulate the worker pool
+```JS
+manager.createWorkers(2);
+```
+3. Queue a job and listen for the job to complete
+```JS
+manager.queueJob({
+  operation: "WORKER_TASK_TEST",
+  data: [1,2,3,4]
+  }).then((resp) => {
+    console.log(resp);
+    }, (err) => {
+      console.warn("Error in worker", err);
+      });
+```
+4. Optionally clear the worker pool when complete
+```JS
+manager.clearWorkers();
+```
+
+<a id="web-worker-transferables"></a>
+#### Web Worker Transferables
+The web worker abstraction is also configured to support [Transferables](https://developer.mozilla.org/en-US/docs/Web/API/Transferable). Using transferables can be extremely helpful when dealing with very large amounts of data. Normally all data is passed to the worker thread via a copy. Transferables are transfered through a change in thread ownership which is a "zero-copy operation" [read more about that here](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#Passing_data_by_transferring_ownership_\(transferable_objects\)) and can result in vast performance improvements.
+
+A typical job options object might look like:
+```JS
+manager.queueJob({
+    operation: "DO_A_THING",
+    x: [1,2,3]
+})
+```
+and the worker would receive an object:
+```JS
+{
+    operation: "DO_A_THING",
+    x: [1,2,3]
+}
+```
+where the x array is **copied** into the worker thread. But if you were to use job options with the a "transfer" key like this:
+```JS
+let x = new Float64Array([1.0,2.0,3.0]);
+manager.queueJob({
+    operation: "DO_A_THING",
+    x: x.buffer,
+    transfer: [x.buffer]
+})
+```
+then the backing Float64Array's ArrayBuffer (which supports the Transferable interface) would be **transfered** to the worker with no copy overhead.
+
 <a id="deployment-to-gh-pages"></a>
 ## Deployment to Github Pages
 Github pages are a great way to host static content right out of your Github repos. One simple way to deploy to Github pages if you don't have a continuous integration service set up or available is to use the `deploy.bash` script found in the `scripts` directory to push a built version of your application to Github pages. Note, you'll need to enable Github pages for your repository. Also note that all Github pages are public even if your repository is private. Follow these steps below to deploy. The deploy script included works with multiple branches as well which can be useful for comparing built branches, sharing testable branches with others, etc.
@@ -1157,7 +1262,7 @@ Github pages are a great way to host static content right out of your Github rep
 
 ![Node dependencies](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/node_dependencies.png)
 
-Main tech under the hood. **Yes**, this is a lot of dependencies _(actually this isn't even the [full list](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/package.json))_ but that's modern web development for you. We've tried to limit the number of unnecessary dependencies included in CMC but you may find that for your own application you may be able to remove some dependencies that your application does not require (e.g. Cesium, d3, react-ga, etc.)
+Main tech under the hood. **Yes**, this is a lot of dependencies _(actually this isn't even the [full list](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/package.json))_ but that's modern web development for you. We've tried to limit the number of unnecessary dependencies included in CMC but you may find that for your own application you may be able to remove some dependencies that your application does not require (e.g. Cesium, VisJS, react-ga, etc.)
 
 
 | **Tech** | **Description** |**Learn More**|
@@ -1166,7 +1271,7 @@ Main tech under the hood. **Yes**, this is a lot of dependencies _(actually this
 | [Redux](http://redux.js.org) |  Enforces unidirectional data flows and immutable, hot reloadable store. Supports time-travel debugging. Lean alternative to [Facebook's Flux](https://facebook.github.io/flux/docs/overview.html).  |
 | [Cesium](http://cesiumjs.org) | An open-source JavaScript library for world-class 3D globes and maps. |
 | [Openlayers](http://openlayers.org) | A high-performance, feature-packed library for all your mapping needs. |
-| [d3](https://d3js.org/) | D3.js is a JavaScript library for manipulating documents based on data. |
+| [vis.js](http://visjs.org/) | vis.js is a library for creating lightweight, dynamic data visualizations. |
 | [fetch](https://github.com/github/fetch) | An easier Javascript request library adhering to the new Fetch standard. |
 | [Moment](http://momentjs.com/) | Parse, validate, manipulate, and display dates in JavaScript. |
 | [React-Toolbox](http://react-toolbox.com/) | Bootstrap your application with beautiful Material Design Components. |
@@ -1179,6 +1284,7 @@ Main tech under the hood. **Yes**, this is a lot of dependencies _(actually this
 | [Karma](https://karma-runner.github.io/1.0/index.html) | Test runner for Javascript. |
 | [Mocha](http://mochajs.org) | Automated tests with [Chai](http://chaijs.com/) for assertions and [Enzyme](https://github.com/airbnb/enzyme) for DOM testing without a browser using Node. |
 | [ESLint](http://eslint.org/)| Lint JS. Reports syntax and style issues. Using [eslint-plugin-react](https://github.com/yannickcr/eslint-plugin-react) for additional React specific linting rules. | |
+| [Prettier](https://github.com/prettier/prettier)| Prettier is an opinionated code formatter.| |
 | [SASS](http://sass-lang.com/) | Compiled CSS styles with variables, functions, and more. |
 | [npm Scripts](https://docs.npmjs.com/misc/scripts)| Glues all this together in a handy automated build. | [Why not Gulp?](https://medium.com/@housecor/why-i-left-gulp-and-grunt-for-npm-scripts-3d6853dd22b8#.vtaziro8n)  |
 | [postCSS](http://postcss.org/)| PostCSS is an CSS autoprefixer that automatically adds vendor prefixes from Can I Use to your CSS to ensure cross-browser compatibility |
@@ -1196,3 +1302,37 @@ We welcome contributions and ask that you submit pull requests through a fork of
 For issue reporting please visit the github issues page for cmc-core [here](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/issues).
 
 If you use CMC for your project please let us know, we'd love to see what you're doing and add you to our list of projects that use CMC.
+
+
+<a id="copyright-and-license"></a>
+
+## Copyright and Export Classification
+
+```
+Copyright 2017, by the California Institute of Technology. ALL RIGHTS RESERVED.
+United States Government Sponsorship acknowledged. Any commercial use must be
+negotiated with the Office of Technology Transfer at the California Institute
+of Technology.
+
+This software is subject to U.S. export control laws and regulations and has
+been classified as EAR99.  By accepting this software, the user agrees to comply
+with all applicable U.S. export laws and regulations. User has the responsibility
+to obtain export licenses, or other export authority as may be required before
+exporting such information to foreign countries or providing access to foreign persons.
+```
+
+## Licensing
+
+```
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+```

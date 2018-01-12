@@ -1,40 +1,43 @@
-import Immutable from 'immutable';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { List, ListItem, ListSubHeader, ListCheckbox } from 'react-toolbox/lib/list';
-import appConfig from 'constants/appConfig';
-import * as appStrings from '_core/constants/appStrings';
-import * as appActions from '_core/actions/AppActions';
-import * as mapActions from '_core/actions/MapActions';
-import * as layerActions from '_core/actions/LayerActions';
-import * as dateSliderActions from '_core/actions/DateSliderActions';
-import * as analyticsActions from '_core/actions/AnalyticsActions';
-import MiscUtil from '_core/utils/MiscUtil';
-import BaseMapDropdown from '_core/components/Settings/BaseMapDropdown';
-import MenuDropdown from '_core/components/Reusables/MenuDropdown';
-import ModalMenuContainer from '_core/components/ModalMenu/ModalMenuContainer';
-
-const miscUtil = new MiscUtil();
+import Immutable from "immutable";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import ListSubheader from "material-ui/List/ListSubheader";
+import List, { ListItem, ListItemIcon, ListItemText } from "material-ui/List";
+import Checkbox from "material-ui/Checkbox";
+import { MenuItem } from "material-ui/Menu";
+import { FormControl, FormHelperText } from "material-ui/Form";
+import Input, { InputLabel } from "material-ui/Input";
+import Select from "material-ui/Select";
+import SettingsBackupRestoreIcon from "material-ui-icons/SettingsBackupRestore";
+import appConfig from "constants/appConfig";
+import * as appStrings from "_core/constants/appStrings";
+import * as appActions from "_core/actions/appActions";
+import * as mapActions from "_core/actions/mapActions";
+import * as dateSliderActions from "_core/actions/dateSliderActions";
+import * as analyticsActions from "_core/actions/analyticsActions";
+import MiscUtil from "_core/utils/MiscUtil";
+import { BaseMapDropdown } from "_core/components/Settings";
+import { ModalMenu } from "_core/components/ModalMenu";
 
 export class SettingsContainer extends Component {
     shouldComponentUpdate(nextProps) {
         return nextProps.settingsOpen || nextProps.settingsOpen !== this.props.settingsOpen;
     }
     setBasemap(layerId) {
-        if(layerId && layerId !== "") {
+        if (layerId && layerId !== "") {
             this.props.mapActions.setBasemap(layerId);
         } else {
-            this.props.mapActions.hideBasemap();   
+            this.props.mapActions.hideBasemap();
         }
     }
     render() {
         // sort and gather the basemaps into a set of dropdown options
         let activeBasemapId = "";
-        let basemapList = this.props.basemaps.sort(miscUtil.getImmutableObjectSort("title"));
+        let basemapList = this.props.basemaps.sort(MiscUtil.getImmutableObjectSort("title"));
         let basemapOptions = basemapList.reduce((acc, layer) => {
-            if(layer.get("isActive")) {
+            if (layer.get("isActive")) {
                 activeBasemapId = layer.get("id");
             }
 
@@ -51,88 +54,166 @@ export class SettingsContainer extends Component {
             thumbnailImage: ""
         });
 
-
         // check the reference and boundary layers
-        let referenceLabelsLayer = this.props.referenceLayers.get(appConfig.REFERENCE_LABELS_LAYER_ID);
-        let politicalBoundariesLayer = this.props.referenceLayers.get(appConfig.POLITICAL_BOUNDARIES_LAYER_ID);
+        let referenceLabelsLayer = this.props.referenceLayers.get(
+            appConfig.REFERENCE_LABELS_LAYER_ID
+        );
+        let politicalBoundariesLayer = this.props.referenceLayers.get(
+            appConfig.POLITICAL_BOUNDARIES_LAYER_ID
+        );
 
         return (
-            <ModalMenuContainer
+            <ModalMenu
                 title="Settings"
                 active={this.props.settingsOpen}
-                closeFunc={() => this.props.appActions.setSettingsOpen(false)} >
-                <List selectable ripple className="no-margin settings-content" >
-                    <ListSubHeader className="list-sub-header" caption="Map Display" />
-                    <BaseMapDropdown
-                        auto
-                        label="Base map selection"
-                        selected="news"
-                        className="list-item-dropdown"
-                        source={basemapOptions}
-                        value={activeBasemapId}
-                        onChange={(value) => this.setBasemap(value)}
-                    />
-                    <MenuDropdown
-                        auto
-                        label="Scale units"
-                        className="list-item-dropdown"
-                        onChange={(value) => this.props.mapActions.setScaleUnits(value)}
-                        source={appConfig.SCALE_OPTIONS}
-                        value={this.props.mapSettings.get("selectedScaleUnits")}
-                    />
-                    <MenuDropdown
-                         auto
-                         label="Terrain Exaggeration"
-                         className="list-item-dropdown"
-                         onChange={(value) => this.props.mapActions.setTerrainExaggeration(value)}
-                         source={appConfig.TERRAIN_EXAGGERATION_OPTIONS}
-                         value={this.props.mapSettings.get("selectedTerrainExaggeration")}
-                    />
-                    <ListCheckbox
-                        className="menu-check-box"
-                        caption="Political Boundaries"
-                        checked={politicalBoundariesLayer && politicalBoundariesLayer.get("isActive")}
-                        legend="Display political boundaries on the map"
-                        onChange={(value) => this.props.layerActions.setLayerActive(appConfig.POLITICAL_BOUNDARIES_LAYER_ID, value)}
-                    />
-                    <ListCheckbox
-                        className="menu-check-box"
-                        caption="Place Labels"
-                        checked={referenceLabelsLayer && referenceLabelsLayer.get("isActive")}
-                        legend="Display place labels on the map"
-                        onChange={(value) => this.props.layerActions.setLayerActive(appConfig.REFERENCE_LABELS_LAYER_ID, value)}
-                    />
-                    <ListCheckbox
-                        className="menu-check-box"
-                        caption="Enable 3D Terrain"
-                        checked={this.props.mapSettings.get("enableTerrain")}
-                        legend="Enable terrain on the 3D map"
-                        onChange={(value) => this.props.mapActions.setTerrainEnabled(value)}
-                    />
-                    <ListSubHeader className="list-sub-header" caption="Application Configuration" />
-                    <ListCheckbox
-                        className="menu-check-box"
-                        caption="User Feedback Program"
-                        checked={this.props.analyticsEnabled}
-                        legend="Help us improve this tool by sending anonymous usage information"
-                        onChange={(value) => this.props.analyticsActions.setAnalyticsEnabled(value)}
-                    />
-                    <ListCheckbox
-                        className="menu-check-box"
-                        caption="Auto-Update Url"
-                        checked={this.props.autoUpdateUrlEnabled}
-                        legend="Automatically update the url in this window to be shareable"
-                        onChange={(value) => this.props.appActions.setAutoUpdateUrl(value)}
-                    />
+                closeFunc={() => this.props.appActions.setSettingsOpen(false)}
+            >
+                <List>
+                    <ListSubheader disableSticky>Map Display</ListSubheader>
+                    <ListItem>
+                        <BaseMapDropdown
+                            value={activeBasemapId}
+                            items={basemapOptions}
+                            onChange={event => this.setBasemap(event.target.value)}
+                        />
+                    </ListItem>
+                    <ListItem>
+                        <FormControl fullWidth>
+                            <InputLabel htmlFor="scale-units-select">Scale Units</InputLabel>
+                            <Select
+                                value={this.props.mapSettings.get("selectedScaleUnits")}
+                                onChange={event =>
+                                    this.props.mapActions.setScaleUnits(event.target.value)
+                                }
+                                input={<Input name="Scale Units" id="scale-units-select" />}
+                            >
+                                {appConfig.SCALE_OPTIONS.map(x => (
+                                    <MenuItem key={x.value} value={x.value}>
+                                        {x.label}
+                                        <small style={{ marginLeft: "7px" }}>{x.abbrev}</small>
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </ListItem>
+                    <ListItem>
+                        <FormControl fullWidth>
+                            <InputLabel htmlFor="terrain-exaggeration-select">
+                                Terrain Exaggeration
+                            </InputLabel>
+                            <Select
+                                value={this.props.mapSettings.get("selectedTerrainExaggeration")}
+                                onChange={event =>
+                                    this.props.mapActions.setTerrainExaggeration(event.target.value)
+                                }
+                                input={
+                                    <Input
+                                        name="Terrain Exaggeration"
+                                        id="terrain-exaggeration-select"
+                                    />
+                                }
+                            >
+                                {appConfig.TERRAIN_EXAGGERATION_OPTIONS.map(x => (
+                                    <MenuItem key={x.value} value={x.value}>
+                                        {x.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </ListItem>
                     <ListItem
-                        className="menu-check-box"
-                        caption="Reset Application"
-                        legend="Restore the application to its default state"
-                        leftIcon="settings_backup_restore"
-                        onClick={this.props.appActions.resetApplicationState}
-                    />
+                        button
+                        onClick={evt => {
+                            this.props.mapActions.setLayerActive(
+                                appConfig.POLITICAL_BOUNDARIES_LAYER_ID,
+                                !politicalBoundariesLayer.get("isActive")
+                            );
+                        }}
+                    >
+                        <Checkbox
+                            disableRipple
+                            checked={
+                                politicalBoundariesLayer && politicalBoundariesLayer.get("isActive")
+                            }
+                        />
+                        <ListItemText
+                            primary="Political Boundaries"
+                            secondary="Display political boundaries on the map"
+                        />
+                    </ListItem>
+                    <ListItem
+                        button
+                        onClick={evt =>
+                            this.props.mapActions.setLayerActive(
+                                appConfig.REFERENCE_LABELS_LAYER_ID,
+                                !referenceLabelsLayer.get("isActive")
+                            )
+                        }
+                    >
+                        <Checkbox
+                            disableRipple
+                            checked={referenceLabelsLayer && referenceLabelsLayer.get("isActive")}
+                        />
+                        <ListItemText
+                            primary="Place Labels"
+                            secondary="Display place labels on the map"
+                        />
+                    </ListItem>
+                    <ListItem
+                        button
+                        onClick={evt =>
+                            this.props.mapActions.setTerrainEnabled(
+                                !this.props.mapSettings.get("enableTerrain")
+                            )
+                        }
+                    >
+                        <Checkbox
+                            disableRipple
+                            checked={this.props.mapSettings.get("enableTerrain")}
+                        />
+                        <ListItemText
+                            primary="Enable 3D Terrain"
+                            secondary="Enable terrain on the 3D map"
+                        />
+                    </ListItem>
+                    <ListSubheader disableSticky>Application Configuration</ListSubheader>
+                    <ListItem
+                        button
+                        onClick={evt =>
+                            this.props.analyticsActions.setAnalyticsEnabled(
+                                !this.props.analyticsEnabled
+                            )
+                        }
+                    >
+                        <Checkbox disableRipple checked={this.props.analyticsEnabled} />
+                        <ListItemText
+                            primary="User Feedback Program"
+                            secondary="Help us improve this tool by sending anonymous usage information"
+                        />
+                    </ListItem>
+                    <ListItem
+                        button
+                        onClick={evt =>
+                            this.props.appActions.setAutoUpdateUrl(!this.props.autoUpdateUrlEnabled)
+                        }
+                    >
+                        <Checkbox disableRipple checked={this.props.autoUpdateUrlEnabled} />
+                        <ListItemText
+                            primary="Auto-Update Url"
+                            secondary="Automatically update the url in this window to be shareable"
+                        />
+                    </ListItem>
+                    <ListItem button onClick={this.props.appActions.resetApplicationState}>
+                        <ListItemIcon style={{ margin: "0 12" }}>
+                            <SettingsBackupRestoreIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary="Reset Application"
+                            secondary="Restore the application to its default state"
+                        />
+                    </ListItem>
                 </List>
-            </ModalMenuContainer>
+            </ModalMenu>
         );
     }
 }
@@ -146,7 +227,6 @@ SettingsContainer.propTypes = {
     mapSettings: PropTypes.object.isRequired,
     appActions: PropTypes.object.isRequired,
     mapActions: PropTypes.object.isRequired,
-    layerActions: PropTypes.object.isRequired,
     dateSliderActions: PropTypes.object.isRequired,
     analyticsActions: PropTypes.object.isRequired
 };
@@ -166,13 +246,9 @@ function mapDispatchToProps(dispatch) {
     return {
         appActions: bindActionCreators(appActions, dispatch),
         mapActions: bindActionCreators(mapActions, dispatch),
-        layerActions: bindActionCreators(layerActions, dispatch),
         dateSliderActions: bindActionCreators(dateSliderActions, dispatch),
         analyticsActions: bindActionCreators(analyticsActions, dispatch)
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(SettingsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsContainer);

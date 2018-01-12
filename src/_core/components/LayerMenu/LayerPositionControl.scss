@@ -1,0 +1,14 @@
+.positionControl {
+    display: inline-block;
+}
+.positionButton {
+    min-height: 0;
+    height: 20px;
+    display: inline-block;
+    height: 26px;
+    line-height: 0px;
+}
+.popperArrow {
+    composes: popperArrow from "_core/components/LayerMenu/LayerControlContainer.scss";
+    top: -11px !important;
+}

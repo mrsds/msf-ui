@@ -1,0 +1,175 @@
+/*
+    These styles are inlined into the <head> of the built bundle.
+    This is useful for styling the loading screen and setting
+    global defaults.
+*/
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    font-size: 10px;
+    font-size: 62.5%;
+    font-weight: 400;
+    font-family: "Roboto", Helvetica, Arial, sans-serif;
+    font-smoothing: auto;
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+    font-size: 1.4rem;
+    background-color: #444444;
+    cursor: default;
+    overflow: hidden;
+    color: #212121;
+    letter-spacing: normal;
+    user-select: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: normal;
+}
+
+p {
+    font-weight: 400;
+    color: #212121;
+    line-height: 2rem;
+}
+
+a {
+    text-decoration: none;
+}
+
+code {
+    font-family: "Roboto Mono", monospace;
+    font-weight: 400;
+    background: #fefefe;
+    border: 1px solid #aaaaaa;
+    border-radius: 2px;
+    padding: 1px 5px 3px 5px;
+    font-size: 1.5rem;
+}
+
+input,
+textarea {
+    font-family: "Roboto", Helvetica, Arial, sans-serif;
+}
+
+.app {
+    width: 100%;
+    height: 100%;
+}
+
+/* APP LOADING SCREEN STYLES */
+
+.loadingContainer {
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    opacity: 1;
+    transition: opacity 0.25s linear 1s;
+    background: white;
+    font-family: "Roboto Mono", Helvetica, Arial, sans-serif;
+    color: black;
+    font-size: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0px 0px 44px rgba(0, 0, 0, 0.05);
+}
+
+.loadingContent {
+    height: 385px;
+    text-align: center;
+    flex: none;
+    position: relative;
+    max-width: 50%;
+}
+
+.loadingAppTitle {
+    height: 29px;
+    font-weight: 300;
+    font-size: 20px;
+}
+.loadingAppAttribution {
+    position: relative;
+    top: 15px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.2015em;
+}
+
+.loadingSpinner {
+    position: absolute;
+    bottom: 0px;
+    height: 19px;
+    width: 19px;
+    left: calc(50% - 9.5px);
+}
+
+.loadingSpinner:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+
+.loadingCircular {
+    stroke-width: 5px;
+    stroke-miterlimit: 10;
+    animation: rotate 2s linear infinite;
+    height: 100%;
+    transform-origin: center center;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.loadingPath {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    stroke: black;
+    animation: dash 1.5s ease-in-out infinite;
+    stroke-linecap: round;
+}
+
+@keyframes rotate {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+    }
+    100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+    }
+}

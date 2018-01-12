@@ -1,11 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import ReactDOM from 'react-dom';
-import { bindActionCreators } from 'redux';
-import { ProgressBar } from 'react-toolbox';
-import * as actions from '_core/actions/AppActions';
-import AsyncImageContainer from '_core/components/AsyncImage/AsyncImageContainer';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import displayStyles from "_core/styles/display.scss";
 
 export class LoadingContainer extends Component {
     componentDidUpdate() {
@@ -13,17 +9,14 @@ export class LoadingContainer extends Component {
         setTimeout(() => {
             document.getElementById("loadingContainer").innerHTML = "";
             document.getElementById("loadingContainer").style.display = "none";
-        }, 1300);
+        }, 1000);
     }
     render() {
-        return (
-            <div/>
-        );
+        return <div className={displayStyles.hidden} />;
     }
 }
 
 LoadingContainer.propTypes = {
-    actions: PropTypes.object.isRequired,
     initialLoadComplete: PropTypes.bool.isRequired
 };
 
@@ -33,13 +26,4 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(LoadingContainer);
+export default connect(mapStateToProps, null)(LoadingContainer);

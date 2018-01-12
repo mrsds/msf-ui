@@ -1,16 +1,20 @@
-import Immutable from 'immutable';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import Dialog from 'react-toolbox/lib/dialog';
-import ProgressBar from 'react-toolbox/lib/progress_bar';
-import AsyncImageContainer from '_core/components/AsyncImage/AsyncImageContainer';
-import { List, ListItem, ListDivider } from 'react-toolbox/lib/list';
-import * as actions from '_core/actions/AppActions';
-import MiscUtil from '_core/utils/MiscUtil';
-
-const miscUtil = new MiscUtil();
+import Immutable from "immutable";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import Dialog, { DialogContent } from "material-ui/Dialog";
+import { CircularProgress } from "material-ui/Progress";
+import List, { ListItem, ListItemText, ListItemIcon } from "material-ui/List";
+import Divider from "material-ui/Divider";
+import Icon from "material-ui/Icon";
+import ErrorOutlineIcon from "material-ui-icons/ErrorOutline";
+import AccessTimeIcon from "material-ui-icons/AccessTime";
+import Typography from "material-ui/Typography";
+import { AsyncImage } from "_core/components/AsyncImage";
+import * as appActions from "_core/actions/appActions";
+import MiscUtil from "_core/utils/MiscUtil";
+import styles from "_core/components/LayerInfo/LayerInfoContainer.scss";
 
 const defaultData = Immutable.Map({
     title: "Title Unknown",
@@ -19,71 +23,97 @@ const defaultData = Immutable.Map({
     dateRange: "Date Range Unknown",
     description: "Description Unknown"
 });
+
 export class LayerInfoContainer extends Component {
     render() {
         let metadata = defaultData.merge(this.props.metadata.get("content"));
 
-        let loadingClasses = miscUtil.generateStringFromSet({
-            "layer-info-loading": true,
-            "active": this.props.dataLoading
+        let loadingClasses = MiscUtil.generateStringFromSet({
+            [styles.layerInfoLoading]: true,
+            [styles.active]: this.props.layerMetadataAsync.get("loading")
         });
 
-        let errorClasses = miscUtil.generateStringFromSet({
-            "layer-info-error": true,
-            "active": !this.props.metadata.get("content") && !this.props.dataLoading && this.props.dataLoadingAttempted
+        let errorClasses = MiscUtil.generateStringFromSet({
+            [styles.layerInfoError]: true,
+            [styles.active]:
+                !this.props.metadata.get("content") &&
+                !this.props.layerMetadataAsync.get("loading") &&
+                this.props.layerMetadataAsync.get("failed")
         });
 
         return (
             <Dialog
-                className="layer-info"
-                active={this.props.isOpen}
-                onEscKeyDown={() => this.props.actions.closeLayerInfo()} 
-                onOverlayClick={() => this.props.actions.closeLayerInfo()} >
-                <AsyncImageContainer className="thumbnail-image" src={this.props.thumbnailUrl} />
-                <div className="layer-info-content">
-                    <div className={loadingClasses}>
-                        <ProgressBar type="circular" mode="indeterminate" className="layer-info-spinner" />
-                    </div>
-                    <div className={errorClasses}>
-                        <div className="error-content-container">
-                            <span data-react-toolbox="font-icon" className="material-icons">
-                                error_outline
-                            </span>
-                            <div className="error-message">No Metadata Available</div>
+                classes={{ paper: styles.paper }}
+                open={this.props.isOpen}
+                onClose={this.props.appActions.closeLayerInfo}
+            >
+                <DialogContent className={styles.root}>
+                    <AsyncImage className={styles.thumbnailImage} src={this.props.thumbnailUrl} />
+                    <div className={styles.layerInfoContent}>
+                        <div className={loadingClasses}>
+                            <CircularProgress className={styles.layerInfoSpinner} />
                         </div>
+                        <div className={errorClasses}>
+                            <div className={styles.errorContent}>
+                                <ErrorOutlineIcon />
+                                <Typography type="subheading" color="default">
+                                    No Metadata Available
+                                </Typography>
+                            </div>
+                        </div>
+                        <Typography type="headline" color="inherit">
+                            {metadata.get("title")}
+                        </Typography>
+                        <List>
+                            <ListItem>
+                                <ListItemIcon>
+                                    <Icon>
+                                        <i className={styles.layerInfoIcon + " ms ms-satellite"} />
+                                    </Icon>
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={metadata.get("platform")}
+                                    secondary="Platform"
+                                />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemIcon>
+                                    <Icon>
+                                        <i className={styles.layerInfoIcon + " ms ms-merge"} />
+                                    </Icon>
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={metadata.get("spatialResolution")}
+                                    secondary="Spatial Resolution"
+                                />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemIcon>
+                                    <AccessTimeIcon />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={metadata.get("dateRange")}
+                                    secondary="Date Range"
+                                />
+                            </ListItem>
+                            <Divider />
+                        </List>
+                        <Typography type="subheading">Description</Typography>
+                        <Typography type="body1">{metadata.get("description")}</Typography>
                     </div>
-                    <h2>{metadata.get("title")}</h2>
-                    <List className="no-margin layer-info-list">
-                        <ListItem
-                            caption={metadata.get("platform")}
-                            leftIcon={(<i className="ms ms-satellite" />)}
-                        />
-                        <ListItem
-                            caption={metadata.get("spatialResolution")}
-                            leftIcon={(<i className="ms ms-merge" />)}
-                        />
-                        <ListItem
-                            caption={metadata.get("dateRange")}
-                            leftIcon="access_time"
-                        />
-                        <ListDivider />
-                    </List>
-                    <h3>Description</h3>
-                    <p>{metadata.get("description")}</p>
-                </div>
+                </DialogContent>
             </Dialog>
         );
     }
 }
 
 LayerInfoContainer.propTypes = {
-    actions: PropTypes.object.isRequired,
+    appActions: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
     layerId: PropTypes.string.isRequired,
     thumbnailUrl: PropTypes.string.isRequired,
     metadata: PropTypes.object.isRequired,
-    dataLoading: PropTypes.bool.isRequired,
-    dataLoadingAttempted: PropTypes.bool.isRequired
+    layerMetadataAsync: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -92,18 +122,14 @@ function mapStateToProps(state) {
         layerId: state.layerInfo.get("activeLayerId"),
         thumbnailUrl: state.layerInfo.get("activeThumbnailUrl"),
         metadata: state.layerInfo.get("metadata"),
-        dataLoading: state.asynchronous.get("loadingLayerMetadata"),
-        dataLoadingAttempted: state.asynchronous.get("loadingMetadataAttempted")
+        layerMetadataAsync: state.asynchronous.get("layerMetadataAsync")
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        appActions: bindActionCreators(appActions, dispatch)
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(LayerInfoContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(LayerInfoContainer);

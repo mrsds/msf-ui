@@ -18,37 +18,48 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import ReactTooltip from "react-tooltip";
-import * as actions from "_core/actions/AppActions";
-import * as actions_extended from "actions/AppActions_Extended";
-import * as mapActions from "_core/actions/MapActions";
-import * as layerActions from "_core/actions/LayerActions";
+import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
+import { appColorPalette } from "styles/appColorPalette";
+import * as appActions from "_core/actions/appActions";
+import * as mapActionsMSF from "actions/mapActions";
+import * as mapActions from "_core/actions/mapActions";
 import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
 import MiscUtil from "_core/utils/MiscUtil";
+import {
+    MapContainer,
+    MapContextMenu,
+    MapControlsContainer,
+    CoordinateTracker
+} from "_core/components/Map";
+import { SettingsContainer } from "_core/components/Settings";
+import { ShareContainer } from "_core/components/Share";
+import { LayerInfoContainer } from "_core/components/LayerInfo";
+import { LoadingContainer } from "_core/components/Loading";
+import { HelpContainer } from "_core/components/Help";
+import { AlertsContainer } from "_core/components/Alerts";
+import { TimelineContainer } from "_core/components/Timeline";
+import { LayerMenuContainer } from "_core/components/LayerMenu";
+import { MouseFollowerContainer } from "_core/components/MouseFollower";
+import { AnalyticsContainer } from "_core/components/Analytics";
+import { KeyboardControlsContainer } from "_core/components/KeyboardControls";
+import styles from "components/App/AppContainerStyles.scss";
+import displayStyles from "_core/styles/display.scss";
 import MapContainerExtended from "components/Map/MapContainerExtended";
-import MapContextMenu from "_core/components/Map/MapContextMenu";
-import MapControlsContainerExtended from "components/Map/MapControlsContainerExtended";
-import SettingsContainer from "_core/components/Settings/SettingsContainer";
-import ShareContainer from "_core/components/Share/ShareContainer";
-import LayerInfoContainer from "_core/components/LayerInfo/LayerInfoContainer";
-import LoadingContainer from "_core/components/Loading/LoadingContainer";
-import HelpContainer from "_core/components/Help/HelpContainer";
-import AlertsContainer from "_core/components/Alerts/AlertsContainer";
-import DateSliderContainer from "_core/components/DateSlider/DateSliderContainer";
-import DatePickerContainer from "_core/components/DatePicker/DatePickerContainer";
-import AppBarContainer from "components/AppBar/AppBarContainer";
-import LayerMenuContainer from "components/LayerMenu/LayerMenuContainerExtended";
-import MouseFollowerContainer from "_core/components/MouseFollower/MouseFollowerContainer";
-import AnalyticsContainer from "_core/components/Analytics/AnalyticsContainer";
-import KeyboardControlsContainer from "components/KeyboardControls/KeyboardControlsContainer_Extended";
-import CoordinateTracker from "_core/components/Map/CoordinateTracker";
+// import MapControlsContainerExtended from "components/Map/MapControlsContainerExtended";
+// import DateSliderContainer from "_core/components/DateSlider/DateSliderContainer";
 import LayerSidebarContainer from "components/MethaneSidebar/LayerSidebarContainer";
-import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContainer";
+import AppBarContainer from "components/AppBar/AppBarContainer";
+// import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContainer";
 
-import "styles/styles.scss";
-
-const miscUtil = new MiscUtil();
+const theme = createMuiTheme({
+    typography: {
+        htmlFontSize: 10
+    },
+    palette: {
+        primary: appColorPalette
+    }
+});
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -61,7 +72,7 @@ export class AppContainer extends Component {
 
         // Generally speaking, however, it is not recommended to rely on instance variables inside of
         // components since they lie outside of the application state and Redux paradigm.
-        this.urlParams = miscUtil.getUrlParams();
+        this.urlParams = MiscUtil.getUrlParams();
     }
 
     componentDidMount() {
@@ -75,132 +86,104 @@ export class AppContainer extends Component {
         );
 
         // Perform initial browser functionality check
-        this.props.actions.checkBrowserFunctionalities();
+        this.props.checkBrowserFunctionalities();
 
         // load in initial data
-        this.props.actions.loadInitialData(() => {
+        this.props.loadInitialData(() => {
             // initialize the map. I know this is hacky, but there simply doesn't seem to be a good way to
             // wait for the DOM to complete rendering.
             // see: http://stackoverflow.com/a/34999925
             window.requestAnimationFrame(() => {
                 setTimeout(() => {
                     // initialize the maps
-                    this.props.actions.initializeMap(
-                        appStrings.MAP_LIB_2D,
-                        "map2D"
-                    );
-                    // this.props.actions.initializeMap(
-                    //     appStrings.MAP_LIB_3D,
-                    //     "map3D"
-                    // );
+                    this.props.initializeMap(appStrings.MAP_LIB_2D, "map2D");
+                    // this.props.initializeMap(appStrings.MAP_LIB_3D, "map3D");
 
                     // set initial view
-                    this.props.actions.setMapView(
-                        { extent: appConfig.DEFAULT_BBOX_EXTENT },
-                        true
-                    );
+                    this.props.setMapView({ extent: appConfig.DEFAULT_BBOX_EXTENT }, true);
 
                     // activate default/url params
                     if (this.urlParams.length === 0) {
-                        this.props.actions.activateDefaultLayers();
+                        this.props.activateDefaultLayers();
                     } else {
-                        this.props.actions.runUrlConfig(this.urlParams);
+                        this.props.runUrlConfig(this.urlParams);
                     }
 
                     // signal complete
-                    this.props.actions.completeInitialLoad();
-                    this.props.actions.updateFeatureList(
-                        appConfig.DEFAULT_BBOX_EXTENT
-                    );
-
-                    // ReactTooltip needs to be rebuilt to account
-                    // for dynamic lists in LayerMenuContainer
-                    ReactTooltip.rebuild();
+                    this.props.completeInitialLoad();
+                    this.props.updateFeatureList_Layer(appConfig.DEFAULT_BBOX_EXTENT);
                 }, 0);
             });
         });
     }
 
     render() {
-        let containerClasses = miscUtil.generateStringFromSet({
-            "mouse-hidden":
-                this.props.mapControlsHidden && this.props.distractionFreeMode,
-            "mouse-shown":
-                !this.props.mapControlsHidden && this.props.distractionFreeMode
+        let hideMouse = this.props.mapControlsHidden && this.props.distractionFreeMode;
+        let containerClasses = MiscUtil.generateStringFromSet({
+            [styles.appContainer]: true,
+            [displayStyles.mouseVisible]: !hideMouse,
+            [displayStyles.mouseHidden]: hideMouse
         });
         return (
-            <div id="appContainer" className={containerClasses}>
-                <HelpContainer />
-                <LayerSidebarContainer />
-                <MapContainerExtended />
-                <AppBarContainer />
-                <SettingsContainer />
-                <ShareContainer />
-                <LayerInfoContainer />
-                <LayerMenuContainer />
-                <AlertsContainer />
-                <LoadingContainer />
-                <MapContextMenu />
-                <MouseFollowerContainer />
-                <AnalyticsContainer />
-                <KeyboardControlsContainer />
-                <ReactTooltip
-                    effect="solid"
-                    globalEventOff="click"
-                    delayShow={600}
-                />
-                <FeatureDetailContainer />
-                <MapControlsContainerExtended />
-            </div>
+            <MuiThemeProvider theme={theme}>
+                <div className={containerClasses}>
+                    <HelpContainer />
+                    <LayerSidebarContainer />
+                    <MapContainerExtended />
+                    <AppBarContainer />
+                    <SettingsContainer />
+                    <ShareContainer />
+                    <LayerInfoContainer />
+                    {/* <LayerMenuContainer /> */}
+                    {/* <TimelineContainer /> */}
+                    <AlertsContainer />
+                    <LoadingContainer />
+                    <MapContextMenu />
+                    <MouseFollowerContainer />
+                    <AnalyticsContainer />
+                    <KeyboardControlsContainer />
+                    {/* <FeatureDetailContainer /> */}
+                    {/* <MapControlsContainerExtended /> */}
+                    {/* <MapControlsContainer /> */}
+                </div>
+            </MuiThemeProvider>
         );
     }
 }
 
 AppContainer.propTypes = {
-    actions: PropTypes.object.isRequired,
+    completeInitialLoad: PropTypes.func.isRequired,
+    checkBrowserFunctionalities: PropTypes.func.isRequired,
+    loadInitialData: PropTypes.func.isRequired,
+    activateDefaultLayers: PropTypes.func.isRequired,
+    runUrlConfig: PropTypes.func.isRequired,
+    initializeMap: PropTypes.func.isRequired,
+    setMapView: PropTypes.func.isRequired,
+    updateFeatureList_Layer: PropTypes.func.isRequired,
     distractionFreeMode: PropTypes.bool.isRequired,
-    mapControlsHidden: PropTypes.bool.isRequired,
-    layerList: PropTypes.object.isRequired
+    mapControlsHidden: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
     return {
         distractionFreeMode: state.view.get("distractionFreeMode"),
-        mapControlsHidden: state.view.get("mapControlsHidden"),
-        layerList: state.map.get("layers")
+        mapControlsHidden: state.view.get("mapControlsHidden")
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: {
-            completeInitialLoad: bindActionCreators(
-                actions.completeInitialLoad,
-                dispatch
-            ),
-            checkBrowserFunctionalities: bindActionCreators(
-                actions.checkBrowserFunctionalities,
-                dispatch
-            ),
-            loadInitialData: bindActionCreators(
-                layerActions.loadInitialData,
-                dispatch
-            ),
-            activateDefaultLayers: bindActionCreators(
-                layerActions.activateDefaultLayers,
-                dispatch
-            ),
-            runUrlConfig: bindActionCreators(actions.runUrlConfig, dispatch),
-            initializeMap: bindActionCreators(
-                mapActions.initializeMap,
-                dispatch
-            ),
-            setMapView: bindActionCreators(mapActions.setMapView, dispatch),
-            updateFeatureList: bindActionCreators(
-                actions_extended.updateFeatureList,
-                dispatch
-            )
-        }
+        completeInitialLoad: bindActionCreators(appActions.completeInitialLoad, dispatch),
+        checkBrowserFunctionalities: bindActionCreators(
+            appActions.checkBrowserFunctionalities,
+            dispatch
+        ),
+        loadInitialData: bindActionCreators(mapActions.loadInitialData, dispatch),
+        activateDefaultLayers: bindActionCreators(mapActions.activateDefaultLayers, dispatch),
+        runUrlConfig: bindActionCreators(appActions.runUrlConfig, dispatch),
+        initializeMap: bindActionCreators(mapActions.initializeMap, dispatch),
+        setMapView: bindActionCreators(mapActions.setMapView, dispatch),
+        updateFeatureList_Layer: bindActionCreators(mapActionsMSF.updateFeatureList_Layer, dispatch)
     };
 }
 

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Input } from 'react-toolbox/lib/input';
-import MiscUtil from '_core/utils/MiscUtil';
-import appConfig from 'constants/appConfig';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import Input from "material-ui/Input";
+import MiscUtil from "_core/utils/MiscUtil";
+import appConfig from "constants/appConfig";
+import styles from "_core/components/DatePicker/DatePicker.scss";
 
 const MAX_LENGTH = 4;
-const miscUtil = new MiscUtil();
 
 export class YearPicker extends Component {
     componentDidMount() {
@@ -15,16 +15,17 @@ export class YearPicker extends Component {
         this.updateFromInternal = false;
     }
     shouldComponentUpdate(nextProps) {
-        return (nextProps.year !== this.props.year) || (nextProps.year !== this.year);
+        return nextProps.year !== this.props.year || nextProps.year !== this.year;
     }
     handleKeyPress(evt) {
         let yearStr = this.year;
-        if (evt.charCode === 13) { // enter key
+        if (evt.charCode === 13) {
+            // enter key
             this.submitYear(yearStr);
         }
     }
-    handleBlur(evt) {
-        let yearStr = this.year;
+    handleBlur(yearStr) {
+        yearStr = this.year;
         this.submitYear(yearStr);
     }
     handleChange(yearStr) {
@@ -49,20 +50,27 @@ export class YearPicker extends Component {
         let yearStr = this.updateFromInternal ? this.year : this.props.year;
         this.year = yearStr;
         this.updateFromInternal = false;
-        let containerClasses = miscUtil.generateStringFromSet({
-            "date-picker-selection col-xs-5": true,
-            "error": this.error
+        let containerClasses = MiscUtil.generateStringFromSet({
+            [styles.datePickerSelector]: true,
+            [styles.datePickerSelectorError]: this.error
         });
         return (
             <div className={containerClasses}>
                 <Input
-                    ref="input"
                     type="text"
                     tabIndex="0"
                     value={yearStr}
-                    onBlur={(evt) => this.handleBlur(evt)}
-                    onKeyPress={(evt) => this.handleKeyPress(evt)}
-                    onChange={(evt) => this.handleChange(evt)} />
+                    inputProps={{
+                        onBlur: evt => {
+                            this.handleBlur(evt.target.value);
+                        },
+                        onKeyPress: evt => {
+                            this.handleKeyPress(evt);
+                        }
+                    }}
+                    onChange={evt => this.handleChange(evt.target.value)}
+                    classes={{ input: styles.selectionInput }}
+                />
             </div>
         );
     }

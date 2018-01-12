@@ -8,6 +8,7 @@ import dateSlider from "_core/reducers/dateSlider";
 import asynchronous_Extended from "reducers/async_Extended";
 import analytics from "_core/reducers/analytics";
 import alerts from "_core/reducers/alerts";
+import webWorker from "_core/reducers/webWorker";
 import layerSidebar from "reducers/layerSidebar";
 import featureDetail from "reducers/featureDetail";
 import view_Extended from "reducers/view_Extended";
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
     analytics,
     alerts,
     layerSidebar,
-    featureDetail
+    featureDetail,
+    webWorker
 });
 
 export default rootReducer;

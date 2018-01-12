@@ -1,0 +1,14 @@
+@import "~styles/colors";
+
+.root {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    z-index: 2;
+}
+.toolbarRoot {
+    min-height: 45px;
+}
+.title {
+    flex: 1;
+}
