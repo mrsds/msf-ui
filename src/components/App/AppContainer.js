@@ -38,7 +38,6 @@ import { LayerInfoContainer } from "_core/components/LayerInfo";
 import { LoadingContainer } from "_core/components/Loading";
 import { HelpContainer } from "_core/components/Help";
 import { AlertsContainer } from "_core/components/Alerts";
-import { TimelineContainer } from "_core/components/Timeline";
 import { LayerMenuContainer } from "_core/components/LayerMenu";
 import { MouseFollowerContainer } from "_core/components/MouseFollower";
 import { AnalyticsContainer } from "_core/components/Analytics";
@@ -46,8 +45,9 @@ import { KeyboardControlsContainer } from "_core/components/KeyboardControls";
 import styles from "components/App/AppContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
 import MapContainerExtended from "components/Map/MapContainerExtended";
-// import MapControlsContainerExtended from "components/Map/MapControlsContainerExtended";
+import MapControlsContainerExtended from "components/Map/MapControlsContainerExtended";
 // import DateSliderContainer from "_core/components/DateSlider/DateSliderContainer";
+import TimelineContainer from "components/Timeline/TimelineContainer";
 import LayerSidebarContainer from "components/MethaneSidebar/LayerSidebarContainer";
 import AppBarContainer from "components/AppBar/AppBarContainer";
 // import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContainer";
@@ -135,7 +135,7 @@ export class AppContainer extends Component {
                     <ShareContainer />
                     <LayerInfoContainer />
                     {/* <LayerMenuContainer /> */}
-                    {/* <TimelineContainer /> */}
+                    <TimelineContainer />
                     <AlertsContainer />
                     <LoadingContainer />
                     <MapContextMenu />
@@ -143,8 +143,8 @@ export class AppContainer extends Component {
                     <AnalyticsContainer />
                     <KeyboardControlsContainer />
                     {/* <FeatureDetailContainer /> */}
-                    {/* <MapControlsContainerExtended /> */}
-                    {/* <MapControlsContainer /> */}
+                    <MapControlsContainerExtended />
+                    <CoordinateTracker />
                 </div>
             </MuiThemeProvider>
         );

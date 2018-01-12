@@ -1,0 +1,15 @@
+@import "~styles/colors";
+
+.root {
+    background: white;
+    margin-top: 5px;
+    border-radius: 3px;
+    width: 100%;
+    border: 1px solid #ececec;
+}
+.inputAdornmentPositionStart {
+    margin-right: 13px;
+    margin-left: 13px;
+    top: 6px;
+    position: relative;
+}

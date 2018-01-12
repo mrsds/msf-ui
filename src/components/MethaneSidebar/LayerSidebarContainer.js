@@ -99,9 +99,6 @@ export class LayerSidebarContainer extends Component {
             [styles.layerSidebar]: true
         });
 
-        {
-            /* value={this.getIndexForCategory(this.props.activeFeatureCategory)} */
-        }
         let activeTabIndex = this.getIndexForCategory(this.props.activeFeatureCategory);
         let plumesContainerClasses = MiscUtil.generateStringFromSet({
             [displayStyles.hidden]: activeTabIndex === 0

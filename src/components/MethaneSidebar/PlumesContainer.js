@@ -16,6 +16,8 @@ import { CircularProgress } from "material-ui/Progress";
 import CloudOffOutlineIcon from "mdi-material-ui/CloudOffOutline";
 import InfoOutlineIcon from "material-ui-icons/InfoOutline";
 import MyLocationIcon from "material-ui-icons/MyLocation";
+import Search from "material-ui-icons/Search";
+import Clear from "material-ui-icons/Clear";
 // import Dropdown from "react-toolbox/lib/dropdown";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import MetadataUtil from "utils/MetadataUtil";
@@ -24,8 +26,7 @@ import moment from "moment";
 import * as mapActionsMSF from "actions/mapActions";
 import PageControls from "components/PageControls/PageControls";
 import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
-import { layerSidebarState } from "reducers/models/layerSidebar";
-// import SearchInput from "components/Reusables/SearchInput";
+import SearchInput from "components/Reusables/SearchInput";
 import MiscUtil from "_core/utils/MiscUtil";
 
 export class PlumesContainer extends Component {
@@ -195,9 +196,9 @@ export class PlumesContainer extends Component {
         });
         return (
             <div className={containerClasses}>
-                <div className={layerSidebarState.searchFiltersContainer}>
-                    {/* <SearchInput
-                        icon="search"
+                <div className={layerSidebarStyles.searchFiltersContainer}>
+                    <SearchInput
+                        icon={<Search />}
                         placeholder="Search Plumes by ID"
                         value={this.props.searchState.get("searchString")}
                         disabled={false}
@@ -210,14 +211,14 @@ export class PlumesContainer extends Component {
                         validate={valueStr => true}
                         primaryDataTip="Search Plumes by ID"
                         primaryDataPlace="top"
-                        actionIcon="clear"
+                        actionIcon={<Clear />}
                         onActionIconClick={() =>
                             this.props.updateFeatureSearchText(
                                 layerSidebarTypes.CATEGORY_PLUMES,
                                 ""
                             )
                         }
-                    /> */}
+                    />
                     <div id="plumeFilterDropdowns">
                         {/* <Dropdown
                             auto
@@ -231,6 +232,7 @@ export class PlumesContainer extends Component {
                         /> */}
                     </div>
                 </div>
+                <Divider />
                 {this.makeLoadingModal()}
                 {this.makeResultsArea()}
             </div>

@@ -11,8 +11,6 @@ import Button from "material-ui/Button";
 import PlusIcon from "material-ui-icons/Add";
 import RemoveIcon from "material-ui-icons/Remove";
 import HomeIcon from "material-ui-icons/Home";
-import { MenuItem, MenuList } from "material-ui/Menu";
-import { ListItemIcon, ListItemText } from "material-ui/List";
 import Paper from "material-ui/Paper";
 import * as mapActions from "_core/actions/mapActions";
 import * as appActions from "_core/actions/appActions";
@@ -20,118 +18,63 @@ import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
 import MiscUtil from "_core/utils/MiscUtil";
 import { MapButton, MapButtonGroup } from "_core/components/Reusables";
-import { MapToolsButton } from "_core/components/Map";
-import { MapControlsContainer } from "_core/components/Map";
+import { MapToolsButton, BasemapPicker, MapLabelsButton } from "_core/components/Map";
 import styles from "_core/components/Map/MapControlsContainer.scss";
 import displayStyles from "_core/styles/display.scss";
 
-export class MapControlsContainerExtended extends MapControlsContainer {
+export class MapControlsContainer extends Component {
     render() {
-        let containerClasses = MiscUtil.generateStringFromSet({
-            [displayStyles.hiddenFadeOut]:
-                this.props.mapControlsHidden && this.props.distractionFreeMode,
-            [displayStyles.hiddenFadeIn]:
-                !this.props.mapControlsHidden && this.props.distractionFreeMode
-        });
         return (
-            <div
-                className={containerClasses}
-                onMouseLeave={() => this.onMapControlsMouseLeave()}
-                onMouseEnter={() => this.onMapControlsMouseEnter()}
-            >
-                <div className={styles.mapControlsContainer}>
-                    <Paper elevation={2} className={styles.buttonGroup}>
-                        <Tooltip
-                            title={
-                                this.props.distractionFreeMode
-                                    ? "Disable distraction free mode"
-                                    : "Enable distraction free mode"
-                            }
-                            placement="right"
+            <div className={styles.mapControlsContainer}>
+                <Paper elevation={2} className={styles.buttonGroup}>
+                    <MapToolsButton
+                        isOpen={this.props.mapControlsToolsOpen}
+                        className={styles.lineButton}
+                        setOpen={isOpen => this.props.appActions.setMapControlsToolsOpen(isOpen)}
+                    />
+                    <MapLabelsButton />
+                </Paper>
+                <Paper elevation={2} className={styles.buttonGroup}>
+                    <Tooltip title="Home" placement="right">
+                        <MapButton
+                            onClick={() => {
+                                this.props.mapActions.setMapView(
+                                    { extent: appConfig.DEFAULT_BBOX_EXTENT },
+                                    true
+                                );
+                            }}
+                            aria-label="Home"
+                            className={`${styles.firstButton} ${styles.lineButton}`}
                         >
-                            <MapButton
-                                color={this.props.distractionFreeMode ? "primary" : "default"}
-                                onClick={() => {
-                                    this.props.appActions.setDistractionFreeMode(
-                                        !this.props.distractionFreeMode
-                                    );
-                                }}
-                                aria-label="Home"
-                                className={styles.singleButton}
-                            >
-                                {this.props.distractionFreeMode ? <Eye /> : <EyeOff />}
-                            </MapButton>
-                        </Tooltip>
-                    </Paper>
-                    <Paper elevation={2} className={styles.buttonGroup}>
-                        <Tooltip
-                            title={this.props.in3DMode ? "Switch to 2D map" : "Switch to 3D map"}
-                            placement="right"
+                            <HomeIcon />
+                        </MapButton>
+                    </Tooltip>
+                    <Tooltip title="Zoom In" placement="right">
+                        <MapButton
+                            onClick={this.props.mapActions.zoomIn}
+                            aria-label="Zoom in"
+                            className={styles.lineButton}
                         >
-                            <MapButton
-                                disabled={!Modernizr.webgl && !this.props.in3DMode ? true : false}
-                                onClick={() => this.setViewMode()}
-                                aria-label={
-                                    this.props.in3DMode ? "Switch to 2D map" : "Switch to 3D map"
-                                }
-                                className={`${styles.firstButton} ${styles.lineButton}`}
-                            >
-                                <Earth />
-                            </MapButton>
-                        </Tooltip>
-                        <MapToolsButton
-                            isOpen={this.props.mapControlsToolsOpen}
-                            setOpen={isOpen =>
-                                this.props.appActions.setMapControlsToolsOpen(isOpen)
-                            }
-                        />
-                    </Paper>
-                    <Paper elevation={2} className={styles.buttonGroup}>
-                        <Tooltip title="Home" placement="right">
-                            <MapButton
-                                onClick={() => {
-                                    this.props.mapActions.setMapView(
-                                        { extent: appConfig.DEFAULT_BBOX_EXTENT },
-                                        true
-                                    );
-                                }}
-                                aria-label="Home"
-                                className={styles.singleButton}
-                            >
-                                <HomeIcon />
-                            </MapButton>
-                        </Tooltip>
-                    </Paper>
-                    <Paper elevation={2} className={styles.buttonGroup}>
-                        <Tooltip title="Zoom In" placement="right">
-                            <MapButton
-                                onClick={this.props.mapActions.zoomIn}
-                                aria-label="Zoom in"
-                                className={`${styles.firstButton} ${styles.lineButton}`}
-                            >
-                                <PlusIcon />
-                            </MapButton>
-                        </Tooltip>
-                        <Tooltip title="Zoom Out" placement="right">
-                            <MapButton
-                                onClick={this.props.mapActions.zoomOut}
-                                aria-label="Zoom out"
-                                className={styles.lastButton}
-                            >
-                                <RemoveIcon />
-                            </MapButton>
-                        </Tooltip>
-                    </Paper>
-                </div>
+                            <PlusIcon />
+                        </MapButton>
+                    </Tooltip>
+                    <Tooltip title="Zoom Out" placement="right">
+                        <MapButton
+                            onClick={this.props.mapActions.zoomOut}
+                            aria-label="Zoom out"
+                            className={styles.lastButton}
+                        >
+                            <RemoveIcon />
+                        </MapButton>
+                    </Tooltip>
+                </Paper>
+                <BasemapPicker />
             </div>
         );
     }
 }
 
-MapControlsContainerExtended.propTypes = {
-    in3DMode: PropTypes.bool.isRequired,
-    distractionFreeMode: PropTypes.bool.isRequired,
-    mapControlsHidden: PropTypes.bool.isRequired,
+MapControlsContainer.propTypes = {
     mapControlsToolsOpen: PropTypes.bool.isRequired,
     mapActions: PropTypes.object.isRequired,
     appActions: PropTypes.object.isRequired
@@ -141,8 +84,7 @@ function mapStateToProps(state) {
     return {
         in3DMode: state.map.getIn(["view", "in3DMode"]),
         distractionFreeMode: state.view.get("distractionFreeMode"),
-        mapControlsToolsOpen: state.view.get("mapControlsToolsOpen"),
-        mapControlsHidden: state.view.get("mapControlsHidden")
+        mapControlsToolsOpen: state.view.get("mapControlsToolsOpen")
     };
 }
 
@@ -153,4 +95,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MapControlsContainerExtended);
+export default connect(mapStateToProps, mapDispatchToProps)(MapControlsContainer);
