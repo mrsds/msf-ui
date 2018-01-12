@@ -5,7 +5,16 @@ import { withStyles } from "material-ui/styles";
 import styles from "_core/components/Reusables/MapButton.scss";
 
 const MapButton = props => {
-    return <Button classes={{ root: styles.mapButton }} {...props} />;
+    return (
+        <Button
+            classes={{
+                root: styles.mapButton,
+                label: styles.label,
+                flatPrimary: styles.flatPrimary
+            }}
+            {...props}
+        />
+    );
 };
 
 export default MapButton;

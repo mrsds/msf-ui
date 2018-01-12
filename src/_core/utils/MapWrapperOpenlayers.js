@@ -42,16 +42,16 @@ import tooltipStyles from "_core/components/Map/MapTooltip.scss";
  * Wrapper class for Openlayers
  *
  * @export
- * @class MapWrapper_openlayers
+ * @class MapWrapperOpenlayers
  * @extends {MapWrapper}
  */
-export default class MapWrapper_openlayers extends MapWrapper {
+export default class MapWrapperOpenlayers extends MapWrapper {
     /**
-     * Creates an instance of MapWrapper_openlayers.
+     * Creates an instance of MapWrapperOpenlayers.
      *
      * @param {string|domnode} container the container to render this map into
      * @param {object} options view options for constructing this map wrapper (usually map state from redux)
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     constructor(container, options) {
         super(container, options);
@@ -74,7 +74,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {string|domnode} container the domnode to render to
      * @param {object} options options for creating this map (usually map state from redux)
      * @returns {object} openlayers map object
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     createMap(container, options) {
         try {
@@ -113,7 +113,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 })
             });
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.createMap:", err);
+            console.warn("Error in MapWrapperOpenlayers.createMap:", err);
             return false;
         }
     }
@@ -122,7 +122,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * prepare the default style objects that will be used
      * in drawing/measuring
      *
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     configureStyles() {
         let geometryStyles = {};
@@ -265,7 +265,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @returns {obejct|boolean} size of the map or false if it fails
      *  - width - {number} width of the map
      *  - height - {number} height of the map
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     getMapSize() {
         try {
@@ -276,7 +276,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 return { width: size[0], height: size[1] };
             }
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.getMapSize:", err);
+            console.warn("Error in MapWrapperOpenlayers.getMapSize:", err);
             return false;
         }
     }
@@ -285,14 +285,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * adjusts the rendered map size to it's container
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     resize() {
         try {
             this.map.updateSize();
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.resize:", err);
+            console.warn("Error in MapWrapperOpenlayers.resize:", err);
             return false;
         }
     }
@@ -303,7 +303,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @param {boolean} [fromCache=true] true if the layer may be pulled from the cache
      * @returns {object|boolean} openlayers layer object or false if it fails
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     createLayer(layer, fromCache = true) {
         let mapLayer = false;
@@ -338,20 +338,37 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 break;
             default:
                 console.warn(
-                    "Error in MapWrapper_openlayers.createLayer: unknown layer type - ",
+                    "Error in MapWrapperOpenlayers.createLayer: unknown layer type - ",
                     layer.get("handleAs")
                 );
                 mapLayer = false;
                 break;
         }
 
-        if (mapLayer) {
+        this.setLayerRefInfo(layer, mapLayer);
+
+        return mapLayer;
+    }
+
+    /**
+     * set custom metadata fields on a maplayer object
+     *
+     * @param {ImmutableJS.Map} layer layer object from map state in redux
+     * @param {object} mapLayer openlayers layer object
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapper_openlayers
+     */
+    setLayerRefInfo(layer, mapLayer) {
+        try {
             mapLayer.set("_layerId", layer.get("id"));
             mapLayer.set("_layerType", layer.get("type"));
             mapLayer.set("_layerCacheHash", this.getCacheHash(layer));
             mapLayer.set("_layerTime", moment(this.mapDate).format(layer.get("timeFormat")));
+            return true;
+        } catch (err) {
+            console.warn("Error in MapWrapper_openlayers.setLayerRefInfo: ", err);
+            return false;
         }
-        return mapLayer;
     }
 
     /**
@@ -360,7 +377,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @param {boolean} [fromCache=true] true if the layer may be pulled from the cache
      * @returns {object|boolean} openlayers layer wmts layer object or false if it fails
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     createWMTSLayer(layer, fromCache = true) {
         try {
@@ -385,7 +402,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.createWMTSLayer:", err);
+            console.warn("Error in MapWrapperOpenlayers.createWMTSLayer:", err);
             return false;
         }
     }
@@ -398,7 +415,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {object} layerSource openlayers wmts layer source
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @param {object} mapLayer openlayers wmts layer
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     setWMTSLayerOverrides(layerSource, layer, mapLayer) {
         // make sure we have these set
@@ -435,7 +452,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @param {boolean} [fromCache=true] true if the layer may be pulled from the cache
      * @returns {object} openlayers vector layer
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     createVectorLayer(layer, fromCache = true) {
         try {
@@ -453,7 +470,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 extent: appConfig.DEFAULT_MAP_EXTENT
             });
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.createVectorLayer:", err);
+            console.warn("Error in MapWrapperOpenlayers.createVectorLayer:", err);
             return false;
         }
     }
@@ -462,7 +479,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * get the center of the current map view
      *
      * @returns {array} [x,y] center of the view
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     getCenter() {
         return [0, 0];
@@ -473,7 +490,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {array} extent [minX, minY, maxX, maxY] of the desired extent
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     setExtent(extent) {
         try {
@@ -487,7 +504,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.setExtent:", err);
+            console.warn("Error in MapWrapperOpenlayers.setExtent:", err);
             return false;
         }
     }
@@ -496,13 +513,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * get the current view bounding box of the map
      *
      * @returns {array} [minX, minY, maxX, maxY] of the current extent
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     getExtent() {
         try {
             return this.map.getView().calculateExtent(this.map.getSize());
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.getExtent:", err);
+            console.warn("Error in MapWrapperOpenlayers.getExtent:", err);
             return false;
         }
     }
@@ -514,7 +531,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {string} direction (MAP_PAN_DIRECTION_UP|MAP_PAN_DIRECTION_DOWN|MAP_PAN_DIRECTION_LEFT|MAP_PAN_DIRECTION_RIGHT)
      * @param {boolean} extraFar extraFar true of the map should pan 200 pixels instead of 100 pixels
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     panMap(direction, extraFar) {
         try {
@@ -552,7 +569,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             });
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.panMap:", err);
+            console.warn("Error in MapWrapperOpenlayers.panMap:", err);
             return false;
         }
     }
@@ -562,7 +579,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {number} [duration=175] timing of the zoom animation
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     zoomIn(duration = 175) {
         try {
@@ -577,7 +594,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.zoomIn:", err);
+            console.warn("Error in MapWrapperOpenlayers.zoomIn:", err);
             return false;
         }
     }
@@ -587,7 +604,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {number} [duration=175] timing of the zoom animation
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     zoomOut(duration = 175) {
         try {
@@ -602,7 +619,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.zoomOut:", err);
+            console.warn("Error in MapWrapperOpenlayers.zoomOut:", err);
             return false;
         }
     }
@@ -612,7 +629,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {string} geometryType (Circle|LineString|Polygon)
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     enableDrawing(geometryType) {
         try {
@@ -633,7 +650,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.enableDrawing:", err);
+            console.warn("Error in MapWrapperOpenlayers.enableDrawing:", err);
             return false;
         }
     }
@@ -643,7 +660,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {boolean} [delayDblClickEnable=true] true if re-enabling double-click interaction should be delayed
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     disableDrawing(delayDblClickEnable = true) {
         try {
@@ -672,7 +689,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.disableDrawing:", err);
+            console.warn("Error in MapWrapperOpenlayers.disableDrawing:", err);
             return false;
         }
     }
@@ -681,7 +698,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * finalize a drawing interaction
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     completeDrawing() {
         try {
@@ -697,7 +714,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             });
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.completeDrawing:", err);
+            console.warn("Error in MapWrapperOpenlayers.completeDrawing:", err);
             return false;
         }
     }
@@ -708,7 +725,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {string} geometryType (Circle|LineString|Polygon)
      * @param {string} measurementType (Distance|Area)
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     enableMeasuring(geometryType, measurementType) {
         try {
@@ -729,7 +746,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.enableMeasuring:", err);
+            console.warn("Error in MapWrapperOpenlayers.enableMeasuring:", err);
             return false;
         }
     }
@@ -739,7 +756,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {boolean} [delayDblClickEnable=true] true if re-enabling double-click interaction should be delayed
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     disableMeasuring(delayDblClickEnable = true) {
         try {
@@ -770,7 +787,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.disableMeasuring:", err);
+            console.warn("Error in MapWrapperOpenlayers.disableMeasuring:", err);
             return false;
         }
     }
@@ -779,7 +796,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * finalize a measuring interaction
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     completeMeasuring() {
         try {
@@ -795,7 +812,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             });
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.completeMeasuring:", err);
+            console.warn("Error in MapWrapperOpenlayers.completeMeasuring:", err);
             return false;
         }
     }
@@ -807,7 +824,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {boolean} enabled true if the double-click interaction should be enabled
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     setDoubleClickZoomEnabled(enabled) {
         try {
@@ -822,7 +839,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.setDoubleClickZoomEnabled:", err);
+            console.warn("Error in MapWrapperOpenlayers.setDoubleClickZoomEnabled:", err);
             return false;
         }
     }
@@ -834,7 +851,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {boolean} active true if the listeners should be enabled
      * @returns {boolean} false
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     enableActiveListeners(active) {
         return false;
@@ -852,7 +869,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {string} interactionType (Draw|Measure)
      * @param {boolean} [geodesic=false] true if the shape be processed into geodesic arcs
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     addGeometry(geometry, interactionType, geodesic = false) {
         let mapLayers = this.map.getLayers().getArray();
@@ -963,7 +980,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {array} coords location of the label on the map [lon,lat]
      * @param {object} [opt_meta={}] additional data to attach to the label object (optional)
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     addLabel(label, coords, opt_meta = {}) {
         try {
@@ -991,7 +1008,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             measureLabel.setPosition(coords);
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.addLabel:", err);
+            console.warn("Error in MapWrapperOpenlayers.addLabel:", err);
             return false;
         }
     }
@@ -1000,7 +1017,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * remove all drawing geometries from the map
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     removeAllDrawings() {
         let mapLayers = this.map.getLayers().getArray();
@@ -1029,7 +1046,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * remove all measurement geometries from the map
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     removeAllMeasurements() {
         let mapLayers = this.map.getLayers().getArray();
@@ -1063,7 +1080,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {number} duration timing of the animation
      * @returns {boolean} false
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     resetOrientation(duration) {
         return true;
@@ -1076,7 +1093,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {function} onDrawEnd callback for when the drawing completes
      * @param {string} interactionType (Draw|Measure)
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     addDrawHandler(geometryType, onDrawEnd, interactionType) {
         try {
@@ -1200,7 +1217,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.addDrawHandler:", err);
+            console.warn("Error in MapWrapperOpenlayers.addDrawHandler:", err);
             return false;
         }
     }
@@ -1217,7 +1234,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * - center - {object} center coordinate of circle {lon,lat}
      * - radius - {number} radius of circle
      * - coordinates - {array} set of coordinates for shape [{lat,lon}]
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     retrieveGeometryFromEvent(event, geometryType) {
         if (geometryType === appStrings.GEOMETRY_CIRCLE) {
@@ -1298,7 +1315,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {string} units (metric|imperial|nautical|schoolbus)
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     setScaleUnits(units) {
         try {
@@ -1328,7 +1345,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             });
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.setScaleUnits:", err);
+            console.warn("Error in MapWrapperOpenlayers.setScaleUnits:", err);
             return false;
         }
     }
@@ -1338,7 +1355,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {object} mapLayer openlayers layer object
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     addLayer(mapLayer) {
         try {
@@ -1347,7 +1364,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             this.addLayerToCache(mapLayer, appConfig.TILE_LAYER_UPDATE_STRATEGY);
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.addLayer:", err);
+            console.warn("Error in MapWrapperOpenlayers.addLayer:", err);
             return false;
         }
     }
@@ -1357,14 +1374,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {object} mapLayer openlayers layer object
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     removeLayer(mapLayer) {
         try {
             this.map.removeLayer(mapLayer);
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.removeLayer:", err);
+            console.warn("Error in MapWrapperOpenlayers.removeLayer:", err);
             return false;
         }
     }
@@ -1375,7 +1392,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {object} mapLayer openlayers layer object
      * @param {number} index the display index of the layer to be replaced
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     replaceLayer(mapLayer, index) {
         try {
@@ -1383,7 +1400,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             this.addLayerToCache(mapLayer, appConfig.TILE_LAYER_UPDATE_STRATEGY);
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.replaceLayer:", err);
+            console.warn("Error in MapWrapperOpenlayers.replaceLayer:", err);
             return false;
         }
     }
@@ -1394,7 +1411,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     activateLayer(layer) {
         try {
@@ -1420,7 +1437,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             mapLayer.setVisible(true);
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.activateLayer:", err);
+            console.warn("Error in MapWrapperOpenlayers.activateLayer:", err);
             return false;
         }
     }
@@ -1432,7 +1449,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds or if layer is not active
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     deactivateLayer(layer) {
         try {
@@ -1448,7 +1465,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             // Layer is already not active
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.deactivateLayer:", err);
+            console.warn("Error in MapWrapperOpenlayers.deactivateLayer:", err);
             return false;
         }
     }
@@ -1459,7 +1476,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {obejct} layer layer from map state in redux
      * @param {boolean} [active=true] true if the layer should be added to the map
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     setLayerActive(layer, active) {
         if (active) {
@@ -1475,7 +1492,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @param {number} opacity value of the opacity [0.0 - 1.0]
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     setLayerOpacity(layer, opacity) {
         try {
@@ -1487,7 +1504,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.setLayerOpacity:", err);
+            console.warn("Error in MapWrapperOpenlayers.setLayerOpacity:", err);
             return false;
         }
     }
@@ -1498,7 +1515,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     setBasemap(layer) {
         try {
@@ -1520,7 +1537,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.setBasemap:", err);
+            console.warn("Error in MapWrapperOpenlayers.setBasemap:", err);
             return false;
         }
     }
@@ -1530,7 +1547,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * remove the basemap layer but makes it invisble.
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     hideBasemap() {
         try {
@@ -1541,7 +1558,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.hideBasemap:", err);
+            console.warn("Error in MapWrapperOpenlayers.hideBasemap:", err);
             return false;
         }
     }
@@ -1552,7 +1569,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {string} eventStr event type to listen for (mousemove|moveend|click)
      * @param {function} callback function to call when the event is fired
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     addEventListener(eventStr, callback) {
         try {
@@ -1571,7 +1588,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
                     return this.map.addEventListener(eventStr, callback);
             }
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.addEventListener:", err);
+            console.warn("Error in MapWrapperOpenlayers.addEventListener:", err);
             return false;
         }
     }
@@ -1580,13 +1597,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * get the current zoom level of the map
      *
      * @returns {number|boolean} zoom level or false if it fails
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     getZoom() {
         try {
             return this.map.getView().getZoom();
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.getZoom:", err);
+            console.warn("Error in MapWrapperOpenlayers.getZoom:", err);
             return false;
         }
     }
@@ -1595,7 +1612,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * returns the projection string of the current map projection
      *
      * @returns {string} code of the current map projection
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     getProjection() {
         try {
@@ -1604,7 +1621,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 .getProjection()
                 .getCode();
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.getProjection:", err);
+            console.warn("Error in MapWrapperOpenlayers.getProjection:", err);
             return false;
         }
     }
@@ -1615,7 +1632,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     updateLayer(layer) {
         try {
@@ -1658,13 +1675,8 @@ export default class MapWrapper_openlayers extends MapWrapper {
                     }
 
                     // update the layer
-                    mapLayer.set("_layerId", layer.get("id"));
-                    mapLayer.set("_layerType", layer.get("type"));
-                    mapLayer.set("_layerCacheHash", this.getCacheHash(layer));
-                    mapLayer.set(
-                        "_layerTime",
-                        moment(this.mapDate).format(layer.get("timeFormat"))
-                    );
+                    this.setLayerRefInfo(layer, mapLayer);
+
                     mapLayer.setSource(source);
                 } else {
                     let updatedMapLayer = this.createLayer(layer);
@@ -1673,7 +1685,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.updateLayer:", err);
+            console.warn("Error in MapWrapperOpenlayers.updateLayer:", err);
             return false;
         }
     }
@@ -1687,7 +1699,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {object} mapLayer openlayers layer object
      * @param {string} [updateStrategy=appStrings.TILE_LAYER_UPDATE_STRATEGIES.TILE] (replace_tile|replace_layer)
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     addLayerToCache(mapLayer, updateStrategy = appStrings.TILE_LAYER_UPDATE_STRATEGIES.TILE) {
         try {
@@ -1721,7 +1733,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * - lat - {number} latitude of the pixel location
      * - lon - {number} longitude of the pixel location
      * - isValid - {boolean} pixel was on the globe
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     getLatLonFromPixelCoordinate(pixel) {
         try {
@@ -1741,7 +1753,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.getLatLonFromPixelCoordinate:", err);
+            console.warn("Error in MapWrapperOpenlayers.getLatLonFromPixelCoordinate:", err);
             return false;
         }
     }
@@ -1751,7 +1763,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     moveLayerToTop(layer) {
         try {
@@ -1771,7 +1783,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.moveLayerToTop:", err);
+            console.warn("Error in MapWrapperOpenlayers.moveLayerToTop:", err);
             return false;
         }
     }
@@ -1783,7 +1795,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     moveLayerToBottom(layer) {
         try {
@@ -1802,7 +1814,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.moveLayerToBottom:", err);
+            console.warn("Error in MapWrapperOpenlayers.moveLayerToBottom:", err);
             return false;
         }
     }
@@ -1812,7 +1824,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     moveLayerUp(layer) {
         try {
@@ -1833,7 +1845,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.moveLayerUp:", err);
+            console.warn("Error in MapWrapperOpenlayers.moveLayerUp:", err);
             return false;
         }
     }
@@ -1845,7 +1857,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     moveLayerDown(layer) {
         try {
@@ -1866,7 +1878,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.moveLayerDown:", err);
+            console.warn("Error in MapWrapperOpenlayers.moveLayerDown:", err);
             return false;
         }
     }
@@ -1877,7 +1889,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * currently active
      *
      * @returns {array|boolean} list of string layer ids or false if it fails
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     getActiveLayerIds() {
         try {
@@ -1893,7 +1905,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             });
             return retList;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.getActiveLayerIds:", err);
+            console.warn("Error in MapWrapperOpenlayers.getActiveLayerIds:", err);
             return false;
         }
     }
@@ -1904,13 +1916,13 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {object} clickEvt openlayers click event wrapper
      * @returns {array|boolean} pixel coordinates or false if it fails
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     getPixelFromClickEvent(clickEvt) {
         try {
             return clickEvt.pixel;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.getPixelFromClickEvent:", err);
+            console.warn("Error in MapWrapperOpenlayers.getPixelFromClickEvent:", err);
             return false;
         }
     }
@@ -1919,14 +1931,14 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * clear the current layer cache
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     clearCache() {
         try {
             this.layerCache.clear();
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.clearCache:", err);
+            console.warn("Error in MapWrapperOpenlayers.clearCache:", err);
             return false;
         }
     }
@@ -1944,7 +1956,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {string} projectionString projection code
      * @param {function} origFunc openlayers default tile url generation function (tileCoord, pixelRatio, projectionString) --> {string}
      * @returns {string} url for this tile
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     generateTileUrl(
         layer,
@@ -1979,7 +1991,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return origFunc(tileCoord, pixelRatio, projectionString);
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.generateTileUrl:", err);
+            console.warn("Error in MapWrapperOpenlayers.generateTileUrl:", err);
             return false;
         }
     }
@@ -1993,7 +2005,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {sting} url url used for this tiles raster image
      * @param {function} origFunc openlayers default tile load function (tile, url) , pixelRatio, projectionString) --> {string}
      * @returns undefined
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     handleTileLoad(layer, mapLayer, tile, url, origFunc) {
         try {
@@ -2013,7 +2025,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
             }
             return origFunc(tile, url);
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.handleTileLoad:", err);
+            console.warn("Error in MapWrapperOpenlayers.handleTileLoad:", err);
             return false;
         }
     }
@@ -2037,7 +2049,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *   - tileSize - {number} size of the tiles
      * @param {boolean} [fromCache=true] true if the source may be pulled from the cache
      * @returns {object} openlayers source object
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     createLayerSource(layer, options, fromCache = true) {
         // check cache
@@ -2063,7 +2075,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
                 return this.createVectorKMLSource(layer, options);
             default:
                 console.warn(
-                    "Error in MapWrapper_openlayers.createLayerSource: unknonw layer type - ",
+                    "Error in MapWrapperOpenlayers.createLayerSource: unknonw layer type - ",
                     layer.get("handleAs")
                 );
                 return false;
@@ -2088,7 +2100,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *   - matrixIds - {array} identifiers for each zoom level
      *   - tileSize - {number} size of the tiles
      * @returns {object} openlayers source object
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     createWMTSSource(layer, options) {
         return new Ol_Source_WMTS({
@@ -2128,7 +2140,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *   - matrixIds - {array} identifiers for each zoom level
      *   - tileSize - {number} size of the tiles
      * @returns {object} openlayers source object
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     createGIBSWMTSSource(layer, options) {
         return new Ol_Source_WMTS({
@@ -2173,7 +2185,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *   - matrixIds - {array} identifiers for each zoom level
      *   - tileSize - {number} size of the tiles
      * @returns {object} openlayers source object
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     createXYZSource(layer, options) {
         return new Ol_Source_XYZ({
@@ -2194,7 +2206,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {object} options raster imagery options for layer from redux state
      * - url - {string} base url for this layer
      * @returns {object} openlayers source object
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     createVectorGeojsonSource(layer, options) {
         // customize the layer url if needed
@@ -2224,7 +2236,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {object} options raster imagery options for layer from redux state
      * - url - {string} base url for this layer
      * @returns {object} openlayers source object
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     createVectorTopojsonSource(layer, options) {
         // customize the layer url if needed
@@ -2254,7 +2266,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      * @param {object} options raster imagery options for layer from redux state
      * - url - {string} base url for this layer
      * @returns {object} openlayers source object
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     createVectorKMLSource(layer, options) {
         // customize the layer url if needed
@@ -2284,7 +2296,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {object} mapLayer openlayers map layer to compare
      * @returns {number} highest index display index for a layer of this type
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     findTopInsertIndexForLayer(mapLayer) {
         let mapLayers = this.map.getLayers();
@@ -2317,7 +2329,7 @@ export default class MapWrapper_openlayers extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {string} string representing this layer
-     * @memberof MapWrapper_openlayers
+     * @memberof MapWrapperOpenlayers
      */
     getCacheHash(layer) {
         return layer.get("id") + moment(this.mapDate).format(layer.get("timeFormat"));

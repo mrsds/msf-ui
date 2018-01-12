@@ -92,6 +92,10 @@ export default class ViewReducer {
         return state.set("mapControlsToolsOpen", action.open);
     }
 
+    static setMapControlsBasemapPickerOpen(state, action) {
+        return state.set("mapControlsBasemapPickerOpen", action.open);
+    }
+
     static hideMapControls(state, action) {
         return state.set("mapControlsHidden", action.hidden);
     }

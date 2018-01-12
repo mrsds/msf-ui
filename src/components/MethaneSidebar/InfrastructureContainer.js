@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 import { List, ListItem, ListSubHeader, ListCheckbox } from "react-toolbox/lib/list";
 import * as layerSidebarActions from "actions/LayerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import MiscUtil_Extended from "utils/MiscUtil_Extended";
-import MapUtil_Extended from "utils/MapUtil_Extended";
+import MiscUtilExtended from "utils/MiscUtilExtended";
+import MapUtilExtended from "utils/MapUtilExtended";
 import { Button, IconButton } from "react-toolbox/lib/button";
 import ProgressBar from "react-toolbox/lib/progress_bar";
 import FontIcon from "react-toolbox/lib/font_icon";
@@ -45,7 +45,7 @@ export class InfrastructureContainer extends Component {
     }
 
     getCountyLabel(feature) {
-        const countyName = MiscUtil_Extended.getCountyFromFeature(feature, null);
+        const countyName = MiscUtilExtended.getCountyFromFeature(feature, null);
         return countyName ? countyName + " County" : "(no county)";
     }
 
@@ -56,7 +56,7 @@ export class InfrastructureContainer extends Component {
     makeListItem(feature) {
         const isActive = this.isActiveFeature(feature);
         const isActiveDetail = this.isActiveDetailFeature(feature);
-        const itemClass = MiscUtil_Extended.generateStringFromSet({
+        const itemClass = MiscUtilExtended.generateStringFromSet({
             "feature-item-container-list-item": true,
             selected: isActive || isActiveDetail
         });
@@ -146,7 +146,7 @@ export class InfrastructureContainer extends Component {
                 />
             );
             layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].categories.forEach(category => {
-                const categoryName = MapUtil_Extended.getInfrastructureCategoryHumanName(category);
+                const categoryName = MapUtilExtended.getInfrastructureCategoryHumanName(category);
                 const checked = this.props.activeInfrastructureSubCategories.get(category) || false;
                 listItems.push(
                     <ListCheckbox
@@ -197,7 +197,7 @@ export class InfrastructureContainer extends Component {
 
     makeResultsArea() {
         const hasResults = this.props.searchState.get("searchResults").size;
-        const resultsClass = MiscUtil_Extended.generateStringFromSet({
+        const resultsClass = MiscUtilExtended.generateStringFromSet({
             "sidebar-content": true
         });
         let innerContent = "";

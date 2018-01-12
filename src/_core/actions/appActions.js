@@ -50,6 +50,9 @@ export function hideMapControls(hidden) {
 export function setMapControlsToolsOpen(open) {
     return { type: types.SET_MAP_CONTROL_TOOLS_OPEN, open };
 }
+export function setMapControlsBasemapPickerOpen(open) {
+    return { type: types.SET_MAP_CONTROL_BASEMAP_PICKER_OPEN, open };
+}
 export function setSettingsOpen(isOpen) {
     return { type: types.SET_SETTINGS_OPEN, isOpen };
 }

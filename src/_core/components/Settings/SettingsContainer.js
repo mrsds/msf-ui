@@ -18,50 +18,14 @@ import * as mapActions from "_core/actions/mapActions";
 import * as dateSliderActions from "_core/actions/dateSliderActions";
 import * as analyticsActions from "_core/actions/analyticsActions";
 import MiscUtil from "_core/utils/MiscUtil";
-import { BaseMapDropdown } from "_core/components/Settings";
 import { ModalMenu } from "_core/components/ModalMenu";
 
 export class SettingsContainer extends Component {
     shouldComponentUpdate(nextProps) {
         return nextProps.settingsOpen || nextProps.settingsOpen !== this.props.settingsOpen;
     }
-    setBasemap(layerId) {
-        if (layerId && layerId !== "") {
-            this.props.mapActions.setBasemap(layerId);
-        } else {
-            this.props.mapActions.hideBasemap();
-        }
-    }
+
     render() {
-        // sort and gather the basemaps into a set of dropdown options
-        let activeBasemapId = "";
-        let basemapList = this.props.basemaps.sort(MiscUtil.getImmutableObjectSort("title"));
-        let basemapOptions = basemapList.reduce((acc, layer) => {
-            if (layer.get("isActive")) {
-                activeBasemapId = layer.get("id");
-            }
-
-            acc.push({
-                value: layer.get("id"),
-                label: layer.get("title"),
-                thumbnailImage: layer.get("thumbnailImage")
-            });
-            return acc;
-        }, []);
-        basemapOptions.push({
-            value: "",
-            label: "None",
-            thumbnailImage: ""
-        });
-
-        // check the reference and boundary layers
-        let referenceLabelsLayer = this.props.referenceLayers.get(
-            appConfig.REFERENCE_LABELS_LAYER_ID
-        );
-        let politicalBoundariesLayer = this.props.referenceLayers.get(
-            appConfig.POLITICAL_BOUNDARIES_LAYER_ID
-        );
-
         return (
             <ModalMenu
                 title="Settings"
@@ -70,13 +34,6 @@ export class SettingsContainer extends Component {
             >
                 <List>
                     <ListSubheader disableSticky>Map Display</ListSubheader>
-                    <ListItem>
-                        <BaseMapDropdown
-                            value={activeBasemapId}
-                            items={basemapOptions}
-                            onChange={event => this.setBasemap(event.target.value)}
-                        />
-                    </ListItem>
                     <ListItem>
                         <FormControl fullWidth>
                             <InputLabel htmlFor="scale-units-select">Scale Units</InputLabel>
@@ -120,44 +77,6 @@ export class SettingsContainer extends Component {
                                 ))}
                             </Select>
                         </FormControl>
-                    </ListItem>
-                    <ListItem
-                        button
-                        onClick={evt => {
-                            this.props.mapActions.setLayerActive(
-                                appConfig.POLITICAL_BOUNDARIES_LAYER_ID,
-                                !politicalBoundariesLayer.get("isActive")
-                            );
-                        }}
-                    >
-                        <Checkbox
-                            disableRipple
-                            checked={
-                                politicalBoundariesLayer && politicalBoundariesLayer.get("isActive")
-                            }
-                        />
-                        <ListItemText
-                            primary="Political Boundaries"
-                            secondary="Display political boundaries on the map"
-                        />
-                    </ListItem>
-                    <ListItem
-                        button
-                        onClick={evt =>
-                            this.props.mapActions.setLayerActive(
-                                appConfig.REFERENCE_LABELS_LAYER_ID,
-                                !referenceLabelsLayer.get("isActive")
-                            )
-                        }
-                    >
-                        <Checkbox
-                            disableRipple
-                            checked={referenceLabelsLayer && referenceLabelsLayer.get("isActive")}
-                        />
-                        <ListItemText
-                            primary="Place Labels"
-                            secondary="Display place labels on the map"
-                        />
                     </ListItem>
                     <ListItem
                         button
@@ -222,8 +141,6 @@ SettingsContainer.propTypes = {
     settingsOpen: PropTypes.bool.isRequired,
     analyticsEnabled: PropTypes.bool.isRequired,
     autoUpdateUrlEnabled: PropTypes.bool.isRequired,
-    basemaps: PropTypes.object.isRequired,
-    referenceLayers: PropTypes.object.isRequired,
     mapSettings: PropTypes.object.isRequired,
     appActions: PropTypes.object.isRequired,
     mapActions: PropTypes.object.isRequired,
@@ -235,8 +152,6 @@ function mapStateToProps(state) {
     return {
         settingsOpen: state.settings.get("isOpen"),
         mapSettings: state.map.get("displaySettings"),
-        basemaps: state.map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_BASEMAP]),
-        referenceLayers: state.map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_REFERENCE]),
         analyticsEnabled: state.analytics.get("isEnabled"),
         autoUpdateUrlEnabled: state.share.get("autoUpdateUrl")
     };

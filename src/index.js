@@ -11,7 +11,6 @@ require("_core/styles/resources/img/favicon-32x32.png");
 require("_core/styles/resources/img/favicon-16x16.png");
 require("_core/styles/resources/img/safari-pinned-tab.svg");
 require("_core/styles/resources/img/favicon.ico");
-// require("_core/styles/resources/img/7994970.png");
 
 const store = configureStore();
 

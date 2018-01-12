@@ -19,14 +19,14 @@ import Ol_Source_XYZ from "ol/source/xyz";
 import Ol_Layer_Group from "ol/layer/group";
 import Ol_Feature from "ol/feature";
 import Ol_Geom_Point from "ol/geom/point";
-import MapWrapper_openlayers from "_core/utils/MapWrapper_openlayers";
-import MiscUtil_Extended from "utils/MiscUtil_Extended";
+import MapWrapperOpenlayers from "_core/utils/MapWrapperOpenlayers";
+import MiscUtilExtended from "utils/MiscUtilExtended";
 import appConfig from "constants/appConfig";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
 const JSZip = require("jszip");
 
-export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayers {
+export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
     createLayer(layer, fromCache = true) {
         let mapLayer = false;
 
@@ -69,7 +69,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
                 break;
             default:
                 console.warn(
-                    "Error in MapWrapper_openlayers.createLayer: unknown layer type - ",
+                    "Error in MapWrapperOpenlayers.createLayer: unknown layer type - ",
                     layer.get("handleAs")
                 );
                 mapLayer = false;
@@ -180,7 +180,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
     }
 
     createKMZLayer(layer, fromCache = false) {
-        MiscUtil_Extended.asyncFetch({
+        MiscUtilExtended.asyncFetch({
             url: layer.get("url"),
             handleAs: "blob"
         })
@@ -244,7 +244,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
             mapLayer.setVisible(true);
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.activateLayer:", err);
+            console.warn("Error in MapWrapperOpenlayers.activateLayer:", err);
             return false;
         }
     }
@@ -260,7 +260,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
             // Layer is already not active
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.deactivateLayer:", err);
+            console.warn("Error in MapWrapperOpenlayers.deactivateLayer:", err);
             return false;
         }
     }
@@ -273,7 +273,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
                 .forEach(l => l.setOpacity(opacity));
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.setLayerOpacity:", err);
+            console.warn("Error in MapWrapperOpenlayers.setLayerOpacity:", err);
             return false;
         }
     }
@@ -328,7 +328,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
             vistaLayer.set("_layerId", "VISTA");
             return vistaLayer;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.createVectorLayer:", err);
+            console.warn("Error in MapWrapperOpenlayers.createVectorLayer:", err);
             return false;
         }
     }
@@ -463,7 +463,7 @@ export default class MapWrapper_openlayers_Extended extends MapWrapper_openlayer
             measureLabel.setPosition(coords);
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_openlayers.addLabel:", err);
+            console.warn("Error in MapWrapperOpenlayers.addLabel:", err);
             return false;
         }
     }

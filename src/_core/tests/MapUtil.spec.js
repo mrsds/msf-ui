@@ -678,14 +678,14 @@ export const MapUtilSpec = {
             //         let map = MapUtil.createMap(appStrings.MAP_LIB_2D, 'map2D', Immutable.fromJS({
             //             view: { in3DMode: false }
             //         }));
-            //         expect(map.constructor.name).to.equal("MapWrapper_openlayers");
+            //         expect(map.constructor.name).to.equal("MapWrapperOpenlayers");
             //         expect(map.map).to.not.equal(undefined);
             //     })
             //     it('creates a 3D map when given appStrings.MAP_LIB_3D', () => {
             //         let map = MapUtil.createMap(appStrings.MAP_LIB_3D, 'map3D', Immutable.fromJS({
             //             view: { in3DMode: true }
             //         }));
-            //         expect(map.constructor.name).to.equal("MapWrapper_cesium");
+            //         expect(map.constructor.name).to.equal("MapWrapperCesium");
             //         expect(map.map).to.not.equal(undefined);
             //     })
             //     it('returns false when given a non-matching map type', () => {

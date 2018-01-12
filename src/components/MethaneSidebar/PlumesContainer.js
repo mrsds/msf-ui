@@ -17,8 +17,7 @@ import CloudOffOutlineIcon from "mdi-material-ui/CloudOffOutline";
 import InfoOutlineIcon from "material-ui-icons/InfoOutline";
 import MyLocationIcon from "material-ui-icons/MyLocation";
 // import Dropdown from "react-toolbox/lib/dropdown";
-import MiscUtil_Extended from "utils/MiscUtil_Extended";
-import MapUtil_Extended from "utils/MapUtil_Extended";
+import MiscUtilExtended from "utils/MiscUtilExtended";
 import MetadataUtil from "utils/MetadataUtil";
 import appConfig from "constants/appConfig";
 import moment from "moment";
@@ -45,7 +44,7 @@ export class PlumesContainer extends Component {
     }
 
     getCountyLabel(feature) {
-        const countyName = MiscUtil_Extended.getCountyFromFeature(feature, null);
+        const countyName = MiscUtilExtended.getCountyFromFeature(feature, null);
         return countyName ? countyName + " County" : "(no county)";
     }
 
@@ -56,7 +55,7 @@ export class PlumesContainer extends Component {
     makeListItem(feature) {
         const isActive = this.isActiveFeature(feature);
         const isActiveDetail = this.isActiveDetailFeature(feature);
-        // const itemClass = MiscUtil_Extended.generateStringFromSet({
+        // const itemClass = MiscUtilExtended.generateStringFromSet({
         //     "feature-item-container-list-item": true,
         //     selected: isActive || isActiveDetail
         // });

@@ -5,12 +5,16 @@ import Grow from "material-ui/transitions/Grow";
 import ClickAwayListener from "material-ui/utils/ClickAwayListener";
 import { Manager, Target, Popper } from "react-popper";
 import Tooltip from "material-ui/Tooltip";
-import { MapButton, MapToolsMenu } from "_core/components/Reusables";
 import BuildIcon from "material-ui-icons/Build";
+import { MapButton, MapToolsMenu } from "_core/components/Reusables";
 import mapControlsContainerStyles from "_core/components/Map/MapControlsContainer.scss";
+import MiscUtil from "_core/utils/MiscUtil";
 import displayStyles from "_core/styles/display.scss";
 
 const MapToolsButton = props => {
+    let btnClasses = MiscUtil.generateStringFromSet({
+        [props.className]: typeof className !== "undefined"
+    });
     return (
         <ClickAwayListener
             onClickAway={() => {
@@ -28,7 +32,7 @@ const MapToolsButton = props => {
                                 props.setOpen(!props.isOpen);
                             }}
                             aria-label="Tools"
-                            className={mapControlsContainerStyles.lastButton}
+                            className={btnClasses}
                         >
                             <BuildIcon />
                         </MapButton>
@@ -36,7 +40,7 @@ const MapToolsButton = props => {
                 </Target>
                 <Popper
                     placement="left-end"
-                    style={{ marginRight: "5px" }}
+                    style={{ marginRight: "5px", zIndex: "3001" }}
                     modifiers={{
                         computeStyle: {
                             gpuAcceleration: false
@@ -45,7 +49,7 @@ const MapToolsButton = props => {
                     eventsEnabled={props.isOpen}
                     className={!props.isOpen ? displayStyles.noPointer : ""}
                 >
-                    <Grow style={{ transformOrigin: "right" }} in={props.isOpen}>
+                    <Grow style={{ transformOrigin: "right bottom" }} in={props.isOpen}>
                         <div>
                             <MapToolsMenu
                                 handleRequestClose={() => {
@@ -64,7 +68,8 @@ const MapToolsButton = props => {
 
 MapToolsButton.propTypes = {
     isOpen: PropTypes.bool.isRequired,
-    setOpen: PropTypes.func.isRequired
+    setOpen: PropTypes.func.isRequired,
+    className: PropTypes.string
 };
 
 export default MapToolsButton;

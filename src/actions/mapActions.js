@@ -1,7 +1,7 @@
 import * as types from "_core/constants/actionTypes";
 import * as typesMSF from "constants/actionTypes";
 import MiscUtil from "_core/utils/MiscUtil";
-import MapUtil_Extended from "utils/MapUtil_Extended";
+import MapUtilExtended from "utils/MapUtilExtended";
 import * as appStringsMSF from "constants/appStrings";
 import * as alertActions from "_core/actions/alertActions";
 import * as mapActions from "_core/actions/mapActions";
@@ -137,9 +137,9 @@ function requestAvailableFeatures(category, extent, layerSidebarState, dispatch)
 function getQueryString(category, extent, layerSidebarState) {
     switch (category) {
         case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
-            return MapUtil_Extended.buildVistaFeatureQueryString(extent, layerSidebarState);
+            return MapUtilExtended.buildVistaFeatureQueryString(extent, layerSidebarState);
         case layerSidebarTypes.CATEGORY_PLUMES:
-            return MapUtil_Extended.buildAvirisFeatureQueryString(extent);
+            return MapUtilExtended.buildAvirisFeatureQueryString(extent);
     }
 }
 

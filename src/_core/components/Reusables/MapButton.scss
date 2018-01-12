@@ -1,3 +1,5 @@
+@import "~styles/colors";
+
 .mapButton {
     width: 29px;
     height: 29px;
@@ -6,8 +8,16 @@
     display: flex;
     padding: 0;
     border-radius: 0;
+    color: rgba(0, 0, 0, 0.54);
     svg {
         width: 19px;
         height: 19px;
     }
+}
+.label {
+    pointer-events: none;
+}
+
+.flatPrimary {
+    color: $color-primary;
 }

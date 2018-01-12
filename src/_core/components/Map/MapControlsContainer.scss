@@ -2,12 +2,13 @@
 
 .mapControlsContainer {
     position: absolute;
-    bottom: 75px;
+    bottom: 125px;
     right: 15px;
     display: flex;
     flex-wrap: wrap;
     flex-flow: column wrap;
     align-content: flex-start;
+    align-items: flex-end;
 }
 
 .mapToolsMenu {
@@ -16,6 +17,7 @@
 }
 
 .buttonGroup {
+    width: 29px;
     margin-top: 10px;
 }
 

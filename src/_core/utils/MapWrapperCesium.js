@@ -14,16 +14,16 @@ import Modernizr from "modernizr";
  * Wrapper class for Cesium
  *
  * @export
- * @class MapWrapper_cesium
+ * @class MapWrapperCesium
  * @extends {MapWrapper}
  */
-export default class MapWrapper_cesium extends MapWrapper {
+export default class MapWrapperCesium extends MapWrapper {
     /**
-     * Creates an instance of MapWrapper_cesium.
+     * Creates an instance of MapWrapperCesium.
      *
      * @param {string|domnode} container the container to render this map into
      * @param {object} options view options for constructing this map wrapper (usually map state from redux)
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     constructor(container, options) {
         super(container, options);
@@ -70,7 +70,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {string|domnode} container the domnode to render to
      * @param {object} options options for creating this map (usually map state from redux)
      * @returns {object} cesium viewer object
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     createMap(container, options) {
         try {
@@ -137,7 +137,7 @@ export default class MapWrapper_cesium extends MapWrapper {
 
             return map;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.createMap:", err);
+            console.warn("Error in MapWrapperCesium.createMap:", err);
             return false;
         }
     }
@@ -147,7 +147,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * Unused, overidden to avoid warning log from parent class
      *
      * @returns false
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     getMapSize() {
         return false;
@@ -158,7 +158,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * Unused, overidden to avoid warning log from parent class
      *
      * @returns true
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     resize() {
         return true;
@@ -169,7 +169,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {number} terrainExaggeration scalar value of exagerration
      * @returns true
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     setTerrainExaggeration(terrainExaggeration) {
         // Set terrain exaggeration on scene
@@ -190,7 +190,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {boolean} enable true if terrain should be enabled
      * @returns true
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     enableTerrain(enable) {
         if (enable) {
@@ -207,7 +207,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * calculate the current center of the map view
      *
      * @returns {array|boolean} [lon,lat] of the map center or false if calculation fails
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     getCenter() {
         try {
@@ -216,7 +216,7 @@ export default class MapWrapper_cesium extends MapWrapper {
                 this.cesium.Math.toDegrees(this.map.camera.positionCartographic.latitude)
             ];
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.getCenter:", err);
+            console.warn("Error in MapWrapperCesium.getCenter:", err);
             return false;
         }
     }
@@ -226,7 +226,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {array} extent set of [minX, minY, maxX, minY] coordinates
      * @returns true if change succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     setExtent(extent) {
         try {
@@ -247,7 +247,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             });
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.setExtent:", err);
+            console.warn("Error in MapWrapperCesium.setExtent:", err);
             return false;
         }
     }
@@ -256,7 +256,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * get the current view extent of the map
      *
      * @returns {array} [minX,minY,maxX,minY] extent constrained to [+-180,+-90]
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     getExtent() {
         try {
@@ -290,7 +290,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return viewRectDeg;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.getExtent:", err);
+            console.warn("Error in MapWrapperCesium.getExtent:", err);
             return false;
         }
     }
@@ -301,7 +301,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {string} direction (MAP_PAN_DIRECTION_UP|MAP_PAN_DIRECTION_DOWN|MAP_PAN_DIRECTION_LEFT|MAP_PAN_DIRECTION_RIGHT)
      * @param {boolean} extraFar true if the map should pan 20 degrees instead of 5
      * @returns true if pan succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     panMap(direction, extraFar) {
         try {
@@ -373,7 +373,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             });
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.panMap:", err);
+            console.warn("Error in MapWrapperCesium.panMap:", err);
             return false;
         }
     }
@@ -382,7 +382,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * zoom the map in by half of the current zoom level
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     zoomIn() {
         try {
@@ -400,7 +400,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             });
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.zoomIn:", err);
+            console.warn("Error in MapWrapperCesium.zoomIn:", err);
             return false;
         }
     }
@@ -409,7 +409,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * zoom out by doubling the current zoom height
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     zoomOut() {
         try {
@@ -427,7 +427,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             });
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.zoomOut:", err);
+            console.warn("Error in MapWrapperCesium.zoomOut:", err);
             return false;
         }
     }
@@ -437,7 +437,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {number} duration time (in ms) of the transition
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     resetOrientation(duration) {
         try {
@@ -448,7 +448,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             });
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.resetOrientation:", err);
+            console.warn("Error in MapWrapperCesium.resetOrientation:", err);
             return false;
         }
     }
@@ -460,7 +460,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {function} onDrawEnd callback for when the drawing completes
      * @param {string} interactionType (Draw|Measure)
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     addDrawHandler(geometryType, onDrawEnd, interactionType) {
         try {
@@ -575,7 +575,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.addDrawHandler:", err);
+            console.warn("Error in MapWrapperCesium.addDrawHandler:", err);
             return false;
         }
     }
@@ -585,7 +585,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {string} geometryType (Circle|LineString|Polygon)
      * @returns true if enabling the interaction succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     enableDrawing(geometryType) {
         try {
@@ -599,7 +599,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.enableDrawing:", err);
+            console.warn("Error in MapWrapperCesium.enableDrawing:", err);
             return false;
         }
     }
@@ -608,14 +608,14 @@ export default class MapWrapper_cesium extends MapWrapper {
      * turn off current drawing interaction
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     disableDrawing() {
         try {
             this.drawHandler.stopDrawing();
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.disableDrawing:", err);
+            console.warn("Error in MapWrapperCesium.disableDrawing:", err);
             return false;
         }
     }
@@ -626,7 +626,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {string} geometryType (Circle|LineString|Polygon)
      * @param {string} measurementType (Distance|Area)
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     enableMeasuring(geometryType, measurementType) {
         try {
@@ -640,7 +640,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.enableMeasuring:", err);
+            console.warn("Error in MapWrapperCesium.enableMeasuring:", err);
             return false;
         }
     }
@@ -649,14 +649,14 @@ export default class MapWrapper_cesium extends MapWrapper {
      * turn off the current measuring interaction
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     disableMeasuring() {
         try {
             this.drawHandler.stopDrawing();
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.disableMeasuring:", err);
+            console.warn("Error in MapWrapperCesium.disableMeasuring:", err);
             return false;
         }
     }
@@ -666,7 +666,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {boolean} active true if draw interactions should be enabled
      * @returns true if a draw handler is present
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     enableActiveListeners(active) {
         if (this.drawHandler) {
@@ -688,7 +688,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {string} interactionType (Draw|Measure)
      * @param {boolean} [geodesic=false] true if the shape be processed into geodesic arcs
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     addGeometry(geometry, interactionType, geodesic = false) {
         try {
@@ -806,7 +806,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             console.warn("add geometry not complete in cesium", geometry, " is unsupported");
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.addGeometry:", err);
+            console.warn("Error in MapWrapperCesium.addGeometry:", err);
             return false;
         }
     }
@@ -818,7 +818,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {array} coords location of the label on the map [lon,lat]
      * @param {object} [opt_meta={}] additional data to attach to the label object (optional)
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     addLabel(label, coords, opt_meta = {}) {
         try {
@@ -851,7 +851,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             };
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.addLabel:", err);
+            console.warn("Error in MapWrapperCesium.addLabel:", err);
             return false;
         }
     }
@@ -861,7 +861,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {string} text content of the overlay display
      * @returns {array} display nodes [image, canvas]
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     createOverlayImage(text) {
         let canvas = document.createElement("canvas");
@@ -903,7 +903,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * remove all drawing geometries from the map
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     removeAllDrawings() {
         try {
@@ -920,7 +920,7 @@ export default class MapWrapper_cesium extends MapWrapper {
                 ).length === 0
             );
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.removeAllDrawings:", err);
+            console.warn("Error in MapWrapperCesium.removeAllDrawings:", err);
             return false;
         }
     }
@@ -929,7 +929,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * remove all measurement geometries from the map
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     removeAllMeasurements() {
         try {
@@ -948,7 +948,7 @@ export default class MapWrapper_cesium extends MapWrapper {
                 ).length === 0
             );
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.removeAllMeasurements:", err);
+            console.warn("Error in MapWrapperCesium.removeAllMeasurements:", err);
             return false;
         }
     }
@@ -959,7 +959,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {string} eventStr event type to listen for (mousemove|moveend|click)
      * @param {function} callback function to call when the event is fired
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     addEventListener(eventStr, callback) {
         try {
@@ -989,7 +989,7 @@ export default class MapWrapper_cesium extends MapWrapper {
                     return true;
             }
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.addEventListener:", err);
+            console.warn("Error in MapWrapperCesium.addEventListener:", err);
             return false;
         }
     }
@@ -1000,7 +1000,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @param {number} opacity value of the opacity [0.0 - 1.0]
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     setLayerOpacity(layer, opacity) {
         try {
@@ -1052,7 +1052,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.setLayerOpacity:", err);
+            console.warn("Error in MapWrapperCesium.setLayerOpacity:", err);
             return false;
         }
     }
@@ -1063,7 +1063,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {string} units (metric|imperial|nautical|schoolbus)
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     setScaleUnits(units) {
         try {
@@ -1098,7 +1098,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             });
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.setScaleUnits:", err);
+            console.warn("Error in MapWrapperCesium.setScaleUnits:", err);
             return false;
         }
     }
@@ -1108,7 +1108,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {object} mapLayer cesium layer object
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     addLayer(mapLayer) {
         try {
@@ -1117,7 +1117,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             mapLayers.add(mapLayer, index);
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.addLayer:", err);
+            console.warn("Error in MapWrapperCesium.addLayer:", err);
             return false;
         }
     }
@@ -1127,7 +1127,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {object} mapLayer cesium layer object
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     removeLayer(mapLayer) {
         try {
@@ -1135,7 +1135,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             mapLayers.remove(mapLayer);
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.removeLayer:", err);
+            console.warn("Error in MapWrapperCesium.removeLayer:", err);
             return false;
         }
     }
@@ -1146,7 +1146,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     activateLayer(layer) {
         try {
@@ -1172,7 +1172,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             mapLayer.show = true;
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.activateLayer:", err);
+            console.warn("Error in MapWrapperCesium.activateLayer:", err);
             return false;
         }
     }
@@ -1184,7 +1184,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds or if layer is not active
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     deactivateLayer(layer) {
         try {
@@ -1200,7 +1200,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             // Layer is already not active
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.deactivateLayer:", err);
+            console.warn("Error in MapWrapperCesium.deactivateLayer:", err);
             return false;
         }
     }
@@ -1211,7 +1211,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {obejct} layer layer from map state in redux
      * @param {boolean} [active=true] true if the layer should be added to the map
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     setLayerActive(layer, active = true) {
         if (active) {
@@ -1227,7 +1227,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     updateLayer(layer) {
         try {
@@ -1241,7 +1241,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.updateLayer:", err);
+            console.warn("Error in MapWrapperCesium.updateLayer:", err);
             return false;
         }
     }
@@ -1252,7 +1252,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     setBasemap(layer) {
         try {
@@ -1273,7 +1273,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.setBasemap:", err);
+            console.warn("Error in MapWrapperCesium.setBasemap:", err);
             return false;
         }
     }
@@ -1283,7 +1283,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * remove the basemap layer but makes it invisble.
      *
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     hideBasemap() {
         try {
@@ -1295,7 +1295,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.hideBasemap:", err);
+            console.warn("Error in MapWrapperCesium.hideBasemap:", err);
             return false;
         }
     }
@@ -1306,7 +1306,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {object|boolean} cesium layer object or false if it fails
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     createLayer(layer) {
         switch (layer.get("handleAs")) {
@@ -1324,7 +1324,7 @@ export default class MapWrapper_cesium extends MapWrapper {
                 return this.createVectorLayer(layer);
             default:
                 console.warn(
-                    "Error in MapWrapper_cesium.createLayer: unknown layer type - " +
+                    "Error in MapWrapperCesium.createLayer: unknown layer type - " +
                         layer.get("handleAs")
                 );
                 return false;
@@ -1337,7 +1337,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {object|boolean} cesium layer object or false if it fails
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     createWMTSLayer(layer) {
         try {
@@ -1365,7 +1365,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.createWMTSLayer:", err);
+            console.warn("Error in MapWrapperCesium.createWMTSLayer:", err);
             return false;
         }
     }
@@ -1376,7 +1376,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {object|boolean} cesium layer object or false if it fails
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     createVectorLayer(layer) {
         try {
@@ -1404,7 +1404,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.createVectorLayer:", err);
+            console.warn("Error in MapWrapperCesium.createVectorLayer:", err);
         }
     }
 
@@ -1417,7 +1417,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * - lat - {number} latitude of the pixel location
      * - lon - {number} longitude of the pixel location
      * - isValid - {boolean} pixel was on the globe
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     getLatLonFromPixelCoordinate(pixel) {
         try {
@@ -1438,7 +1438,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.getLatLonFromPixelCoordinate:", err);
+            console.warn("Error in MapWrapperCesium.getLatLonFromPixelCoordinate:", err);
             return false;
         }
     }
@@ -1448,7 +1448,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     moveLayerToTop(layer) {
         try {
@@ -1465,7 +1465,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.moveLayerToTop:", err);
+            console.warn("Error in MapWrapperCesium.moveLayerToTop:", err);
             return false;
         }
     }
@@ -1477,7 +1477,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     moveLayerToBottom(layer) {
         try {
@@ -1490,7 +1490,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.moveLayerToBottom:", err);
+            console.warn("Error in MapWrapperCesium.moveLayerToBottom:", err);
             return false;
         }
     }
@@ -1500,7 +1500,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     moveLayerUp(layer) {
         try {
@@ -1516,7 +1516,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.moveLayerUp:", err);
+            console.warn("Error in MapWrapperCesium.moveLayerUp:", err);
             return false;
         }
     }
@@ -1528,7 +1528,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {boolean} true if it succeeds
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     moveLayerDown(layer) {
         try {
@@ -1543,7 +1543,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.moveLayerDown:", err);
+            console.warn("Error in MapWrapperCesium.moveLayerDown:", err);
             return false;
         }
     }
@@ -1554,13 +1554,13 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {object} clickEvt cesium click event wrapper
      * @returns {array} pixel coordinates
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     getPixelFromClickEvent(clickEvt) {
         try {
             return clickEvt.pixel;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.getPixelFromClickEvent:", err);
+            console.warn("Error in MapWrapperCesium.getPixelFromClickEvent:", err);
             return false;
         }
     }
@@ -1572,7 +1572,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {object} point cartesian point {x,y,z}
      * @returns {object} lat-lon point {lat,lon}
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     cartesianToLatLon(point) {
         let cartographicRadians = this.cesium.Ellipsoid.WGS84.cartesianToCartographic(point);
@@ -1588,7 +1588,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {number} lat latitude value
      * @param {number} lon longitude value
      * @returns {object} cartesian point {x,y,z}
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     latLonToCartesian(lat, lon) {
         return new this.cesium.Cartesian3.fromDegrees(lon, lat);
@@ -1613,7 +1613,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *   - tileSize - {number} size of the tiles
      *
      * @returns {object} cesium imagery provider
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     createImageryProvider(layer, options) {
         switch (layer.get("handleAs")) {
@@ -1625,7 +1625,7 @@ export default class MapWrapper_cesium extends MapWrapper {
                 return this.createGenericXYZProvider(layer, options);
             default:
                 console.warn(
-                    "Error in MapWrapper_cesium.createImageryProvider: unknown layer type - " +
+                    "Error in MapWrapperCesium.createImageryProvider: unknown layer type - " +
                         layer.get("handleAs")
                 );
                 return false;
@@ -1640,7 +1640,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * - handleAs - {string} type of raster layer (GIBS_raster|wmts_raster|xyz_raster)
      * @param {object} tileSchemeOptions additional wmts options
      * @returns {object} cesium tiling scheme
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     createTilingScheme(options, tileSchemeOptions) {
         if (options.projection === appStrings.PROJECTIONS.latlon.code) {
@@ -1675,7 +1675,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *   - matrixIds - {array} identifiers for each zoom level
      *   - tileSize - {number} size of the tiles
      * @returns {object} cesium imagery provider
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     createGIBSWMTSProvider(layer, options) {
         try {
@@ -1705,7 +1705,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.createGIBSWMTSProvider:", err);
+            console.warn("Error in MapWrapperCesium.createGIBSWMTSProvider:", err);
             return false;
         }
     }
@@ -1728,7 +1728,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *   - matrixIds - {array} identifiers for each zoom level
      *   - tileSize - {number} size of the tiles
      * @returns {object} cesium imagery provider
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     createGenericWMTSProvider(layer, options) {
         try {
@@ -1756,7 +1756,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.createGenericWMTSProvider:", err);
+            console.warn("Error in MapWrapperCesium.createGenericWMTSProvider:", err);
             return false;
         }
     }
@@ -1779,7 +1779,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *   - matrixIds - {array} identifiers for each zoom level
      *   - tileSize - {number} size of the tiles
      * @returns {object} cesium imagery provider
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     createGenericXYZProvider(layer, options) {
         try {
@@ -1805,7 +1805,7 @@ export default class MapWrapper_cesium extends MapWrapper {
             }
             return false;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.createGenericXYZProvider:", err);
+            console.warn("Error in MapWrapperCesium.createGenericXYZProvider:", err);
             return false;
         }
     }
@@ -1817,7 +1817,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {object} options vector data source options
      * - url - {string} url for the data
      * @returns {object} a cesium vector data source
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     createVectorSource(layer, options) {
         switch (layer.get("handleAs")) {
@@ -1839,7 +1839,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {object} options vector data source options
      * - url - {string} url for the data
      * @returns {object} a cesium vector data source
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     createGeoJsonSource(layer, options) {
         return this.cesium.GeoJsonDataSource.load(options.url, {
@@ -1857,7 +1857,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {object} options vector data source options
      * - url - {string} url for the data
      * @returns {object} a cesium vector data source
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     createKmlSource(layer, options) {
         return this.cesium.KmlDataSource.load(options.url, {
@@ -1880,7 +1880,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {object} request cesium request object
      * @param {object} context wrapper context for this call
      * @returns {Promise} for tile request
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     handleTileLoad(layer, mapLayer, x, y, level, request, context) {
         let url = layer.getIn(["wmtsOptions", "url"]);
@@ -1961,7 +1961,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {array} mapLayers list of cesium map layers
      * @param {ImmutableJS.Map} layer layer object from map state in redux
      * @returns {object|boolean} cesium map layer or false if not found
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     findLayerInMapLayers(mapLayers, layer) {
         let layerId = layer.get("id");
@@ -1982,7 +1982,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      * @param {array} mapLayers list of cesium map layers to search in
      * @param {object} mapLayer cesium map layer to compare
      * @returns {number} highest index within the provided list for a layer of this type
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     findTopInsertIndexForLayer(mapLayers, mapLayer) {
         let index = mapLayers.length;
@@ -2013,7 +2013,7 @@ export default class MapWrapper_cesium extends MapWrapper {
      *
      * @param {string} type (GIBS_raster|wmts_raster|xyz_raster|vector_geojson|vector_topojson|vector_kml)
      * @returns {array} list of matching cesium map layers
-     * @memberof MapWrapper_cesium
+     * @memberof MapWrapperCesium
      */
     getMapLayers(type) {
         switch (type) {

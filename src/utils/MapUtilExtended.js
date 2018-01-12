@@ -2,18 +2,18 @@ import appConfig from "constants/appConfig";
 import MapUtil from "_core/utils/MapUtil";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import * as appStrings from "constants/appStrings";
-import { MapWrapper_openlayers_Extended as MapWrapper_openlayers } from "utils/MapWrapper_openlayers_Extended";
+import { MapWrapperOpenlayersExtended as MapWrapperOpenlayers } from "utils/MapWrapperOpenlayersExtended";
 
-export default class MapUtil_Extended extends MapUtil {
+export default class MapUtilExtended extends MapUtil {
     static parseCapabilities(capabilitiesString) {
-        return MapWrapper_openlayers.parseCapabilities(capabilitiesString);
+        return MapWrapperOpenlayers.parseCapabilities(capabilitiesString);
     }
 
     // generates a set of wmts options for a layer
     // NOTE: uses openlayers to do the actual info gathering
     static getWmtsOptions(options) {
-        MapWrapper_openlayers.prepProjection();
-        return MapWrapper_openlayers.getWmtsOptions(options);
+        MapWrapperOpenlayers.prepProjection();
+        return MapWrapperOpenlayers.getWmtsOptions(options);
     }
 
     static buildVistaFeatureQueryString(extent, sidebarState) {

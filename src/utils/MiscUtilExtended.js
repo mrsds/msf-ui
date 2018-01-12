@@ -1,7 +1,7 @@
 import MiscUtil from "_core/utils/MiscUtil";
 import * as references from "constants/references";
 
-export default class MiscUtil_Extended extends MiscUtil {
+export default class MiscUtilExtended extends MiscUtil {
     static getCountyFromFeature(feature, errStr) {
         try {
             const countyCode = feature

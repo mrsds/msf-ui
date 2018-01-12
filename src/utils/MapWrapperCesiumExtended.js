@@ -6,12 +6,12 @@ import Ol_Source_StaticImage from "ol/source/imagestatic";
 import Ol_Layer_Vector from "ol/layer/vector";
 import Ol_Format_KML from "ol/format/kml";
 
-import MapWrapper_cesium from "_core/utils/MapWrapper_cesium";
-import MiscUtil_Extended from "utils/MiscUtil_Extended";
+import MapWrapperCesium from "_core/utils/MapWrapperCesium";
+import MiscUtilExtended from "utils/MiscUtilExtended";
 
 const JSZip = require("jszip");
 
-export default class MapWrapper_cesium_Extended extends MapWrapper_cesium {
+export default class MapWrapperCesiumExtended extends MapWrapperCesium {
     createLayer(layer) {
         switch (layer.get("handleAs")) {
             case appStrings.LAYER_GIBS_RASTER:
@@ -38,7 +38,7 @@ export default class MapWrapper_cesium_Extended extends MapWrapper_cesium {
                 return this.createVectorLayer(layer);
             default:
                 console.warn(
-                    "Error in MapWrapper_cesium.createLayer: unknown layer type - " +
+                    "Error in MapWrapperCesium.createLayer: unknown layer type - " +
                         layer.get("handleAs")
                 );
                 return false;
@@ -62,7 +62,7 @@ export default class MapWrapper_cesium_Extended extends MapWrapper_cesium {
 
     createKmlSource(layer, options) {
         const scope = this;
-        return MiscUtil_Extended.asyncFetch({
+        return MiscUtilExtended.asyncFetch({
             url: layer.get("url"),
             handleAs: "blob"
         })
@@ -131,7 +131,7 @@ export default class MapWrapper_cesium_Extended extends MapWrapper_cesium {
             mapLayer.show = true;
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.activateLayer:", err);
+            console.warn("Error in MapWrapperCesium.activateLayer:", err);
             return false;
         }
     }
@@ -150,7 +150,7 @@ export default class MapWrapper_cesium_Extended extends MapWrapper_cesium {
             // Layer is already not active
             return true;
         } catch (err) {
-            console.warn("Error in MapWrapper_cesium.deactivateLayer:", err);
+            console.warn("Error in MapWrapperCesium.deactivateLayer:", err);
             return false;
         }
     }

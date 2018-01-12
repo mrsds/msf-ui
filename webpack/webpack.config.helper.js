@@ -130,12 +130,12 @@ module.exports = options => {
                         path.join(BASE_DIR, "node_modules/ol"),
                         path.join(BASE_DIR, "assets/assets/arc")
                     ],
-                    exclude: /Cesium(DrawHelper)?\.js$/,
+                    exclude: /\/Cesium(DrawHelper)?\.js$/,
                     use: ["babel-loader", "eslint-loader"]
                 },
                 {
                     // Load Cesium.js main JS file using webpack script loader which will not attempt to parse anything in the script
-                    test: /Cesium(DrawHelper)?\.js$/,
+                    test: /\/Cesium(DrawHelper)?\.js$/,
                     use: "script-loader"
                 },
                 {

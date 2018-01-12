@@ -11,8 +11,6 @@ import Button from "material-ui/Button";
 import PlusIcon from "material-ui-icons/Add";
 import RemoveIcon from "material-ui-icons/Remove";
 import HomeIcon from "material-ui-icons/Home";
-import { MenuItem, MenuList } from "material-ui/Menu";
-import { ListItemIcon, ListItemText } from "material-ui/List";
 import Paper from "material-ui/Paper";
 import * as mapActions from "_core/actions/mapActions";
 import * as appActions from "_core/actions/appActions";
@@ -20,7 +18,7 @@ import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
 import MiscUtil from "_core/utils/MiscUtil";
 import { MapButton, MapButtonGroup } from "_core/components/Reusables";
-import { MapToolsButton } from "_core/components/Map";
+import { MapToolsButton, BasemapPicker, MapLabelsButton } from "_core/components/Map";
 import styles from "_core/components/Map/MapControlsContainer.scss";
 import displayStyles from "_core/styles/display.scss";
 
@@ -102,6 +100,23 @@ export class MapControlsContainer extends Component {
                 <div className={styles.mapControlsContainer}>
                     <Paper elevation={2} className={styles.buttonGroup}>
                         <Tooltip
+                            title={this.props.in3DMode ? "Switch to 2D map" : "Switch to 3D map"}
+                            placement="right"
+                        >
+                            <MapButton
+                                disabled={!Modernizr.webgl && !this.props.in3DMode ? true : false}
+                                onClick={() => this.setViewMode()}
+                                aria-label={
+                                    this.props.in3DMode ? "Switch to 2D map" : "Switch to 3D map"
+                                }
+                                className={styles.singleButton}
+                            >
+                                <Earth />
+                            </MapButton>
+                        </Tooltip>
+                    </Paper>
+                    <Paper elevation={2} className={styles.buttonGroup}>
+                        <Tooltip
                             title={
                                 this.props.distractionFreeMode
                                     ? "Disable distraction free mode"
@@ -117,34 +132,19 @@ export class MapControlsContainer extends Component {
                                     );
                                 }}
                                 aria-label="Home"
-                                className={styles.singleButton}
+                                className={`${styles.firstButton} ${styles.lineButton}`}
                             >
                                 {this.props.distractionFreeMode ? <Eye /> : <EyeOff />}
                             </MapButton>
                         </Tooltip>
-                    </Paper>
-                    <Paper elevation={2} className={styles.buttonGroup}>
-                        <Tooltip
-                            title={this.props.in3DMode ? "Switch to 2D map" : "Switch to 3D map"}
-                            placement="right"
-                        >
-                            <MapButton
-                                disabled={!Modernizr.webgl && !this.props.in3DMode ? true : false}
-                                onClick={() => this.setViewMode()}
-                                aria-label={
-                                    this.props.in3DMode ? "Switch to 2D map" : "Switch to 3D map"
-                                }
-                                className={`${styles.firstButton} ${styles.lineButton}`}
-                            >
-                                <Earth />
-                            </MapButton>
-                        </Tooltip>
                         <MapToolsButton
                             isOpen={this.props.mapControlsToolsOpen}
+                            className={styles.lineButton}
                             setOpen={isOpen =>
                                 this.props.appActions.setMapControlsToolsOpen(isOpen)
                             }
                         />
+                        <MapLabelsButton />
                     </Paper>
                     <Paper elevation={2} className={styles.buttonGroup}>
                         <Tooltip title="Home" placement="right">
@@ -156,18 +156,16 @@ export class MapControlsContainer extends Component {
                                     );
                                 }}
                                 aria-label="Home"
-                                className={styles.singleButton}
+                                className={`${styles.firstButton} ${styles.lineButton}`}
                             >
                                 <HomeIcon />
                             </MapButton>
                         </Tooltip>
-                    </Paper>
-                    <Paper elevation={2} className={styles.buttonGroup}>
                         <Tooltip title="Zoom In" placement="right">
                             <MapButton
                                 onClick={this.props.mapActions.zoomIn}
                                 aria-label="Zoom in"
-                                className={`${styles.firstButton} ${styles.lineButton}`}
+                                className={styles.lineButton}
                             >
                                 <PlusIcon />
                             </MapButton>
@@ -182,6 +180,7 @@ export class MapControlsContainer extends Component {
                             </MapButton>
                         </Tooltip>
                     </Paper>
+                    <BasemapPicker />
                 </div>
             </div>
         );

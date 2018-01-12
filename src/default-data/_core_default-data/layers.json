@@ -6,10 +6,8 @@
             "type": "data",
             "handleAs": "vista_geojson",
             "isDefault": false,
-            "url":
-                "http://100.64.114.155:9090/vista?category=0&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "url": "http://100.64.114.155:9090/vista?category=0&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA"
         },
         {
@@ -18,10 +16,8 @@
             "type": "data",
             "handleAs": "vista_geojson",
             "isDefault": true,
-            "url":
-                "http://100.64.114.155:9090/vista?category=1&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "url": "http://100.64.114.155:9090/vista?category=1&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA"
         },
         {
@@ -30,10 +26,8 @@
             "type": "data",
             "handleAs": "vista_geojson",
             "isDefault": true,
-            "url":
-                "http://100.64.114.155:9090/vista?category=2&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "url": "http://100.64.114.155:9090/vista?category=2&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA"
         },
         {
@@ -42,10 +36,8 @@
             "type": "data",
             "handleAs": "vista_geojson",
             "isDefault": true,
-            "url":
-                "http://100.64.114.155:9090/vista?category=3&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "url": "http://100.64.114.155:9090/vista?category=3&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA"
         },
         {
@@ -54,10 +46,8 @@
             "type": "data",
             "handleAs": "vista_geojson",
             "isDefault": true,
-            "url":
-                "http://100.64.114.155:9090/vista?category=4&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "url": "http://100.64.114.155:9090/vista?category=4&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA"
         },
         {
@@ -66,10 +56,8 @@
             "type": "data",
             "handleAs": "vista_geojson",
             "isDefault": true,
-            "url":
-                "http://100.64.114.155:9090/vista?category=5&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "url": "http://100.64.114.155:9090/vista?category=5&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA"
         },
         {
@@ -78,10 +66,8 @@
             "type": "data",
             "handleAs": "vista_geojson",
             "isDefault": true,
-            "url":
-                "http://100.64.114.155:9090/vista?category=6&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "url": "http://100.64.114.155:9090/vista?category=6&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA"
         },
         {
@@ -90,10 +76,8 @@
             "type": "data",
             "handleAs": "vista_geojson",
             "isDefault": true,
-            "url":
-                "http://100.64.114.155:9090/vista?category=8&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "url": "http://100.64.114.155:9090/vista?category=8&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA"
         },
         {
@@ -102,10 +86,8 @@
             "type": "data",
             "handleAs": "vista_geojson",
             "isDefault": true,
-            "url":
-                "http://100.64.114.155:9090/vista?category=9&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "url": "http://100.64.114.155:9090/vista?category=9&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA"
         },
         {
@@ -114,10 +96,8 @@
             "type": "data",
             "handleAs": "vista_geojson",
             "isDefault": true,
-            "url":
-                "http://100.64.114.155:9090/vista?category=10&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "url": "http://100.64.114.155:9090/vista?category=10&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA"
         },
         {
@@ -126,10 +106,8 @@
             "type": "data",
             "handleAs": "vista_geojson",
             "isDefault": true,
-            "url":
-                "http://100.64.114.155:9090/vista?category=11&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "url": "http://100.64.114.155:9090/vista?category=11&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA"
         },
         {
@@ -138,10 +116,8 @@
             "type": "data",
             "handleAs": "vista_geojson",
             "isDefault": false,
-            "url":
-                "http://100.64.114.155:9090/vista?category=13&maxObjects=10000",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "url": "http://100.64.114.155:9090/vista?category=13&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA"
         },
 
@@ -152,8 +128,7 @@
             "handleAs": "aviris_plume",
             "isDefault": true,
             "url": "http://100.64.114.155:9090/aviris",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "palette": {
                 "name": "AVIRIS_plumes",
                 "handleAs": "json-fixed"
@@ -167,10 +142,8 @@
             "type": "data",
             "handleAs": "vector_kmz",
             "isDefault": false,
-            "url":
-                "http://100.64.114.155/data/gridded/v1/kmz/vista_emissions.kmz",
-            "thumbnailImage":
-                "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "url": "http://100.64.114.155/data/gridded/v1/kmz/vista_emissions.kmz",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "layerOrder": 0,
             "opacity": 0.3
         },
