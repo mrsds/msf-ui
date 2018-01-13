@@ -55,6 +55,9 @@
 }
 .tabLabelContainer {
     width: 200px;
+    span {
+        -webkit-font-smoothing: antialiased;
+    }
 }
 .tabContainer {
     display: flex;

@@ -2,27 +2,47 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { List, ListItem, ListSubHeader, ListCheckbox } from "react-toolbox/lib/list";
+import List, {
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    ListItemSecondaryAction
+} from "material-ui/List";
+import ListSubheader from "material-ui/List/ListSubheader";
+import Checkbox from "material-ui/Checkbox";
+import Divider from "material-ui/Divider";
 import * as layerSidebarActions from "actions/LayerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import Button from "material-ui/Button";
+import IconButton from "material-ui/IconButton";
+import { CircularProgress } from "material-ui/Progress";
+import DomainIcon from "mdi-material-ui/Domain";
+import MyLocationIcon from "material-ui-icons/MyLocation";
+import InfoOutlineIcon from "material-ui-icons/InfoOutline";
+import Search from "material-ui-icons/Search";
+import Clear from "material-ui-icons/Clear";
+import Select from "material-ui/Select";
+import { FormControl } from "material-ui/Form";
+import Input, { InputLabel } from "material-ui/Input";
+import { MenuItem } from "material-ui/Menu";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import MapUtilExtended from "utils/MapUtilExtended";
-import { Button, IconButton } from "react-toolbox/lib/button";
-import ProgressBar from "react-toolbox/lib/progress_bar";
-import FontIcon from "react-toolbox/lib/font_icon";
 import MetadataUtil from "utils/MetadataUtil";
-import * as mapActions_Extended from "actions/MapActions_Extended";
+import * as mapActionsMSF from "actions/MapActions";
 import PageControls from "components/PageControls/PageControls";
+import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 import SearchInput from "components/Reusables/SearchInput";
 
+import MiscUtil from "_core/utils/MiscUtil";
+
 export class InfrastructureContainer extends Component {
-    getFactoryIcon() {
-        return (
-            <svg viewBox="0 0 12 12">
-                <path d="M1.2 9.6L1.2 10.8 3.6 10.8 3.6 9.6 1.2 9.6ZM1.2 7.2L1.2 8.4 7.2 8.4 7.2 7.2 1.2 7.2ZM4.8 9.6L4.8 10.8 7.2 10.8 7.2 9.6 4.8 9.6ZM8.4 7.2L8.4 8.4 10.8 8.4 10.8 7.2 8.4 7.2ZM8.4 9.6L8.4 10.8 10.8 10.8 10.8 9.6 8.4 9.6ZM0 12L0 3.6 3 6 3 3.6 6 6 6 3.6 9 6 9.6 0 11.4 0 12 6 12 12 0 12Z" />
-            </svg>
-        );
-    }
+    // getFactoryIcon() {
+    //     return (
+    //         <svg viewBox="0 0 12 12">
+    //             <path d="M1.2 9.6L1.2 10.8 3.6 10.8 3.6 9.6 1.2 9.6ZM1.2 7.2L1.2 8.4 7.2 8.4 7.2 7.2 1.2 7.2ZM4.8 9.6L4.8 10.8 7.2 10.8 7.2 9.6 4.8 9.6ZM8.4 7.2L8.4 8.4 10.8 8.4 10.8 7.2 8.4 7.2ZM8.4 9.6L8.4 10.8 10.8 10.8 10.8 9.6 8.4 9.6ZM0 12L0 3.6 3 6 3 3.6 6 6 6 3.6 9 6 9.6 0 11.4 0 12 6 12 12 0 12Z" />
+    //         </svg>
+    //     );
+    // }
 
     getCircleIcon(group, color) {
         return <div className="category-circle" style={{ background: color }} />;
@@ -56,10 +76,10 @@ export class InfrastructureContainer extends Component {
     makeListItem(feature) {
         const isActive = this.isActiveFeature(feature);
         const isActiveDetail = this.isActiveDetailFeature(feature);
-        const itemClass = MiscUtilExtended.generateStringFromSet({
-            "feature-item-container-list-item": true,
-            selected: isActive || isActiveDetail
-        });
+        // const itemClass = MiscUtilExtended.generateStringFromSet({
+        //     "feature-item-container-list-item": true,
+        //     selected: isActive || isActiveDetail
+        // });
         const toggleLabelAction = this.props.toggleFeatureLabel.bind(
             null,
             layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
@@ -77,35 +97,32 @@ export class InfrastructureContainer extends Component {
         const centerMapAction =
             lat && long ? this.props.centerMapOnPoint.bind(null, [long, lat]) : null;
         return (
-            <ListItem
-                key={feature.get("id")}
-                caption={this.truncateName(feature.get("name"))}
-                className={itemClass}
-                legend={feature.get("category")}
-                ripple={false}
-                onClick={isActiveDetail ? toggleDetailAction : toggleLabelAction}
-                rightActions={[
-                    <IconButton
-                        inverse={isActive || isActiveDetail}
-                        key={feature.get("id") + "_snap_icon"}
-                        icon="my_location"
-                        hidden={!lat || !long}
-                        onClick={centerMapAction}
-                    />,
-                    <IconButton
-                        inverse={isActive || isActiveDetail}
-                        key={feature.get("id") + "_info_icon"}
-                        icon="info_outline"
-                        onClick={toggleDetailAction}
+            <React.Fragment key={feature.get("id")}>
+                <ListItem button onClick={isActiveDetail ? toggleDetailAction : toggleLabelAction}>
+                    <ListItemText
+                        primary={feature.get("name")}
+                        secondary={feature.get("category")}
                     />
-                ]}
-                theme={{
-                    itemAction: "itemAction",
-                    primary: "primary-text",
-                    itemText: "item-text",
-                    item: "item"
-                }}
-            />
+                    <ListItemSecondaryAction>
+                        <IconButton
+                            color="default"
+                            disabled={!lat || !long}
+                            key={feature.get("id") + "_my_location_icon"}
+                            onClick={centerMapAction}
+                        >
+                            <MyLocationIcon />
+                        </IconButton>
+                        <IconButton
+                            color={isActive || isActiveDetail ? "primary" : "default"}
+                            key={feature.get("id") + "_info_icon"}
+                            onClick={toggleDetailAction}
+                        >
+                            <InfoOutlineIcon />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                </ListItem>
+                <Divider />
+            </React.Fragment>
         );
     }
 
@@ -130,16 +147,18 @@ export class InfrastructureContainer extends Component {
         const listItems = [];
         const listGroups = Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).forEach(group => {
             listItems.push(
-                <ListSubHeader
+                <ListSubheader
+                    disableSticky={true}
                     key={group}
-                    caption={group}
-                    className="facility-filter-category-label"
-                />
+                    className={layerSidebarStyles.facilityFilterCategoryLabel}
+                >
+                    {group}
+                </ListSubheader>
             );
             listItems.push(
                 <div
                     key={group + "_color"}
-                    className="category-circle"
+                    className={layerSidebarStyles.categoryCircle}
                     style={{
                         background: layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].colors.stroke
                     }}
@@ -149,35 +168,35 @@ export class InfrastructureContainer extends Component {
                 const categoryName = MapUtilExtended.getInfrastructureCategoryHumanName(category);
                 const checked = this.props.activeInfrastructureSubCategories.get(category) || false;
                 listItems.push(
-                    <ListCheckbox
+                    <ListItem
+                        button
+                        onClick={() =>
+                            this.props.updateInfrastructureCategoryFilter(category, !checked)
+                        }
                         key={categoryName}
-                        caption={categoryName}
-                        className="facility-filter-list-item"
-                        theme={{ check: "facility-filter-list-item-check" }}
-                        checked={checked}
-                        onChange={this.props.updateInfrastructureCategoryFilter.bind(
-                            null,
-                            category
-                        )}
-                    />
+                    >
+                        <Checkbox checked={checked} tabIndex={-1} disableRipple />
+                        <ListItemText primary={categoryName} />
+                    </ListItem>
                 );
             });
         });
         return (
-            <div className="filters-overlay flexbox-parent">
-                <div className="header-bar">
-                    <div className="header-title">Select Infrastructure</div>
+            <div
+                className={`${layerSidebarStyles.filtersOverlay} ${
+                    layerSidebarStyles.facilityFilterList
+                }`}
+            >
+                <div className={layerSidebarStyles.headerBar}>
+                    <div className={layerSidebarStyles.headerTitle}>Select Infrastructure</div>
                     <Button
-                        className="back-button"
-                        flat
-                        primary
-                        label="Done"
+                        color="primary"
                         onClick={this.props.toggleInfrastructureFacilityFilterOptionsVisible}
-                    />
+                    >
+                        Done
+                    </Button>
                 </div>
-                <List selectable ripple className="facility-filter-list">
-                    {listItems}
-                </List>
+                <List className={layerSidebarStyles.facilityFilterList}>{listItems}</List>
             </div>
         );
     }
@@ -185,40 +204,37 @@ export class InfrastructureContainer extends Component {
     makeLoadingModal() {
         if (this.props.isLoading) {
             return (
-                <div className="loading-modal">
-                    <ProgressBar type="circular" mode="indeterminate" />
+                <div className={layerSidebarStyles.loadingModal}>
+                    <CircularProgress />
                 </div>
             );
         }
         return <div />;
     }
 
-    makeSearchResults() {}
-
     makeResultsArea() {
         const hasResults = this.props.searchState.get("searchResults").size;
-        const resultsClass = MiscUtilExtended.generateStringFromSet({
-            "sidebar-content": true
+        const resultsClassname = MiscUtil.generateStringFromSet({
+            [layerSidebarStyles.sidebarContent]: true
         });
         let innerContent = "";
         if (hasResults) {
             innerContent = (
-                <List selectable ripple className="feature-item-list">
-                    {this.makeLoadingModal()}
-                    {this.makeListItems()}
-                </List>
+                <List className={layerSidebarStyles.featureItemList}>{this.makeListItems()}</List>
             );
         } else {
             innerContent = (
-                <div className="no-results-info" hidden={hasResults}>
-                    <FontIcon value="domain" />
-                    <div className="no-results-title">No Infrastructure Found</div>
-                    <div className="no-results-subtitle">Try widening some search parameters</div>
+                <div className={layerSidebarStyles.noResultsInfo} hidden={hasResults}>
+                    <DomainIcon className={layerSidebarStyles.noResultsIcon} />
+                    <div className={layerSidebarStyles.noResultsTitle}>No Infrastructure Found</div>
+                    <div className={layerSidebarStyles.noResultsSubtitle}>
+                        Try widening some search parameters
+                    </div>
                 </div>
             );
         }
         return (
-            <div className={resultsClass}>
+            <div className={resultsClassname}>
                 {innerContent}
                 {this.makePageControls()}
             </div>
@@ -260,13 +276,22 @@ export class InfrastructureContainer extends Component {
     }
 
     render() {
+        let containerClasses = MiscUtil.generateStringFromSet({
+            [layerSidebarStyles.flexboxParent]: true,
+            [layerSidebarStyles.featureItemContainer]: true
+        });
+
+        // let selectedFlightCampaignValue = "";
+        // if (this.props.searchState.get("selectedFlightCampaign")) {
+        //     selectedFlightCampaignValue = this.props.searchState.get("selectedFlightCampaign");
+        // }
         return (
-            <div className="feature-item-container flexbox-parent">
-                <div className="search-filters-container">
+            <div className={containerClasses}>
+                <div className={layerSidebarStyles.searchFiltersContainer}>
                     <SearchInput
-                        icon="search"
+                        icon={<Search />}
                         placeholder="Search for Infrastructure"
-                        value=""
+                        value={this.props.searchState.get("searchString")}
                         disabled={false}
                         onUpdate={valueStr =>
                             this.props.updateFeatureSearchText(
@@ -275,9 +300,9 @@ export class InfrastructureContainer extends Component {
                             )
                         }
                         validate={valueStr => true}
-                        primaryDataTip="Search Plumes by ID"
+                        primaryDataTip="Search for Infrastructure"
                         primaryDataPlace="top"
-                        actionIcon="clear"
+                        actionIcon={<Clear />}
                         onActionIconClick={() =>
                             this.props.updateFeatureSearchText(
                                 layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
@@ -286,15 +311,39 @@ export class InfrastructureContainer extends Component {
                         }
                     />
                     <Button
-                        label="Select Infrastructure Types"
+                        raised
                         onClick={this.props.toggleInfrastructureFacilityFilterOptionsVisible}
-                    />
-                    {/* <Button className="button" theme={{ button: "button-content" }}>
-            <span className="plane-icon" />
-            <label>Any number of flyovers</label>
-          </Button> */}
+                    >
+                        Select Infrastructure Types
+                    </Button>
+                    {/* <div>
+                        <FormControl>
+                            <InputLabel shrink={true} htmlFor="flightCampaginSelect">
+                                Flight Campaign
+                            </InputLabel>
+                            <Select
+                                displayEmpty={true}
+                                value={selectedFlightCampaignValue}
+                                onChange={evt => this.props.selectFlightCampaign(evt.target.value)}
+                                input={<Input name="age" id="flightCampaginSelect" />}
+                            >
+                                {
+                                    <MenuItem key="noFlightCampaignSelectItem" value="">
+                                        All
+                                    </MenuItem>
+                                }
+                                {this.getAvailableFlightCampaigns().map(result => (
+                                    <MenuItem key={result.value} value={result.value}>
+                                        {result.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl> */}
+                    {/* </div> */}
                 </div>
+                <Divider />
                 {this.makeFacilityFilterList()}
+                {this.makeLoadingModal()}
                 {this.makeResultsArea()}
             </div>
         );
@@ -354,8 +403,8 @@ function mapDispatchToProps(dispatch) {
         pageBackward: bindActionCreators(layerSidebarActions.pageBackward, dispatch),
         setFeatureDetail: bindActionCreators(layerSidebarActions.setFeatureDetail, dispatch),
         hideFeatureDetail: bindActionCreators(layerSidebarActions.hideFeatureDetail, dispatch),
-        centerMapOnPoint: bindActionCreators(mapActions_Extended.centerMapOnPoint, dispatch),
-        toggleFeatureLabel: bindActionCreators(mapActions_Extended.toggleFeatureLabel, dispatch)
+        centerMapOnPoint: bindActionCreators(mapActionsMSF.centerMapOnPoint, dispatch),
+        toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch)
     };
 }
 

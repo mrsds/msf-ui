@@ -6,7 +6,7 @@ import AppBar from "material-ui/AppBar";
 import Tabs, { Tab } from "material-ui/Tabs";
 import * as layerSidebarActions from "actions/LayerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-// import InfrastructureContainer from "components/MethaneSidebar/InfrastructureContainer";
+import InfrastructureContainer from "components/MethaneSidebar/InfrastructureContainer";
 import PlumesContainer from "components/MethaneSidebar/PlumesContainer";
 import styles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
@@ -42,25 +42,26 @@ export class LayerSidebarContainer extends Component {
         }
     }
 
-    changeCategory(index) {
+    handleChange(index) {
+        console.log(index, "?");
         this.props.changeSidebarCategory(this.getCategoryForIndex(index));
     }
 
-    // renderInfrastructureContainer() {
-    //     return (
-    //         <InfrastructureContainer
-    //             availableFeatures={this.props.availableFeatures.get(
-    //                 layerSidebarTypes.CATEGORY_INFRASTRUCTURE
-    //             )}
-    //             isVisible={true}
-    //             searchState={this.props.searchState.get(layerSidebarTypes.CATEGORY_INFRASTRUCTURE)}
-    //             activeInfrastructureSubCategories={this.props.activeInfrastructureSubCategories}
-    //             isLoading={this.props.featureLoadingState.get(
-    //                 layerSidebarTypes.CATEGORY_INFRASTRUCTURE
-    //             )}
-    //         />
-    //     );
-    // }
+    renderInfrastructureContainer() {
+        return (
+            <InfrastructureContainer
+                availableFeatures={this.props.availableFeatures.get(
+                    layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                )}
+                isVisible={true}
+                searchState={this.props.searchState.get(layerSidebarTypes.CATEGORY_INFRASTRUCTURE)}
+                activeInfrastructureSubCategories={this.props.activeInfrastructureSubCategories}
+                isLoading={this.props.featureLoadingState.get(
+                    layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                )}
+            />
+        );
+    }
 
     renderPlumesContainer() {
         return (
@@ -100,13 +101,6 @@ export class LayerSidebarContainer extends Component {
         });
 
         let activeTabIndex = this.getIndexForCategory(this.props.activeFeatureCategory);
-        let plumesContainerClasses = MiscUtil.generateStringFromSet({
-            [displayStyles.hidden]: activeTabIndex === 0
-        });
-        let infrastructureContainerClasses = MiscUtil.generateStringFromSet({
-            [displayStyles.hidden]: activeTabIndex === 1
-        });
-
         return (
             <div className={containerClasses}>
                 <AppBar position="static">
@@ -114,12 +108,9 @@ export class LayerSidebarContainer extends Component {
                         className={styles.tabsRoot}
                         fullWidth
                         indicatorColor="white"
-                        value={0}
-                        onChange={this.handleChange}
+                        value={activeTabIndex}
+                        onChange={(event, index) => this.handleChange(index)}
                     >
-                        {/* <Tab label={infrastuctureTabLabel}>
-                            {this.renderInfrastructureContainer()}
-                        </Tab> */}
                         <Tab
                             classes={{ labelContainer: styles.tabLabelContainer }}
                             label={plumesTabLabel}
@@ -130,7 +121,14 @@ export class LayerSidebarContainer extends Component {
                         />
                     </Tabs>
                 </AppBar>
-                <div className={styles.tabContainer}>{this.renderPlumesContainer()}</div>
+                <div className={activeTabIndex === 1 ? displayStyles.hidden : ""}>
+                    <div className={styles.tabContainer}>{this.renderPlumesContainer()}</div>
+                </div>
+                <div className={activeTabIndex === 0 ? displayStyles.hidden : ""}>
+                    <div className={styles.tabContainer}>
+                        {this.renderInfrastructureContainer()}
+                    </div>
+                </div>
             </div>
         );
     }

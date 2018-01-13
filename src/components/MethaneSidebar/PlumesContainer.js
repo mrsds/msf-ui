@@ -18,7 +18,10 @@ import InfoOutlineIcon from "material-ui-icons/InfoOutline";
 import MyLocationIcon from "material-ui-icons/MyLocation";
 import Search from "material-ui-icons/Search";
 import Clear from "material-ui-icons/Clear";
-// import Dropdown from "react-toolbox/lib/dropdown";
+import Select from "material-ui/Select";
+import { FormControl } from "material-ui/Form";
+import Input, { InputLabel } from "material-ui/Input";
+import { MenuItem } from "material-ui/Menu";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import MetadataUtil from "utils/MetadataUtil";
 import appConfig from "constants/appConfig";
@@ -27,6 +30,7 @@ import * as mapActionsMSF from "actions/mapActions";
 import PageControls from "components/PageControls/PageControls";
 import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 import SearchInput from "components/Reusables/SearchInput";
+
 import MiscUtil from "_core/utils/MiscUtil";
 
 export class PlumesContainer extends Component {
@@ -131,7 +135,7 @@ export class PlumesContainer extends Component {
     }
 
     getAvailableFlightCampaigns() {
-        const campaigns = this.props.availableFeatures
+        return this.props.availableFeatures
             .reduce(
                 (acc, feature) =>
                     acc.includes(feature.get("flight_campaign"))
@@ -143,7 +147,6 @@ export class PlumesContainer extends Component {
             .map(value => {
                 return { value, label: value };
             });
-        return [{ value: null, label: "All" }].concat(campaigns);
     }
 
     makeResultsArea() {
@@ -194,6 +197,11 @@ export class PlumesContainer extends Component {
             [layerSidebarStyles.flexboxParent]: true,
             [layerSidebarStyles.featureItemContainer]: true
         });
+
+        let selectedFlightCampaignValue = "";
+        if (this.props.searchState.get("selectedFlightCampaign")) {
+            selectedFlightCampaignValue = this.props.searchState.get("selectedFlightCampaign");
+        }
         return (
             <div className={containerClasses}>
                 <div className={layerSidebarStyles.searchFiltersContainer}>
@@ -220,16 +228,28 @@ export class PlumesContainer extends Component {
                         }
                     />
                     <div id="plumeFilterDropdowns">
-                        {/* <Dropdown
-                            auto
-                            allowBlank={false}
-                            value={this.props.searchState.get("selectedFlightCampaign")}
-                            source={this.getAvailableFlightCampaigns()}
-                            className="dropdown"
-                            onChange={this.props.selectFlightCampaign}
-                            label="Flight Campaign"
-                            theme={{ values: "values" }}
-                        /> */}
+                        <FormControl>
+                            <InputLabel shrink={true} htmlFor="flightCampaginSelect">
+                                Flight Campaign
+                            </InputLabel>
+                            <Select
+                                displayEmpty={true}
+                                value={selectedFlightCampaignValue}
+                                onChange={evt => this.props.selectFlightCampaign(evt.target.value)}
+                                input={<Input name="age" id="flightCampaginSelect" />}
+                            >
+                                {
+                                    <MenuItem key="noFlightCampaignSelectItem" value="">
+                                        All
+                                    </MenuItem>
+                                }
+                                {this.getAvailableFlightCampaigns().map(result => (
+                                    <MenuItem key={result.value} value={result.value}>
+                                        {result.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </div>
                 </div>
                 <Divider />

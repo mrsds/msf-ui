@@ -1,5 +1,6 @@
 import * as types from "constants/actionTypes";
 import * as mapActions from "actions/mapActions";
+import * as coreMapActions from "_core/actions/mapActions";
 import * as appStrings from "_core/constants/appStrings";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
@@ -46,20 +47,20 @@ function updateFeatureSearchResults(category) {
     return { type: types.UPDATE_FEATURE_SEARCH_RESULTS, category };
 }
 
-export function updateInfrastructureCategoryFilter(layerName, evt) {
+export function updateInfrastructureCategoryFilter(layerName, active) {
     return (dispatch, getState) => {
         const layer = getState().map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA, layerName]);
-        dispatch(setGroupLayerActive(layer, evt));
+        dispatch(setGroupLayerActive(layer, active));
         if (
             getState()
                 .map.get("groups")
                 .find(group => group.get("id") === layer.get("group"))
                 .get("isActive")
         ) {
-            dispatch(mapActions.setLayerActive(layer.get("id"), evt));
+            dispatch(coreMapActions.setLayerActive(layer.get("id"), active));
         }
-        dispatch(setActiveFeatureCategories(layerName, evt));
-        dispatch(mapActions.updateFeatureList(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+        dispatch(setActiveFeatureCategories(layerName, active));
+        dispatch(mapActions.updateFeatureList_Map(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
     };
 }
 
