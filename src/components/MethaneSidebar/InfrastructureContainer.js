@@ -81,18 +81,14 @@ export class InfrastructureContainer extends Component {
         //     "feature-item-container-list-item": true,
         //     selected: isActive || isActiveDetail
         // });
-        const toggleLabelAction = this.props.toggleFeatureLabel.bind(
-            null,
-            layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-            feature
-        );
-        const toggleDetailAction = isActiveDetail
-            ? this.props.hideFeatureDetail
-            : this.props.setFeatureDetail.bind(
-                  null,
-                  layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-                  feature
-              );
+        const toggleLabelAction = () =>
+            this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, feature);
+
+        const toggleDetailAction = () =>
+            isActiveDetail
+                ? this.props.hideFeatureDetail
+                : this.props.setFeatureDetail(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, feature);
+
         const lat = MetadataUtil.getLat(feature, null);
         const long = MetadataUtil.getLong(feature, null);
         const centerMapAction =
