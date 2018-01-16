@@ -32,24 +32,25 @@ import {
     MapControlsContainer,
     CoordinateTracker
 } from "_core/components/Map";
-import { SettingsContainer } from "_core/components/Settings";
 import { ShareContainer } from "_core/components/Share";
 import { LayerInfoContainer } from "_core/components/LayerInfo";
 import { LoadingContainer } from "_core/components/Loading";
 import { HelpContainer } from "_core/components/Help";
 import { AlertsContainer } from "_core/components/Alerts";
-import { LayerMenuContainer } from "_core/components/LayerMenu";
+// import { LayerMenuContainer } from "_core/components/LayerMenu";
 import { MouseFollowerContainer } from "_core/components/MouseFollower";
 import { AnalyticsContainer } from "_core/components/Analytics";
 import { KeyboardControlsContainer } from "_core/components/KeyboardControls";
 import styles from "components/App/AppContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
+import SettingsContainerExtended from "components/Settings/SettingsContainerExtended";
 import MapContainerExtended from "components/Map/MapContainerExtended";
 import MapControlsContainerExtended from "components/Map/MapControlsContainerExtended";
 // import DateSliderContainer from "_core/components/DateSlider/DateSliderContainer";
 import TimelineContainer from "components/Timeline/TimelineContainer";
 import LayerSidebarContainer from "components/MethaneSidebar/LayerSidebarContainer";
 import AppBarContainer from "components/AppBar/AppBarContainer";
+import LayerMenuContainerExtended from "components/LayerMenu/LayerMenuContainerExtended";
 // import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContainer";
 
 const theme = createMuiTheme({
@@ -111,7 +112,7 @@ export class AppContainer extends Component {
 
                     // signal complete
                     this.props.completeInitialLoad();
-                    this.props.updateFeatureList_Layer(appConfig.DEFAULT_BBOX_EXTENT);
+                    this.props.updateFeatureList_Map();
                 }, 0);
             });
         });
@@ -131,10 +132,10 @@ export class AppContainer extends Component {
                     <LayerSidebarContainer />
                     <MapContainerExtended />
                     <AppBarContainer />
-                    <SettingsContainer />
+                    <SettingsContainerExtended />
                     <ShareContainer />
                     <LayerInfoContainer />
-                    {/* <LayerMenuContainer /> */}
+                    <LayerMenuContainerExtended />
                     <TimelineContainer />
                     <AlertsContainer />
                     <LoadingContainer />
@@ -159,7 +160,7 @@ AppContainer.propTypes = {
     runUrlConfig: PropTypes.func.isRequired,
     initializeMap: PropTypes.func.isRequired,
     setMapView: PropTypes.func.isRequired,
-    updateFeatureList_Layer: PropTypes.func.isRequired,
+    updateFeatureList_Map: PropTypes.func.isRequired,
     distractionFreeMode: PropTypes.bool.isRequired,
     mapControlsHidden: PropTypes.bool.isRequired
 };
@@ -183,7 +184,7 @@ function mapDispatchToProps(dispatch) {
         runUrlConfig: bindActionCreators(appActions.runUrlConfig, dispatch),
         initializeMap: bindActionCreators(mapActions.initializeMap, dispatch),
         setMapView: bindActionCreators(mapActions.setMapView, dispatch),
-        updateFeatureList_Layer: bindActionCreators(mapActionsMSF.updateFeatureList_Layer, dispatch)
+        updateFeatureList_Map: bindActionCreators(mapActionsMSF.updateFeatureList_Map, dispatch)
     };
 }
 

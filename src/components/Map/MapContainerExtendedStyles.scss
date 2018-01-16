@@ -1,0 +1,5 @@
+.mapContainer {
+    composes: mapContainer from "_core/components/Map/MapContainer.scss";
+    margin-top: 45px;
+    height: calc(100% - 45px);
+}

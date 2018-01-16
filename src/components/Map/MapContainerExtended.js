@@ -7,7 +7,7 @@ import * as appStrings from "_core/constants/appStrings";
 import * as actions from "_core/actions/mapActions";
 import { MapContainer } from "_core/components/Map";
 import MapContainer2DExtended from "components/Map/MapContainer2DExtended";
-import styles from "_core/components/Map/MapContainer.scss";
+import styles from "components/Map/MapContainerExtendedStyles.scss";
 
 export class MapContainerExtended extends MapContainer {
     render() {

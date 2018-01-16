@@ -1,0 +1,253 @@
+{
+    "layers": [
+        {
+            "id": "VISTA_2017_OILGAS_WELLS",
+            "title": "Vista 2017 - Oil & Gas Wells",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": false,
+            "visibleInGroup": false,
+            "url": "http://100.64.114.155:9090/vista?category=0&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "VISTA_2017_LIVESTOCK_DAIRIES",
+            "title": "Vista 2017 - Livestock Dairies",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.155:9090/vista?category=1&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "VISTA_2017_ANAEROBIC_LAGOONS",
+            "title": "Vista 2017 - Anaerobic Lagoons",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.155:9090/vista?category=2&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "VISTA_2017_CNG_FUELING_STATIONS",
+            "title": "Vista 2017 - CNG Fueling Stations",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.155:9090/vista?category=3&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "VISTA_2017_LNG_FUELING_STATIONS",
+            "title": "Vista 2017 - LNG Fueling Stations",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.155:9090/vista?category=4&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "VISTA_2017_NAT_GAS_STORE_FIELDS",
+            "title": "Vista 2017 - Natural Gas Storage Fields",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.155:9090/vista?category=5&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "VISTA_2017_NAT_GAS_PROC_PLANT",
+            "title": "Vista 2017 - Natural Gas Processing Plants",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.155:9090/vista?category=6&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "VISTA_2017_PETRO_REFINE",
+            "title": "Vista 2017 - Petroleum Refineries",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.155:9090/vista?category=8&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "VISTA_2017_WASTEWTR_TREAT_PLNT",
+            "title": "Vista 2017 - Wastewater Treatment Plants",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.155:9090/vista?category=9&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "VISTA_2017_POWER_PLANT",
+            "title": "Vista 2017 - Power Plants",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.155:9090/vista?category=10&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "VISTA_2017_LANDFILL",
+            "title": "Vista 2017 - Landfills",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.155:9090/vista?category=11&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "VISTA_2017_SOCAB_BOUND",
+            "title": "Vista 2017 - SoCAB Boundary",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": false,
+            "visibleInGroup": false,
+            "url": "http://100.64.114.155:9090/vista?category=13&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+
+        {
+            "id": "AVIRIS",
+            "title": "Methane Plume Observations",
+            "type": "data",
+            "handleAs": "aviris_plume",
+            "isDefault": true,
+            "url": "http://100.64.114.155:9090/aviris",
+            "thumbnailImage": "img/AVIRIS.png",
+            "palette": {
+                "name": "AVIRIS_plumes",
+                "handleAs": "json-fixed"
+            },
+            "min": 0,
+            "max": 4000,
+            "units": "density (kg/m^2)",
+            "metadata": {
+                "url":
+                    "default-data/msf-data/layer-metadata/AVIRIS.json",
+                "handleAs": "json"
+            },
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "GRIDDED_EMISSIONS_V1",
+            "title": "Gridded Methane",
+            "type": "data",
+            "handleAs": "vector_kmz",
+            "isDefault": false,
+            "url": "http://100.64.114.155/data/gridded/v1/kmz/vista_emissions.kmz",
+            "thumbnailImage": "img/gridded_methane_v1.png",
+            "layerOrder": 0,
+            "opacity": 0.3,
+            "metadata": {
+                "url":
+                    "default-data/msf-data/layer-metadata/GRIDDED_EMISSIONS_V1.json",
+                "handleAs": "json"
+            },
+            "updateParameters": { "time": false }
+        },
+
+        {
+            "id": "Reference_Labels",
+            "title": "Reference Labels",
+            "type": "reference",
+            "handleAs": "GIBS_raster",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "Reference_Features",
+            "title": "Reference Features",
+            "type": "reference",
+            "handleAs": "GIBS_raster",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "ESRI_World_Imagery",
+            "title": "ESRI High Resolution World Imagery",
+            "type": "basemap",
+            "thumbnailImage": "img/ESRI_World_Imagery.jpeg",
+            "isDefault": true,
+            "handleAs": "xyz_raster",
+            "updateParameters": { "time": false },
+            "wmtsOptions": {
+                "projection": "EPSG:4326",
+                "layer": "ESRI_World_Imagery",
+                "url":
+                    "https://services.arcgisonline.com/arcgis/rest/services/ESRI_Imagery_World_2D/MapServer/tile/{z}/{y}/{x}",
+                "tileGrid": {
+                    "minZoom": 1,
+                    "maxZoom": 16,
+                    "tileSize": 512
+                },
+                "urlFunctions": {
+                    "openlayers": "esriCustom512"
+                },
+                "tileFunctions": {
+                    "openlayers": "catsTile"
+                }
+            }
+        },
+        {
+            "id": "BlueMarble_ShadedRelief_Bathymetry",
+            "title": "Blue Marble, Shaded Relief w/Bathymetry",
+            "type": "basemap",
+            "thumbnailImage": "img/BlueMarble_ShadedRelief_Bathymetry.jpeg",
+            "handleAs": "GIBS_raster",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "OSM_Land_Water_Map",
+            "title": "Land/Water Map (data from OSM)",
+            "type": "basemap",
+            "thumbnailImage": "img/OSM_Land_Water_Map.png",
+            "handleAs": "GIBS_raster",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "ASTER_GDEM_Color_Shaded_Relief",
+            "title": "Digital Elevation Map (Color Shaded Relief)",
+            "type": "basemap",
+            "thumbnailImage": "img/ASTER_GDEM_Color_Shaded_Relief.jpeg",
+            "handleAs": "GIBS_raster",
+            "updateParameters": { "time": false }
+        }
+    ]
+}

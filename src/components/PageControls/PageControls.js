@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { IconButtonSmall } from "_core/components/Reusables";
+import Typography from "material-ui/Typography";
 import Divider from "material-ui/Divider";
 import ChevronLeftIcon from "material-ui-icons/ChevronLeft";
 import ChevronRightIcon from "material-ui-icons/ChevronRight";
@@ -26,7 +27,9 @@ export const PageControls = props => {
         <React.Fragment>
             <Divider />
             <div className={styles.root}>
-                <div className={styles.label}>{counterLabel}</div>
+                <Typography type="caption" className={styles.label}>
+                    {counterLabel}
+                </Typography>
                 <div className={styles.buttons}>
                     <IconButtonSmall
                         key="chevronLeft"

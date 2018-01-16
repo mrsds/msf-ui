@@ -8,6 +8,7 @@ import List, {
     ListItemText,
     ListItemSecondaryAction
 } from "material-ui/List";
+import Typography from "material-ui/Typography";
 import ListSubheader from "material-ui/List/ListSubheader";
 import Checkbox from "material-ui/Checkbox";
 import Divider from "material-ui/Divider";
@@ -95,12 +96,18 @@ export class InfrastructureContainer extends Component {
         const lat = MetadataUtil.getLat(feature, null);
         const long = MetadataUtil.getLong(feature, null);
         const centerMapAction =
-            lat && long ? this.props.centerMapOnPoint.bind(null, [long, lat]) : null;
+            lat && long ? () => this.props.centerMapOnFeature(feature, "VISTA") : null;
+        // const centerMapAction =
+        //     lat && long ? this.props.centerMapOnPoint.bind(null, [long, lat]) : null;
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem button onClick={isActiveDetail ? toggleDetailAction : toggleLabelAction}>
                     <ListItemText
-                        primary={feature.get("name")}
+                        primary={
+                            <Typography type="body1" noWrap>
+                                {feature.get("name")}
+                            </Typography>
+                        }
                         secondary={feature.get("category")}
                     />
                     <ListItemSecondaryAction>
@@ -220,7 +227,9 @@ export class InfrastructureContainer extends Component {
         let innerContent = "";
         if (hasResults) {
             innerContent = (
-                <List className={layerSidebarStyles.featureItemList}>{this.makeListItems()}</List>
+                <List dense className={layerSidebarStyles.featureItemList}>
+                    {this.makeListItems()}
+                </List>
             );
         } else {
             innerContent = (
@@ -342,6 +351,7 @@ export class InfrastructureContainer extends Component {
                     {/* </div> */}
                 </div>
                 <Divider />
+                <Divider />
                 {this.makeFacilityFilterList()}
                 {this.makeLoadingModal()}
                 {this.makeResultsArea()}
@@ -375,6 +385,7 @@ InfrastructureContainer.propTypes = {
     hideFeatureDetail: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
     centerMapOnPoint: PropTypes.func.isRequired,
+    centerMapOnFeature: PropTypes.func.isRequired,
     toggleFeatureLabel: PropTypes.func.isRequired
 };
 
@@ -404,6 +415,7 @@ function mapDispatchToProps(dispatch) {
         setFeatureDetail: bindActionCreators(layerSidebarActions.setFeatureDetail, dispatch),
         hideFeatureDetail: bindActionCreators(layerSidebarActions.hideFeatureDetail, dispatch),
         centerMapOnPoint: bindActionCreators(mapActionsMSF.centerMapOnPoint, dispatch),
+        centerMapOnFeature: bindActionCreators(mapActionsMSF.centerMapOnFeature, dispatch),
         toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch)
     };
 }

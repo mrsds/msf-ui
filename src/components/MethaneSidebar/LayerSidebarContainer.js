@@ -8,6 +8,7 @@ import * as layerSidebarActions from "actions/LayerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import InfrastructureContainer from "components/MethaneSidebar/InfrastructureContainer";
 import PlumesContainer from "components/MethaneSidebar/PlumesContainer";
+import Paper from "material-ui/Paper";
 import styles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
 import MiscUtil from "_core/utils/MiscUtil";
@@ -43,7 +44,6 @@ export class LayerSidebarContainer extends Component {
     }
 
     handleChange(index) {
-        console.log(index, "?");
         this.props.changeSidebarCategory(this.getCategoryForIndex(index));
     }
 
@@ -102,7 +102,7 @@ export class LayerSidebarContainer extends Component {
 
         let activeTabIndex = this.getIndexForCategory(this.props.activeFeatureCategory);
         return (
-            <div className={containerClasses}>
+            <Paper elevation={2} square={true} className={containerClasses}>
                 <AppBar position="static">
                     <Tabs
                         className={styles.tabsRoot}
@@ -129,7 +129,7 @@ export class LayerSidebarContainer extends Component {
                         {this.renderInfrastructureContainer()}
                     </div>
                 </div>
-            </div>
+            </Paper>
         );
     }
 }

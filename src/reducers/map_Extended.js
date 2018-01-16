@@ -17,8 +17,12 @@ export default function map_Extended(
             return opt_reducer.setGroupActive(state, action);
         case actionTypesMSF.CENTER_MAP_ON_POINT:
             return opt_reducer.centerMapOnPoint(state, action);
+        case actionTypesMSF.CENTER_MAP_ON_FEATURE:
+            return opt_reducer.centerMapOnFeature(state, action);
         case actionTypesMSF.TOGGLE_FEATURE_LABEL:
             return opt_reducer.toggleFeatureLabel(state, action);
+        case actionTypesMSF.CLEAR_FEATURE_LABELS:
+            return opt_reducer.clearFeatureLabels(state, action);
         case actionTypesMSF.UPDATE_FEATURE_DETAIL:
             return opt_reducer.toggleFeatureLabel(state, action);
         default:

@@ -14,7 +14,18 @@ const APP_CONFIG = Immutable.fromJS({
         vistaEndpoint:
             "http://100.64.114.155:9090/vista?maxLat={latMax}&maxLon={lonMax}&minLat={latMin}&minLon={lonMin}&category={category}",
         avirisEndpoint:
-            "http://100.64.114.155:9090/aviris?maxObjects=1000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}"
+            "http://100.64.114.155:9090/aviris?maxObjects=1000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}",
+        layerConfig: [
+            {
+                url: "default-data/msf-data/capabilities.xml",
+                type: "wmts/xml"
+            },
+            {
+                url: "default-data/msf-data/layers.json",
+                type: "json"
+            }
+        ],
+        paletteConfig: "default-data/msf-data/palettes.json"
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
     PLUME_START_DATE: new Date(2010, 0, 1),
@@ -31,7 +42,7 @@ export default appConfig;
 export const SEARCH_OPTIONS = Immutable.fromJS({
     [layerSidebarTypes.CATEGORY_INFRASTRUCTURE]: {
         shouldSort: true,
-        threshold: 0.6,
+        threshold: 0.3,
         location: 0,
         distance: 100,
         maxPatternLength: 32,
@@ -40,7 +51,7 @@ export const SEARCH_OPTIONS = Immutable.fromJS({
     },
     [layerSidebarTypes.CATEGORY_PLUMES]: {
         shouldSort: true,
-        threshold: 0.6,
+        threshold: 0.3,
         location: 0,
         distance: 100,
         maxPatternLength: 32,

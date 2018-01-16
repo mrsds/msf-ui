@@ -24,6 +24,7 @@ export function setGroupVisible(group, active) {
             .forEach(layer => {
                 const inGroup = layer.get("group") === group.get("id");
                 const shouldSwitch = active ? layer.get("visibleInGroup") : true;
+                // if (inGroup && shouldSwitch) {
                 if (inGroup && shouldSwitch) {
                     dispatch(mapActions.setLayerActive(layer.get("id"), active));
                 }
@@ -147,6 +148,10 @@ export function centerMapOnPoint(coords) {
     return { type: typesMSF.CENTER_MAP_ON_POINT, coords };
 }
 
+export function centerMapOnFeature(feature, featureType) {
+    return { type: typesMSF.CENTER_MAP_ON_FEATURE, feature, featureType };
+}
+
 export function toggleFeatureLabel(category, feature) {
     return dispatch => {
         dispatch(featureDetailActions.hideFeatureDetailContainer());
@@ -167,7 +172,10 @@ export function pixelClick(clickEvt) {
             category,
             selectedFeatureId
         );
-        if (selectedFeature) dispatch(updateFeatureLabel(category, selectedFeature, true));
+        dispatch(clearFeatureLabels());
+        if (selectedFeature) {
+            dispatch(updateFeatureLabel(category, selectedFeature, true));
+        }
         return { type: types.PIXEL_CLICK, clickEvt };
     };
 }
@@ -218,6 +226,10 @@ function updateFeatureLabel(category, feature, shuffleList) {
         feature,
         shuffleList
     };
+}
+
+function clearFeatureLabels() {
+    return { type: typesMSF.CLEAR_FEATURE_LABELS };
 }
 
 function getFeatureById(sidebarState, category, id) {

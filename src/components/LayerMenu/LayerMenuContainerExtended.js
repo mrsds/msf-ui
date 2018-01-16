@@ -2,34 +2,48 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button, IconButton } from "react-toolbox/lib/button";
+import Collapse from "material-ui/transitions/Collapse";
+import Typography from "material-ui/Typography";
+import Tooltip from "material-ui/Tooltip";
+import KeyboardArrowUpIcon from "material-ui-icons/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "material-ui-icons/KeyboardArrowDown";
+import List from "material-ui/List";
+import Paper from "material-ui/Paper";
 import * as appStrings from "_core/constants/appStrings";
-import * as layerActions from "_core/actions/LayerActions";
-import { LayerMenuContainer as CoreLayerMenuContainer } from "_core/components/LayerMenu/LayerMenuContainer";
-import LayerControlContainer from "components/LayerMenu/LayerControlContainerExtended";
+import * as mapActions from "_core/actions/mapActions";
+import { IconButtonSmall } from "_core/components/Reusables";
+import LayerControlContainerExtended from "components/LayerMenu/LayerControlContainerExtended";
 import GroupControlContainer from "components/LayerMenu/GroupControlContainer";
 import MiscUtil from "_core/utils/MiscUtil";
+import styles from "_core/components/LayerMenu/LayerMenuContainer.scss";
+import stylesExtended from "components/LayerMenu/LayerMenuContainerExtendedStyles.scss";
+import displayStyles from "_core/styles/display.scss";
 
-const miscUtil = new MiscUtil();
-
-export class LayerMenuContainer extends CoreLayerMenuContainer {
+export class LayerMenuContainer extends Component {
     render() {
         let layerList = this.props.layers
             .filter(layer => !layer.get("isDisabled"))
             .filter(layer => !layer.get("group"))
             .toList()
-            .sort(miscUtil.getImmutableObjectSort("title"));
+            .sort(MiscUtil.getImmutableObjectSort("title"));
         let totalNum = layerList.size;
         let activeNum = layerList.count(el => {
             return el.get("isActive");
         });
 
         // css classes
-        let layerMenuClasses = miscUtil.generateStringFromSet({
-            open: this.props.layerMenuOpen,
-            "hidden-fade-out": this.props.distractionFreeMode,
-            "hidden-fade-in": !this.props.distractionFreeMode
+        let layerMenuClasses = MiscUtil.generateStringFromSet({
+            [styles.layerMenu]: true,
+            [stylesExtended.layerMenu]: true,
+            [displayStyles.hiddenFadeOut]: this.props.distractionFreeMode,
+            [displayStyles.hiddenFadeIn]: !this.props.distractionFreeMode
         });
+
+        let collapseIconClasses = MiscUtil.generateStringFromSet({
+            [styles.expand]: !this.props.layerMenuOpen,
+            [styles.collapse]: this.props.layerMenuOpen
+        });
+
         layerList.sort((a, b) => {
             const aOrder = a.get("layerOrder");
             const bOrder = b.get("layerOrder");
@@ -38,56 +52,57 @@ export class LayerMenuContainer extends CoreLayerMenuContainer {
             if (!bOrder) return 1;
             return aOrder - bOrder;
         });
+
         return (
-            <div id="layerMenu" className={layerMenuClasses}>
-                <div id="layerHeaderRow" className="row middle-xs">
-                    <div className="col-xs-8 text-left">
-                        <span className="layer-menu-header">Map Layers</span>
+            <div className={layerMenuClasses}>
+                <Paper elevation={1}>
+                    <div className={styles.layerHeaderRow}>
+                        <div className={styles.layerHeader}>
+                            <Typography type="subheading" color="inherit">
+                                Map Layers
+                            </Typography>
+                        </div>
+                        <div className="text-right">
+                            <Tooltip
+                                title={
+                                    this.props.layerMenuOpen
+                                        ? "Close layer menu"
+                                        : "Open layer menu"
+                                }
+                                placement="bottom"
+                            >
+                                <IconButtonSmall
+                                    className={collapseIconClasses}
+                                    color="default"
+                                    onClick={() =>
+                                        this.props.setLayerMenuOpen(!this.props.layerMenuOpen)
+                                    }
+                                >
+                                    <KeyboardArrowDownIcon />
+                                </IconButtonSmall>
+                            </Tooltip>
+                        </div>
                     </div>
-                    <div className="col-xs-4 text-right">
-                        <IconButton
-                            neutral
-                            inverse
-                            data-tip={
-                                this.props.layerMenuOpen ? (
-                                    "Close layer menu"
-                                ) : (
-                                    "Open layer menu"
-                                )
-                            }
-                            data-place="left"
-                            icon={
-                                this.props.layerMenuOpen ? (
-                                    "keyboard_arrow_down"
-                                ) : (
-                                    "keyboard_arrow_up"
-                                )
-                            }
-                            className="no-padding mini-xs-waysmall"
-                            onClick={() =>
-                                this.props.setLayerMenuOpen(
-                                    !this.props.layerMenuOpen
-                                )}
-                        />
-                    </div>
-                </div>
-                <div id="layerMenuContent">
-                    {this.props.groups.map(group => (
-                        <GroupControlContainer key={group} group={group} />
-                    ))}
-                    {layerList
-                        .reverse()
-                        .map(layer => (
-                            <LayerControlContainer
-                                key={layer.get("id") + "_layer_listing"}
-                                layer={layer}
-                                activeNum={activeNum}
-                                palette={this.props.palettes.get(
-                                    layer.getIn(["palette", "name"])
-                                )}
-                            />
-                        ))}
-                </div>
+                    <Collapse in={this.props.layerMenuOpen} timeout="auto">
+                        <div className={styles.layerMenuContent}>
+                            <List disablePadding>
+                                {this.props.groups.map(group => (
+                                    <GroupControlContainer key={group} layer={group} />
+                                ))}
+                                {layerList.map(layer => (
+                                    <LayerControlContainerExtended
+                                        key={layer.get("id") + "_layer_listing"}
+                                        layer={layer}
+                                        activeNum={activeNum}
+                                        palette={this.props.palettes.get(
+                                            layer.getIn(["palette", "name"])
+                                        )}
+                                    />
+                                ))}
+                            </List>
+                        </div>
+                    </Collapse>
+                </Paper>
             </div>
         );
     }
@@ -114,10 +129,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setLayerMenuOpen: bindActionCreators(
-            layerActions.setLayerMenuOpen,
-            dispatch
-        )
+        setLayerMenuOpen: bindActionCreators(mapActions.setLayerMenuOpen, dispatch)
     };
 }
 

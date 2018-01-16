@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import map_Extended from "reducers/map_Extended";
 import settings from "_core/reducers/settings";
 import help from "_core/reducers/help";
-import layerInfo_Extended from "reducers/layerInfo_Extended";
+import layerInfo from "_core/reducers/layerInfo";
 import share from "_core/reducers/share";
 import dateSlider from "_core/reducers/dateSlider";
 import asynchronous_Extended from "reducers/async_Extended";
@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
     map: map_Extended,
     settings,
     help,
-    layerInfo: layerInfo_Extended,
+    layerInfo: layerInfo,
     share,
     dateSlider,
     asynchronous: asynchronous_Extended,

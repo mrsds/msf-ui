@@ -9,6 +9,7 @@ import List, {
     ListItemSecondaryAction
 } from "material-ui/List";
 import Divider from "material-ui/Divider";
+import Typography from "material-ui/Typography";
 import * as layerSidebarActions from "actions/LayerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import IconButton from "material-ui/IconButton";
@@ -74,8 +75,10 @@ export class PlumesContainer extends Component {
             : this.props.setFeatureDetail.bind(null, layerSidebarTypes.CATEGORY_PLUMES, feature);
         const lat = MetadataUtil.getLat(feature, null);
         const long = MetadataUtil.getLong(feature, null);
+        // const centerMapAction =
+        //     lat && long ? this.props.centerMapOnPoint.bind(null, [long, lat]) : null;
         const centerMapAction =
-            lat && long ? this.props.centerMapOnPoint.bind(null, [long, lat]) : null;
+            lat && long ? () => this.props.centerMapOnFeature(feature, "AVIRIS") : null;
 
         const datetime = feature.get("datetime");
         const dateString = datetime
@@ -85,7 +88,14 @@ export class PlumesContainer extends Component {
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem button onClick={isActiveDetail ? toggleDetailAction : toggleLabelAction}>
-                    <ListItemText primary={dateString} secondary={feature.get("name")} />
+                    <ListItemText
+                        primary={
+                            <Typography type="body1" noWrap>
+                                {dateString}
+                            </Typography>
+                        }
+                        secondary={feature.get("name")}
+                    />
                     <ListItemSecondaryAction>
                         <IconButton
                             color="default"
@@ -157,7 +167,9 @@ export class PlumesContainer extends Component {
         let innerContent = "";
         if (hasResults) {
             innerContent = (
-                <List className={layerSidebarStyles.featureItemList}>{this.makeListItems()}</List>
+                <List dense className={layerSidebarStyles.featureItemList}>
+                    {this.makeListItems()}
+                </List>
             );
         } else {
             innerContent = (
@@ -190,9 +202,6 @@ export class PlumesContainer extends Component {
     }
 
     render() {
-        const startDate = this.props.searchState.get("startDate");
-        const endDate = this.props.searchState.get("endDate");
-
         let containerClasses = MiscUtil.generateStringFromSet({
             [layerSidebarStyles.flexboxParent]: true,
             [layerSidebarStyles.featureItemContainer]: true
@@ -227,7 +236,7 @@ export class PlumesContainer extends Component {
                             )
                         }
                     />
-                    <div id="plumeFilterDropdowns">
+                    <div>
                         <FormControl>
                             <InputLabel shrink={true} htmlFor="flightCampaginSelect">
                                 Flight Campaign
@@ -253,6 +262,7 @@ export class PlumesContainer extends Component {
                     </div>
                 </div>
                 <Divider />
+                <Divider />
                 {this.makeLoadingModal()}
                 {this.makeResultsArea()}
             </div>
@@ -275,6 +285,7 @@ PlumesContainer.propTypes = {
     selectFlightCampaign: PropTypes.func.isRequired,
     availableFeatures: PropTypes.object.isRequired,
     centerMapOnPoint: PropTypes.func.isRequired,
+    centerMapOnFeature: PropTypes.func.isRequired,
     toggleFeatureLabel: PropTypes.func.isRequired
 };
 
@@ -304,6 +315,7 @@ function mapDispatchToProps(dispatch) {
             dispatch
         ),
         centerMapOnPoint: bindActionCreators(mapActionsMSF.centerMapOnPoint, dispatch),
+        centerMapOnFeature: bindActionCreators(mapActionsMSF.centerMapOnFeature, dispatch),
         toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch)
     };
 }

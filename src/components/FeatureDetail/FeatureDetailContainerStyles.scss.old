@@ -1,11 +1,13 @@
+@import "~styles/misc";
+
 .feature-detail-container {
   @include selectable(text);
   background: white;
-  left: 450px;
+  left: $layer-sidebar-width;
   position: absolute;
   z-index: 1;
   height: calc(100% - 42px);
-  width: calc(100% - 450px);
+  width: calc(100% - $layer-sidebar-width);
   overflow: auto;
   top: 42px;
   background: $color-background;
@@ -92,7 +94,7 @@
 // .feature-detail-card-container {
 // 	position: absolute;
 // 	top: 42px;
-// 	left: 450px;
+// 	left: $layer-sidebar-width;
 // 	height: 100%;
 //   overflow: auto;
 //   z-index: 1;

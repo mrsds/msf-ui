@@ -1,8 +1,10 @@
+@import "~styles/misc";
+
 .elementsContainer {
     position: absolute;
     bottom: 0px;
-    left: 450px;
-    width: calc(100% - 450px);
+    left: $layer-sidebar-width;
+    width: calc(100% - #{$layer-sidebar-width});
     display: flex;
 }
 .timelineBackground {
