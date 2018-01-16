@@ -3,24 +3,27 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button } from "react-toolbox/lib/button";
+import Button from "material-ui/Button";
 import * as featureDetailActions from "actions/FeatureDetailActions";
-import { Card, CardMedia, CardTitle, CardText, CardActions } from "react-toolbox/lib/card";
+import Typography from "material-ui/Typography";
+import Grid from "material-ui/Grid";
+import Card, { CardActions, CardContent, CardMedia } from "material-ui/Card";
 import MetadataUtil from "utils/MetadataUtil";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import styles from "components/FeatureDetail/FeatureDetailContainerStyles.scss";
 
 export class FeatureDetailContainer extends Component {
-    getCategory() {
-        try {
-            console.dir(this.props.feature.get("metadata").toJS());
-            return this.props.feature
-                .get("metadata")
-                .find(val => val.get("name").toLowerCase() === "category")
-                .get("value");
-        } catch (e) {
-            return "(no category)";
-        }
-    }
+    // getCategory() {
+    //     try {
+    //         console.dir(this.props.feature.get("metadata").toJS());
+    //         return this.props.feature
+    //             .get("metadata")
+    //             .find(val => val.get("name").toLowerCase() === "category")
+    //             .get("value");
+    //     } catch (e) {
+    //         return "(no category)";
+    //     }
+    // }
 
     makeInfoFields(fieldInfo) {
         const fields = fieldInfo.map(field => {
@@ -28,9 +31,9 @@ export class FeatureDetailContainer extends Component {
             if (field.subtitle) {
                 return (
                     <div key={field.name + field.subtitle}>
-                        <label className="stacked">
-                            <span className="main">{field.name}</span>
-                            <span className="sub">{field.subtitle}</span>
+                        <label className={styles.stacked}>
+                            <span className={styles.main}>{field.name}</span>
+                            <span className={styles.sub}>{field.subtitle}</span>
                         </label>
                         <span>
                             {field.value}
@@ -49,27 +52,28 @@ export class FeatureDetailContainer extends Component {
                 </div>
             );
         });
-        return <div className="info-box">{fields}</div>;
+        return <div className={styles.infoBox}>{fields}</div>;
     }
 
     renderFeatureDetailContainer(headerImageUrl, title, subtitle, featureBody) {
         return (
-            <div className="feature-detail-container">
+            <div className={styles.featureDetailContainer}>
                 <Button
                     raised
-                    className="floating-back-button"
-                    label="Back to Map"
+                    className={styles.floatingBackButton}
                     onClick={this.props.hideFeatureDetailContainer}
-                />
+                >
+                    Back to Map
+                </Button>
                 <div
-                    className="header-image"
+                    className={styles.headerImage}
                     style={{ backgroundImage: `url("${headerImageUrl}")` }}
                 />
-                <div className="header">
-                    <h2 className="header-title">{title}</h2>
-                    <p className="header-subtitle">{subtitle}</p>
+                <div className={styles.header}>
+                    <h2 className={styles.headerTitle}>{title}</h2>
+                    <p className={styles.headerSubtitle}>{subtitle}</p>
                 </div>
-                <div className="feature-detail-body">{featureBody}</div>
+                <div className={styles.featureDetailBody}>{featureBody}</div>
             </div>
         );
     }
@@ -114,31 +118,37 @@ export class FeatureDetailContainer extends Component {
         let featureHeaderImage = googleMapsStaticImgUrl;
         let featureBody = (
             <div>
-                <Card theme={{ card: "card" }}>
-                    <CardTitle title={"Facility Overview"} theme={{ title: "card-title" }} />
-                    <CardText>{this.makeInfoFields(observationDataFields)}</CardText>
+                <Card className={styles.cardRoot}>
+                    <CardContent>
+                        <Typography type="headline" component="h2">
+                            Facility Overview
+                        </Typography>
+                        {this.makeInfoFields(observationDataFields)}
+                    </CardContent>
                     <CardActions>
                         <Button
-                            disabled={!googleMapsUri}
-                            primary
-                            flat
+                            color="primary"
                             href={googleMapsUri}
                             target="_blank"
+                            disabled={!googleMapsUri}
+                            dense
                         >
                             View In Google Maps
                         </Button>
                     </CardActions>
                 </Card>
-                <Card theme={{ card: "card" }}>
-                    <CardTitle title={"VISTA Facility Metadata"} theme={{ title: "card-title" }} />
-                    <CardText>
+                <Card className={styles.cardRoot}>
+                    <CardContent>
+                        <Typography type="headline" component="h2">
+                            VISTA Facility Metadata
+                        </Typography>
                         {this.makeInfoFields(
                             this.props.feature
                                 .get("metadata")
                                 .sortBy(x => x.get("name"))
                                 .toJS()
                         )}
-                    </CardText>
+                    </CardContent>
                 </Card>
             </div>
         );
@@ -192,47 +202,57 @@ export class FeatureDetailContainer extends Component {
         let featureHeaderImage = googleMapsStaticImgUrl;
         let featureBody = (
             <div>
-                <Card theme={{ card: "card" }}>
-                    <CardTitle title={"Observation Data"} theme={{ title: "card-title" }} />
-                    <CardText>
+                <Card className={styles.cardRoot}>
+                    <CardContent>
+                        <Typography type="headline" component="h2">
+                            Observation Data
+                        </Typography>
                         {this.makeInfoFields(
                             this.props.feature
                                 .get("metadata")
                                 .sortBy(x => x.get("name"))
                                 .toJS()
                         )}
-                    </CardText>
+                    </CardContent>
                     <CardActions>
                         <Button
-                            disabled={!googleMapsUri}
-                            primary
-                            flat
+                            color="primary"
                             href={googleMapsUri}
                             target="_blank"
+                            disabled={!googleMapsUri}
+                            dense
                         >
                             View In Google Maps
                         </Button>
                     </CardActions>
                 </Card>
-                <div className="image-cards-container">
-                    <Card theme={{ card: "card" }}>
-                        <CardTitle
-                            title={"Observation Plume Imagery"}
-                            theme={{ title: "card-title" }}
-                        />
-                        <div className="observation-image">
-                            <img src={this.props.feature.get("rgbqlctr_url")} />
-                        </div>
-                    </Card>
-                    <Card theme={{ card: "card" }}>
-                        <CardTitle
-                            title={"Observation RGB Imagery"}
-                            theme={{ title: "card-title" }}
-                        />
-                        <div className="observation-image">
-                            <img src={this.props.feature.get("png_url")} />
-                        </div>
-                    </Card>
+                <div className={styles.imageCardsContainer}>
+                    <Grid container spacing={16}>
+                        <Grid item xs>
+                            <Card className={styles.cardRoot}>
+                                <CardContent>
+                                    <Typography type="headline" component="h2">
+                                        Observation Methane Plume Imagery
+                                    </Typography>
+                                    <div className={styles.observationImage}>
+                                        <img src={this.props.feature.get("rgbqlctr_url")} />
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item xs>
+                            <Card className={styles.cardRoot}>
+                                <CardContent>
+                                    <Typography type="headline" component="h2">
+                                        Observation RGB Imagery
+                                    </Typography>
+                                    <div className={styles.observationImage}>
+                                        <img src={this.props.feature.get("png_url")} />
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    </Grid>
                 </div>
             </div>
         );

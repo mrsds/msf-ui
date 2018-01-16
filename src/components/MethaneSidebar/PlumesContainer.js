@@ -26,7 +26,6 @@ import { MenuItem } from "material-ui/Menu";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import MetadataUtil from "utils/MetadataUtil";
 import appConfig from "constants/appConfig";
-import moment from "moment";
 import * as mapActionsMSF from "actions/mapActions";
 import PageControls from "components/PageControls/PageControls";
 import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
@@ -75,15 +74,11 @@ export class PlumesContainer extends Component {
             : this.props.setFeatureDetail.bind(null, layerSidebarTypes.CATEGORY_PLUMES, feature);
         const lat = MetadataUtil.getLat(feature, null);
         const long = MetadataUtil.getLong(feature, null);
-        // const centerMapAction =
-        //     lat && long ? this.props.centerMapOnPoint.bind(null, [long, lat]) : null;
         const centerMapAction =
             lat && long ? () => this.props.centerMapOnFeature(feature, "AVIRIS") : null;
 
         const datetime = feature.get("datetime");
-        const dateString = datetime
-            ? moment(datetime).format("MMMM Do, YYYY, H:mm [UTC]")
-            : "(no date)";
+        const dateString = MiscUtilExtended.formatPlumeDatetime(datetime);
 
         return (
             <React.Fragment key={feature.get("id")}>

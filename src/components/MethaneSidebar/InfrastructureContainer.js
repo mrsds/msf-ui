@@ -97,8 +97,6 @@ export class InfrastructureContainer extends Component {
         const long = MetadataUtil.getLong(feature, null);
         const centerMapAction =
             lat && long ? () => this.props.centerMapOnFeature(feature, "VISTA") : null;
-        // const centerMapAction =
-        //     lat && long ? this.props.centerMapOnPoint.bind(null, [long, lat]) : null;
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem button onClick={isActiveDetail ? toggleDetailAction : toggleLabelAction}>

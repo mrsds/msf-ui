@@ -37,7 +37,6 @@ import { LayerInfoContainer } from "_core/components/LayerInfo";
 import { LoadingContainer } from "_core/components/Loading";
 import { HelpContainer } from "_core/components/Help";
 import { AlertsContainer } from "_core/components/Alerts";
-// import { LayerMenuContainer } from "_core/components/LayerMenu";
 import { MouseFollowerContainer } from "_core/components/MouseFollower";
 import { AnalyticsContainer } from "_core/components/Analytics";
 import { KeyboardControlsContainer } from "_core/components/KeyboardControls";
@@ -46,12 +45,11 @@ import displayStyles from "_core/styles/display.scss";
 import SettingsContainerExtended from "components/Settings/SettingsContainerExtended";
 import MapContainerExtended from "components/Map/MapContainerExtended";
 import MapControlsContainerExtended from "components/Map/MapControlsContainerExtended";
-// import DateSliderContainer from "_core/components/DateSlider/DateSliderContainer";
 import TimelineContainer from "components/Timeline/TimelineContainer";
 import LayerSidebarContainer from "components/MethaneSidebar/LayerSidebarContainer";
 import AppBarContainer from "components/AppBar/AppBarContainer";
 import LayerMenuContainerExtended from "components/LayerMenu/LayerMenuContainerExtended";
-// import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContainer";
+import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContainer";
 
 const theme = createMuiTheme({
     typography: {
@@ -143,7 +141,7 @@ export class AppContainer extends Component {
                     <MouseFollowerContainer />
                     <AnalyticsContainer />
                     <KeyboardControlsContainer />
-                    {/* <FeatureDetailContainer /> */}
+                    <FeatureDetailContainer />
                     <MapControlsContainerExtended />
                     <CoordinateTracker />
                 </div>

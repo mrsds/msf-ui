@@ -403,16 +403,11 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         const isVisible = Ol_Extent.containsExtent(currentMapExtent, featureExtent);
 
         if (toggleOn) {
-            // Add label and remove reference icon
-            // if (!isVisible) {
-            // this.map.getView().setCenter(featureExtent);
-            // }
-            // if (!isVisible) this.map.getView().fit(featureExtent);
             const center = Ol_Extent.getCenter(featureExtent);
             this.addFeatureLabel(
                 featureId,
+                MiscUtilExtended.formatPlumeDatetime(pickedFeature.get("datetime")),
                 pickedFeature.get("name"),
-                pickedFeature.get("id"),
                 center,
                 {
                     sourceLayerId: avirisLayerGroup.get("_layerId"),
@@ -454,10 +449,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                     // If we're adding a label, we change the styling of the feature to be highlighted,
                     // center the map to the feature if it's not entirely in the map, and create/place a tooltip.
                     if (toggleOn) {
-                        // if (!Ol_Extent.containsExtent(currentMapExtent, featureExtent)) {
-                        // this.map.getView().setCenter(featureExtent);
-                        // this.map.getView().fit(featureExtent);
-                        // }
                         this.addFeatureLabel(
                             featureId,
                             pickedFeature.get("name"),

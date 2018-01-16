@@ -1,5 +1,6 @@
 import MiscUtil from "_core/utils/MiscUtil";
 import * as references from "constants/references";
+import moment from "moment";
 
 export default class MiscUtilExtended extends MiscUtil {
     static getCountyFromFeature(feature, errStr) {
@@ -15,5 +16,9 @@ export default class MiscUtilExtended extends MiscUtil {
     }
     static getCaCountyNameFromCode(code) {
         return references.CA_COUNTY_LOOKUP.get(code, null);
+    }
+
+    static formatPlumeDatetime(datetime) {
+        return datetime ? moment(datetime).format("MMMM Do, YYYY, H:mm [UTC]") : "(no date)";
     }
 }
