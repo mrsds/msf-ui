@@ -88,7 +88,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         return mapLayer;
     }
 
-    createAvirisLayer(scope, layerJson) {
+    createAvirisLayer(layerJson) {
         // Create plume raster layer
         let plume_url = layerJson.plume_url;
         let shape = layerJson.shape;
@@ -165,10 +165,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
 
                 // Create layers for each AVIRIS feature and add the layer group (along with the icon layer) to the map
                 const avirisLayerGroup = new Ol_Layer_Group({
-                    layers: [
-                        ...json.map(json => this.createAvirisLayer(this, json)),
-                        avirisIconLayer
-                    ],
+                    layers: [...json.map(json => this.createAvirisLayer(json)), avirisIconLayer],
                     opacity: layer.get("opacity")
                 });
                 avirisLayerGroup.set("_layerId", "AVIRIS");
