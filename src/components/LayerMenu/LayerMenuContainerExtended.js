@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Collapse from "material-ui/transitions/Collapse";
 import Typography from "material-ui/Typography";
+import Divider from "material-ui/Divider";
 import Tooltip from "material-ui/Tooltip";
 import KeyboardArrowUpIcon from "material-ui-icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "material-ui-icons/KeyboardArrowDown";
@@ -56,7 +57,7 @@ export class LayerMenuContainer extends Component {
         return (
             <div className={layerMenuClasses}>
                 <Paper elevation={1}>
-                    <div className={styles.layerHeaderRow}>
+                    <div className={stylesExtended.layerHeaderRow}>
                         <div className={styles.layerHeader}>
                             <Typography type="subheading" color="inherit">
                                 Map Layers
@@ -84,6 +85,8 @@ export class LayerMenuContainer extends Component {
                         </div>
                     </div>
                     <Collapse in={this.props.layerMenuOpen} timeout="auto">
+                        <Divider />
+                        <Divider />
                         <div className={styles.layerMenuContent}>
                             <List disablePadding>
                                 {this.props.groups.map(group => (
