@@ -39,6 +39,7 @@ export class GroupControlContainer extends LayerControlContainerCore {
 GroupControlContainer.propTypes = {
     mapActionsExtended: PropTypes.object.isRequired,
     mapActions: PropTypes.object.isRequired,
+    activeNum: PropTypes.number.isRequired,
     layer: PropTypes.object.isRequired
 };
 

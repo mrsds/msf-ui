@@ -87,7 +87,11 @@ export class LayerMenuContainer extends Component {
                         <div className={styles.layerMenuContent}>
                             <List disablePadding>
                                 {this.props.groups.map(group => (
-                                    <GroupControlContainer key={group} layer={group} />
+                                    <GroupControlContainer
+                                        activeNum={activeNum}
+                                        key={group}
+                                        layer={group}
+                                    />
                                 ))}
                                 {layerList.map(layer => (
                                     <LayerControlContainerExtended
