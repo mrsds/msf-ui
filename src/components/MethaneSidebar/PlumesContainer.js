@@ -16,6 +16,7 @@ import IconButton from "material-ui/IconButton";
 import { CircularProgress } from "material-ui/Progress";
 import CloudOffOutlineIcon from "mdi-material-ui/CloudOffOutline";
 import InfoOutlineIcon from "material-ui-icons/InfoOutline";
+import InfoIcon from "material-ui-icons/Info";
 import MyLocationIcon from "material-ui-icons/MyLocation";
 import Search from "material-ui-icons/Search";
 import Clear from "material-ui-icons/Clear";
@@ -60,10 +61,9 @@ export class PlumesContainer extends Component {
     makeListItem(feature) {
         const isActive = this.isActiveFeature(feature);
         const isActiveDetail = this.isActiveDetailFeature(feature);
-        // const itemClass = MiscUtilExtended.generateStringFromSet({
-        //     "feature-item-container-list-item": true,
-        //     selected: isActive || isActiveDetail
-        // });
+        const itemClass = MiscUtilExtended.generateStringFromSet({
+            [layerSidebarStyles.selectedItem]: isActive || isActiveDetail
+        });
         const toggleLabelAction = this.props.toggleFeatureLabel.bind(
             null,
             layerSidebarTypes.CATEGORY_PLUMES,
@@ -82,7 +82,11 @@ export class PlumesContainer extends Component {
 
         return (
             <React.Fragment key={feature.get("id")}>
-                <ListItem button onClick={isActiveDetail ? toggleDetailAction : toggleLabelAction}>
+                <ListItem
+                    className={itemClass}
+                    button
+                    onClick={isActiveDetail ? toggleDetailAction : toggleLabelAction}
+                >
                     <ListItemText
                         primary={
                             <Typography type="body1" noWrap>
@@ -101,11 +105,11 @@ export class PlumesContainer extends Component {
                             <MyLocationIcon />
                         </IconButton>
                         <IconButton
-                            color={isActive || isActiveDetail ? "primary" : "default"}
+                            color={isActiveDetail ? "primary" : "default"}
                             key={feature.get("id") + "_info_icon"}
                             onClick={toggleDetailAction}
                         >
-                            <InfoOutlineIcon />
+                            {isActiveDetail ? <InfoIcon /> : <InfoOutlineIcon />}
                         </IconButton>
                     </ListItemSecondaryAction>
                 </ListItem>

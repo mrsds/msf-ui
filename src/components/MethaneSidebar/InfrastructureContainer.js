@@ -20,6 +20,7 @@ import { CircularProgress } from "material-ui/Progress";
 import DomainIcon from "mdi-material-ui/Domain";
 import MyLocationIcon from "material-ui-icons/MyLocation";
 import InfoOutlineIcon from "material-ui-icons/InfoOutline";
+import InfoIcon from "material-ui-icons/Info";
 import Search from "material-ui-icons/Search";
 import Clear from "material-ui-icons/Clear";
 import Select from "material-ui/Select";
@@ -65,22 +66,21 @@ export class InfrastructureContainer extends Component {
         );
     }
 
-    getCountyLabel(feature) {
-        const countyName = MiscUtilExtended.getCountyFromFeature(feature, null);
-        return countyName ? countyName + " County" : "(no county)";
-    }
+    // getCountyLabel(feature) {
+    //     const countyName = MiscUtilExtended.getCountyFromFeature(feature, null);
+    //     return countyName ? countyName + " County" : "(no county)";
+    // }
 
-    truncateName(nameString) {
-        return nameString.length > 20 ? nameString.slice(0, 17) + "..." : nameString;
-    }
+    // truncateName(nameString) {
+    //     return nameString.length > 20 ? nameString.slice(0, 17) + "..." : nameString;
+    // }
 
     makeListItem(feature) {
         const isActive = this.isActiveFeature(feature);
         const isActiveDetail = this.isActiveDetailFeature(feature);
-        // const itemClass = MiscUtilExtended.generateStringFromSet({
-        //     "feature-item-container-list-item": true,
-        //     selected: isActive || isActiveDetail
-        // });
+        const itemClass = MiscUtilExtended.generateStringFromSet({
+            [layerSidebarStyles.selectedItem]: isActive || isActiveDetail
+        });
         const toggleLabelAction = () =>
             this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, feature);
 
@@ -95,7 +95,11 @@ export class InfrastructureContainer extends Component {
             lat && long ? () => this.props.centerMapOnFeature(feature, "VISTA") : null;
         return (
             <React.Fragment key={feature.get("id")}>
-                <ListItem button onClick={isActiveDetail ? toggleDetailAction : toggleLabelAction}>
+                <ListItem
+                    className={itemClass}
+                    button
+                    onClick={isActiveDetail ? toggleDetailAction : toggleLabelAction}
+                >
                     <ListItemText
                         primary={
                             <Typography type="body1" noWrap>
@@ -114,11 +118,11 @@ export class InfrastructureContainer extends Component {
                             <MyLocationIcon />
                         </IconButton>
                         <IconButton
-                            color={isActive || isActiveDetail ? "primary" : "default"}
+                            color={isActiveDetail ? "primary" : "default"}
                             key={feature.get("id") + "_info_icon"}
                             onClick={toggleDetailAction}
                         >
-                            <InfoOutlineIcon />
+                            {isActiveDetail ? <InfoIcon /> : <InfoOutlineIcon />}
                         </IconButton>
                     </ListItemSecondaryAction>
                 </ListItem>
