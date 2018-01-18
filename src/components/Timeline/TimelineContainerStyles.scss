@@ -22,15 +22,15 @@
     &.overflow {
         overflow: visible;
     }
-    &.timelineDragging {
-        :global(.vis-time-axis):global(.vis-foreground) {
-            :global(.vis-text):hover {
-                &:after {
-                    background: none;
-                }
-            }
-        }
-    }
+    // &.timelineDragging {
+    //     :global(.vis-time-axis):global(.vis-foreground) {
+    //         :global(.vis-text):hover {
+    //             &:after {
+    //                 background: none;
+    //             }
+    //         }
+    //     }
+    // }
 }
 .stepSize_seconds {
     :global(.vis-time-axis) {
@@ -161,7 +161,9 @@
         background: none;
     }
     :global(.vis-item) :global(.vis-item-content) {
-        margin-left: 14px !important;
+        // margin-left: 12px !important;
+        margin-left: 0px !important;
+        margin-top: -6px;
         padding: 0;
     }
     :global(.vis-drag-center) {
@@ -174,32 +176,32 @@
             font-weight: 300;
             color: white;
             text-align: center;
-            &:hover {
-                &:after {
-                    content: " ";
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(222, 222, 222, 0.32);
-                    position: absolute;
-                    left: 0;
-                    z-index: -1;
-                    border-radius: 2px;
-                    top: 0px;
-                }
-            }
-            &:global(.vis-minor) {
-                &:hover:after {
-                    // top: -2px;
-                    border-top-left-radius: 0px;
-                    border-top-right-radius: 0px;
-                }
-            }
-            &:global(.vis-major) {
-                &:hover:after {
-                    border-bottom-left-radius: 0px;
-                    border-bottom-right-radius: 0px;
-                }
-            }
+            // &:hover {
+            //     &:after {
+            //         content: " ";
+            //         width: 100%;
+            //         height: 100%;
+            //         background: rgba(222, 222, 222, 0.32);
+            //         position: absolute;
+            //         left: 0;
+            //         z-index: -1;
+            //         border-radius: 2px;
+            //         top: 0px;
+            //     }
+            // }
+            // &:global(.vis-minor) {
+            //     &:hover:after {
+            //         // top: -2px;
+            //         border-top-left-radius: 0px;
+            //         border-top-right-radius: 0px;
+            //     }
+            // }
+            // &:global(.vis-major) {
+            //     &:hover:after {
+            //         border-bottom-left-radius: 0px;
+            //         border-bottom-right-radius: 0px;
+            //     }
+            // }
         }
     }
     :global(.vis-time-axis) :global(.vis-grid):global(.vis-major):after {
@@ -227,36 +229,44 @@
         height: 17px !important;
         overflow: initial;
         border-bottom: 2px solid #dcdcdc;
-        &:active {
-            cursor: grabbing;
-        }
+        // &:active {
+        //     cursor: grabbing;
+        // }
     }
     :global(.vis-selected):global(.vis-editable) {
         cursor: inherit;
     }
     :global(.vis-dot) {
-        background: white;
+        display: none;
+        background: #dcdcdc;
         border: none;
-        height: 14px;
-        width: 14px;
+        height: 12px;
+        width: 12px;
         border-radius: 50%;
-        transition: transform 0.2s ease-out;
-        &:active {
-            transform: scale(1.15);
-            cursor: grabbing;
+        // transform: translate(-50%, -50%) scale(0.416);
+        &:hover {
+            transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
+            transform: scale(1.25);
         }
-        &:after {
-            content: " ";
-            background: rgba(255, 255, 255, 0.349);
-            border: none;
-            height: 24px;
-            width: 24px;
-            border-radius: 50%;
-            display: block;
-            top: -5px;
-            left: -5px;
-            position: relative;
+        &:global(.vis-selected) {
+            background: red;
         }
+        // &:active {
+        //     transform: scale(1.15);
+        //     cursor: grabbing;
+        // }
+        // &:after {
+        //     content: " ";
+        //     background: rgba(255, 255, 255, 0.349);
+        //     border: none;
+        //     height: 24px;
+        //     width: 24px;
+        //     border-radius: 50%;
+        //     display: block;
+        //     top: -5px;
+        //     left: -5px;
+        //     position: relative;
+        // }
     }
 }
 
@@ -274,18 +284,65 @@
     transform: translateX(-50%);
     background: white;
     padding: 5px 9px;
-    border-radius: 2px;
     box-sizing: content-box;
     position: absolute;
-    top: -42px;
+    top: -70px;
+    transition: opacity 0.1s ease-in-out;
     opacity: 1;
     pointer-events: all;
-    text-align: center;
     transition: opacity 0.1s ease-in-out;
+    &:after {
+        border-top: 8px solid #ffffff;
+        border-right: 8px solid transparent;
+        border-left: 8px solid transparent;
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        margin-left: -8px;
+        left: 50%;
+    }
+}
+
+.dotTooltipTitle {
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 1.4rem;
+    line-height: 1.46429em;
+}
+.dotTooltipSubtitle {
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 1.3rem;
+    line-height: 1.46429em;
 }
 
 .dotTooltipHidden {
     composes: dotTooltip;
     opacity: 0;
     pointer-events: none;
+}
+.dot {
+    background: #dcdcdc;
+    border: none;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    margin-left: -6px;
+    &:hover {
+        transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
+        transform: scale(1.25);
+    }
+}
+.dotSelected {
+    transform: scale(1.25);
+    &:after {
+        content: " ";
+        background: rgba(255, 255, 255, 0.349);
+        border: none;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        display: block;
+        top: -4px;
+        left: -4px;
+        position: relative;
+    }
 }

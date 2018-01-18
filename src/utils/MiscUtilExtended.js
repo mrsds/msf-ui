@@ -21,4 +21,18 @@ export default class MiscUtilExtended extends MiscUtil {
     static formatPlumeDatetime(datetime) {
         return datetime ? moment(datetime).format("MMMM Do, YYYY, H:mm [UTC]") : "(no date)";
     }
+
+    static roundTo(num, place) {
+        if (typeof num !== "number") {
+            throw new TypeError(
+                "Error in MiscUtil.roundTo: Expected parameter 'num' to be of type number"
+            );
+        }
+        if (typeof place !== "number") {
+            throw new TypeError(
+                "Error in MiscUtil.roundTo: Expected parameter 'place' to be of type number"
+            );
+        }
+        return +(Math.round(num + "e+" + place) + "e-" + place);
+    }
 }

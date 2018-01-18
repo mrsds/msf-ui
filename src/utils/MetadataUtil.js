@@ -73,4 +73,9 @@ export default class MetadataUtil {
         const fields = ["datetime"];
         return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
     }
+
+    static getPlumeIME(feature, errTxt = null) {
+        const fields = ["IME20 (kg)"];
+        return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
+    }
 }

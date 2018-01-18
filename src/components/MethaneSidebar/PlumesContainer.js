@@ -64,14 +64,11 @@ export class PlumesContainer extends Component {
         const itemClass = MiscUtilExtended.generateStringFromSet({
             [layerSidebarStyles.selectedItem]: isActive || isActiveDetail
         });
-        const toggleLabelAction = this.props.toggleFeatureLabel.bind(
-            null,
-            layerSidebarTypes.CATEGORY_PLUMES,
-            feature
-        );
+        const toggleLabelAction = () =>
+            this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_PLUMES, feature);
         const toggleDetailAction = isActiveDetail
-            ? this.props.hideFeatureDetail
-            : this.props.setFeatureDetail.bind(null, layerSidebarTypes.CATEGORY_PLUMES, feature);
+            ? () => this.props.hideFeatureDetail()
+            : () => this.props.setFeatureDetail(layerSidebarTypes.CATEGORY_PLUMES, feature);
         const lat = MetadataUtil.getLat(feature, null);
         const long = MetadataUtil.getLong(feature, null);
         const centerMapAction =

@@ -1,5 +1,7 @@
 import Immutable from "immutable";
+
 import * as coreConfig from "_core/constants/appConfig";
+import * as appStrings from "_core/constants/appStrings";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
 // the config as defined by CMC Core
@@ -29,8 +31,46 @@ const APP_CONFIG = Immutable.fromJS({
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
     PLUME_START_DATE: new Date(2010, 0, 1),
-    PLUME_END_DATE: new Date(Date.now()),
-    MAX_ZOOM: 25
+    PLUME_END_DATE: new Date(2025, 0, 1),
+    MAX_ZOOM: 25,
+    DATE_SLIDER_RESOLUTIONS: [
+        {
+            label: appStrings.SECONDS,
+            resolution: appStrings.SECONDS,
+            format: "MMM Do, YYYY, HH:mm:ss",
+            visMajorFormat: "D MMMM HH:mm"
+        },
+        {
+            label: appStrings.MINUTES,
+            resolution: appStrings.MINUTES,
+            format: "MMM Do, YYYY, HH:mm:ss",
+            visMajorFormat: "ddd D MMMM"
+        },
+        {
+            label: appStrings.HOURS,
+            resolution: appStrings.HOURS,
+            format: "MMM Do, YYYY, HH:mm:ss",
+            visMajorFormat: "ddd D MMMM"
+        },
+        {
+            label: appStrings.DAYS,
+            resolution: appStrings.DAYS,
+            format: "MMM Do, YYYY",
+            visMajorFormat: "MMMM YYYY"
+        },
+        {
+            label: appStrings.MONTHS,
+            resolution: appStrings.MONTHS,
+            format: "MMM YYYY",
+            visMajorFormat: "YYYY"
+        },
+        {
+            label: appStrings.YEARS,
+            resolution: appStrings.YEARS,
+            format: "YYYY",
+            visMajorFormat: "YYYY"
+        }
+    ]
 });
 
 // define and export the final config

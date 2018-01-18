@@ -3,7 +3,7 @@ import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import appConfig from "constants/appConfig";
 
 export const layerSidebarState = Immutable.fromJS({
-    activeFeatureCategory: layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+    activeFeatureCategory: layerSidebarTypes.CATEGORY_PLUMES,
     availableFeatures: {
         [layerSidebarTypes.CATEGORY_INFRASTRUCTURE]: [],
         [layerSidebarTypes.CATEGORY_PLUMES]: []

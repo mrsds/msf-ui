@@ -4,19 +4,24 @@ import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import moment from "moment";
+import Immutable from "immutable";
 import { DataSet, Timeline } from "vis/index-timeline-graph2d";
 import "vis/dist/vis-timeline-graph2d.min.css";
 import { ResolutionStep } from "_core/components/Timeline";
 import * as mapActions from "_core/actions/mapActions";
+import * as mapActionsMSF from "actions/mapActions";
 import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import MiscUtil from "_core/utils/MiscUtil";
+import MiscUtilExtended from "utils/MiscUtilExtended";
+import MetadataUtil from "utils/MetadataUtil";
 import styles from "components/Timeline/TimelineContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
 
 const DAY_IN_MS = 86400000;
-const MIN_DATE_MOMENT = moment(appConfig.MIN_DATE);
-const MAX_DATE_MOMENT = moment(appConfig.MAX_DATE);
+const MIN_DATE_MOMENT = moment(appConfig.PLUME_START_DATE);
+const MAX_DATE_MOMENT = moment(appConfig.PLUME_END_DATE);
 
 // Bin sizes in ms for each date resolution
 // TODO move this into config?
@@ -53,9 +58,10 @@ const CURR_DATE_ITEM_ID = "_currentDateItem";
 export class TimelineContainerStyles extends Component {
     componentDidMount() {
         this.isDragging = false;
+        // this.previouslySelectedItem = null;
 
         // get the default items
-        this.items = this.getDefaultTimelineItems();
+        this.items = this.getTimelineItems();
 
         // Best guess width, will be off if other sibling elements around timeline have not
         // rendered yet.
@@ -77,20 +83,26 @@ export class TimelineContainerStyles extends Component {
     }
 
     componentDidUpdate(prevProps) {
+        this.items = this.getTimelineItems();
+        // console.log(this.items, "items");
+
+        this.timeline.setData({
+            items: this.items
+        });
         let currDate = this.props.date;
-        let prevDate = prevProps.date;
+        // let prevDate = prevProps.date;
         let currRes = this.props.dateSliderTimeResolution.get("resolution");
         let prevRes = prevProps.dateSliderTimeResolution.get("resolution");
 
-        // If we're not dragging the date then we can update the timeline item from props
-        if (!this.isDragging) {
-            // keep the current date indicator on a tick
-            let item = this.items.get(CURR_DATE_ITEM_ID);
-            item.start = moment(currDate).startOf(currRes);
-            this.items.update(item);
-        }
+        // // If we're not dragging the date then we can update the timeline item from props
+        // if (!this.isDragging) {
+        // keep the current date indicator on a tick
+        // let item = this.items.get(CURR_DATE_ITEM_ID);
+        // item.start = moment(currDate).startOf(currRes);
+        // this.items.update(item);
+        // }
 
-        // If date resolution has changed, configure timeline for the new resolution
+        // // If date resolution has changed, configure timeline for the new resolution
         if (prevRes !== currRes) {
             // Calculate new start, end window, set new timeAxis values
             let { start, end } = this.calculateTimelineRange(moment(currDate));
@@ -103,11 +115,11 @@ export class TimelineContainerStyles extends Component {
                 end: end
             });
 
-            // Focus on appDate to account for possibility of new resolution
-            // throwing the appDate out of view
-            this.focusOnItem(CURR_DATE_ITEM_ID);
-        } else {
-            this.bringItemIntoView(CURR_DATE_ITEM_ID, { duration: 250 });
+            //     // Focus on appDate to account for possibility of new resolution
+            //     // throwing the appDate out of view
+            //     this.focusOnItem(CURR_DATE_ITEM_ID);
+            // } else {
+            //     this.bringItemIntoView(CURR_DATE_ITEM_ID, { duration: 250 });
         }
     }
 
@@ -120,15 +132,10 @@ export class TimelineContainerStyles extends Component {
         return {
             type: "point",
             showCurrentTime: false,
+            showTooltips: false,
             zoomable: false,
+            selectable: true,
             template: this.getTimelineTooltipFunc(),
-            itemsAlwaysDraggable: true,
-            editable: {
-                updateTime: true
-            },
-            snap: this.getItemSnappingFunc(),
-            onMove: this.getItemDragFunc(),
-            onMoving: this.getItemDraggingFunc(),
             start: start, // Start date of timeline date range window
             end: end, // End date of timeline date range window
             height: "60px",
@@ -150,9 +157,9 @@ export class TimelineContainerStyles extends Component {
     }
 
     initializeTimelineListeners() {
-        this.timeline.on("click", props => {
-            this.handleTimelineClick(props);
-        });
+        // this.timeline.on("click", props => {
+        //     this.handleTimelineClick(props);
+        // });
 
         this.timeline.on("rangechange", props => {
             this.handleTimelineDragging(props);
@@ -161,17 +168,112 @@ export class TimelineContainerStyles extends Component {
         this.timeline.on("rangechanged", props => {
             this.handleTimelineDrag(props);
         });
+
+        this.timeline.on("itemover", props => {
+            this.handleItemHoverOver(props);
+        });
+
+        this.timeline.on("itemout", props => {
+            this.handleItemHoverOut(props);
+        });
+
+        this.timeline.on("select", props => {
+            this.handleItemSelect(props);
+        });
     }
 
     handleWindowResize(evt) {
         this.resizeTimeline();
     }
 
-    getDefaultTimelineItems() {
-        //
-        let appDate = moment(this.props.date);
-        let currentDateItem = { id: CURR_DATE_ITEM_ID, start: appDate };
-        return new DataSet([currentDateItem]);
+    getTimelineItems() {
+        // let appDate = moment(this.props.date);
+        // let currentDateItem = { id: CURR_DATE_ITEM_ID, start: appDate };
+        // this.props.dateSliderTimeResolution.get("resolution")
+        // let resolution = VIS_SCALE_SIZES[this.props.dateSliderTimeResolution.get("resolution")];
+        let resolution = this.props.dateSliderTimeResolution.get("resolution");
+        let items = this.props.searchResults.reduce((acc, x) => {
+            let datetime = moment(x.get("datetime"));
+            let dateBin = "";
+            let itemStart = "";
+
+            // Determine date at precision of resolution
+            switch (resolution) {
+                case appStrings.SECONDS:
+                    dateBin = datetime.seconds();
+                    itemStart = datetime.startOf("second");
+                    break;
+                case appStrings.MINUTES:
+                    dateBin = datetime.minutes();
+                    itemStart = datetime.startOf("minute");
+                    break;
+                case appStrings.HOURS:
+                    dateBin = datetime.hours();
+                    itemStart = datetime.startOf("hour");
+                    break;
+                case appStrings.DAYS:
+                    dateBin = datetime.date();
+                    itemStart = datetime.startOf("day");
+                    break;
+                case appStrings.MONTHS:
+                    dateBin = datetime.month();
+                    itemStart = datetime.startOf("month");
+                    break;
+                case appStrings.YEARS:
+                    dateBin = datetime.year();
+                    itemStart = datetime.startOf("year");
+                    break;
+                default:
+                    console.warn("Warning: date resolution:", resolution, " not recognized");
+                    break;
+            }
+            if (!acc.has(dateBin)) {
+                acc = acc.set(dateBin, {
+                    start: itemStart,
+                    title: datetime.format(this.props.dateSliderTimeResolution.get("format")),
+                    content: "",
+                    hover: false,
+                    selected: false,
+                    className: styles.defaultItem,
+                    id: dateBin,
+                    plumes: [],
+                    plumeStatistics: {
+                        avg: {
+                            value: 0,
+                            label: "kg/m<sup>2</sup>"
+                        }
+                    }
+                });
+            }
+            acc = acc.update(dateBin, bin => {
+                bin.plumes.push(x);
+                return bin;
+            });
+            return acc;
+        }, Immutable.Map());
+
+        // Compute some statistics
+        items = items.map(x => {
+            let avg =
+                x.plumes
+                    .map(p => MetadataUtil.getPlumeIME(p))
+                    .reduce((acc, i) => (acc += parseFloat(i)), 0) / x.plumes.length;
+            x.plumeStatistics.avg.value = MiscUtilExtended.roundTo(avg, 1);
+            return x;
+        });
+
+        // let items = this.props.searchResults.map(x => {
+        //     let datetime = moment(x.get("datetime"));
+        //     return {
+        //         start: datetime,
+        //         title: MiscUtilExtended.formatPlumeDatetime(datetime),
+        //         content: "",
+        //         hover: false,
+        //         className: styles.defaultItem,
+        //         id: x.get("id")
+        //     };
+        // });
+        return new DataSet(items.toArray());
     }
 
     handleInitialDraw() {
@@ -182,128 +284,53 @@ export class TimelineContainerStyles extends Component {
             this.resizeTimeline();
 
             // Focus on appDate item
-            this.focusOnItem(CURR_DATE_ITEM_ID);
+            // this.focusOnItem(CURR_DATE_ITEM_ID);
 
             this.timeline.redraw();
         });
     }
 
-    getItemDragFunc() {
-        return (item, callback) => {
-            this.setTimelineClassActive(styles.timelineDragging, false);
-            this.setTimelineClassActive(styles.overflow, false);
-            this.isDragging = false;
-            item.moving = false;
+    // handleTimelineClick(props) {
+    //     // Incomplete attempt at preventing click events firing on drag end on timeline
+    //     // For now, disable clicking on background.
+    //     // Check for snapped time, not all events are guaranteed to have one
+    //     if (props.what === "background" || props.what === "item" || !props.snappedTime) {
+    //         return;
+    //     }
+    //     // Determine major/minor label click
+    //     if (props.event.target.classList.contains("vis-minor")) {
+    //         let snappedDate = this.snapDate(
+    //             props.snappedTime,
+    //             this.props.dateSliderTimeResolution.get("resolution")
+    //         );
 
-            // get nearest date
-            let snappedDate = this.snapDate(
-                item.start,
-                this.props.dateSliderTimeResolution.get("resolution"),
-                false
-            );
+    //         let maskedDate = this.maskDate(
+    //             this.props.date,
+    //             snappedDate.toDate(),
+    //             this.props.dateSliderTimeResolution.get("resolution")
+    //         );
 
-            // mask just the current resolution update
-            let maskedDate = this.maskDate(
-                this.props.date,
-                snappedDate.toDate(),
-                this.props.dateSliderTimeResolution.get("resolution")
-            );
+    //         let newDate = maskedDate;
 
-            let newDate = maskedDate;
+    //         this.props.mapActions.setDate(newDate);
+    //     } else if (
+    //         props.event.target.classList.contains("vis-major") ||
+    //         (props.event.target.tagName === "DIV" &&
+    //             props.event.target.parentElement.classList.contains("vis-major"))
+    //     ) {
+    //         let currentResolution = MiscUtil.findObjectWithIndexInArray(
+    //             appConfig.DATE_SLIDER_RESOLUTIONS,
+    //             "resolution",
+    //             this.props.dateSliderTimeResolution.get("resolution")
+    //         );
 
-            item.start = snappedDate;
-
-            // item.start = newDate;
-            callback(item);
-
-            this.bringItemIntoView(item.id, { duration: 250 });
-
-            if (!newDate.isSame(moment(this.props.date))) {
-                this.props.mapActions.setDate(newDate);
-            }
-        };
-    }
-
-    getItemDraggingFunc() {
-        return (item, callback) => {
-            this.setTimelineClassActive(styles.timelineDragging, true);
-            this.setTimelineClassActive(styles.overflow, true);
-            this.isDragging = true;
-
-            item.moving = true;
-
-            // get nearest date
-            let snappedDate = this.snapDate(
-                item.start,
-                this.props.dateSliderTimeResolution.get("resolution"),
-                false
-            );
-
-            // mask just the current resolution update
-            let maskedDate = this.maskDate(
-                this.props.date,
-                snappedDate.toDate(),
-                this.props.dateSliderTimeResolution.get("resolution")
-            );
-
-            let newDate = maskedDate;
-
-            // Prevent drag past visible dates
-            let { start, end } = this.timeline.getWindow();
-            if (item.start <= start) {
-                item.start = this.clampDate(start);
-            } else if (item.start >= end) {
-                item.start = this.clampDate(end);
-            } else {
-                if (!newDate.isSame(moment(this.props.date))) {
-                    this.props.mapActions.setDate(newDate);
-                }
-            }
-            callback(item);
-        };
-    }
-
-    handleTimelineClick(props) {
-        // Incomplete attempt at preventing click events firing on drag end on timeline
-        // For now, disable clicking on background.
-        // Check for snapped time, not all events are guaranteed to have one
-        if (props.what === "background" || props.what === "item" || !props.snappedTime) {
-            return;
-        }
-        // Determine major/minor label click
-        if (props.event.target.classList.contains("vis-minor")) {
-            let snappedDate = this.snapDate(
-                props.snappedTime,
-                this.props.dateSliderTimeResolution.get("resolution")
-            );
-
-            let maskedDate = this.maskDate(
-                this.props.date,
-                snappedDate.toDate(),
-                this.props.dateSliderTimeResolution.get("resolution")
-            );
-
-            let newDate = maskedDate;
-
-            this.props.mapActions.setDate(newDate);
-        } else if (
-            props.event.target.classList.contains("vis-major") ||
-            (props.event.target.tagName === "DIV" &&
-                props.event.target.parentElement.classList.contains("vis-major"))
-        ) {
-            let currentResolution = MiscUtil.findObjectWithIndexInArray(
-                appConfig.DATE_SLIDER_RESOLUTIONS,
-                "resolution",
-                this.props.dateSliderTimeResolution.get("resolution")
-            );
-
-            let dateTxt = props.event.target.innerText;
-            let dateFormat =
-                appConfig.DATE_SLIDER_RESOLUTIONS[currentResolution.index].visMajorFormat;
-            let date = moment(dateTxt, dateFormat);
-            this.props.mapActions.setDate(date);
-        }
-    }
+    //         let dateTxt = props.event.target.innerText;
+    //         let dateFormat =
+    //             appConfig.DATE_SLIDER_RESOLUTIONS[currentResolution.index].visMajorFormat;
+    //         let date = moment(dateTxt, dateFormat);
+    //         this.props.mapActions.setDate(date);
+    //     }
+    // }
 
     handleTimelineDragging(props) {
         this.setTimelineClassActive(styles.timelineDragging, true);
@@ -311,6 +338,31 @@ export class TimelineContainerStyles extends Component {
 
     handleTimelineDrag(props) {
         this.setTimelineClassActive(styles.timelineDragging, false);
+    }
+
+    handleItemHoverOver(props) {
+        this.setTimelineClassActive(styles.timelineDragging, true);
+        this.setTimelineClassActive(styles.overflow, true);
+        let item = this.items.get(props.item);
+        this.items.update({ id: props.item, hover: true });
+    }
+
+    handleItemHoverOut(props) {
+        this.setTimelineClassActive(styles.timelineDragging, false);
+        this.setTimelineClassActive(styles.overflow, false);
+        let item = this.items.get(props.item);
+        this.items.update({ id: props.item, hover: false });
+    }
+
+    handleItemSelect(props) {
+        // Clear old
+        let item = this.items.get(props.items[0]);
+        // Only operate on single plume data points
+        if (item.plumes.length === 1) {
+            this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_PLUMES, item.plumes[0]);
+            this.items.update({ id: props.items[0], selected: true });
+            this.timeline.setSelection(props.items[0]);
+        }
     }
 
     getItemSnappingFunc() {
@@ -323,24 +375,35 @@ export class TimelineContainerStyles extends Component {
 
     getTimelineTooltipFunc() {
         return (item, element, data) => {
+            // console.log(item, data, "id");
             // Create tooltip by adding an element to item content
-            let classes = data.moving ? styles.dotTooltip : styles.dotTooltipHidden;
-
-            let snappedDate = this.snapDate(
-                data.start,
-                this.props.dateSliderTimeResolution.get("resolution"),
-                false
-            );
-
-            let maskedDate = this.maskDate(
-                this.props.date,
-                snappedDate.toDate(),
-                this.props.dateSliderTimeResolution.get("resolution")
-            );
-
-            let label = maskedDate.format(this.props.dateSliderTimeResolution.get("format"));
-
-            return `<div class='${classes}'>${label}</div>`;
+            let tooltipClasses = MiscUtil.generateStringFromSet({
+                [styles.dotTooltip]: data.hover,
+                [styles.dotTooltipHidden]: !data.hover
+            });
+            let dotClasses = MiscUtil.generateStringFromSet({
+                [styles.dot]: true,
+                [styles.dotSelected]: data.selected
+            });
+            let plumeTitle = "";
+            let plumeSubtitle = "";
+            if (data.plumes.length === 1) {
+                plumeTitle = MiscUtilExtended.formatPlumeDatetime(data.plumes[0].get("datetime"));
+                plumeSubtitle = `${data.plumes.length} plume • ${data.plumeStatistics.avg.value} ${
+                    data.plumeStatistics.avg.label
+                }`;
+            } else {
+                plumeTitle = data.title;
+                plumeSubtitle = `${data.plumes.length} plumes • ${data.plumeStatistics.avg.value} ${
+                    data.plumeStatistics.avg.label
+                } avg`;
+            }
+            // TODO get rid of hover data update and just use css
+            return `<div><div class='${dotClasses}'></div><div class='${tooltipClasses}'><div class='${
+                styles.dotTooltipTitle
+            }'>${plumeTitle}</div><div class='${
+                styles.dotTooltipSubtitle
+            }'>${plumeSubtitle}</div></div></div>`;
         };
     }
 
@@ -479,34 +542,34 @@ export class TimelineContainerStyles extends Component {
         return newDate;
     }
 
-    maskDate(date, mDate, resolution) {
-        date = moment(date);
-        mDate = moment(mDate);
-        switch (resolution) {
-            case appStrings.SECONDS:
-                date.second(mDate.second());
-            // falls through
-            case appStrings.MINUTES:
-                date.minute(mDate.minute());
-            // falls through
-            case appStrings.HOURS:
-                date.hour(mDate.hour());
-            // falls through
-            case appStrings.DAYS:
-                date.month(mDate.month()); // handle 31/30 day wrap
-                date.date(mDate.date());
-            // falls through
-            case appStrings.MONTHS:
-                date.month(mDate.month());
-            // falls through
-            case appStrings.YEARS:
-                date.year(mDate.year());
-                break;
-            default:
-                console.warn("Error in TimeAxis.maskDate: unknown date resolution. ", resolution);
-        }
-        return date;
-    }
+    // maskDate(date, mDate, resolution) {
+    //     date = moment(date);
+    //     mDate = moment(mDate);
+    //     switch (resolution) {
+    //         case appStrings.SECONDS:
+    //             date.second(mDate.second());
+    //         // falls through
+    //         case appStrings.MINUTES:
+    //             date.minute(mDate.minute());
+    //         // falls through
+    //         case appStrings.HOURS:
+    //             date.hour(mDate.hour());
+    //         // falls through
+    //         case appStrings.DAYS:
+    //             date.month(mDate.month()); // handle 31/30 day wrap
+    //             date.date(mDate.date());
+    //         // falls through
+    //         case appStrings.MONTHS:
+    //             date.month(mDate.month());
+    //         // falls through
+    //         case appStrings.YEARS:
+    //             date.year(mDate.year());
+    //             break;
+    //         default:
+    //             console.warn("Error in TimeAxis.maskDate: unknown date resolution. ", resolution);
+    //     }
+    //     return date;
+    // }
 
     clampDate(date) {
         let newDate = moment(date);
@@ -535,13 +598,18 @@ export class TimelineContainerStyles extends Component {
         return document.getElementsByClassName(styles.container)[0];
     }
 
+    isActiveFeature(feature) {
+        return (
+            this.props.activeFeature.get("category") === layerSidebarTypes.CATEGORY_PLUMES &&
+            feature.get("id") === this.props.activeFeature.getIn(["feature", "id"])
+        );
+    }
+
     render() {
         let stepSizeClass =
             styles["stepSize_" + this.props.dateSliderTimeResolution.get("resolution")];
         let containerClasses = MiscUtil.generateStringFromSet({
-            [styles.elementsContainer]: true,
-            [displayStyles.hiddenFadeIn]: !this.props.distractionFreeMode,
-            [displayStyles.hiddenFadeOut]: this.props.distractionFreeMode
+            [styles.elementsContainer]: true
         });
         let timelineClasses = MiscUtil.generateStringFromSet({
             [styles.timeline]: true,
@@ -566,21 +634,30 @@ export class TimelineContainerStyles extends Component {
 TimelineContainerStyles.propTypes = {
     date: PropTypes.object.isRequired,
     mapActions: PropTypes.object.isRequired,
-    distractionFreeMode: PropTypes.bool.isRequired,
-    dateSliderTimeResolution: PropTypes.object.isRequired
+    mapActionsMSF: PropTypes.object.isRequired,
+    searchResults: PropTypes.object.isRequired,
+    activeFeature: PropTypes.object.isRequired,
+    dateSliderTimeResolution: PropTypes.object.isRequired,
+    toggleFeatureLabel: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
     return {
         date: state.map.get("date"),
-        distractionFreeMode: state.view.get("distractionFreeMode"),
+        activeFeature: state.map.get("activeFeature"),
+        searchResults: state.layerSidebar.getIn([
+            "searchState",
+            layerSidebarTypes.CATEGORY_PLUMES,
+            "searchResults"
+        ]),
         dateSliderTimeResolution: state.dateSlider.get("resolution")
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        mapActions: bindActionCreators(mapActions, dispatch)
+        mapActions: bindActionCreators(mapActions, dispatch),
+        toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch)
     };
 }
 

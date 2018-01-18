@@ -416,12 +416,12 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         }
 
         // If toggling off, remove old overlay and restore the reference icon feature
-        const oldOverlay = this.map
-            .getOverlays()
-            .getArray()
-            .find(overlay => overlay.get("_featureId") === featureId);
-        this.map.removeOverlay(oldOverlay);
-        iconFeature.setStyle(this.getAvirisIconStyle());
+        // const oldOverlay = this.map
+        //     .getOverlays()
+        //     .getArray()
+        //     .find(overlay => overlay.get("_featureId") === featureId);
+        // this.map.removeOverlay(oldOverlay);
+        // iconFeature.setStyle(this.getAvirisIconStyle());
     }
 
     handleVISTALabelToggle(pickedFeature, currentMapExtent, toggleOn) {
@@ -461,12 +461,12 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                     }
 
                     // If we're deselecting a feature, destroy the tooltip and revert the feature styling to default.
-                    this.map.getOverlays().forEach(overlay => {
-                        if (overlay.getId() === featureId) {
-                            this.map.removeOverlay(overlay);
-                        }
-                    });
-                    feature.setStyle(null);
+                    // this.map.getOverlays().forEach(overlay => {
+                    //     if (overlay.getId() === featureId) {
+                    //         this.map.removeOverlay(overlay);
+                    //     }
+                    // });
+                    // feature.setStyle(null);
                     return;
                 }
             });
@@ -477,11 +477,20 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         // For each feature overlay, remove the overlay and set the style
         // of the corresponding feature to null
         let mapLayers = this.map.getLayers().getArray();
+        let avirisIconLayerFeatures = this.map
+            .getLayers()
+            .getArray()
+            .find(l => l.get("_layerId") === "AVIRIS")
+            .getLayers()
+            .getArray()
+            .find(layer => layer.get("_layerId") === "icons")
+            .getSource()
+            .getFeatures();
         this.map.getOverlays().forEach(overlay => {
             // If overlay is VISTA we need to deselect the corresponding feature
             let overlayType = overlay.getProperties().overlayType;
+            let featureSourceLayerId = overlay.getProperties().sourceLayerId;
             if (overlayType === "VISTA") {
-                let featureSourceLayerId = overlay.getProperties().sourceLayerId;
                 let vistaLayer = this.miscUtil.findObjectInArray(
                     mapLayers,
                     "_layerId",
@@ -497,6 +506,19 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                     }
                 } else {
                     console.warn("Unable to find VISTA layer for overlay deselect");
+                }
+            }
+
+            // If overlay is AVIRIS we need to reset the style of the icon
+            if (overlayType === "AVIRIS") {
+                let featureSourceLayerId = overlay.getProperties().sourceLayerId;
+                let iconFeature = avirisIconLayerFeatures.find(
+                    f => f.get("_featureId") === overlay.getProperties()._featureId
+                );
+                if (iconFeature) {
+                    iconFeature.setStyle(this.getAvirisIconStyle());
+                } else {
+                    console.warn("Unable to find AVIRIS icon for overlay deselect");
                 }
             }
 
