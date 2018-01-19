@@ -236,8 +236,6 @@ export class TimelineContainerStyles extends Component {
                 }
             });
         };
-
-        console.log(this.timeline);
     }
 
     componentDidUpdate(prevProps) {
