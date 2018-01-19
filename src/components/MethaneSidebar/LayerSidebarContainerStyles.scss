@@ -55,6 +55,11 @@
     // background-color: $color-background;
 }
 
+.select {
+    min-width: 100px;
+    margin-right: 10px;
+}
+
 .infrastructureSearch {
     display: flex;
     flex-wrap: wrap;

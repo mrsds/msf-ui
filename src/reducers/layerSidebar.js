@@ -33,6 +33,8 @@ export default function layerSidebar(
             return opt_reducer.setPlumeFilterDateRange(state, action);
         case actionTypesMSF.UPDATE_FLIGHT_CAMPAIGN:
             return opt_reducer.updateSelectedFlightCampaign(state, action);
+        case actionTypesMSF.UPDATE_IME:
+            return opt_reducer.updateSelectedIME(state, action);
         case actionTypesMSF.TOGGLE_FEATURE_LABEL:
             return opt_reducer.selectFeatureInSidebar(state, action);
         default:

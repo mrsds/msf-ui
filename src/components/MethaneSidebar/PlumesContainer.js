@@ -155,6 +155,15 @@ export class PlumesContainer extends Component {
             });
     }
 
+    getPlumeIMEs() {
+        return [5, 10, 25, 50, 100, 250, 500, 1000, 1500].map(x => {
+            return {
+                value: x,
+                label: ">" + x + "kg"
+            };
+        });
+    }
+
     makeResultsArea() {
         const hasResults = this.props.searchState.get("searchResults").size;
         const resultsClassname = MiscUtil.generateStringFromSet({
@@ -203,10 +212,9 @@ export class PlumesContainer extends Component {
             [layerSidebarStyles.featureItemContainer]: true
         });
 
-        let selectedFlightCampaignValue = "";
-        if (this.props.searchState.get("selectedFlightCampaign")) {
-            selectedFlightCampaignValue = this.props.searchState.get("selectedFlightCampaign");
-        }
+        let selectedFlightCampaignValue =
+            this.props.searchState.get("selectedFlightCampaign") || "";
+        let selectedIME = this.props.searchState.get("selectedIME") || "";
         return (
             <div className={containerClasses}>
                 <div className={layerSidebarStyles.searchFiltersContainer}>
@@ -233,15 +241,15 @@ export class PlumesContainer extends Component {
                         }
                     />
                     <div>
-                        <FormControl>
-                            <InputLabel shrink={true} htmlFor="flightCampaginSelect">
+                        <FormControl className={layerSidebarStyles.select}>
+                            <InputLabel shrink={true} htmlFor="flightCampaignSelect">
                                 Flight Campaign
                             </InputLabel>
                             <Select
                                 displayEmpty={true}
                                 value={selectedFlightCampaignValue}
                                 onChange={evt => this.props.selectFlightCampaign(evt.target.value)}
-                                input={<Input name="age" id="flightCampaginSelect" />}
+                                input={<Input name="flight campaign" id="flightCampaignSelect" />}
                             >
                                 {
                                     <MenuItem key="noFlightCampaignSelectItem" value="">
@@ -249,6 +257,28 @@ export class PlumesContainer extends Component {
                                     </MenuItem>
                                 }
                                 {this.getAvailableFlightCampaigns().map(result => (
+                                    <MenuItem key={result.value} value={result.value}>
+                                        {result.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        <FormControl className={layerSidebarStyles.select}>
+                            <InputLabel shrink={true} htmlFor="plumeIMESelect">
+                                Plume IME
+                            </InputLabel>
+                            <Select
+                                displayEmpty={true}
+                                value={selectedIME}
+                                onChange={evt => this.props.selectIME(evt.target.value)}
+                                input={<Input name="plume ime" id="plumeIMESelect" />}
+                            >
+                                {
+                                    <MenuItem key="noIMESelectItem" value="">
+                                        All
+                                    </MenuItem>
+                                }
+                                {this.getPlumeIMEs().map(result => (
                                     <MenuItem key={result.value} value={result.value}>
                                         {result.label}
                                     </MenuItem>
@@ -279,6 +309,7 @@ PlumesContainer.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     updatePlumeDateRange: PropTypes.func.isRequired,
     selectFlightCampaign: PropTypes.func.isRequired,
+    selectIME: PropTypes.func.isRequired,
     availableFeatures: PropTypes.object.isRequired,
     centerMapOnPoint: PropTypes.func.isRequired,
     centerMapOnFeature: PropTypes.func.isRequired,
@@ -310,6 +341,7 @@ function mapDispatchToProps(dispatch) {
             layerSidebarActions.selectFlightCampaign,
             dispatch
         ),
+        selectIME: bindActionCreators(layerSidebarActions.selectIME, dispatch),
         centerMapOnPoint: bindActionCreators(mapActionsMSF.centerMapOnPoint, dispatch),
         centerMapOnFeature: bindActionCreators(mapActionsMSF.centerMapOnFeature, dispatch),
         toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch)

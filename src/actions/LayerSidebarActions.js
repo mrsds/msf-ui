@@ -97,9 +97,23 @@ export function selectFlightCampaign(flight_campaign) {
     };
 }
 
+export function selectIME(ime) {
+    return dispatch => {
+        dispatch(updateIME(ime));
+        dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
+    };
+}
+
 function updateFlightCampaign(flight_campaign) {
     return {
         type: types.UPDATE_FLIGHT_CAMPAIGN,
         flight_campaign
+    };
+}
+
+function updateIME(ime) {
+    return {
+        type: types.UPDATE_IME,
+        ime
     };
 }
