@@ -11,12 +11,13 @@ require("_core/styles/resources/img/favicon-32x32.png");
 require("_core/styles/resources/img/favicon-16x16.png");
 require("_core/styles/resources/img/safari-pinned-tab.svg");
 require("_core/styles/resources/img/favicon.ico");
-require("styles/resources/img/layer_thumbnails/gridded_methane_v1.png");
-require("styles/resources/img/layer_thumbnails/AVIRIS.png");
 require("_core/styles/resources/img/layer_thumbnails/BlueMarble_ShadedRelief_Bathymetry.jpeg");
 require("_core/styles/resources/img/layer_thumbnails/OSM_Land_Water_Map.png");
 require("_core/styles/resources/img/layer_thumbnails/ASTER_GDEM_Color_Shaded_Relief.jpeg");
 require("_core/styles/resources/img/layer_thumbnails/ESRI_World_Imagery.jpeg");
+require("styles/resources/img/layer_thumbnails/gridded_methane_v1.png");
+require("styles/resources/img/layer_thumbnails/AVIRIS.png");
+require("styles/resources/img/map_icons/PlumeIcon.png");
 
 const store = configureStore();
 
