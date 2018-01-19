@@ -19,6 +19,10 @@ import MetadataUtil from "utils/MetadataUtil";
 import styles from "components/Timeline/TimelineContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
 
+let util = require("vis/lib/util");
+let TimeStep = require("vis/lib/Timeline/TimeStep");
+let DateUtil = require("vis/lib/Timeline/DateUtil");
+
 const DAY_IN_MS = 86400000;
 const MIN_DATE_MOMENT = moment(appConfig.PLUME_START_DATE);
 const MAX_DATE_MOMENT = moment(appConfig.PLUME_END_DATE);
@@ -31,7 +35,7 @@ const BIN_SIZES_MS = {
     hours: DAY_IN_MS / 48,
     days: DAY_IN_MS,
     months: DAY_IN_MS * 15,
-    years: DAY_IN_MS * 150
+    years: DAY_IN_MS * 100
 };
 
 // Mapping from date resolution values from config to scale values
@@ -50,10 +54,13 @@ const VIS_SCALE_SIZES = {
 const ITEM_SCROLL_OFFSET = 0.2;
 
 // margin for the timeline within it's container
-const CONTAINER_MARGIN = 64;
+// const CONTAINER_MARGIN = 64;
+// const CONTAINER_MARGIN = 74;
+// const CONTAINER_MARGIN = 64;
+const CONTAINER_MARGIN = 0;
 
 // id for the item indicating the current date
-const CURR_DATE_ITEM_ID = "_currentDateItem";
+// const CURR_DATE_ITEM_ID = "_currentDateItem";
 
 export class TimelineContainerStyles extends Component {
     componentDidMount() {
@@ -80,6 +87,157 @@ export class TimelineContainerStyles extends Component {
         window.onresize = evt => {
             this.handleWindowResize(evt);
         };
+
+        this.timeline.timeAxis._repaintLabels = function() {
+            let orientation = this.options.orientation.axis;
+
+            // calculate range and step (step such that we have space for 7 characters per label)
+            let start = util.convert(this.body.range.start, "Number");
+            let end = util.convert(this.body.range.end, "Number");
+            let timeLabelsize = this.body.util
+                .toTime((this.props.minorCharWidth || 10) * this.options.maxMinorChars)
+                .valueOf();
+            let minimumStep =
+                timeLabelsize -
+                DateUtil.getHiddenDurationBefore(
+                    this.options.moment,
+                    this.body.hiddenDates,
+                    this.body.range,
+                    timeLabelsize
+                );
+            minimumStep -= this.body.util.toTime(0).valueOf();
+
+            let step = new TimeStep(
+                new Date(start),
+                new Date(end),
+                minimumStep,
+                this.body.hiddenDates,
+                this.options
+            );
+            step.setMoment(this.options.moment);
+            if (this.options.format) {
+                step.setFormat(this.options.format);
+            }
+            if (this.options.timeAxis) {
+                step.setScale(this.options.timeAxis);
+            }
+            this.step = step;
+
+            // Move all DOM elements to a "redundant" list, where they
+            // can be picked for re-use, and clear the lists with lines and texts.
+            // At the end of the function _repaintLabels, left over elements will be cleaned up
+            let dom = this.dom;
+            dom.redundant.lines = dom.lines;
+            dom.redundant.majorTexts = dom.majorTexts;
+            dom.redundant.minorTexts = dom.minorTexts;
+            dom.lines = [];
+            dom.majorTexts = [];
+            dom.minorTexts = [];
+
+            let current; // eslint-disable-line no-unused-vars
+            let next;
+            let x;
+            let xNext;
+            let isMajor;
+            let nextIsMajor; // eslint-disable-line no-unused-vars
+            let showMinorGrid;
+            let width = 0,
+                prevWidth;
+            let line;
+            let labelMinor;
+            let xFirstMajorLabel = undefined;
+            let count = 0;
+            const MAX = 1000;
+            let className;
+
+            step.start();
+            next = step.getCurrent();
+            xNext = this.body.util.toScreen(next);
+            while (step.hasNext() && count < MAX) {
+                count++;
+
+                isMajor = step.isMajor();
+                className = step.getClassName();
+                labelMinor = step.getLabelMinor();
+
+                current = next;
+                x = xNext;
+
+                step.next();
+                next = step.getCurrent();
+                nextIsMajor = step.isMajor();
+                xNext = this.body.util.toScreen(next);
+
+                prevWidth = width;
+                width = xNext - x;
+                switch (step.scale) {
+                    case "week":
+                        showMinorGrid = true;
+                        break;
+                    default:
+                        showMinorGrid = width >= prevWidth * 0.4;
+                        break; // prevent displaying of the 31th of the month on a scale of 5 days
+                }
+                let label = "";
+                if (this.options.showMinorLabels && showMinorGrid) {
+                    label = this._repaintMinorText(x, labelMinor, orientation, className);
+                    label.style.width = width + "px"; // set width to prevent overflow
+                }
+
+                if (isMajor && this.options.showMajorLabels) {
+                    if (x > 0) {
+                        if (xFirstMajorLabel == undefined) {
+                            xFirstMajorLabel = x;
+                        }
+                        label = this._repaintMajorText(
+                            x,
+                            step.getLabelMajor(),
+                            orientation,
+                            className
+                        );
+                    }
+                    line = this._repaintMajorLine(x, width, orientation, className);
+                } else {
+                    // minor line
+                    if (showMinorGrid) {
+                        line = this._repaintMinorLine(x, width, orientation, className);
+                    } else {
+                        if (line) {
+                            // adjust the width of the previous grid
+                            line.style.width = parseInt(line.style.width) + width + "px";
+                        }
+                    }
+                }
+            }
+
+            // if (count === MAX && !warnedForOverflow) {
+            //     console.warn(`Something is wrong with the Timeline scale. Limited drawing of grid lines to ${MAX} lines.`);
+            //     warnedForOverflow = true;
+            // }
+
+            // create a major label on the left when needed
+            if (this.options.showMajorLabels) {
+                let leftTime = this.body.util.toTime(0),
+                    leftText = step.getLabelMajor(leftTime),
+                    widthText = leftText.length * (this.props.majorCharWidth || 10) + 10; // upper bound estimation
+
+                if (xFirstMajorLabel == undefined || widthText < xFirstMajorLabel) {
+                    this._repaintMajorText(0, leftText, orientation, className + " left-label");
+                }
+            }
+
+            // Cleanup leftover DOM elements from the redundant list
+            util.forEach(this.dom.redundant, function(arr) {
+                while (arr.length) {
+                    let elem = arr.pop();
+                    if (elem && elem.parentNode) {
+                        elem.parentNode.removeChild(elem);
+                    }
+                }
+            });
+        };
+
+        console.log(this.timeline);
     }
 
     componentDidUpdate(prevProps) {
@@ -169,13 +327,13 @@ export class TimelineContainerStyles extends Component {
             this.handleTimelineDrag(props);
         });
 
-        this.timeline.on("itemover", props => {
-            this.handleItemHoverOver(props);
-        });
+        // this.timeline.on("itemover", props => {
+        //     this.handleItemHoverOver(props);
+        // });
 
-        this.timeline.on("itemout", props => {
-            this.handleItemHoverOut(props);
-        });
+        // this.timeline.on("itemout", props => {
+        //     this.handleItemHoverOut(props);
+        // });
 
         this.timeline.on("select", props => {
             this.handleItemSelect(props);
@@ -232,7 +390,7 @@ export class TimelineContainerStyles extends Component {
                     start: itemStart,
                     title: datetime.format(this.props.dateSliderTimeResolution.get("format")),
                     content: "",
-                    hover: false,
+                    // hover: false,
                     selected: false,
                     className: styles.defaultItem,
                     id: dateBin,
@@ -340,19 +498,19 @@ export class TimelineContainerStyles extends Component {
         this.setTimelineClassActive(styles.timelineDragging, false);
     }
 
-    handleItemHoverOver(props) {
-        this.setTimelineClassActive(styles.timelineDragging, true);
-        this.setTimelineClassActive(styles.overflow, true);
-        let item = this.items.get(props.item);
-        this.items.update({ id: props.item, hover: true });
-    }
+    // handleItemHoverOver(props) {
+    //     this.setTimelineClassActive(styles.timelineDragging, true);
+    //     this.setTimelineClassActive(styles.overflow, true);
+    //     let item = this.items.get(props.item);
+    //     this.items.update({ id: props.item, hover: true });
+    // }
 
-    handleItemHoverOut(props) {
-        this.setTimelineClassActive(styles.timelineDragging, false);
-        this.setTimelineClassActive(styles.overflow, false);
-        let item = this.items.get(props.item);
-        this.items.update({ id: props.item, hover: false });
-    }
+    // handleItemHoverOut(props) {
+    //     this.setTimelineClassActive(styles.timelineDragging, false);
+    //     this.setTimelineClassActive(styles.overflow, false);
+    //     let item = this.items.get(props.item);
+    //     this.items.update({ id: props.item, hover: false });
+    // }
 
     handleItemSelect(props) {
         // Clear old
@@ -378,8 +536,8 @@ export class TimelineContainerStyles extends Component {
             // console.log(item, data, "id");
             // Create tooltip by adding an element to item content
             let tooltipClasses = MiscUtil.generateStringFromSet({
-                [styles.dotTooltip]: data.hover,
-                [styles.dotTooltipHidden]: !data.hover
+                [styles.dotTooltip]: true
+                // [styles.dotTooltipHidden]: !data.hover
             });
             let dotClasses = MiscUtil.generateStringFromSet({
                 [styles.dot]: true,
@@ -624,7 +782,9 @@ export class TimelineContainerStyles extends Component {
                             ref={ref => (this.timelineContainerStylesRef = ref)}
                         />
                     </div>
-                    <ResolutionStep />
+                    <div className={styles.resolutionStepWrapper}>
+                        <ResolutionStep />
+                    </div>
                 </div>
             </div>
         );

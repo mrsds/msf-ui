@@ -6,22 +6,29 @@
     left: $layer-sidebar-width;
     width: calc(100% - #{$layer-sidebar-width});
     display: flex;
+    height: 120px;
+    pointer-events: none;
 }
 .timelineBackground {
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
     flex: 1;
     display: flex;
+    pointer-events: none;
 }
 .container {
     overflow: hidden;
     flex: 1;
     display: flex;
     :global(.vis-foreground) {
-        overflow: visble;
-    }
-    &.overflow {
         overflow: visible;
     }
+    overflow: visible;
+    overflow-x: hidden;
+    padding-top: 50px;
+    pointer-events: none;
+    // &.overflow {
+    // overflow: visible;
+    // }
     // &.timelineDragging {
     //     :global(.vis-time-axis):global(.vis-foreground) {
     //         :global(.vis-text):hover {
@@ -35,7 +42,7 @@
 .stepSize_seconds {
     :global(.vis-time-axis) {
         :global(.vis-text):global(.vis-minor) {
-            margin-left: -19px;
+            margin-left: -79px;
         }
         :global(.vis-text):global(.vis-major) {
             margin-left: -18px;
@@ -43,6 +50,9 @@
             padding: 3px 16px;
             div {
                 text-align: center;
+            }
+            &:global(.left-label) {
+                margin-left: -11px;
             }
         }
     }
@@ -53,11 +63,14 @@
             margin-left: -24px;
         }
         :global(.vis-text):global(.vis-major) {
-            margin-left: -23px;
+            margin-left: -77px;
             text-align: left;
             padding: 3px 10px;
             div {
                 text-align: center;
+            }
+            &:global(.left-label) {
+                margin-left: -6px;
             }
         }
     }
@@ -65,7 +78,7 @@
 .stepSize_hours {
     :global(.vis-time-axis) {
         :global(.vis-text):global(.vis-minor) {
-            margin-left: -30px;
+            margin-left: -86px;
         }
         :global(.vis-text):global(.vis-major) {
             margin-left: -28px;
@@ -73,6 +86,9 @@
             padding: 3px 15px;
             div {
                 text-align: center;
+            }
+            &:global(.left-label) {
+                margin-left: -11px;
             }
         }
     }
@@ -83,11 +99,14 @@
             margin-left: -15px;
         }
         :global(.vis-text):global(.vis-major) {
-            margin-left: -13px;
+            margin-left: -60px;
             text-align: left;
             padding: 3px 10px;
             div {
                 text-align: center;
+            }
+            &:global(.left-label) {
+                margin-left: -6px;
             }
         }
     }
@@ -98,11 +117,16 @@
             margin-left: -30px;
         }
         :global(.vis-text):global(.vis-major) {
-            margin-left: -30px;
+            // margin-left: -30px;
+            margin-left: -67px;
             text-align: left;
             padding: 3px 22px;
             div {
                 text-align: center;
+            }
+            // margin-left: -30px;
+            &:global(.left-label) {
+                margin-left: -19px;
             }
         }
     }
@@ -110,7 +134,7 @@
 .stepSize_years {
     :global(.vis-time-axis) {
         :global(.vis-text):global(.vis-minor) {
-            margin-left: -38px;
+            margin-left: -55px;
         }
     }
 }
@@ -131,15 +155,16 @@
     flex: 1;
     width: 100%;
     z-index: 1;
-    &:before,
-    &:after {
-        content: " ";
-        width: 34px;
-        background: #dcdcdc;
-        height: 2px;
-        top: 24px;
-        position: relative;
-    }
+    pointer-events: all;
+    // &:before {
+    // &:after {
+    //     content: " ";
+    //     width: 34px;
+    //     background: #dcdcdc;
+    //     height: 2px;
+    //     top: 24px;
+    //     position: relative;
+    // }
     :global(.vis-panel) > :global(.vis-content) {
         top: -5px !important;
     }
@@ -162,9 +187,22 @@
     }
     :global(.vis-item) :global(.vis-item-content) {
         // margin-left: 12px !important;
-        margin-left: 0px !important;
+        // margin-left: 0px !important;
+        // margin-top: -6px;
+        // padding: 0;
+
         margin-top: -6px;
         padding: 0;
+        width: 12px;
+        height: 12px;
+        left: -6px;
+        // position: relative;
+        &:hover {
+            .dotTooltip {
+                opacity: 1;
+                pointer-events: all;
+            }
+        }
     }
     :global(.vis-drag-center) {
         display: none;
@@ -206,7 +244,8 @@
     }
     :global(.vis-time-axis) :global(.vis-grid):global(.vis-major):after {
         content: " ";
-        height: 44px;
+        // height: 44px;
+        height: 23px;
         width: 1px;
         position: absolute;
         background: #dcdcdc;
@@ -288,8 +327,8 @@
     position: absolute;
     top: -70px;
     transition: opacity 0.1s ease-in-out;
-    opacity: 1;
-    pointer-events: all;
+    opacity: 0;
+    pointer-events: none;
     transition: opacity 0.1s ease-in-out;
     &:after {
         border-top: 8px solid #ffffff;
@@ -314,11 +353,11 @@
     line-height: 1.46429em;
 }
 
-.dotTooltipHidden {
-    composes: dotTooltip;
-    opacity: 0;
-    pointer-events: none;
-}
+// .dotTooltipHidden {
+//     composes: dotTooltip;
+//     opacity: 0;
+//     pointer-events: none;
+// }
 .dot {
     background: #dcdcdc;
     border: none;
@@ -345,4 +384,8 @@
         left: -4px;
         position: relative;
     }
+}
+.resolutionStepWrapper {
+    pointer-events: all;
+    margin-top: 46px;
 }
