@@ -8,6 +8,9 @@ import Immutable from "immutable";
 import { DataSet, Timeline } from "vis/index-timeline-graph2d";
 import "vis/dist/vis-timeline-graph2d.min.css";
 import { ResolutionStep } from "_core/components/Timeline";
+import KeyboardArrowLeftIcon from "material-ui-icons/KeyboardArrowLeft";
+import KeyboardArrowRightIcon from "material-ui-icons/KeyboardArrowRight";
+import Button from "material-ui/Button";
 import * as mapActions from "_core/actions/mapActions";
 import * as mapActionsMSF from "actions/mapActions";
 import * as appStrings from "_core/constants/appStrings";
@@ -88,6 +91,8 @@ export class TimelineContainerStyles extends Component {
             this.handleWindowResize(evt);
         };
 
+        // horrible annoying override of an entire vis function just to add a single
+        // classname to that sticky left major axis label ugh.
         this.timeline.timeAxis._repaintLabels = function() {
             let orientation = this.options.orientation.axis;
 
@@ -157,7 +162,8 @@ export class TimelineContainerStyles extends Component {
                 count++;
 
                 isMajor = step.isMajor();
-                className = step.getClassName();
+                // className = step.getClassName();
+                className = ""; // APLAVE PERFORMANCE MODIFICATION
                 labelMinor = step.getLabelMinor();
 
                 current = next;
@@ -240,7 +246,6 @@ export class TimelineContainerStyles extends Component {
 
     componentDidUpdate(prevProps) {
         this.items = this.getTimelineItems();
-        // console.log(this.items, "items");
 
         this.timeline.setData({
             items: this.items
@@ -250,15 +255,7 @@ export class TimelineContainerStyles extends Component {
         let currRes = this.props.dateSliderTimeResolution.get("resolution");
         let prevRes = prevProps.dateSliderTimeResolution.get("resolution");
 
-        // // If we're not dragging the date then we can update the timeline item from props
-        // if (!this.isDragging) {
-        // keep the current date indicator on a tick
-        // let item = this.items.get(CURR_DATE_ITEM_ID);
-        // item.start = moment(currDate).startOf(currRes);
-        // this.items.update(item);
-        // }
-
-        // // If date resolution has changed, configure timeline for the new resolution
+        // If date resolution has changed, configure timeline for the new resolution
         if (prevRes !== currRes) {
             // Calculate new start, end window, set new timeAxis values
             let { start, end } = this.calculateTimelineRange(moment(currDate));
@@ -271,11 +268,11 @@ export class TimelineContainerStyles extends Component {
                 end: end
             });
 
-            //     // Focus on appDate to account for possibility of new resolution
-            //     // throwing the appDate out of view
-            //     this.focusOnItem(CURR_DATE_ITEM_ID);
-            // } else {
-            //     this.bringItemIntoView(CURR_DATE_ITEM_ID, { duration: 250 });
+            // Focus on first item in dataset for now
+            let firstItem = this.items.min("start");
+            if (firstItem) {
+                this.focusOnItem(firstItem.id);
+            }
         }
     }
 
@@ -356,23 +353,50 @@ export class TimelineContainerStyles extends Component {
             // Determine date at precision of resolution
             switch (resolution) {
                 case appStrings.SECONDS:
-                    dateBin = datetime.seconds();
+                    dateBin = dateBin = dateBin =
+                        datetime.year() +
+                        "_" +
+                        datetime.month() +
+                        "_" +
+                        datetime.date() +
+                        "_" +
+                        datetime.hours() +
+                        "_" +
+                        datetime.minutes() +
+                        "_" +
+                        datetime.seconds();
                     itemStart = datetime.startOf("second");
                     break;
                 case appStrings.MINUTES:
-                    dateBin = datetime.minutes();
+                    dateBin = dateBin =
+                        datetime.year() +
+                        "_" +
+                        datetime.month() +
+                        "_" +
+                        datetime.date() +
+                        "_" +
+                        datetime.hours() +
+                        "_" +
+                        datetime.minutes();
                     itemStart = datetime.startOf("minute");
                     break;
                 case appStrings.HOURS:
-                    dateBin = datetime.hours();
+                    dateBin =
+                        datetime.year() +
+                        "_" +
+                        datetime.month() +
+                        "_" +
+                        datetime.date() +
+                        "_" +
+                        datetime.hours();
                     itemStart = datetime.startOf("hour");
                     break;
                 case appStrings.DAYS:
-                    dateBin = datetime.date();
+                    dateBin = datetime.year() + "_" + datetime.month() + "_" + datetime.date();
                     itemStart = datetime.startOf("day");
                     break;
                 case appStrings.MONTHS:
-                    dateBin = datetime.month();
+                    dateBin = datetime.year() + "_" + datetime.month();
                     itemStart = datetime.startOf("month");
                     break;
                 case appStrings.YEARS:
@@ -446,68 +470,36 @@ export class TimelineContainerStyles extends Component {
         });
     }
 
-    // handleTimelineClick(props) {
-    //     // Incomplete attempt at preventing click events firing on drag end on timeline
-    //     // For now, disable clicking on background.
-    //     // Check for snapped time, not all events are guaranteed to have one
-    //     if (props.what === "background" || props.what === "item" || !props.snappedTime) {
-    //         return;
-    //     }
-    //     // Determine major/minor label click
-    //     if (props.event.target.classList.contains("vis-minor")) {
-    //         let snappedDate = this.snapDate(
-    //             props.snappedTime,
-    //             this.props.dateSliderTimeResolution.get("resolution")
-    //         );
-
-    //         let maskedDate = this.maskDate(
-    //             this.props.date,
-    //             snappedDate.toDate(),
-    //             this.props.dateSliderTimeResolution.get("resolution")
-    //         );
-
-    //         let newDate = maskedDate;
-
-    //         this.props.mapActions.setDate(newDate);
-    //     } else if (
-    //         props.event.target.classList.contains("vis-major") ||
-    //         (props.event.target.tagName === "DIV" &&
-    //             props.event.target.parentElement.classList.contains("vis-major"))
-    //     ) {
-    //         let currentResolution = MiscUtil.findObjectWithIndexInArray(
-    //             appConfig.DATE_SLIDER_RESOLUTIONS,
-    //             "resolution",
-    //             this.props.dateSliderTimeResolution.get("resolution")
-    //         );
-
-    //         let dateTxt = props.event.target.innerText;
-    //         let dateFormat =
-    //             appConfig.DATE_SLIDER_RESOLUTIONS[currentResolution.index].visMajorFormat;
-    //         let date = moment(dateTxt, dateFormat);
-    //         this.props.mapActions.setDate(date);
-    //     }
-    // }
-
     handleTimelineDragging(props) {
-        this.setTimelineClassActive(styles.timelineDragging, true);
+        // this.setTimelineClassActive(styles.timelineDragging, true);
     }
 
     handleTimelineDrag(props) {
-        this.setTimelineClassActive(styles.timelineDragging, false);
+        // let visibleItems = this.timeline.getVisibleItems();
+        let dataRange = this.timeline.getDataRange();
+        // let timelineWindow = this.timeline.getWindow();
+        if (props.start > dataRange.min) {
+            // Show left jumper
+            this.jumperLeft.classList.remove(styles.timelineJumperHidden);
+        } else {
+            this.jumperLeft.classList.add(styles.timelineJumperHidden);
+            // Hide left jumper
+        }
+        if (props.end < dataRange.max) {
+            // Show right jumper
+            this.jumperRight.classList.remove(styles.timelineJumperHidden);
+        } else {
+            // Hide right jumper
+            this.jumperRight.classList.add(styles.timelineJumperHidden);
+        }
     }
 
     // handleItemHoverOver(props) {
-    //     this.setTimelineClassActive(styles.timelineDragging, true);
-    //     this.setTimelineClassActive(styles.overflow, true);
     //     let item = this.items.get(props.item);
-    //     this.items.update({ id: props.item, hover: true });
     // }
 
     // handleItemHoverOut(props) {
-    //     this.setTimelineClassActive(styles.timelineDragging, false);
-    //     this.setTimelineClassActive(styles.overflow, false);
     //     let item = this.items.get(props.item);
-    //     this.items.update({ id: props.item, hover: false });
     // }
 
     handleItemSelect(props) {
@@ -515,7 +507,10 @@ export class TimelineContainerStyles extends Component {
         let item = this.items.get(props.items[0]);
         // Only operate on single plume data points
         if (item.plumes.length === 1) {
-            this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_PLUMES, item.plumes[0]);
+            this.props.mapActionsMSF.toggleFeatureLabel(
+                layerSidebarTypes.CATEGORY_PLUMES,
+                item.plumes[0]
+            );
             this.items.update({ id: props.items[0], selected: true });
             this.timeline.setSelection(props.items[0]);
         }
@@ -531,7 +526,6 @@ export class TimelineContainerStyles extends Component {
 
     getTimelineTooltipFunc() {
         return (item, element, data) => {
-            // console.log(item, data, "id");
             // Create tooltip by adding an element to item content
             let tooltipClasses = MiscUtil.generateStringFromSet({
                 [styles.dotTooltip]: true
@@ -727,6 +721,44 @@ export class TimelineContainerStyles extends Component {
     //     return date;
     // }
 
+    jumpToNearest(direction) {
+        // let visibleItems = this.timeline.getVisibleItems();
+        let { start, end } = this.timeline.getWindow();
+        // this.items.
+        let nearestItem;
+        if (direction === "left") {
+            // Find first item to the left of the timeline window
+            this.items.map(item => {
+                if (item.start < start) {
+                    if (!nearestItem) {
+                        nearestItem = item;
+                    } else {
+                        if (item.start > nearestItem.start) {
+                            nearestItem = item;
+                        }
+                    }
+                }
+            });
+        } else if (direction === "right") {
+            // Find first item to the right of the timeline window
+            this.items.map(item => {
+                if (item.start > end) {
+                    if (!nearestItem) {
+                        nearestItem = item;
+                    } else {
+                        if (item.start < nearestItem.start) {
+                            nearestItem = item;
+                        }
+                    }
+                }
+            });
+        }
+        if (nearestItem) {
+            this.bringItemIntoView(nearestItem.id, { duration: 250 });
+            // this.focusOnItem(nearestItem.id, 250);
+        }
+    }
+
     clampDate(date) {
         let newDate = moment(date);
         // Clamp date to min and max dates of appConfig
@@ -774,11 +806,29 @@ export class TimelineContainerStyles extends Component {
         return (
             <div className={containerClasses}>
                 <div className={styles.timelineBackground}>
+                    <div
+                        onClick={() => this.jumpToNearest("left")}
+                        className={styles.timelineJumperLeft}
+                        ref={ref => (this.jumperLeft = ref)}
+                    >
+                        <Button color="contrast">
+                            <KeyboardArrowLeftIcon />
+                        </Button>
+                    </div>
                     <div className={styles.container}>
                         <div
                             className={timelineClasses}
                             ref={ref => (this.timelineContainerStylesRef = ref)}
                         />
+                    </div>
+                    <div
+                        onClick={() => this.jumpToNearest("right")}
+                        className={styles.timelineJumperRight}
+                        ref={ref => (this.jumperRight = ref)}
+                    >
+                        <Button color="contrast">
+                            <KeyboardArrowRightIcon />
+                        </Button>
                     </div>
                     <div className={styles.resolutionStepWrapper}>
                         <ResolutionStep />
@@ -792,11 +842,10 @@ export class TimelineContainerStyles extends Component {
 TimelineContainerStyles.propTypes = {
     date: PropTypes.object.isRequired,
     mapActions: PropTypes.object.isRequired,
-    mapActionsMSF: PropTypes.object.isRequired,
     searchResults: PropTypes.object.isRequired,
     activeFeature: PropTypes.object.isRequired,
     dateSliderTimeResolution: PropTypes.object.isRequired,
-    toggleFeatureLabel: PropTypes.object.isRequired
+    mapActionsMSF: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -815,7 +864,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         mapActions: bindActionCreators(mapActions, dispatch),
-        toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch)
+        mapActionsMSF: bindActionCreators(mapActionsMSF, dispatch)
     };
 }
 

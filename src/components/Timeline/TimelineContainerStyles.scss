@@ -15,6 +15,36 @@
     display: flex;
     pointer-events: none;
 }
+.timelineJumper {
+    position: absolute;
+    bottom: 53px;
+    color: white;
+    z-index: 2;
+    pointer-events: all;
+    opacity: 1;
+    transition: opacity 0.1s ease-in-out;
+    button {
+        padding: 0;
+        min-height: 0;
+        min-width: 0;
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+}
+.timelineJumperHidden {
+    opacity: 0;
+    pointer-events: none;
+}
+.timelineJumperLeft {
+    composes: timelineJumper;
+    left: 5px;
+}
+.timelineJumperRight {
+    composes: timelineJumper;
+    right: 92px;
+}
 .container {
     overflow: hidden;
     flex: 1;
