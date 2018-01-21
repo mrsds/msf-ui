@@ -103,7 +103,7 @@ export class LayerSidebarContainer extends Component {
         let activeTabIndex = this.getIndexForCategory(this.props.activeFeatureCategory);
         return (
             <Paper elevation={2} square={true} className={containerClasses}>
-                <AppBar position="static">
+                <AppBar elevation={2} position="static">
                     <Tabs
                         className={styles.tabsRoot}
                         fullWidth
