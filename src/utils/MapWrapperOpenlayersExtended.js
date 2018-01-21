@@ -129,7 +129,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 // anchorYUnits: "pixels",
                 // opacity: 0.75,
                 src: "img/PlumeIcon.png",
-                scale: 0.5
+                scale: 1
             })
         });
     }
@@ -171,7 +171,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                         image: new Ol_Style_Icon({
                             opacity: 1,
                             src: "img/PlumeIcon.png",
-                            scale: 0.5
+                            scale: 0.6
                         })
                     }),
                     minResolution: 0.00005966144664679565
