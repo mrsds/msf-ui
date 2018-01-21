@@ -15,7 +15,7 @@ const AppBarContainer = props => {
     });
     return (
         <div className={containerClasses}>
-            <AppBar position="static" style={{ background: appColorPalette[400] }}>
+            <AppBar elevation={2} position="static" style={{ background: appColorPalette[400] }}>
                 <Toolbar classes={{ root: styles.toolbarRoot }}>
                     <AppTitleContainer className={styles.title} />
                     <AppButtons />
