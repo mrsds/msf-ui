@@ -1,4 +1,5 @@
 @import "~styles/colors";
+@import "~styles/misc";
 
 .root {
     position: absolute;
@@ -6,9 +7,32 @@
     width: 100%;
     z-index: 2;
 }
+.shadow {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: calc(100% - #{$layer-sidebar-width});
+    z-index: 1;
+    height: 45px;
+}
 .toolbarRoot {
     min-height: 45px;
 }
 .title {
     flex: 1;
+    color: white;
+    display: inline-block;
+    color: $color-light;
+    font-size: 1.4rem;
+    -webkit-font-smoothing: antialiased;
+    // letter-spacing: 0.0756em;
+}
+
+.appLogo {
+    fill: white;
+    width: 34px;
+    height: 34px;
+    top: 3px;
+    position: relative;
+    margin-right: 10px;
 }

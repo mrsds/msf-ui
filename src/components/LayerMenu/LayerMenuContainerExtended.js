@@ -85,9 +85,7 @@ export class LayerMenuContainer extends Component {
                         </div>
                     </div>
                     <Collapse in={this.props.layerMenuOpen} timeout="auto">
-                        <Divider />
-                        <Divider />
-                        <div className={styles.layerMenuContent}>
+                        <div className={stylesExtended.layerMenuContent}>
                             <List disablePadding>
                                 {this.props.groups.map(group => (
                                     <GroupControlContainer

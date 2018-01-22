@@ -9,5 +9,11 @@
 
 .layerHeaderRow {
     composes: layerHeaderRow from "_core/components/LayerMenu/LayerMenuContainer.scss";
-    background: $color-background;
+    // background: $color-primary;
+    // color: white;
+}
+.layerMenuContent {
+    composes: layerMenuContent from "_core/components/LayerMenu/LayerMenuContainer.scss";
+    // overflow: hidden;
+    // overflow-y: hidden;
 }

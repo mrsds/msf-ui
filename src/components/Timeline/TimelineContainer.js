@@ -539,6 +539,7 @@ export class TimelineContainerStyles extends Component {
             let plumeSubtitle = "";
             if (data.plumes.length === 1) {
                 plumeTitle = MiscUtilExtended.formatPlumeDatetime(data.plumes[0].get("datetime"));
+                // • or · ?
                 plumeSubtitle = `${data.plumes.length} plume • ${data.plumeStatistics.avg.value} ${
                     data.plumeStatistics.avg.label
                 }`;
