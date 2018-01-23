@@ -9,7 +9,7 @@ import appConfig from "constants/appConfig";
 import * as appStrings from "_core/constants/appStrings";
 import KeyHandler, { KEYUP, KEYDOWN } from "react-key-handler";
 import { KeyboardControlsContainer as CoreKeyboardControlsContainer } from "_core/components/KeyboardControls/KeyboardControlsContainer";
-import * as featureDetailActions from "actions/FeatureDetailActions";
+import * as featureDetailActions from "actions/featureDetailActions";
 
 export class KeyboardControlsContainer extends CoreKeyboardControlsContainer {
     handleKeyUp_Escape() {
@@ -48,10 +48,7 @@ function mapStateToProps(state) {
         date: state.map.get("date"),
         dateSliderTimeResolution: state.dateSlider.get("resolution"),
         isDrawingEnabled: state.map.getIn(["drawing", "isDrawingEnabled"]),
-        isMeasuringEnabled: state.map.getIn([
-            "measuring",
-            "isMeasuringEnabled"
-        ]),
+        isMeasuringEnabled: state.map.getIn(["measuring", "isMeasuringEnabled"]),
         featureDetail: state.featureDetail.get("feature")
     };
 }
@@ -64,6 +61,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-    KeyboardControlsContainer
-);
+export default connect(mapStateToProps, mapDispatchToProps)(KeyboardControlsContainer);

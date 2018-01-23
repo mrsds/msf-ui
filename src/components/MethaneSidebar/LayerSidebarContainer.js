@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import AppBar from "material-ui/AppBar";
 import Tabs, { Tab } from "material-ui/Tabs";
-import * as layerSidebarActions from "actions/LayerSidebarActions";
+import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import InfrastructureContainer from "components/MethaneSidebar/InfrastructureContainer";
 import PlumesContainer from "components/MethaneSidebar/PlumesContainer";

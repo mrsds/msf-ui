@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as layerSidebarActions from "actions/LayerSidebarActions";
+import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import Radio from "material-ui/Radio";
 import Popover from "material-ui/Popover";

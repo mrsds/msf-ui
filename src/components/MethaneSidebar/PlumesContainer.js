@@ -10,7 +10,7 @@ import List, {
 } from "material-ui/List";
 import Divider from "material-ui/Divider";
 import Typography from "material-ui/Typography";
-import * as layerSidebarActions from "actions/LayerSidebarActions";
+import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import IconButton from "material-ui/IconButton";
 import { CircularProgress } from "material-ui/Progress";

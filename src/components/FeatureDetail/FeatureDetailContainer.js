@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Button from "material-ui/Button";
-import * as featureDetailActions from "actions/FeatureDetailActions";
+import * as featureDetailActions from "actions/featureDetailActions";
 import Typography from "material-ui/Typography";
 import Grid from "material-ui/Grid";
 import Card, { CardActions, CardContent, CardMedia } from "material-ui/Card";
