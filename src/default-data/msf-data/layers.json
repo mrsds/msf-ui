@@ -226,14 +226,6 @@
             }
         },
         {
-            "id": "BlueMarble_ShadedRelief_Bathymetry",
-            "title": "Blue Marble, Shaded Relief w/Bathymetry",
-            "type": "basemap",
-            "thumbnailImage": "img/BlueMarble_ShadedRelief_Bathymetry.jpeg",
-            "handleAs": "GIBS_raster",
-            "updateParameters": { "time": false }
-        },
-        {
             "id": "OSM_Land_Water_Map",
             "title": "Land/Water Map (data from OSM)",
             "type": "basemap",
