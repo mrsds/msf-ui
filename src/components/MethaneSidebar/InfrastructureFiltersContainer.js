@@ -4,7 +4,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as layerSidebarActions from "actions/LayerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import Radio from "material-ui/Radio";
+import List, { ListItem, ListSubheader, ListItemText } from "material-ui/List";
+import Checkbox from "material-ui/Checkbox";
 import Popover from "material-ui/Popover";
 import Paper from "material-ui/Paper";
 import Search from "material-ui-icons/Search";
@@ -22,28 +23,26 @@ import SearchInput from "components/Reusables/SearchInput";
 import styles from "components/MethaneSidebar/FiltersContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
 import { IconButtonSmall } from "_core/components/Reusables";
+import MapUtilExtended from "utils/MapUtilExtended";
 import Immutable from "immutable";
 
 export class PlumeFiltersContainer extends Component {
     constructor(props) {
         super(props);
-        // this.popperProps = Immutable.fromJS({
-        //     flightCampaigns: false,
-        //     plumeIME: false,
-        //     plumeID: false,
-        //     source: false
-        // });
+        this.popperProps = Immutable.fromJS({
+            infrastructureSubcategories: false
+        });
     }
 
-    // setPopperActive(key, active) {
-    //     this.popperProps = this.popperProps.map((v, k) => (k === key ? active : false));
-    //     this.forceUpdate();
-    // }
+    setPopperActive(key, active) {
+        this.popperProps = this.popperProps.map((v, k) => (k === key ? active : false));
+        this.forceUpdate();
+    }
 
-    // closeAllPoppers() {
-    //     this.popperProps = this.popperProps.map((v, k) => false);
-    //     this.forceUpdate();
-    // }
+    closeAllPoppers() {
+        this.popperProps = this.popperProps.map((v, k) => false);
+        this.forceUpdate();
+    }
 
     render() {
         let infrastructureNameFilter = this.props.filters.get(
@@ -56,6 +55,10 @@ export class PlumeFiltersContainer extends Component {
         )
             ? infrastructureNameFilter.get("selectedValue").label
             : null;
+
+        let infrastructureSubcategoriesPopoverOpen = this.popperProps.get(
+            "infrastructureSubcategories"
+        );
 
         return (
             <React.Fragment>
@@ -87,6 +90,138 @@ export class PlumeFiltersContainer extends Component {
                         )
                     }
                 />
+                <ClickAwayListener
+                    onClickAway={() => {
+                        if (infrastructureSubcategoriesPopoverOpen) {
+                            this.closeAllPoppers();
+                        }
+                    }}
+                >
+                    <Manager className={styles.manager}>
+                        <Target>
+                            <ChipDropdown
+                                className={styles.chip}
+                                onClick={() =>
+                                    this.setPopperActive(
+                                        "infrastructureSubcategories",
+                                        !infrastructureSubcategoriesPopoverOpen
+                                    )
+                                }
+                                onDelete={() => {
+                                    this.setPopperActive("infrastructureSubcategories", false);
+                                    {
+                                        /* this.props.setInfrastructureFilter(
+                                        layerSidebarTypes.PLUME_FILTER_PLUME_IME,
+                                        null
+                                    ); */
+                                    }
+                                }}
+                                label="Infrastructure Types"
+                                value={""}
+                                active={infrastructureSubcategoriesPopoverOpen}
+                            />
+                        </Target>
+                        <Popper
+                            placement="bottom-start"
+                            modifiers={{
+                                computeStyle: {
+                                    gpuAcceleration: false
+                                }
+                            }}
+                            eventsEnabled={infrastructureSubcategoriesPopoverOpen}
+                            className={
+                                !infrastructureSubcategoriesPopoverOpen
+                                    ? displayStyles.noPointer
+                                    : ""
+                            }
+                        >
+                            <Grow
+                                style={{ transformOrigin: "left top" }}
+                                in={infrastructureSubcategoriesPopoverOpen}
+                            >
+                                <div>
+                                    <Paper elevation={8} className={styles.popoverPaper}>
+                                        <AppBar elevation={0} className={styles.popoverAppBar}>
+                                            <Toolbar className={styles.popoverHeader}>
+                                                <Typography
+                                                    type="body1"
+                                                    color="inherit"
+                                                    className={styles.popoverTitle}
+                                                >
+                                                    Infrastructure Types
+                                                </Typography>
+                                                <IconButtonSmall
+                                                    color="contrast"
+                                                    onClick={() =>
+                                                        this.setPopperActive(
+                                                            "infrastructureSubcategories",
+                                                            false
+                                                        )
+                                                    }
+                                                >
+                                                    <CloseIcon />
+                                                </IconButtonSmall>
+                                            </Toolbar>
+                                        </AppBar>
+                                        <div className={styles.formControl}>
+                                            {Object.keys(
+                                                layerSidebarTypes.INFRASTRUCTURE_GROUPS
+                                            ).map(group => (
+                                                <List
+                                                    key={group}
+                                                    dense
+                                                    subheader={
+                                                        <ListSubheader
+                                                            className={styles.subheader}
+                                                            disableSticky
+                                                        >
+                                                            {group}
+                                                        </ListSubheader>
+                                                    }
+                                                >
+                                                    {layerSidebarTypes.INFRASTRUCTURE_GROUPS[
+                                                        group
+                                                    ].categories.map(category => {
+                                                        const categoryName = MapUtilExtended.getInfrastructureCategoryHumanName(
+                                                            category
+                                                        );
+                                                        const checked =
+                                                            this.props.activeInfrastructureSubCategories.get(
+                                                                category
+                                                            ) || false;
+                                                        return (
+                                                            <ListItem
+                                                                key={category}
+                                                                dense
+                                                                button
+                                                                onClick={() =>
+                                                                    this.props.updateInfrastructureCategoryFilter(
+                                                                        category,
+                                                                        !checked
+                                                                    )
+                                                                }
+                                                            >
+                                                                <Checkbox
+                                                                    className={styles.checkbox}
+                                                                    checked={checked}
+                                                                    tabIndex={-1}
+                                                                    disableRipple
+                                                                />
+                                                                <ListItemText
+                                                                    primary={categoryName}
+                                                                />
+                                                            </ListItem>
+                                                        );
+                                                    })}
+                                                </List>
+                                            ))}
+                                        </div>
+                                    </Paper>
+                                </div>
+                            </Grow>
+                        </Popper>
+                    </Manager>
+                </ClickAwayListener>
             </React.Fragment>
         );
     }
@@ -94,7 +229,9 @@ export class PlumeFiltersContainer extends Component {
 
 PlumeFiltersContainer.propTypes = {
     filters: PropTypes.object.isRequired,
-    setInfrastructureFilter: PropTypes.func.isRequired
+    setInfrastructureFilter: PropTypes.func.isRequired,
+    updateInfrastructureCategoryFilter: PropTypes.func.isRequired,
+    activeInfrastructureSubCategories: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -103,7 +240,10 @@ function mapStateToProps(state) {
             "searchState",
             layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
             "filters"
-        ])
+        ]),
+        activeInfrastructureSubCategories: state.layerSidebar.get(
+            "activeInfrastructureSubCategories"
+        )
     };
 }
 
@@ -111,6 +251,10 @@ function mapDispatchToProps(dispatch) {
     return {
         setInfrastructureFilter: bindActionCreators(
             layerSidebarActions.setInfrastructureFilter,
+            dispatch
+        ),
+        updateInfrastructureCategoryFilter: bindActionCreators(
+            layerSidebarActions.updateInfrastructureCategoryFilter,
             dispatch
         )
     };

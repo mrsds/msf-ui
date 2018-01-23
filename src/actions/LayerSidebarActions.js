@@ -65,13 +65,6 @@ function setGroupLayerActive(layer, active) {
     return { type: types.SET_GROUP_LAYER_ACTIVE, layer, active };
 }
 
-export function toggleInfrastructureFacilityFilterOptionsVisible(category) {
-    return {
-        type: types.TOGGLE_INFRASTRUCTURE_FACILITY_FILTER_OPTIONS_VISIBLE,
-        category
-    };
-}
-
 export function setPlumeFilter(key, selectedValue) {
     return dispatch => {
         dispatch({ type: types.SET_PLUME_FILTER, key, selectedValue });

@@ -29,7 +29,6 @@ import Input, { InputLabel } from "material-ui/Input";
 import { MenuItem } from "material-ui/Menu";
 import Paper from "material-ui/Paper";
 import MiscUtilExtended from "utils/MiscUtilExtended";
-import MapUtilExtended from "utils/MapUtilExtended";
 import MetadataUtil from "utils/MetadataUtil";
 import * as mapActionsMSF from "actions/MapActions";
 import PageControls from "components/PageControls/PageControls";
@@ -173,7 +172,7 @@ export class InfrastructureContainer extends Component {
     //             />
     //         );
     //         layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].categories.forEach(category => {
-    //             const categoryName = MapUtilExtended.getInfrastructureCategoryHumanName(category);
+
     //             const checked = this.props.activeInfrastructureSubCategories.get(category) || false;
     //             listItems.push(
     //                 <ListItem
@@ -291,7 +290,6 @@ InfrastructureContainer.propTypes = {
     activeFeature: PropTypes.object,
     activeDetailFeature: PropTypes.object,
     searchState: PropTypes.object.isRequired,
-    activeInfrastructureSubCategories: PropTypes.object.isRequired,
     pageForward: PropTypes.func.isRequired,
     pageBackward: PropTypes.func.isRequired,
     setFeatureDetail: PropTypes.func.isRequired,

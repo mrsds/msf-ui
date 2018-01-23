@@ -41,6 +41,15 @@
 .radioLabel {
     display: inline;
 }
+.checkbox {
+    width: inherit;
+    height: inherit;
+}
+.subheader {
+    height: 34px;
+    line-height: 4.4rem;
+    text-transform: capitalize;
+}
 .chip {
     margin-right: 5px;
 }

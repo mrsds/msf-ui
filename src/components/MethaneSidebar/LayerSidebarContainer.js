@@ -142,7 +142,6 @@ LayerSidebarContainer.propTypes = {
     pageBackward: PropTypes.func.isRequired,
     changeSidebarCategory: PropTypes.func.isRequired,
     searchState: PropTypes.object.isRequired,
-    activeInfrastructureSubCategories: PropTypes.object.isRequired,
     featureLoadingState: PropTypes.object.isRequired
 };
 
@@ -151,9 +150,6 @@ function mapStateToProps(state) {
         availableFeatures: state.layerSidebar.get("availableFeatures"),
         activeFeatureCategory: state.layerSidebar.get("activeFeatureCategory"),
         searchState: state.layerSidebar.get("searchState"),
-        activeInfrastructureSubCategories: state.layerSidebar.get(
-            "activeInfrastructureSubCategories"
-        ),
         featureLoadingState: state.asynchronous.get("loadingFeatures")
     };
 }

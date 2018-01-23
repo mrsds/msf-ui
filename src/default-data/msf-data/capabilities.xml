@@ -140,22 +140,6 @@
             </TileMatrixSetLink>
             <ResourceURL format="image/jpeg" resourceType="tile" template="https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/ASTER_GDEM_Color_Shaded_Relief/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg" />
         </Layer>
-        <Layer>
-            <ows:Title xml:lang="en">Blue Marble Shaded Relief and Bathymetry (MODIS)</ows:Title>
-            <ows:WGS84BoundingBox crs="urn:ogc:def:crs:OGC:2:84">
-                <ows:LowerCorner>-180 -90</ows:LowerCorner>
-                <ows:UpperCorner>180 90</ows:UpperCorner>
-            </ows:WGS84BoundingBox>
-            <ows:Identifier>BlueMarble_ShadedRelief_Bathymetry</ows:Identifier>
-            <Style isDefault="true">
-            <ows:Title xml:lang="en">default</ows:Title> <ows:Identifier>default</ows:Identifier>
-            </Style>
-            <Format>image/jpeg</Format>
-            <TileMatrixSetLink>
-                <TileMatrixSet>500m</TileMatrixSet>
-            </TileMatrixSetLink>
-            <ResourceURL format="image/jpeg" resourceType="tile" template="https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/BlueMarble_ShadedRelief_Bathymetry/default/{Time}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg" />
-        </Layer>
         <TileMatrixSet>
             <ows:Identifier>2km</ows:Identifier>
             <ows:SupportedCRS>EPSG:4326</ows:SupportedCRS>
