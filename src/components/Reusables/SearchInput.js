@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import IconButton from "material-ui/IconButton";
 import Input, { InputLabel, InputAdornment } from "material-ui/Input";
-import Visibility from "material-ui-icons/Visibility";
+import { IconButtonSmall } from "_core/components/Reusables";
 import MiscUtil from "_core/utils/MiscUtil";
 import styles from "components/Reusables/SearchInputStyles.scss";
 
@@ -40,10 +40,15 @@ export class SearchInput extends Component {
         this.value = value;
         this.updateValueFromInternal = false;
         let actionIcon = "";
+        let actionIconClasses = MiscUtil.generateStringFromSet({
+            [styles.actionIcon]: true,
+            [styles.actionIconHidden]: !value
+        });
         if (this.props.actionIcon) {
             actionIcon = (
-                <span className="search-input-action-button-container">
-                    <IconButton
+                <span className={actionIconClasses}>
+                    <IconButtonSmall
+                        disableRipple={true}
                         color={this.props.actionIconPrimary ? "primary" : "default"}
                         disabled={
                             typeof this.props.actionIcon === "undefined" || this.props.disabled
@@ -51,11 +56,11 @@ export class SearchInput extends Component {
                         onClick={() => this.handleActionButtonClick()}
                     >
                         {this.props.actionIcon}
-                    </IconButton>
+                    </IconButtonSmall>
                 </span>
             );
         }
-        let rootStyles = MiscUtil.generateStringFromSet({
+        let rootClasses = MiscUtil.generateStringFromSet({
             [styles.root]: true,
             [this.props.className]: this.props.className ? true : false
         });
@@ -65,7 +70,7 @@ export class SearchInput extends Component {
                     this.input = input;
                 }}
                 disableUnderline={true}
-                className={rootStyles}
+                className={rootClasses}
                 disabled={this.props.disabled}
                 onChange={evt => this.handleChange(evt.target.value)}
                 value={value}
@@ -78,7 +83,11 @@ export class SearchInput extends Component {
                         {this.props.icon}
                     </InputAdornment>
                 }
-                endAdornment={<InputAdornment position="end">{actionIcon}</InputAdornment>}
+                endAdornment={
+                    <InputAdornment className={styles.inputAdornmentPositionEnd} position="end">
+                        {actionIcon}
+                    </InputAdornment>
+                }
             />
         );
     }

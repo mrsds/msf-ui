@@ -172,7 +172,7 @@ export default class LayerSidebarReducer {
                         .utc(feature.get("datetime"))
                         .isBetween(startDate, endDate, "day", "[]") &&
                     (!flightCampaign || feature.get("flight_campaign") === flightCampaign.value) &&
-                    (!plumeIME || feature.get("ime") >= plumeIME)
+                    (!plumeIME || feature.get("ime") >= plumeIME.value)
                 );
             });
 

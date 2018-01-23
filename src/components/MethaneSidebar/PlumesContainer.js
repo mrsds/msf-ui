@@ -241,7 +241,7 @@ export class PlumesContainer extends Component {
                             )
                         }
                     /> */}
-                    <Typography style={{ padding: "8px 0px" }} type="subheading">
+                    <Typography style={{ padding: "4px 0px 8px" }} type="subheading">
                         Browse Plume Observations & Sources
                     </Typography>
                     <PlumeFiltersContainer />

@@ -15,3 +15,14 @@
     top: 2px;
     position: relative;
 }
+.inputAdornmentPositionEnd {
+    margin-right: 6px;
+}
+.actionIcon {
+    opacity: 1;
+    transition: opacity 50ms ease-in-out;
+}
+.actionIconHidden {
+    opacity: 0;
+    pointer-events: none;
+}
