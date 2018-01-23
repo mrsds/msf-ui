@@ -111,12 +111,12 @@ export default class LayerSidebarReducer {
         return state.set("activeInfrastructureSubCategories", newSubcategoryState);
     }
 
-    static setPlumeFilterDateRange(state, action) {
-        return state.setIn(
-            ["searchState", layerSidebarTypes.CATEGORY_PLUMES, action.position],
-            action.date
-        );
-    }
+    // static setPlumeFilterDateRange(state, action) {
+    //     return state.setIn(
+    //         ["searchState", layerSidebarTypes.CATEGORY_PLUMES, action.position],
+    //         action.date
+    //     );
+    // }
 
     static getSearchResultsHelper(category, featureList, searchString) {
         if (!searchString || !featureList.size) return featureList;
@@ -127,65 +127,131 @@ export default class LayerSidebarReducer {
         return Immutable.fromJS(searchObject.search(searchString));
     }
 
-    static updateFeatureSearchText(state, action) {
-        return state.setIn(["searchState", action.category, "searchString"], action.value);
-    }
+    // static updateFeatureSearchText(state, action) {
+    //     return state.setIn(["searchState", action.category, "searchString"], action.value);
+    // }
 
     static updateSearchResults(state, action) {
         const searchState = state.getIn(["searchState", action.category]);
-        const searchString = searchState.get("searchString");
+        let filters = searchState.get("filters");
         const featureList = state.getIn(["availableFeatures", action.category]);
-        let searchResults = LayerSidebarReducer.getSearchResultsHelper(
-            action.category,
-            featureList,
-            searchString
-        );
+        let searchResults = Immutable.Map();
 
         if (action.category === layerSidebarTypes.CATEGORY_PLUMES) {
-            const startDate = moment.utc(searchState.get("startDate"));
-            const endDate = moment.utc(searchState.get("endDate"));
-            const selectedCampaign = searchState.get("selectedFlightCampaign");
-            const selectedIME = searchState.get("selectedIME");
+            // Extract search filters
+            const startDate = moment.utc(
+                filters.getIn([layerSidebarTypes.PLUME_FILTER_PLUME_START_DATE, "selectedValue"])
+            );
+            const endDate = moment.utc(
+                filters.getIn([layerSidebarTypes.PLUME_FILTER_PLUME_END_DATE, "selectedValue"])
+            );
+            const flightCampaign = filters.getIn([
+                layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN,
+                "selectedValue"
+            ]);
+            const plumeIME = filters.getIn([
+                layerSidebarTypes.PLUME_FILTER_PLUME_IME,
+                "selectedValue"
+            ]);
+            const plumeID = filters.getIn([
+                layerSidebarTypes.PLUME_FILTER_PLUME_ID,
+                "selectedValue"
+            ]);
+
+            // Filter by plumeID via Fuse
+            searchResults = LayerSidebarReducer.getSearchResultsHelper(
+                action.category,
+                featureList,
+                plumeID.value
+            );
+
+            // Filter by other filters
             searchResults = searchResults.filter(feature => {
                 return (
                     moment
                         .utc(feature.get("datetime"))
                         .isBetween(startDate, endDate, "day", "[]") &&
-                    (!selectedCampaign || feature.get("flight_campaign") === selectedCampaign) &&
-                    (!selectedIME || feature.get("ime") >= selectedIME)
+                    (!flightCampaign || feature.get("flight_campaign") === flightCampaign.value) &&
+                    (!plumeIME || feature.get("ime") >= plumeIME)
                 );
             });
+
+            // Determine selectableValues for each filter
+            let flightCampaignSelectableValues = featureList
+                .reduce(
+                    (acc, feature) =>
+                        acc.includes(feature.get("flight_campaign"))
+                            ? acc
+                            : acc.concat(feature.get("flight_campaign")),
+                    []
+                )
+                .sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
+                .map(value => {
+                    return { value, label: "Campaign " + value };
+                });
+            filters = filters.setIn(
+                [layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN, "selectableValues"],
+                flightCampaignSelectableValues
+            );
+
+            let plumeIMESelectableValues = [5, 10, 25, 50, 100, 250, 500, 1000, 1500].map(x => {
+                return {
+                    value: x,
+                    label: ">" + x + "kg"
+                };
+            });
+
+            filters = filters.setIn(
+                [layerSidebarTypes.PLUME_FILTER_PLUME_IME, "selectableValues"],
+                plumeIMESelectableValues
+            );
+        } else if (action.category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE) {
+            // Apply search filters
+            // const searchString = searchState.get("searchString");
+            searchResults = Immutable.fromJS(featureList);
         }
-        const newState = state.setIn(
-            ["searchState", action.category, "searchResults"],
-            searchResults
-        );
+        const newState = state
+            .setIn(["searchState", action.category, "searchResults"], searchResults)
+            .setIn(["searchState", action.category, "filters"], filters);
 
         return this.updatePageIndex(newState, action.category);
     }
 
-    static setInfrastructureFacilityFilterOptionsVisible(state, action) {
-        const path = [
-            "searchState",
-            layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-            "facilityFilterOptionsVisible"
-        ];
-        return state.setIn(path, !state.getIn(path));
-    }
+    // static setInfrastructureFacilityFilterOptionsVisible(state, action) {
+    //     const path = [
+    //         "searchState",
+    //         layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+    //         "facilityFilterOptionsVisible"
+    //     ];
+    //     return state.setIn(path, !state.getIn(path));
+    // }
 
-    static updateSelectedFlightCampaign(state, action) {
+    static setPlumeFilter(state, action) {
         return state.setIn(
-            ["searchState", layerSidebarTypes.CATEGORY_PLUMES, "selectedFlightCampaign"],
-            action.flight_campaign
+            [
+                "searchState",
+                layerSidebarTypes.CATEGORY_PLUMES,
+                "filters",
+                action.key,
+                "selectedValue"
+            ],
+            action.selectedValue
         );
     }
 
-    static updateSelectedIME(state, action) {
-        return state.setIn(
-            ["searchState", layerSidebarTypes.CATEGORY_PLUMES, "selectedIME"],
-            action.ime
-        );
-    }
+    // static updateSelectedFlightCampaign(state, action) {
+    //     return state.setIn(
+    //         ["searchState", layerSidebarTypes.CATEGORY_PLUMES, "selectedFlightCampaign"],
+    //         action.flight_campaign
+    //     );
+    // }
+
+    // static updateSelectedIME(state, action) {
+    //     return state.setIn(
+    //         ["searchState", layerSidebarTypes.CATEGORY_PLUMES, "selectedIME"],
+    //         action.ime
+    //     );
+    // }
 
     static selectFeatureInSidebar(state, action) {
         if (!action.shuffleList) return state;

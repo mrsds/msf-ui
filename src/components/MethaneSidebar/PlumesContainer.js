@@ -18,17 +18,17 @@ import CloudOffOutlineIcon from "mdi-material-ui/CloudOffOutline";
 import InfoOutlineIcon from "material-ui-icons/InfoOutline";
 import InfoIcon from "material-ui-icons/Info";
 import MyLocationIcon from "material-ui-icons/MyLocation";
-import Search from "material-ui-icons/Search";
-import Clear from "material-ui-icons/Clear";
 import Select from "material-ui/Select";
 import { FormControl } from "material-ui/Form";
 import Input, { InputLabel } from "material-ui/Input";
 import { MenuItem } from "material-ui/Menu";
+import Paper from "material-ui/Paper";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import MetadataUtil from "utils/MetadataUtil";
 import appConfig from "constants/appConfig";
 import * as mapActionsMSF from "actions/mapActions";
 import PageControls from "components/PageControls/PageControls";
+import PlumeFiltersContainer from "components/MethaneSidebar/PlumeFiltersContainer";
 import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 import SearchInput from "components/Reusables/SearchInput";
 
@@ -62,7 +62,8 @@ export class PlumesContainer extends Component {
         const isActive = this.isActiveFeature(feature);
         const isActiveDetail = this.isActiveDetailFeature(feature);
         const itemClass = MiscUtilExtended.generateStringFromSet({
-            [layerSidebarStyles.selectedItem]: isActive || isActiveDetail
+            [layerSidebarStyles.selectedItem]: isActive || isActiveDetail,
+            [layerSidebarStyles.itemRoot]: true
         });
         const toggleLabelAction = () =>
             this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_PLUMES, feature);
@@ -140,29 +141,29 @@ export class PlumesContainer extends Component {
         return <div />;
     }
 
-    getAvailableFlightCampaigns() {
-        return this.props.availableFeatures
-            .reduce(
-                (acc, feature) =>
-                    acc.includes(feature.get("flight_campaign"))
-                        ? acc
-                        : acc.concat(feature.get("flight_campaign")),
-                []
-            )
-            .sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
-            .map(value => {
-                return { value, label: value };
-            });
-    }
+    // getAvailableFlightCampaigns() {
+    //     return this.props.availableFeatures
+    //         .reduce(
+    //             (acc, feature) =>
+    //                 acc.includes(feature.get("flight_campaign"))
+    //                     ? acc
+    //                     : acc.concat(feature.get("flight_campaign")),
+    //             []
+    //         )
+    //         .sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
+    //         .map(value => {
+    //             return { value, label: value };
+    //         });
+    // }
 
-    getPlumeIMEs() {
-        return [5, 10, 25, 50, 100, 250, 500, 1000, 1500].map(x => {
-            return {
-                value: x,
-                label: ">" + x + "kg"
-            };
-        });
-    }
+    // getPlumeIMEs() {
+    //     return [5, 10, 25, 50, 100, 250, 500, 1000, 1500].map(x => {
+    //         return {
+    //             value: x,
+    //             label: ">" + x + "kg"
+    //         };
+    //     });
+    // }
 
     makeResultsArea() {
         const hasResults = this.props.searchState.get("searchResults").size;
@@ -217,8 +218,8 @@ export class PlumesContainer extends Component {
         let selectedIME = this.props.searchState.get("selectedIME") || "";
         return (
             <div className={containerClasses}>
-                <div className={layerSidebarStyles.searchFiltersContainer}>
-                    <SearchInput
+                <Paper elevation={1} className={layerSidebarStyles.searchFiltersContainer}>
+                    {/* <SearchInput
                         icon={<Search />}
                         placeholder="Search Plumes by ID"
                         value={this.props.searchState.get("searchString")}
@@ -239,8 +240,12 @@ export class PlumesContainer extends Component {
                                 ""
                             )
                         }
-                    />
-                    <div>
+                    /> */}
+                    <Typography style={{ padding: "8px 0px" }} type="subheading">
+                        Browse Plume Observations & Sources
+                    </Typography>
+                    <PlumeFiltersContainer />
+                    {/* <div>
                         <FormControl className={layerSidebarStyles.select}>
                             <InputLabel shrink={true} htmlFor="flightCampaignSelect">
                                 Flight Campaign
@@ -285,10 +290,10 @@ export class PlumesContainer extends Component {
                                 ))}
                             </Select>
                         </FormControl>
-                    </div>
-                </div>
-                <Divider />
-                <Divider />
+                    </div> */}
+                </Paper>
+                {/* <Divider /> */}
+                {/* <Divider /> */}
                 {this.makeLoadingModal()}
                 {this.makeResultsArea()}
             </div>
@@ -300,16 +305,12 @@ PlumesContainer.propTypes = {
     isVisible: PropTypes.bool.isRequired,
     activeFeature: PropTypes.object,
     activeDetailFeature: PropTypes.object,
-    updateFeatureSearchText: PropTypes.func.isRequired,
     searchState: PropTypes.object.isRequired,
     pageForward: PropTypes.func.isRequired,
     pageBackward: PropTypes.func.isRequired,
     setFeatureDetail: PropTypes.func.isRequired,
     hideFeatureDetail: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    updatePlumeDateRange: PropTypes.func.isRequired,
-    selectFlightCampaign: PropTypes.func.isRequired,
-    selectIME: PropTypes.func.isRequired,
     availableFeatures: PropTypes.object.isRequired,
     centerMapOnPoint: PropTypes.func.isRequired,
     centerMapOnFeature: PropTypes.func.isRequired,
@@ -325,23 +326,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        updateFeatureSearchText: bindActionCreators(
-            layerSidebarActions.updateFeatureSearchText,
-            dispatch
-        ),
         pageForward: bindActionCreators(layerSidebarActions.pageForward, dispatch),
         pageBackward: bindActionCreators(layerSidebarActions.pageBackward, dispatch),
         setFeatureDetail: bindActionCreators(layerSidebarActions.setFeatureDetail, dispatch),
         hideFeatureDetail: bindActionCreators(layerSidebarActions.hideFeatureDetail, dispatch),
-        updatePlumeDateRange: bindActionCreators(
-            layerSidebarActions.updatePlumeDateRange,
-            dispatch
-        ),
-        selectFlightCampaign: bindActionCreators(
-            layerSidebarActions.selectFlightCampaign,
-            dispatch
-        ),
-        selectIME: bindActionCreators(layerSidebarActions.selectIME, dispatch),
         centerMapOnPoint: bindActionCreators(mapActionsMSF.centerMapOnPoint, dispatch),
         centerMapOnFeature: bindActionCreators(mapActionsMSF.centerMapOnFeature, dispatch),
         toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch)

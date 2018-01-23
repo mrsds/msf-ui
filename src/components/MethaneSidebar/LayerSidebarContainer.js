@@ -12,6 +12,7 @@ import Paper from "material-ui/Paper";
 import styles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
 import MiscUtil from "_core/utils/MiscUtil";
+import { appColorPalette } from "styles/appColorPalette";
 
 export class LayerSidebarContainer extends Component {
     // Gets the category name for a numerical tab index
@@ -103,7 +104,7 @@ export class LayerSidebarContainer extends Component {
         let activeTabIndex = this.getIndexForCategory(this.props.activeFeatureCategory);
         return (
             <Paper elevation={2} square={true} className={containerClasses}>
-                <AppBar elevation={2} position="static">
+                <AppBar elevation={1} position="static">
                     <Tabs
                         className={styles.tabsRoot}
                         fullWidth

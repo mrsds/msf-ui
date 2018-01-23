@@ -1,0 +1,56 @@
+@import "~styles/colors";
+@import "~styles/misc";
+
+.manager {
+    display: flex;
+    z-index: 1;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+.popoverAppBar {
+    position: relative;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+.popoverHeader {
+    background: $color-secondary;
+    min-height: 0;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    height: 40px;
+    padding: 0px 6px 0px 16px;
+    min-width: 220px;
+}
+.popoverTitle {
+    -webkit-font-smoothing: antialiased;
+    font-weight: 500;
+    flex: 1;
+}
+.formControl {
+    overflow: auto;
+    max-height: 270px;
+    width: 100%;
+    display: block;
+}
+.formControlLabel {
+    margin-left: 0;
+    display: block;
+    cursor: pointer;
+}
+.radioLabel {
+    display: inline;
+}
+.chip {
+    margin-right: 5px;
+}
+.flightCampaignChipIcon {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+}
+.searchInput {
+}
+.popoverPaper {
+    margin-top: 3px;
+}

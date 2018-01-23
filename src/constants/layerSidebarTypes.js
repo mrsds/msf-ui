@@ -20,6 +20,12 @@ export const SHAPE_CIRCLE = "SHAPE_CIRCLE";
 export const SHAPE_SQUARE = "SHAPE_SQUARE";
 export const SHAPE_TRIANGLE_DOWN = "SHAPE_TRIANGLE_DOWN";
 
+export const PLUME_FILTER_FLIGHT_CAMPAIGN = "Flight Campaigns";
+export const PLUME_FILTER_PLUME_IME = "Plume IME";
+export const PLUME_FILTER_PLUME_ID = "Plume ID";
+export const PLUME_FILTER_PLUME_START_DATE = "Plume Start Date";
+export const PLUME_FILTER_PLUME_END_DATE = "Plume End Date";
+
 export const INFRASTRUCTURE_SUBCATEGORIES = {
     [VISTA_2017_OILGAS_WELLS]: 0,
     [VISTA_2017_LIVESTOCK_DAIRIES]: 1,

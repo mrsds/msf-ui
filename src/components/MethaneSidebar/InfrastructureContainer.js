@@ -396,18 +396,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        updateFeatureSearchText: bindActionCreators(
-            layerSidebarActions.updateFeatureSearchText,
-            dispatch
-        ),
-        updateInfrastructureCategoryFilter: bindActionCreators(
-            layerSidebarActions.updateInfrastructureCategoryFilter,
-            dispatch
-        ),
-        toggleInfrastructureFacilityFilterOptionsVisible: bindActionCreators(
-            layerSidebarActions.toggleInfrastructureFacilityFilterOptionsVisible,
-            dispatch
-        ),
+        // updateFeatureSearchText: bindActionCreators(
+        //     layerSidebarActions.updateFeatureSearchText,
+        //     dispatch
+        // ),
+        // updateInfrastructureCategoryFilter: bindActionCreators(
+        //     layerSidebarActions.updateInfrastructureCategoryFilter,
+        //     dispatch
+        // ),
+        // toggleInfrastructureFacilityFilterOptionsVisible: bindActionCreators(
+        //     layerSidebarActions.toggleInfrastructureFacilityFilterOptionsVisible,
+        //     dispatch
+        // ),
         pageForward: bindActionCreators(layerSidebarActions.pageForward, dispatch),
         pageBackward: bindActionCreators(layerSidebarActions.pageBackward, dispatch),
         setFeatureDetail: bindActionCreators(layerSidebarActions.setFeatureDetail, dispatch),

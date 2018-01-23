@@ -55,12 +55,17 @@ export class SearchInput extends Component {
                 </span>
             );
         }
+        let rootStyles = MiscUtil.generateStringFromSet({
+            [styles.root]: true,
+            [this.props.className]: this.props.className ? true : false
+        });
         return (
             <Input
                 ref={input => {
                     this.input = input;
                 }}
-                className={styles.root}
+                disableUnderline={true}
+                className={rootStyles}
                 disabled={this.props.disabled}
                 onChange={evt => this.handleChange(evt.target.value)}
                 value={value}
