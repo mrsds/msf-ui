@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ReactTooltip from "react-tooltip";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Divider from "material-ui/Divider";
