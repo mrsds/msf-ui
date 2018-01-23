@@ -141,30 +141,6 @@ export class PlumesContainer extends Component {
         return <div />;
     }
 
-    // getAvailableFlightCampaigns() {
-    //     return this.props.availableFeatures
-    //         .reduce(
-    //             (acc, feature) =>
-    //                 acc.includes(feature.get("flight_campaign"))
-    //                     ? acc
-    //                     : acc.concat(feature.get("flight_campaign")),
-    //             []
-    //         )
-    //         .sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
-    //         .map(value => {
-    //             return { value, label: value };
-    //         });
-    // }
-
-    // getPlumeIMEs() {
-    //     return [5, 10, 25, 50, 100, 250, 500, 1000, 1500].map(x => {
-    //         return {
-    //             value: x,
-    //             label: ">" + x + "kg"
-    //         };
-    //     });
-    // }
-
     makeResultsArea() {
         const hasResults = this.props.searchState.get("searchResults").size;
         const resultsClassname = MiscUtil.generateStringFromSet({

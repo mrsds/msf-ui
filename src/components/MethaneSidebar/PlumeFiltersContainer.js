@@ -43,6 +43,11 @@ export class PlumeFiltersContainer extends Component {
         this.forceUpdate();
     }
 
+    closeAllPoppers() {
+        this.popperProps = this.popperProps.map((v, k) => false);
+        this.forceUpdate();
+    }
+
     render() {
         let flightCampaignFilter = this.props.filters.get(
             layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN
@@ -94,59 +99,163 @@ export class PlumeFiltersContainer extends Component {
                         })
                     }
                 />
-                <Manager className={styles.manager}>
-                    <Target>
-                        <ChipDropdown
-                            className={styles.chip}
-                            onClick={() =>
-                                this.setPopperActive(
-                                    "flightCampaigns",
-                                    !flightCampaignsPopoverActive
-                                )
-                            }
-                            onDelete={() => {
-                                this.setPopperActive("flightCampaigns", false);
-                                this.props.setPlumeFilter(
-                                    layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN,
-                                    null
-                                );
+                <ClickAwayListener
+                    onClickAway={() => {
+                        if (plumeIMEPopoverActive || flightCampaignFilter) {
+                            this.closeAllPoppers();
+                        }
+                    }}
+                >
+                    <Manager className={styles.manager}>
+                        <Target>
+                            <ChipDropdown
+                                className={styles.chip}
+                                onClick={() =>
+                                    this.setPopperActive("plumeIME", !plumeIMEPopoverActive)
+                                }
+                                onDelete={() => {
+                                    this.setPopperActive("plumeIME", false);
+                                    this.props.setPlumeFilter(
+                                        layerSidebarTypes.PLUME_FILTER_PLUME_IME,
+                                        null
+                                    );
+                                }}
+                                label="Plume IME"
+                                value={
+                                    plumeIMEFilterSelectedValueLabel
+                                        ? plumeIMEFilterSelectedValueLabel
+                                        : null
+                                }
+                                active={plumeIMEPopoverActive}
+                            />
+                        </Target>
+                        <Popper
+                            placement="bottom-start"
+                            modifiers={{
+                                computeStyle: {
+                                    gpuAcceleration: false
+                                }
                             }}
-                            label="Flight Campaigns"
-                            value={
-                                flightCampaignFilterValueLabel ? (
-                                    <React.Fragment>
-                                        <AirplanemodeActiveIcon
-                                            className={styles.flightCampaignChipIcon}
-                                        />
-                                        {flightCampaignFilterValueLabel}
-                                    </React.Fragment>
-                                ) : null
-                            }
-                            active={flightCampaignsPopoverActive}
-                        />
-                    </Target>
-                    <Popper
-                        placement="bottom-start"
-                        modifiers={{
-                            computeStyle: {
-                                gpuAcceleration: false
-                            }
-                        }}
-                        eventsEnabled={flightCampaignsPopoverActive}
-                        className={!flightCampaignsPopoverActive ? displayStyles.noPointer : ""}
-                    >
-                        <Grow
-                            style={{ transformOrigin: "left top" }}
-                            in={flightCampaignsPopoverActive}
+                            eventsEnabled={plumeIMEPopoverActive}
+                            className={!plumeIMEPopoverActive ? displayStyles.noPointer : ""}
                         >
-                            <div>
-                                <ClickAwayListener
-                                    onClickAway={() => {
-                                        if (flightCampaignsPopoverActive) {
-                                            this.setPopperActive("flightCampaigns", false);
-                                        }
-                                    }}
-                                >
+                            <Grow
+                                style={{ transformOrigin: "left top" }}
+                                in={plumeIMEPopoverActive}
+                            >
+                                <div>
+                                    <Paper elevation={8} className={styles.popoverPaper}>
+                                        <AppBar elevation={0} className={styles.popoverAppBar}>
+                                            <Toolbar className={styles.popoverHeader}>
+                                                <Typography
+                                                    type="body1"
+                                                    color="inherit"
+                                                    className={styles.popoverTitle}
+                                                >
+                                                    Plume Integrated Methane Enhancement
+                                                </Typography>
+                                                <IconButtonSmall
+                                                    color="contrast"
+                                                    onClick={() =>
+                                                        this.setPopperActive("plumeIME", false)
+                                                    }
+                                                >
+                                                    <CloseIcon />
+                                                </IconButtonSmall>
+                                            </Toolbar>
+                                        </AppBar>
+                                        <div className={styles.formControl}>
+                                            {/* TODO break out this whole thing into separate ime component */}
+                                            <div
+                                                onClick={() => {
+                                                    this.props.setPlumeFilter(
+                                                        layerSidebarTypes.PLUME_FILTER_PLUME_IME,
+                                                        null
+                                                    );
+                                                }}
+                                                key={"plumeIMENoValue"}
+                                                className={styles.formControlLabel}
+                                            >
+                                                <Radio
+                                                    value={""}
+                                                    checked={plumeIMEFilterSelectedValue === null}
+                                                />
+                                                <Typography className={styles.radioLabel}>
+                                                    Any Plume IME
+                                                </Typography>
+                                            </div>
+                                            {plumeIMEFilter.get("selectableValues").map(x => (
+                                                <div
+                                                    onClick={() => {
+                                                        this.props.setPlumeFilter(
+                                                            layerSidebarTypes.PLUME_FILTER_PLUME_IME,
+                                                            x
+                                                        );
+                                                    }}
+                                                    key={x.value}
+                                                    className={styles.formControlLabel}
+                                                >
+                                                    <Radio
+                                                        value={x.value.toString()}
+                                                        checked={
+                                                            x.value === plumeIMEFilterSelectedValue
+                                                        }
+                                                    />
+                                                    <Typography className={styles.radioLabel}>
+                                                        {x.label}
+                                                    </Typography>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </Paper>
+                                </div>
+                            </Grow>
+                        </Popper>
+                        <Target>
+                            <ChipDropdown
+                                className={styles.chip}
+                                onClick={() =>
+                                    this.setPopperActive(
+                                        "flightCampaigns",
+                                        !flightCampaignsPopoverActive
+                                    )
+                                }
+                                onDelete={() => {
+                                    this.setPopperActive("flightCampaigns", false);
+                                    this.props.setPlumeFilter(
+                                        layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN,
+                                        null
+                                    );
+                                }}
+                                label="Flight Campaigns"
+                                value={
+                                    flightCampaignFilterValueLabel ? (
+                                        <React.Fragment>
+                                            <AirplanemodeActiveIcon
+                                                className={styles.flightCampaignChipIcon}
+                                            />
+                                            {flightCampaignFilterValueLabel}
+                                        </React.Fragment>
+                                    ) : null
+                                }
+                                active={flightCampaignsPopoverActive}
+                            />
+                        </Target>
+                        <Popper
+                            placement="bottom-start"
+                            modifiers={{
+                                computeStyle: {
+                                    gpuAcceleration: false
+                                }
+                            }}
+                            eventsEnabled={flightCampaignsPopoverActive}
+                            className={!flightCampaignsPopoverActive ? displayStyles.noPointer : ""}
+                        >
+                            <Grow
+                                style={{ transformOrigin: "left top" }}
+                                in={flightCampaignsPopoverActive}
+                            >
+                                <div>
                                     <Paper elevation={8} className={styles.popoverPaper}>
                                         <AppBar elevation={0} className={styles.popoverAppBar}>
                                             <Toolbar className={styles.popoverHeader}>
@@ -217,118 +326,11 @@ export class PlumeFiltersContainer extends Component {
                                             ))}
                                         </div>
                                     </Paper>
-                                </ClickAwayListener>
-                            </div>
-                        </Grow>
-                    </Popper>
-                    <Target>
-                        <ChipDropdown
-                            className={styles.chip}
-                            onClick={() => this.setPopperActive("plumeIME", !plumeIMEPopoverActive)}
-                            onDelete={() => {
-                                this.setPopperActive("plumeIME", false);
-                                this.props.setPlumeFilter(
-                                    layerSidebarTypes.PLUME_FILTER_PLUME_IME,
-                                    null
-                                );
-                            }}
-                            label="Plume IME"
-                            value={
-                                plumeIMEFilterSelectedValueLabel
-                                    ? plumeIMEFilterSelectedValueLabel
-                                    : null
-                            }
-                            active={plumeIMEPopoverActive}
-                        />
-                    </Target>
-                    <Popper
-                        placement="bottom-start"
-                        modifiers={{
-                            computeStyle: {
-                                gpuAcceleration: false
-                            }
-                        }}
-                        eventsEnabled={plumeIMEPopoverActive}
-                        className={!plumeIMEPopoverActive ? displayStyles.noPointer : ""}
-                    >
-                        <Grow style={{ transformOrigin: "left top" }} in={plumeIMEPopoverActive}>
-                            <div>
-                                <ClickAwayListener
-                                    onClickAway={() => {
-                                        if (plumeIMEPopoverActive) {
-                                            this.setPopperActive("plumeIME", false);
-                                        }
-                                    }}
-                                >
-                                    <Paper elevation={8} className={styles.popoverPaper}>
-                                        <AppBar elevation={0} className={styles.popoverAppBar}>
-                                            <Toolbar className={styles.popoverHeader}>
-                                                <Typography
-                                                    type="body1"
-                                                    color="inherit"
-                                                    className={styles.popoverTitle}
-                                                >
-                                                    Plume Integrated Methane Enhancement
-                                                </Typography>
-                                                <IconButtonSmall
-                                                    color="contrast"
-                                                    onClick={() =>
-                                                        this.setPopperActive("plumeIME", false)
-                                                    }
-                                                >
-                                                    <CloseIcon />
-                                                </IconButtonSmall>
-                                            </Toolbar>
-                                        </AppBar>
-                                        <div className={styles.formControl}>
-                                            {/* TODO break out this whole thing into separate ime component */}
-                                            <div
-                                                onClick={() => {
-                                                    this.props.setPlumeFilter(
-                                                        layerSidebarTypes.PLUME_FILTER_PLUME_IME,
-                                                        null
-                                                    );
-                                                }}
-                                                key={"plumeIMENoValue"}
-                                                className={styles.formControlLabel}
-                                            >
-                                                <Radio
-                                                    value={""}
-                                                    checked={plumeIMEFilterSelectedValue === null}
-                                                />
-                                                <Typography className={styles.radioLabel}>
-                                                    Any Plume IME
-                                                </Typography>
-                                            </div>
-                                            {plumeIMEFilter.get("selectableValues").map(x => (
-                                                <div
-                                                    onClick={() => {
-                                                        this.props.setPlumeFilter(
-                                                            layerSidebarTypes.PLUME_FILTER_PLUME_IME,
-                                                            x
-                                                        );
-                                                    }}
-                                                    key={x.value}
-                                                    className={styles.formControlLabel}
-                                                >
-                                                    <Radio
-                                                        value={x.value}
-                                                        checked={
-                                                            x.value === plumeIMEFilterSelectedValue
-                                                        }
-                                                    />
-                                                    <Typography className={styles.radioLabel}>
-                                                        {x.label}
-                                                    </Typography>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </Paper>
-                                </ClickAwayListener>
-                            </div>
-                        </Grow>
-                    </Popper>
-                </Manager>
+                                </div>
+                            </Grow>
+                        </Popper>
+                    </Manager>
+                </ClickAwayListener>
             </React.Fragment>
         );
     }
