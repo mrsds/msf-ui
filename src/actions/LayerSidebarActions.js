@@ -57,6 +57,25 @@ export function updateInfrastructureCategoryFilter(layerName, active) {
     };
 }
 
+export function toggleInfrastructureCategoryFilters(active) {
+    return (dispatch, getState) => {
+        const layers = getState()
+            .map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA])
+            .filter(layer =>
+                layerSidebarTypes.INFRASTRUCTURE_SUBCATEGORIES.hasOwnProperty(layer.get("id"))
+            );
+        let mapGroups = getState().map.get("groups");
+        layers.forEach(layer => {
+            dispatch(setGroupLayerActive(layer, active));
+            if (mapGroups.find(group => group.get("id") === layer.get("group"))) {
+                dispatch(coreMapActions.setLayerActive(layer.get("id"), active));
+            }
+            dispatch(setActiveFeatureCategories(layer.get("id"), active));
+        });
+        dispatch(mapActions.updateFeatureList_Map(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+    };
+}
+
 function setActiveFeatureCategories(layer, active) {
     return { type: types.UPDATE_ACTIVE_SUBCATEGORIES, layer, active };
 }

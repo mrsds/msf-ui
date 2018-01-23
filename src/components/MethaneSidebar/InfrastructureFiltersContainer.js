@@ -4,8 +4,14 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as layerSidebarActions from "actions/LayerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import List, { ListItem, ListSubheader, ListItemText } from "material-ui/List";
+import List, {
+    ListItem,
+    ListSubheader,
+    ListItemSecondaryAction,
+    ListItemText
+} from "material-ui/List";
 import Checkbox from "material-ui/Checkbox";
+import Switch from "material-ui/Switch";
 import Popover from "material-ui/Popover";
 import Paper from "material-ui/Paper";
 import Search from "material-ui-icons/Search";
@@ -15,7 +21,7 @@ import ClickAwayListener from "material-ui/utils/ClickAwayListener";
 import AppBar from "material-ui/AppBar";
 import Typography from "material-ui/Typography";
 import Toolbar from "material-ui/Toolbar";
-import AirplanemodeActiveIcon from "material-ui-icons/AirplanemodeActive";
+import DomainIcon from "mdi-material-ui/Domain";
 import CloseIcon from "material-ui-icons/Close";
 import { Manager, Target, Popper } from "react-popper";
 import ChipDropdown from "components/Reusables/ChipDropdown";
@@ -59,6 +65,15 @@ export class PlumeFiltersContainer extends Component {
         let infrastructureSubcategoriesPopoverOpen = this.popperProps.get(
             "infrastructureSubcategories"
         );
+
+        // Grab only active infra categories
+        let activeInfrastructureSubCategories = this.props.activeInfrastructureSubCategories.filter(
+            active => active
+        );
+        let infrastructureSubcategoriesFilterValueLabel =
+            activeInfrastructureSubCategories.size > 0
+                ? activeInfrastructureSubCategories.size + " Active Infrastructure Types"
+                : null;
 
         return (
             <React.Fragment>
@@ -109,15 +124,17 @@ export class PlumeFiltersContainer extends Component {
                                 }
                                 onDelete={() => {
                                     this.setPopperActive("infrastructureSubcategories", false);
-                                    {
-                                        /* this.props.setInfrastructureFilter(
-                                        layerSidebarTypes.PLUME_FILTER_PLUME_IME,
-                                        null
-                                    ); */
-                                    }
+                                    this.props.toggleInfrastructureCategoryFilters(false);
                                 }}
                                 label="Infrastructure Types"
-                                value={""}
+                                value={
+                                    infrastructureSubcategoriesFilterValueLabel ? (
+                                        <React.Fragment>
+                                            {/* <DomainIcon className={styles.chipLeftIcon} /> */}
+                                            {infrastructureSubcategoriesFilterValueLabel}
+                                        </React.Fragment>
+                                    ) : null
+                                }
                                 active={infrastructureSubcategoriesPopoverOpen}
                             />
                         </Target>
@@ -164,6 +181,41 @@ export class PlumeFiltersContainer extends Component {
                                             </Toolbar>
                                         </AppBar>
                                         <div className={styles.formControl}>
+                                            {
+                                                <ListItem>
+                                                    <ListItemText primary="Select all infrastructure" />
+                                                    <ListItemSecondaryAction>
+                                                        <Switch
+                                                            onChange={() =>
+                                                                this.props.toggleInfrastructureCategoryFilters(
+                                                                    !(
+                                                                        this.props
+                                                                            .activeInfrastructureSubCategories
+                                                                            .size ===
+                                                                        activeInfrastructureSubCategories.size
+                                                                    )
+                                                                )
+                                                            }
+                                                            onClick={() =>
+                                                                this.props.toggleInfrastructureCategoryFilters(
+                                                                    !(
+                                                                        this.props
+                                                                            .activeInfrastructureSubCategories
+                                                                            .size ===
+                                                                        activeInfrastructureSubCategories.size
+                                                                    )
+                                                                )
+                                                            }
+                                                            checked={
+                                                                this.props
+                                                                    .activeInfrastructureSubCategories
+                                                                    .size ===
+                                                                activeInfrastructureSubCategories.size
+                                                            }
+                                                        />
+                                                    </ListItemSecondaryAction>
+                                                </ListItem>
+                                            }
                                             {Object.keys(
                                                 layerSidebarTypes.INFRASTRUCTURE_GROUPS
                                             ).map(group => (
@@ -231,6 +283,7 @@ PlumeFiltersContainer.propTypes = {
     filters: PropTypes.object.isRequired,
     setInfrastructureFilter: PropTypes.func.isRequired,
     updateInfrastructureCategoryFilter: PropTypes.func.isRequired,
+    toggleInfrastructureCategoryFilters: PropTypes.func.isRequired,
     activeInfrastructureSubCategories: PropTypes.object.isRequired
 };
 
@@ -251,6 +304,10 @@ function mapDispatchToProps(dispatch) {
     return {
         setInfrastructureFilter: bindActionCreators(
             layerSidebarActions.setInfrastructureFilter,
+            dispatch
+        ),
+        toggleInfrastructureCategoryFilters: bindActionCreators(
+            layerSidebarActions.toggleInfrastructureCategoryFilters,
             dispatch
         ),
         updateInfrastructureCategoryFilter: bindActionCreators(
