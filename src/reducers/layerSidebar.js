@@ -21,20 +21,14 @@ export default function layerSidebar(
             return opt_reducer.changeSidebarCategory(state, action);
         case actionTypesMSF.UPDATE_ACTIVE_SUBCATEGORIES:
             return opt_reducer.updateActiveSubcategories(state, action);
-        // case actionTypesMSF.UPDATE_FEATURE_SEARCH_TEXT:
-        //     return opt_reducer.updateFeatureSearchText(state, action);
         case actionTypesMSF.UPDATE_FEATURE_SEARCH_RESULTS:
             return opt_reducer.updateSearchResults(state, action);
         case actionTypesMSF.AVAILABLE_LAYER_LIST_LOADED:
             return opt_reducer.updateSearchResults(state, action);
-        case actionTypesMSF.TOGGLE_INFRASTRUCTURE_FACILITY_FILTER_OPTIONS_VISIBLE:
-            return opt_reducer.setInfrastructureFacilityFilterOptionsVisible(state, action);
-        // case actionTypesMSF.SET_PLUME_DATE_RANGE:
-        //     return opt_reducer.setPlumeFilterDateRange(state, action);
-        // case actionTypesMSF.UPDATE_FLIGHT_CAMPAIGN:
-        //     return opt_reducer.updateSelectedFlightCampaign(state, action);
         case actionTypesMSF.SET_PLUME_FILTER:
             return opt_reducer.setPlumeFilter(state, action);
+        case actionTypesMSF.SET_INFRASTRUCTURE_FILTER:
+            return opt_reducer.setInfrastructureFilter(state, action);
         case actionTypesMSF.TOGGLE_FEATURE_LABEL:
             return opt_reducer.selectFeatureInSidebar(state, action);
         default:

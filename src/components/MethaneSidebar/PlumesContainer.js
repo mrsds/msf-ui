@@ -31,7 +31,6 @@ import PageControls from "components/PageControls/PageControls";
 import PlumeFiltersContainer from "components/MethaneSidebar/PlumeFiltersContainer";
 import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 import SearchInput from "components/Reusables/SearchInput";
-
 import MiscUtil from "_core/utils/MiscUtil";
 
 export class PlumesContainer extends Component {
@@ -195,81 +194,11 @@ export class PlumesContainer extends Component {
         return (
             <div className={containerClasses}>
                 <Paper elevation={1} className={layerSidebarStyles.searchFiltersContainer}>
-                    {/* <SearchInput
-                        icon={<Search />}
-                        placeholder="Search Plumes by ID"
-                        value={this.props.searchState.get("searchString")}
-                        disabled={false}
-                        onUpdate={valueStr =>
-                            this.props.updateFeatureSearchText(
-                                layerSidebarTypes.CATEGORY_PLUMES,
-                                valueStr
-                            )
-                        }
-                        validate={valueStr => true}
-                        primaryDataTip="Search Plumes by ID"
-                        primaryDataPlace="top"
-                        actionIcon={<Clear />}
-                        onActionIconClick={() =>
-                            this.props.updateFeatureSearchText(
-                                layerSidebarTypes.CATEGORY_PLUMES,
-                                ""
-                            )
-                        }
-                    /> */}
                     <Typography style={{ padding: "4px 0px 8px" }} type="subheading">
                         Browse Plume Observations & Sources
                     </Typography>
                     <PlumeFiltersContainer />
-                    {/* <div>
-                        <FormControl className={layerSidebarStyles.select}>
-                            <InputLabel shrink={true} htmlFor="flightCampaignSelect">
-                                Flight Campaign
-                            </InputLabel>
-                            <Select
-                                displayEmpty={true}
-                                value={selectedFlightCampaignValue}
-                                onChange={evt => this.props.selectFlightCampaign(evt.target.value)}
-                                input={<Input name="flight campaign" id="flightCampaignSelect" />}
-                            >
-                                {
-                                    <MenuItem key="noFlightCampaignSelectItem" value="">
-                                        All
-                                    </MenuItem>
-                                }
-                                {this.getAvailableFlightCampaigns().map(result => (
-                                    <MenuItem key={result.value} value={result.value}>
-                                        {result.label}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <FormControl className={layerSidebarStyles.select}>
-                            <InputLabel shrink={true} htmlFor="plumeIMESelect">
-                                Plume IME
-                            </InputLabel>
-                            <Select
-                                displayEmpty={true}
-                                value={selectedIME}
-                                onChange={evt => this.props.selectIME(evt.target.value)}
-                                input={<Input name="plume ime" id="plumeIMESelect" />}
-                            >
-                                {
-                                    <MenuItem key="noIMESelectItem" value="">
-                                        All
-                                    </MenuItem>
-                                }
-                                {this.getPlumeIMEs().map(result => (
-                                    <MenuItem key={result.value} value={result.value}>
-                                        {result.label}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </div> */}
                 </Paper>
-                {/* <Divider /> */}
-                {/* <Divider /> */}
                 {this.makeLoadingModal()}
                 {this.makeResultsArea()}
             </div>

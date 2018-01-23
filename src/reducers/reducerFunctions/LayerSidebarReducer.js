@@ -201,14 +201,24 @@ export default class LayerSidebarReducer {
                 };
             });
 
+            // Set filters to new filters
             filters = filters.setIn(
                 [layerSidebarTypes.PLUME_FILTER_PLUME_IME, "selectableValues"],
                 plumeIMESelectableValues
             );
         } else if (action.category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE) {
-            // Apply search filters
-            // const searchString = searchState.get("searchString");
-            searchResults = Immutable.fromJS(featureList);
+            // Extract search filters
+            const infrastructureName = filters.getIn([
+                layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME,
+                "selectedValue"
+            ]);
+
+            // Filter by infrastructure name via Fuse
+            searchResults = LayerSidebarReducer.getSearchResultsHelper(
+                action.category,
+                featureList,
+                infrastructureName.value
+            );
         }
         const newState = state
             .setIn(["searchState", action.category, "searchResults"], searchResults)
@@ -231,6 +241,19 @@ export default class LayerSidebarReducer {
             [
                 "searchState",
                 layerSidebarTypes.CATEGORY_PLUMES,
+                "filters",
+                action.key,
+                "selectedValue"
+            ],
+            action.selectedValue
+        );
+    }
+
+    static setInfrastructureFilter(state, action) {
+        return state.setIn(
+            [
+                "searchState",
+                layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
                 "filters",
                 action.key,
                 "selectedValue"

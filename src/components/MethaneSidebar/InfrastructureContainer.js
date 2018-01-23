@@ -27,13 +27,15 @@ import Select from "material-ui/Select";
 import { FormControl } from "material-ui/Form";
 import Input, { InputLabel } from "material-ui/Input";
 import { MenuItem } from "material-ui/Menu";
+import Paper from "material-ui/Paper";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import MapUtilExtended from "utils/MapUtilExtended";
 import MetadataUtil from "utils/MetadataUtil";
 import * as mapActionsMSF from "actions/MapActions";
 import PageControls from "components/PageControls/PageControls";
-import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
+import InfrastructureFiltersContainer from "components/MethaneSidebar/InfrastructureFiltersContainer";
 import SearchInput from "components/Reusables/SearchInput";
+import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 
 import MiscUtil from "_core/utils/MiscUtil";
 
@@ -79,7 +81,8 @@ export class InfrastructureContainer extends Component {
         const isActive = this.isActiveFeature(feature);
         const isActiveDetail = this.isActiveDetailFeature(feature);
         const itemClass = MiscUtilExtended.generateStringFromSet({
-            [layerSidebarStyles.selectedItem]: isActive || isActiveDetail
+            [layerSidebarStyles.selectedItem]: isActive || isActiveDetail,
+            [layerSidebarStyles.itemRoot]: true
         });
         const toggleLabelAction = () =>
             this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, feature);
@@ -108,7 +111,7 @@ export class InfrastructureContainer extends Component {
                         }
                         secondary={feature.get("category")}
                     />
-                    <ListItemSecondaryAction>
+                    <ListItemSecondaryAction className={layerSidebarStyles.secondaryAction}>
                         <IconButton
                             color="default"
                             disabled={!lat || !long}
@@ -145,66 +148,66 @@ export class InfrastructureContainer extends Component {
             .map(feature => this.makeListItem(feature));
     }
 
-    makeFacilityFilterList() {
-        if (!this.props.searchState.get("facilityFilterOptionsVisible")) {
-            return <div />;
-        }
-        const listItems = [];
-        const listGroups = Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).forEach(group => {
-            listItems.push(
-                <ListSubheader
-                    disableSticky={true}
-                    key={group}
-                    className={layerSidebarStyles.facilityFilterCategoryLabel}
-                >
-                    {group}
-                </ListSubheader>
-            );
-            listItems.push(
-                <div
-                    key={group + "_color"}
-                    className={layerSidebarStyles.categoryCircle}
-                    style={{
-                        background: layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].colors.stroke
-                    }}
-                />
-            );
-            layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].categories.forEach(category => {
-                const categoryName = MapUtilExtended.getInfrastructureCategoryHumanName(category);
-                const checked = this.props.activeInfrastructureSubCategories.get(category) || false;
-                listItems.push(
-                    <ListItem
-                        button
-                        onClick={() =>
-                            this.props.updateInfrastructureCategoryFilter(category, !checked)
-                        }
-                        key={categoryName}
-                    >
-                        <Checkbox checked={checked} tabIndex={-1} disableRipple />
-                        <ListItemText primary={categoryName} />
-                    </ListItem>
-                );
-            });
-        });
-        return (
-            <div
-                className={`${layerSidebarStyles.filtersOverlay} ${
-                    layerSidebarStyles.facilityFilterList
-                }`}
-            >
-                <div className={layerSidebarStyles.headerBar}>
-                    <div className={layerSidebarStyles.headerTitle}>Select Infrastructure</div>
-                    <Button
-                        color="primary"
-                        onClick={this.props.toggleInfrastructureFacilityFilterOptionsVisible}
-                    >
-                        Done
-                    </Button>
-                </div>
-                <List className={layerSidebarStyles.facilityFilterList}>{listItems}</List>
-            </div>
-        );
-    }
+    // makeFacilityFilterList() {
+    //     if (!this.props.searchState.get("facilityFilterOptionsVisible")) {
+    //         return <div />;
+    //     }
+    //     const listItems = [];
+    //     const listGroups = Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).forEach(group => {
+    //         listItems.push(
+    //             <ListSubheader
+    //                 disableSticky={true}
+    //                 key={group}
+    //                 className={layerSidebarStyles.facilityFilterCategoryLabel}
+    //             >
+    //                 {group}
+    //             </ListSubheader>
+    //         );
+    //         listItems.push(
+    //             <div
+    //                 key={group + "_color"}
+    //                 className={layerSidebarStyles.categoryCircle}
+    //                 style={{
+    //                     background: layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].colors.stroke
+    //                 }}
+    //             />
+    //         );
+    //         layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].categories.forEach(category => {
+    //             const categoryName = MapUtilExtended.getInfrastructureCategoryHumanName(category);
+    //             const checked = this.props.activeInfrastructureSubCategories.get(category) || false;
+    //             listItems.push(
+    //                 <ListItem
+    //                     button
+    //                     onClick={() =>
+    //                         this.props.updateInfrastructureCategoryFilter(category, !checked)
+    //                     }
+    //                     key={categoryName}
+    //                 >
+    //                     <Checkbox checked={checked} tabIndex={-1} disableRipple />
+    //                     <ListItemText primary={categoryName} />
+    //                 </ListItem>
+    //             );
+    //         });
+    //     });
+    //     return (
+    //         <div
+    //             className={`${layerSidebarStyles.filtersOverlay} ${
+    //                 layerSidebarStyles.facilityFilterList
+    //             }`}
+    //         >
+    //             <div className={layerSidebarStyles.headerBar}>
+    //                 <div className={layerSidebarStyles.headerTitle}>Select Infrastructure</div>
+    //                 <Button
+    //                     color="primary"
+    //                     onClick={this.props.toggleInfrastructureFacilityFilterOptionsVisible}
+    //                 >
+    //                     Done
+    //                 </Button>
+    //             </div>
+    //             <List className={layerSidebarStyles.facilityFilterList}>{listItems}</List>
+    //         </div>
+    //     );
+    // }
 
     makeLoadingModal() {
         if (this.props.isLoading) {
@@ -248,25 +251,6 @@ export class InfrastructureContainer extends Component {
         );
     }
 
-    // makeFacilityFilterButton() {
-    //   const isActive = this.props.searchState.get("facilityFilterOptionsVisible");
-    //   const buttonLabel = "Filter By Facility";
-    //   return (
-    //     <Button
-    //       className="button"
-    //       theme={{
-    //         button: "button-content",
-    //         primary: "button-content-primary"
-    //       }}
-    //       primary={isActive}
-    //       onClick={this.props.toggleInfrastructureFacilityFilterOptionsVisible}
-    //     >
-    //       {this.getFactoryIcon()}
-    //       <label>{buttonLabel}</label>
-    //     </Button>
-    //   );
-    // }
-
     makePageControls() {
         return (
             <PageControls
@@ -287,70 +271,14 @@ export class InfrastructureContainer extends Component {
             [layerSidebarStyles.flexboxParent]: true,
             [layerSidebarStyles.featureItemContainer]: true
         });
-
-        // let selectedFlightCampaignValue = "";
-        // if (this.props.searchState.get("selectedFlightCampaign")) {
-        //     selectedFlightCampaignValue = this.props.searchState.get("selectedFlightCampaign");
-        // }
         return (
             <div className={containerClasses}>
-                <div className={layerSidebarStyles.searchFiltersContainer}>
-                    <SearchInput
-                        icon={<Search />}
-                        placeholder="Search for Infrastructure"
-                        value={this.props.searchState.get("searchString")}
-                        disabled={false}
-                        onUpdate={valueStr =>
-                            this.props.updateFeatureSearchText(
-                                layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-                                valueStr
-                            )
-                        }
-                        validate={valueStr => true}
-                        primaryDataTip="Search for Infrastructure"
-                        primaryDataPlace="top"
-                        actionIcon={<Clear />}
-                        onActionIconClick={() =>
-                            this.props.updateFeatureSearchText(
-                                layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-                                ""
-                            )
-                        }
-                    />
-                    <Button
-                        raised
-                        onClick={this.props.toggleInfrastructureFacilityFilterOptionsVisible}
-                    >
-                        Select Infrastructure Types
-                    </Button>
-                    {/* <div>
-                        <FormControl>
-                            <InputLabel shrink={true} htmlFor="flightCampaginSelect">
-                                Flight Campaign
-                            </InputLabel>
-                            <Select
-                                displayEmpty={true}
-                                value={selectedFlightCampaignValue}
-                                onChange={evt => this.props.selectFlightCampaign(evt.target.value)}
-                                input={<Input name="age" id="flightCampaginSelect" />}
-                            >
-                                {
-                                    <MenuItem key="noFlightCampaignSelectItem" value="">
-                                        All
-                                    </MenuItem>
-                                }
-                                {this.getAvailableFlightCampaigns().map(result => (
-                                    <MenuItem key={result.value} value={result.value}>
-                                        {result.label}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl> */}
-                    {/* </div> */}
-                </div>
-                <Divider />
-                <Divider />
-                {this.makeFacilityFilterList()}
+                <Paper elevation={1} className={layerSidebarStyles.searchFiltersContainer}>
+                    <Typography style={{ padding: "4px 0px 8px" }} type="subheading">
+                        Browse Infrastructure
+                    </Typography>
+                    <InfrastructureFiltersContainer />
+                </Paper>
                 {this.makeLoadingModal()}
                 {this.makeResultsArea()}
             </div>
@@ -360,23 +288,10 @@ export class InfrastructureContainer extends Component {
 
 InfrastructureContainer.propTypes = {
     isVisible: PropTypes.bool.isRequired,
-    activeFeature: function(props, propName, componentName) {
-        const propValue = props[propName];
-        if (propValue === null) return;
-        if (typeof propValue === "object") return;
-        return new Error(`${componentName} only accepts null or object`);
-    },
-    activeDetailFeature: function(props, propName, componentName) {
-        const propValue = props[propName];
-        if (propValue === null) return;
-        if (typeof propValue === "object") return;
-        return new Error(`${componentName} only accepts null or object`);
-    },
-    updateFeatureSearchText: PropTypes.func.isRequired,
+    activeFeature: PropTypes.object,
+    activeDetailFeature: PropTypes.object,
     searchState: PropTypes.object.isRequired,
     activeInfrastructureSubCategories: PropTypes.object.isRequired,
-    updateInfrastructureCategoryFilter: PropTypes.func.isRequired,
-    toggleInfrastructureFacilityFilterOptionsVisible: PropTypes.func.isRequired,
     pageForward: PropTypes.func.isRequired,
     pageBackward: PropTypes.func.isRequired,
     setFeatureDetail: PropTypes.func.isRequired,
@@ -396,18 +311,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        // updateFeatureSearchText: bindActionCreators(
-        //     layerSidebarActions.updateFeatureSearchText,
-        //     dispatch
-        // ),
-        // updateInfrastructureCategoryFilter: bindActionCreators(
-        //     layerSidebarActions.updateInfrastructureCategoryFilter,
-        //     dispatch
-        // ),
-        // toggleInfrastructureFacilityFilterOptionsVisible: bindActionCreators(
-        //     layerSidebarActions.toggleInfrastructureFacilityFilterOptionsVisible,
-        //     dispatch
-        // ),
         pageForward: bindActionCreators(layerSidebarActions.pageForward, dispatch),
         pageBackward: bindActionCreators(layerSidebarActions.pageBackward, dispatch),
         setFeatureDetail: bindActionCreators(layerSidebarActions.setFeatureDetail, dispatch),

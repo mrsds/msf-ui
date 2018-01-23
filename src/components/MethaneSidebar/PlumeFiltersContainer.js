@@ -4,8 +4,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as layerSidebarActions from "actions/LayerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import Radio, { RadioGroup } from "material-ui/Radio";
-import { FormControl, FormControlLabel } from "material-ui/Form";
+import Radio from "material-ui/Radio";
 import Popover from "material-ui/Popover";
 import Paper from "material-ui/Paper";
 import Search from "material-ui-icons/Search";
@@ -14,18 +13,16 @@ import Grow from "material-ui/transitions/Grow";
 import ClickAwayListener from "material-ui/utils/ClickAwayListener";
 import AppBar from "material-ui/AppBar";
 import Typography from "material-ui/Typography";
-import Avatar from "material-ui/Avatar";
 import Toolbar from "material-ui/Toolbar";
-// // import IconButton from "material-ui/IconButton";
 import AirplanemodeActiveIcon from "material-ui-icons/AirplanemodeActive";
 import CloseIcon from "material-ui-icons/Close";
 import { Manager, Target, Popper } from "react-popper";
 import ChipDropdown from "components/Reusables/ChipDropdown";
 import SearchInput from "components/Reusables/SearchInput";
-import styles from "components/MethaneSidebar/PlumeFiltersContainerStyles.scss";
+import styles from "components/MethaneSidebar/FiltersContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
-import Immutable from "immutable";
 import { IconButtonSmall } from "_core/components/Reusables";
+import Immutable from "immutable";
 
 export class PlumeFiltersContainer extends Component {
     constructor(props) {
@@ -79,7 +76,7 @@ export class PlumeFiltersContainer extends Component {
             <React.Fragment>
                 <SearchInput
                     icon={<Search />}
-                    placeholder="Search by Plume ID (or Source ID?)"
+                    placeholder="Filter by Plume ID (and Source ID?)"
                     value={plumeIDFilterSelectedValue}
                     disabled={false}
                     onUpdate={valueStr =>
@@ -89,7 +86,7 @@ export class PlumeFiltersContainer extends Component {
                         })
                     }
                     validate={valueStr => true}
-                    primaryDataTip="Search by Plume ID (or Source ID?)"
+                    primaryDataTip="Filter by Plume ID (and Source ID?)"
                     primaryDataPlace="top"
                     actionIcon={<Clear />}
                     onActionIconClick={() =>
@@ -232,7 +229,7 @@ export class PlumeFiltersContainer extends Component {
                                     flightCampaignFilterValueLabel ? (
                                         <React.Fragment>
                                             <AirplanemodeActiveIcon
-                                                className={styles.flightCampaignChipIcon}
+                                                className={styles.chipLeftIcon}
                                             />
                                             {flightCampaignFilterValueLabel}
                                         </React.Fragment>

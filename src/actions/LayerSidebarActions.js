@@ -32,13 +32,6 @@ function featureFocusInfoLoaded() {
     return { type: types.FEATURE_FOCUS_INFO_LOADED };
 }
 
-// export function updateFeatureSearchText(category, value) {
-//     return dispatch => {
-//         dispatch(updateFeatureSearchTextState(category, value));
-//         dispatch(updateFeatureSearchResults(category));
-//     };
-// }
-
 function updateFeatureSearchTextState(category, value) {
     return { type: types.UPDATE_FEATURE_SEARCH_TEXT, category, value };
 }
@@ -79,47 +72,16 @@ export function toggleInfrastructureFacilityFilterOptionsVisible(category) {
     };
 }
 
-// export function updatePlumeDateRange(position, date) {
-//     return dispatch => {
-//         dispatch(updatePlumeDateRangeState(position, date));
-//         dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
-//     };
-// }
-
-// function updatePlumeDateRangeState(position, date) {
-//     return { type: types.SET_PLUME_DATE_RANGE, position, date };
-// }
-
 export function setPlumeFilter(key, selectedValue) {
     return dispatch => {
         dispatch({ type: types.SET_PLUME_FILTER, key, selectedValue });
         dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
     };
 }
-// export function selectFlightCampaign(flight_campaign) {
-//     return dispatch => {
-//         dispatch(updateFlightCampaign(flight_campaign));
-//         dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
-//     };
-// }
 
-// export function selectIME(ime) {
-//     return dispatch => {
-//         dispatch(updateIME(ime));
-//         dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
-//     };
-// }
-
-// function updateFlightCampaign(flight_campaign) {
-//     return {
-//         type: types.UPDATE_FLIGHT_CAMPAIGN,
-//         flight_campaign
-//     };
-// }
-
-// function updateIME(ime) {
-//     return {
-//         type: types.UPDATE_IME,
-//         ime
-//     };
-// }
+export function setInfrastructureFilter(key, selectedValue) {
+    return dispatch => {
+        dispatch({ type: types.SET_INFRASTRUCTURE_FILTER, key, selectedValue });
+        dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+    };
+}

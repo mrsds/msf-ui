@@ -26,6 +26,8 @@ export const PLUME_FILTER_PLUME_ID = "Plume ID";
 export const PLUME_FILTER_PLUME_START_DATE = "Plume Start Date";
 export const PLUME_FILTER_PLUME_END_DATE = "Plume End Date";
 
+export const INFRASTRUCTURE_FILTER_NAME = "Infrastructure Name";
+
 export const INFRASTRUCTURE_SUBCATEGORIES = {
     [VISTA_2017_OILGAS_WELLS]: 0,
     [VISTA_2017_LIVESTOCK_DAIRIES]: 1,
