@@ -23,8 +23,8 @@ import styles from "components/Timeline/TimelineContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
 
 let util = require("vis/lib/util");
-let TimeStep = require("vis/lib/Timeline/TimeStep");
-let DateUtil = require("vis/lib/Timeline/DateUtil");
+let TimeStep = require("vis/lib/timeline/TimeStep");
+let DateUtil = require("vis/lib/timeline/DateUtil");
 
 const DAY_IN_MS = 86400000;
 const MIN_DATE_MOMENT = moment(appConfig.PLUME_START_DATE);
