@@ -175,7 +175,6 @@
             "isDefault": false,
             "url": "http://100.64.114.155/data/gridded/v1/kmz/vista_emissions.kmz",
             "thumbnailImage": "img/gridded_methane_v1.png",
-            "layerOrder": 0,
             "opacity": 0.3,
             "metadata": {
                 "url":
