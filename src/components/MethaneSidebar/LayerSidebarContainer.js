@@ -51,12 +51,7 @@ export class LayerSidebarContainer extends Component {
     renderInfrastructureContainer() {
         return (
             <InfrastructureContainer
-                availableFeatures={this.props.availableFeatures.get(
-                    layerSidebarTypes.CATEGORY_INFRASTRUCTURE
-                )}
                 isVisible={true}
-                searchState={this.props.searchState.get(layerSidebarTypes.CATEGORY_INFRASTRUCTURE)}
-                activeInfrastructureSubCategories={this.props.activeInfrastructureSubCategories}
                 isLoading={this.props.featureLoadingState.get(
                     layerSidebarTypes.CATEGORY_INFRASTRUCTURE
                 )}
@@ -67,12 +62,7 @@ export class LayerSidebarContainer extends Component {
     renderPlumesContainer() {
         return (
             <PlumesContainer
-                availableFeatures={this.props.availableFeatures.get(
-                    layerSidebarTypes.CATEGORY_PLUMES
-                )}
                 isVisible={true}
-                searchState={this.props.searchState.get(layerSidebarTypes.CATEGORY_PLUMES)}
-                activeInfrastructureSubCategories={this.props.activeInfrastructureSubCategories}
                 isLoading={this.props.featureLoadingState.get(layerSidebarTypes.CATEGORY_PLUMES)}
             />
         );
@@ -85,16 +75,11 @@ export class LayerSidebarContainer extends Component {
             : "no-results";
 
         let plumesTabLabel = `${this.getNameForCategory(layerSidebarTypes.CATEGORY_PLUMES)} (${
-            this.props.searchState.getIn([layerSidebarTypes.CATEGORY_PLUMES, "searchResults"]).size
+            this.props.numPlumeSearchResults
         })`;
         let infrastuctureTabLabel = `${this.getNameForCategory(
             layerSidebarTypes.CATEGORY_INFRASTRUCTURE
-        )} (${
-            this.props.searchState.getIn([
-                layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-                "searchResults"
-            ]).size
-        })`;
+        )} (${this.props.numInfrastructureSearchResults})`;
 
         let containerClasses = MiscUtil.generateStringFromSet({
             [styles.flexboxParent]: true,
@@ -138,10 +123,11 @@ export class LayerSidebarContainer extends Component {
 LayerSidebarContainer.propTypes = {
     availableFeatures: PropTypes.object.isRequired,
     activeFeatureCategory: PropTypes.string.isRequired,
+    numPlumeSearchResults: PropTypes.number.isRequired,
+    numInfrastructureSearchResults: PropTypes.number.isRequired,
     pageForward: PropTypes.func.isRequired,
     pageBackward: PropTypes.func.isRequired,
     changeSidebarCategory: PropTypes.func.isRequired,
-    searchState: PropTypes.object.isRequired,
     featureLoadingState: PropTypes.object.isRequired
 };
 
@@ -149,7 +135,16 @@ function mapStateToProps(state) {
     return {
         availableFeatures: state.layerSidebar.get("availableFeatures"),
         activeFeatureCategory: state.layerSidebar.get("activeFeatureCategory"),
-        searchState: state.layerSidebar.get("searchState"),
+        numPlumeSearchResults: state.layerSidebar.getIn([
+            "searchState",
+            layerSidebarTypes.CATEGORY_PLUMES,
+            "searchResults"
+        ]).size,
+        numInfrastructureSearchResults: state.layerSidebar.getIn([
+            "searchState",
+            layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+            "searchResults"
+        ]).size,
         featureLoadingState: state.asynchronous.get("loadingFeatures")
     };
 }

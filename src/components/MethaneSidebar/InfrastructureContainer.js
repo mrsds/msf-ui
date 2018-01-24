@@ -303,7 +303,11 @@ InfrastructureContainer.propTypes = {
 function mapStateToProps(state) {
     return {
         activeFeature: state.map.get("activeFeature"),
-        activeDetailFeature: state.featureDetail
+        activeDetailFeature: state.featureDetail,
+        searchState: state.layerSidebar.getIn([
+            "searchState",
+            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+        ])
     };
 }
 

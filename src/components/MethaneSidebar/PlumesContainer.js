@@ -216,7 +216,6 @@ PlumesContainer.propTypes = {
     setFeatureDetail: PropTypes.func.isRequired,
     hideFeatureDetail: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    availableFeatures: PropTypes.object.isRequired,
     centerMapOnPoint: PropTypes.func.isRequired,
     centerMapOnFeature: PropTypes.func.isRequired,
     toggleFeatureLabel: PropTypes.func.isRequired
@@ -225,7 +224,8 @@ PlumesContainer.propTypes = {
 function mapStateToProps(state) {
     return {
         activeFeature: state.map.get("activeFeature"),
-        activeDetailFeature: state.featureDetail
+        activeDetailFeature: state.featureDetail,
+        searchState: state.layerSidebar.getIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES])
     };
 }
 
