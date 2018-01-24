@@ -2,36 +2,56 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import Divider from "material-ui/Divider";
-import { ListItem, ListItemSecondaryAction, ListItemText } from "material-ui/List";
-// import Divider from "material-ui/Divider";
-import InfoOutlineIcon from "material-ui-icons/InfoOutline";
-// import Typography from "material-ui/Typography";
-import Tooltip from "material-ui/Tooltip";
-import Collapse from "material-ui/transitions/Collapse";
-// import Popover from "material-ui/Popover";
-// import Grow from "material-ui/transitions/Grow";
-// import ClickAwayListener from "material-ui/utils/ClickAwayListener";
-// import { Manager, Target, Popper } from "react-popper";
-import { EnhancedSwitch, IconButtonSmall } from "_core/components/Reusables";
-// import * as layerActions from "_core/actions/LayerActions";
-// import * as layerActionsExtended from "actions/LayerActions_Extended";
-import * as mapActionsExtended from "actions/mapActions";
 import * as mapActions from "_core/actions/mapActions";
-// import Colorbar from "_core/components/LayerMenu/Colorbar";
-import MiscUtil from "_core/utils/MiscUtil";
+import * as mapActionsExtended from "actions/mapActions";
 import { LayerControlContainer as LayerControlContainerCore } from "_core/components/LayerMenu/LayerControlContainer.js";
+import { EnhancedSwitch, IconButtonSmall } from "_core/components/Reusables";
 import styles from "_core/components/LayerMenu/LayerControlContainer.scss";
 import textStyles from "_core/styles/text.scss";
 import displayStyles from "_core/styles/display.scss";
-
-const miscUtil = new MiscUtil();
+import Tooltip from "material-ui/Tooltip";
+import { ListItem, ListItemSecondaryAction, ListItemText } from "material-ui/List";
+import InfoOutlineIcon from "material-ui-icons/InfoOutline";
 
 export class GroupControlContainer extends LayerControlContainerCore {
     setLayerActive(active) {
         this.isChangingPosition = false;
         this.isChangingOpacity = false;
         this.props.mapActionsExtended.setGroupVisible(this.props.layer, !active);
+    }
+    renderTopContent() {
+        return (
+            <ListItem dense={true} classes={{ dense: styles.dense }}>
+                <Tooltip
+                    title={this.props.layer.get("isActive") ? "Hide Layer" : "Show Layer"}
+                    placement="right"
+                >
+                    <EnhancedSwitch
+                        checked={this.props.layer.get("isActive")}
+                        onChange={(value, checked) => this.setLayerActive(!checked)}
+                        onClick={evt => this.setLayerActive(evt.target.checked)}
+                    />
+                </Tooltip>
+                <span className={textStyles.textEllipsis}>
+                    <ListItemText primary={this.props.layer.get("title")} />
+                </span>
+                <ListItemSecondaryAction
+                    classes={{
+                        root: `${styles.secondaryActionRoot} ${
+                            this.props.layer.get("isActive")
+                                ? displayStyles.invisible
+                                : displayStyles.hiddenFadeIn
+                        }`
+                    }}
+                >
+                    <Tooltip title="Layer information" placement="left">
+                        <IconButtonSmall onClick={() => this.openLayerInfo()}>
+                            <InfoOutlineIcon />
+                        </IconButtonSmall>
+                    </Tooltip>
+                </ListItemSecondaryAction>
+            </ListItem>
+        );
     }
 }
 

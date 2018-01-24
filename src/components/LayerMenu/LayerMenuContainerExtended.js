@@ -45,14 +45,41 @@ export class LayerMenuContainer extends Component {
             [styles.collapse]: this.props.layerMenuOpen
         });
 
-        layerList.sort((a, b) => {
-            const aOrder = a.get("layerOrder");
-            const bOrder = b.get("layerOrder");
-            if (!aOrder && !bOrder) return 0;
-            if (!aOrder) return -1;
-            if (!bOrder) return 1;
-            return aOrder - bOrder;
-        });
+        let plumeLayer = layerList.find(x => x.get("id") === "AVIRIS");
+        let griddedMethaneLayer = layerList.find(x => x.get("id") === "GRIDDED_EMISSIONS_V1");
+        let infrastructureLayer = this.props.groups.get(0);
+        let plumeLayerControl = null;
+        let infrastructureLayerControl = null;
+        let griddedMethaneLayerControl = null;
+        if (plumeLayer && griddedMethaneLayer && infrastructureLayer) {
+            plumeLayerControl = (
+                <LayerControlContainerExtended
+                    key={plumeLayer.get("id") + "_layer_listing"}
+                    layer={plumeLayer}
+                    activeNum={activeNum}
+                    palette={this.props.palettes.get(plumeLayer.getIn(["palette", "name"]))}
+                />
+            );
+
+            infrastructureLayerControl = (
+                <GroupControlContainer
+                    activeNum={activeNum}
+                    key={infrastructureLayer.get("id") + "_layer_listing"}
+                    layer={infrastructureLayer}
+                />
+            );
+
+            griddedMethaneLayerControl = (
+                <LayerControlContainerExtended
+                    key={griddedMethaneLayer.get("id") + "_layer_listing"}
+                    layer={griddedMethaneLayer}
+                    activeNum={activeNum}
+                    palette={this.props.palettes.get(
+                        griddedMethaneLayer.getIn(["palette", "name"])
+                    )}
+                />
+            );
+        }
 
         return (
             <div className={layerMenuClasses}>
@@ -84,26 +111,18 @@ export class LayerMenuContainer extends Component {
                             </Tooltip>
                         </div>
                     </div>
-                    <Collapse in={this.props.layerMenuOpen} timeout="auto">
+                    <Collapse
+                        className={stylesExtended.collapseElement}
+                        in={this.props.layerMenuOpen}
+                        timeout="auto"
+                    >
                         <div className={stylesExtended.layerMenuContent}>
                             <List disablePadding>
-                                {this.props.groups.map(group => (
-                                    <GroupControlContainer
-                                        activeNum={activeNum}
-                                        key={group}
-                                        layer={group}
-                                    />
-                                ))}
-                                {layerList.map(layer => (
-                                    <LayerControlContainerExtended
-                                        key={layer.get("id") + "_layer_listing"}
-                                        layer={layer}
-                                        activeNum={activeNum}
-                                        palette={this.props.palettes.get(
-                                            layer.getIn(["palette", "name"])
-                                        )}
-                                    />
-                                ))}
+                                {/* Manually create layers here since it would be too troublesome to get the order correct otherwise
+                                since we have to deal with these layer groups.. */}
+                                {plumeLayerControl}
+                                {infrastructureLayerControl}
+                                {griddedMethaneLayerControl}
                             </List>
                         </div>
                     </Collapse>

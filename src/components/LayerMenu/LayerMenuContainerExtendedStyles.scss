@@ -14,6 +14,6 @@
 }
 .layerMenuContent {
     composes: layerMenuContent from "_core/components/LayerMenu/LayerMenuContainer.scss";
-    // overflow: hidden;
-    // overflow-y: hidden;
+    // overflow: visible;
+    // overflow-y: visible;
 }
