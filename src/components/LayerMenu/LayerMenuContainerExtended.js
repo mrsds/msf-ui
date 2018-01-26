@@ -14,7 +14,7 @@ import * as appStrings from "_core/constants/appStrings";
 import * as mapActions from "_core/actions/mapActions";
 import { IconButtonSmall } from "_core/components/Reusables";
 import LayerControlContainerExtended from "components/LayerMenu/LayerControlContainerExtended";
-import GroupControlContainer from "components/LayerMenu/GroupControlContainer";
+import InfrastructureControlContainer from "components/LayerMenu/InfrastructureControlContainer";
 import MiscUtil from "_core/utils/MiscUtil";
 import styles from "_core/components/LayerMenu/LayerMenuContainer.scss";
 import stylesExtended from "components/LayerMenu/LayerMenuContainerExtendedStyles.scss";
@@ -62,7 +62,7 @@ export class LayerMenuContainer extends Component {
             );
 
             infrastructureLayerControl = (
-                <GroupControlContainer
+                <InfrastructureControlContainer
                     activeNum={activeNum}
                     key={infrastructureLayer.get("id") + "_layer_listing"}
                     layer={infrastructureLayer}
@@ -84,7 +84,11 @@ export class LayerMenuContainer extends Component {
         return (
             <div className={layerMenuClasses}>
                 <Paper elevation={1}>
-                    <div className={stylesExtended.layerHeaderRow}>
+                    <Paper
+                        square={this.props.layerMenuOpen}
+                        elevation={1}
+                        className={stylesExtended.layerHeaderRow}
+                    >
                         <div className={styles.layerHeader}>
                             <Typography type="subheading" color="inherit">
                                 Map Layers
@@ -110,7 +114,7 @@ export class LayerMenuContainer extends Component {
                                 </IconButtonSmall>
                             </Tooltip>
                         </div>
-                    </div>
+                    </Paper>
                     <Collapse
                         className={stylesExtended.collapseElement}
                         in={this.props.layerMenuOpen}

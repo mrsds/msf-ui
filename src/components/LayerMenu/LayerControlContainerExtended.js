@@ -12,6 +12,10 @@ import displayStyles from "_core/styles/display.scss";
 import Tooltip from "material-ui/Tooltip";
 import { ListItem, ListItemSecondaryAction, ListItemText } from "material-ui/List";
 import InfoOutlineIcon from "material-ui-icons/InfoOutline";
+import Collapse from "material-ui/transitions/Collapse";
+import Divider from "material-ui/Divider";
+import { Colorbar } from "_core/components/Colorbar";
+import colorbarStylesExtended from "components/LayerMenu/ColorbarStylesExtended.scss";
 
 export class LayerControlContainer extends LayerControlContainerCore {
     setLayerActive(active) {
@@ -52,6 +56,34 @@ export class LayerControlContainer extends LayerControlContainerCore {
                     </Tooltip>
                 </ListItemSecondaryAction>
             </ListItem>
+        );
+    }
+    renderBottomContent() {
+        return (
+            <div>
+                <Collapse
+                    in={this.props.layer.get("isActive")}
+                    timeout="auto"
+                    className={styles.layerControl}
+                    classes={{ entered: styles.collapseEntered }}
+                >
+                    <div className={styles.layerControlContent}>
+                        <Colorbar
+                            palette={this.props.palette}
+                            min={parseFloat(this.props.layer.get("min"))}
+                            max={parseFloat(this.props.layer.get("max"))}
+                            units={this.props.layer.get("units")}
+                            displayMin={parseFloat(this.props.layer.getIn(["palette", "min"]))}
+                            displayMax={parseFloat(this.props.layer.getIn(["palette", "max"]))}
+                            handleAs={this.props.layer.getIn(["palette", "handleAs"])}
+                            url={this.props.layer.getIn(["palette", "url"])}
+                            className={colorbarStylesExtended.colorbar}
+                        />
+                        {this.renderIconRow()}
+                    </div>
+                </Collapse>
+                <Divider />
+            </div>
         );
     }
 }

@@ -9,7 +9,7 @@
 
 .layerHeaderRow {
     composes: layerHeaderRow from "_core/components/LayerMenu/LayerMenuContainer.scss";
-    // background: $color-primary;
+    background: $color-background;
     // color: white;
 }
 .layerMenuContent {

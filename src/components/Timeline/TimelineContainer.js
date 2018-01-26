@@ -559,15 +559,15 @@ export class TimelineContainerStyles extends Component {
         };
     }
 
-    setTimelineClassActive(classStr, active) {
-        // Set dragging class on the axis
-        let axis = this.getTimelineContainerStylesNode();
-        if (active) {
-            axis.classList.add(classStr);
-        } else {
-            axis.classList.remove(classStr);
-        }
-    }
+    // setTimelineClassActive(classStr, active) {
+    //     // Set dragging class on the axis
+    //     let axis = this.getTimelineContainerStylesNode();
+    //     if (active) {
+    //         axis.classList.add(classStr);
+    //     } else {
+    //         axis.classList.remove(classStr);
+    //     }
+    // }
 
     checkItemInView(itemId, options = {}) {
         return new Promise((resolve, reject) => {

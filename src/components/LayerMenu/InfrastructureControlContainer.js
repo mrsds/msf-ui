@@ -12,8 +12,15 @@ import displayStyles from "_core/styles/display.scss";
 import Tooltip from "material-ui/Tooltip";
 import { ListItem, ListItemSecondaryAction, ListItemText } from "material-ui/List";
 import InfoOutlineIcon from "material-ui-icons/InfoOutline";
+import Collapse from "material-ui/transitions/Collapse";
+import { Colorbar } from "_core/components/Colorbar";
+import Divider from "material-ui/Divider";
+import Grid from "material-ui/Grid";
+import colorbarStyles from "_core/components/Colorbar/Colorbar.scss";
+import colorbarStylesExtended from "components/LayerMenu/ColorbarStylesExtended.scss";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
-export class GroupControlContainer extends LayerControlContainerCore {
+export class InfrastructureControlContainer extends LayerControlContainerCore {
     setLayerActive(active) {
         this.isChangingPosition = false;
         this.isChangingOpacity = false;
@@ -53,9 +60,49 @@ export class GroupControlContainer extends LayerControlContainerCore {
             </ListItem>
         );
     }
+    renderLegend() {
+        return (
+            <span className={colorbarStylesExtended.infrastructureLegend}>
+                <Grid container spacing={0}>
+                    {Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).map(key => (
+                        <Grid key={key} item xs className={colorbarStyles.label}>
+                            <span
+                                className={colorbarStylesExtended.legendColor}
+                                style={{
+                                    background:
+                                        layerSidebarTypes.INFRASTRUCTURE_GROUPS[key].colors
+                                            .fillNoTransparency
+                                }}
+                            />
+                            <br />
+                            {key}
+                        </Grid>
+                    ))}
+                </Grid>
+            </span>
+        );
+    }
+    renderBottomContent() {
+        return (
+            <div>
+                <Collapse
+                    in={this.props.layer.get("isActive")}
+                    timeout="auto"
+                    className={styles.layerControl}
+                    classes={{ entered: styles.collapseEntered }}
+                >
+                    <div className={styles.layerControlContent}>
+                        {this.renderLegend()}
+                        {this.renderIconRow()}
+                    </div>
+                </Collapse>
+                <Divider />
+            </div>
+        );
+    }
 }
 
-GroupControlContainer.propTypes = {
+InfrastructureControlContainer.propTypes = {
     mapActionsExtended: PropTypes.object.isRequired,
     mapActions: PropTypes.object.isRequired,
     activeNum: PropTypes.number.isRequired,
@@ -69,4 +116,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(GroupControlContainer);
+export default connect(null, mapDispatchToProps)(InfrastructureControlContainer);
