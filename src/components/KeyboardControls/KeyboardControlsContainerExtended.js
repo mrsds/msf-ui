@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import moment from "moment";
-import * as mapActions from "_core/actions/dapActions";
+import * as mapActions from "_core/actions/mapActions";
 import * as dateSliderActions from "_core/actions/dateSliderActions";
 import appConfig from "constants/appConfig";
 import * as appStrings from "_core/constants/appStrings";
