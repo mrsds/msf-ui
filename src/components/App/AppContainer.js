@@ -39,7 +39,6 @@ import { HelpContainer } from "_core/components/Help";
 import { AlertsContainer } from "_core/components/Alerts";
 import { MouseFollowerContainer } from "_core/components/MouseFollower";
 import { AnalyticsContainer } from "_core/components/Analytics";
-import { KeyboardControlsContainer } from "_core/components/KeyboardControls";
 import styles from "components/App/AppContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
 import SettingsContainerExtended from "components/Settings/SettingsContainerExtended";
@@ -50,6 +49,7 @@ import LayerSidebarContainer from "components/MethaneSidebar/LayerSidebarContain
 import AppBarContainer from "components/AppBar/AppBarContainer";
 import LayerMenuContainerExtended from "components/LayerMenu/LayerMenuContainerExtended";
 import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContainer";
+import KeyboardControlsContainerExtended from "components/KeyboardControls/KeyboardControlsContainerExtended";
 
 const theme = createMuiTheme({
     typography: {
@@ -140,7 +140,7 @@ export class AppContainer extends Component {
                     <MapContextMenu />
                     <MouseFollowerContainer />
                     <AnalyticsContainer />
-                    <KeyboardControlsContainer />
+                    <KeyboardControlsContainerExtended />
                     <FeatureDetailContainer />
                     <MapControlsContainerExtended />
                     <CoordinateTracker />

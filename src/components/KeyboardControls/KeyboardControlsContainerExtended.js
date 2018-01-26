@@ -33,12 +33,7 @@ KeyboardControlsContainer.propTypes = {
     isMeasuringEnabled: PropTypes.bool.isRequired,
     dateSliderTimeResolution: PropTypes.object.isRequired,
     date: PropTypes.object.isRequired,
-    featureDetail: function(props, propName, componentName) {
-        const propValue = props[propName];
-        if (propValue === null) return;
-        if (typeof propValue === "object") return;
-        return new Error(`${componentName} only accepts null or object`);
-    },
+    featureDetail: PropTypes.object,
     featureDetailActions: PropTypes.object.isRequired
 };
 
