@@ -42,11 +42,17 @@ export const layerSidebarState = Immutable.fromJS({
             pageIndex: 0,
             filters: {
                 [layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN]: {
-                    selectedValue: null,
+                    selectedValue: {
+                        value: "",
+                        label: ""
+                    },
                     selectableValues: []
                 },
                 [layerSidebarTypes.PLUME_FILTER_PLUME_IME]: {
-                    selectedValue: null,
+                    selectedValue: {
+                        value: "",
+                        label: ""
+                    },
                     selectableValues: []
                 },
                 [layerSidebarTypes.PLUME_FILTER_PLUME_ID]: {
@@ -57,11 +63,17 @@ export const layerSidebarState = Immutable.fromJS({
                     selectableValues: []
                 },
                 [layerSidebarTypes.PLUME_FILTER_PLUME_START_DATE]: {
-                    selectedValue: appConfig.PLUME_START_DATE,
+                    selectedValue: {
+                        value: appConfig.PLUME_START_DATE,
+                        label: appConfig.PLUME_START_DATE
+                    },
                     selectableValues: []
                 },
                 [layerSidebarTypes.PLUME_FILTER_PLUME_END_DATE]: {
-                    selectedValue: appConfig.PLUME_END_DATE,
+                    selectedValue: {
+                        value: appConfig.PLUME_END_DATE,
+                        label: appConfig.PLUME_END_DATE
+                    },
                     selectableValues: []
                 }
             }

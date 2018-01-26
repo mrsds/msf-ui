@@ -145,29 +145,40 @@ export default class LayerSidebarReducer {
         if (action.category === layerSidebarTypes.CATEGORY_PLUMES) {
             // Extract search filters
             const startDate = moment.utc(
-                filters.getIn([layerSidebarTypes.PLUME_FILTER_PLUME_START_DATE, "selectedValue"])
+                filters.getIn([
+                    layerSidebarTypes.PLUME_FILTER_PLUME_START_DATE,
+                    "selectedValue",
+                    "value"
+                ])
             );
             const endDate = moment.utc(
-                filters.getIn([layerSidebarTypes.PLUME_FILTER_PLUME_END_DATE, "selectedValue"])
+                filters.getIn([
+                    layerSidebarTypes.PLUME_FILTER_PLUME_END_DATE,
+                    "selectedValue",
+                    "value"
+                ])
             );
             const flightCampaign = filters.getIn([
                 layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN,
-                "selectedValue"
+                "selectedValue",
+                "value"
             ]);
             const plumeIME = filters.getIn([
                 layerSidebarTypes.PLUME_FILTER_PLUME_IME,
-                "selectedValue"
+                "selectedValue",
+                "value"
             ]);
             const plumeID = filters.getIn([
                 layerSidebarTypes.PLUME_FILTER_PLUME_ID,
-                "selectedValue"
+                "selectedValue",
+                "value"
             ]);
 
             // Filter by plumeID via Fuse
             searchResults = LayerSidebarReducer.getSearchResultsHelper(
                 action.category,
                 featureList,
-                plumeID.value
+                plumeID
             );
 
             // Filter by other filters
@@ -176,8 +187,8 @@ export default class LayerSidebarReducer {
                     moment
                         .utc(feature.get("datetime"))
                         .isBetween(startDate, endDate, "day", "[]") &&
-                    (!flightCampaign || feature.get("flight_campaign") === flightCampaign.value) &&
-                    (!plumeIME || feature.get("ime") >= plumeIME.value)
+                    (!flightCampaign || feature.get("flight_campaign") === flightCampaign) &&
+                    (!plumeIME || feature.get("ime") >= plumeIME)
                 );
             });
 
@@ -192,7 +203,7 @@ export default class LayerSidebarReducer {
                 )
                 .sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
                 .map(value => {
-                    return { value, label: "Campaign " + value };
+                    return Immutable.Map({ value, label: "Campaign " + value });
                 });
             filters = filters.setIn(
                 [layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN, "selectableValues"],
@@ -200,10 +211,10 @@ export default class LayerSidebarReducer {
             );
 
             let plumeIMESelectableValues = [5, 10, 25, 50, 100, 250, 500, 1000, 1500].map(x => {
-                return {
+                return Immutable.Map({
                     value: x,
                     label: ">" + x + "kg"
-                };
+                });
             });
 
             // Set filters to new filters
@@ -215,14 +226,15 @@ export default class LayerSidebarReducer {
             // Extract search filters
             const infrastructureName = filters.getIn([
                 layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME,
-                "selectedValue"
+                "selectedValue",
+                "value"
             ]);
 
             // Filter by infrastructure name via Fuse
             searchResults = LayerSidebarReducer.getSearchResultsHelper(
                 action.category,
                 featureList,
-                infrastructureName.value
+                infrastructureName
             );
         }
         const newState = state
@@ -250,7 +262,7 @@ export default class LayerSidebarReducer {
                 action.key,
                 "selectedValue"
             ],
-            action.selectedValue
+            Immutable.fromJS(action.selectedValue)
         );
     }
 
@@ -263,7 +275,7 @@ export default class LayerSidebarReducer {
                 action.key,
                 "selectedValue"
             ],
-            action.selectedValue
+            Immutable.fromJS(action.selectedValue)
         );
     }
 

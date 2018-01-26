@@ -54,13 +54,10 @@ export class PlumeFiltersContainer extends Component {
         let infrastructureNameFilter = this.props.filters.get(
             layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME
         );
-        let infrastructureNameFilterSelectedValue = infrastructureNameFilter.get("selectedValue")
-            .value;
-        let infrastructureNameFilterSelectedValueLabel = infrastructureNameFilter.get(
-            "selectedValue"
-        )
-            ? infrastructureNameFilter.get("selectedValue").label
-            : null;
+        let infrastructureNameFilterSelectedValue = infrastructureNameFilter.getIn([
+            "selectedValue",
+            "value"
+        ]);
 
         let infrastructureSubcategoriesPopoverOpen = this.popperProps.get(
             "infrastructureSubcategories"

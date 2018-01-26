@@ -49,34 +49,24 @@ export class PlumeFiltersContainer extends Component {
         let flightCampaignFilter = this.props.filters.get(
             layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN
         );
-        let flightCampaignFilterSelectedValue = flightCampaignFilter.get("selectedValue")
-            ? flightCampaignFilter.get("selectedValue").value
-            : null;
-        let flightCampaignFilterValueLabel = flightCampaignFilter.get("selectedValue")
-            ? flightCampaignFilter.get("selectedValue").label
-            : null;
+        let flightCampaignFilterSelectedValue =
+            flightCampaignFilter.getIn(["selectedValue", "value"]) || null;
+        let flightCampaignFilterValueLabel = flightCampaignFilter.getIn(["selectedValue", "label"]);
         let flightCampaignsPopoverActive = this.popperProps.get("flightCampaigns");
 
         let plumeIDFilter = this.props.filters.get(layerSidebarTypes.PLUME_FILTER_PLUME_ID);
-        let plumeIDFilterSelectedValue = plumeIDFilter.get("selectedValue").value;
-        let plumeIDFilterSelectedValueLabel = plumeIDFilter.get("selectedValue")
-            ? plumeIDFilter.get("selectedValue").label
-            : null;
+        let plumeIDFilterSelectedValue = plumeIDFilter.getIn(["selectedValue", "value"]);
 
         let plumeIMEFilter = this.props.filters.get(layerSidebarTypes.PLUME_FILTER_PLUME_IME);
-        let plumeIMEFilterSelectedValue = plumeIMEFilter.get("selectedValue")
-            ? plumeIMEFilter.get("selectedValue").value
-            : null;
-        let plumeIMEFilterSelectedValueLabel = plumeIMEFilter.get("selectedValue")
-            ? plumeIMEFilter.get("selectedValue").label
-            : null;
+        let plumeIMEFilterSelectedValue = plumeIMEFilter.getIn(["selectedValue", "value"]) || null;
+        let plumeIMEFilterSelectedValueLabel = plumeIMEFilter.getIn(["selectedValue", "label"]);
         let plumeIMEPopoverActive = this.popperProps.get("plumeIME");
 
         return (
             <React.Fragment>
                 <SearchInput
                     icon={<Search />}
-                    placeholder="Filter by Plume ID (and Source ID?)"
+                    placeholder="Filter by Plume ID"
                     value={plumeIDFilterSelectedValue}
                     disabled={false}
                     onUpdate={valueStr =>
@@ -86,7 +76,7 @@ export class PlumeFiltersContainer extends Component {
                         })
                     }
                     validate={valueStr => true}
-                    primaryDataTip="Filter by Plume ID (and Source ID?)"
+                    primaryDataTip="Filter by Plume ID"
                     primaryDataPlace="top"
                     actionIcon={<Clear />}
                     onActionIconClick={() =>
@@ -189,17 +179,18 @@ export class PlumeFiltersContainer extends Component {
                                                             x
                                                         );
                                                     }}
-                                                    key={x.value}
+                                                    key={x.get("value")}
                                                     className={styles.formControlLabel}
                                                 >
                                                     <Radio
-                                                        value={x.value.toString()}
+                                                        value={x.get("value").toString()}
                                                         checked={
-                                                            x.value === plumeIMEFilterSelectedValue
+                                                            x.get("value") ===
+                                                            plumeIMEFilterSelectedValue
                                                         }
                                                     />
                                                     <Typography className={styles.radioLabel}>
-                                                        {x.label}
+                                                        {x.get("label")}
                                                     </Typography>
                                                 </div>
                                             ))}
@@ -306,18 +297,18 @@ export class PlumeFiltersContainer extends Component {
                                                             x
                                                         );
                                                     }}
-                                                    key={x.value}
+                                                    key={x.get("value")}
                                                     className={styles.formControlLabel}
                                                 >
                                                     <Radio
-                                                        value={x.value}
+                                                        value={x.get("value")}
                                                         checked={
-                                                            x.value ===
+                                                            x.get("value") ===
                                                             flightCampaignFilterSelectedValue
                                                         }
                                                     />
                                                     <Typography className={styles.radioLabel}>
-                                                        {x.label}
+                                                        {x.get("label")}
                                                     </Typography>
                                                 </div>
                                             ))}

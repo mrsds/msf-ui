@@ -100,7 +100,7 @@ export class TimelineContainerStyles extends Component {
             let start = util.convert(this.body.range.start, "Number");
             let end = util.convert(this.body.range.end, "Number");
             let timeLabelsize = this.body.util
-                .toTime((this.props.minorCharWidth || 10) * this.options.maxMinorChars)
+                .toTime((this.props.minorCharWidth || 10) * this.options.maxMinorChars) // eslint-disable-line react/prop-types
                 .valueOf();
             let minimumStep =
                 timeLabelsize -
@@ -225,7 +225,8 @@ export class TimelineContainerStyles extends Component {
             if (this.options.showMajorLabels) {
                 let leftTime = this.body.util.toTime(0),
                     leftText = step.getLabelMajor(leftTime),
-                    widthText = leftText.length * (this.props.majorCharWidth || 10) + 10; // upper bound estimation
+                    // upper bound estimation
+                    widthText = leftText.length * (this.props.majorCharWidth || 10) + 10; // eslint-disable-line react/prop-types
 
                 if (xFirstMajorLabel == undefined || widthText < xFirstMajorLabel) {
                     this._repaintMajorText(0, leftText, orientation, className + " left-label");
