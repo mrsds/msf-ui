@@ -23,8 +23,8 @@ export default function map_Extended(
             return opt_reducer.toggleFeatureLabel(state, action);
         case actionTypesMSF.CLEAR_FEATURE_LABELS:
             return opt_reducer.clearFeatureLabels(state, action);
-        case actionTypesMSF.UPDATE_FEATURE_DETAIL:
-            return opt_reducer.toggleFeatureLabel(state, action);
+        // case actionTypesMSF.UPDATE_FEATURE_DETAIL:
+        //     return opt_reducer.toggleFeatureLabel(state, action);
         default:
             return map.call(this, state, action, opt_reducer);
     }

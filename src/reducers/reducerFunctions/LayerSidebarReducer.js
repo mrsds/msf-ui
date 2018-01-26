@@ -18,11 +18,13 @@ export default class LayerSidebarReducer {
                         !action.featureList
                             ? []
                             : action.featureList.features.reduce((keys, feature) => {
+                                  let categoryId = feature.properties.category_id;
                                   keys.push(
                                       Immutable.fromJS({
                                           name: feature.properties.name,
                                           id: feature.properties.id,
                                           category: feature.properties.category,
+                                          categoryId: categoryId,
                                           metadata: feature.properties.metadata
                                       })
                                   );
@@ -39,6 +41,8 @@ export default class LayerSidebarReducer {
                             : action.featureList.reduce((keys, feature) => {
                                   let ime = feature.metadata.find(x => x.name === "IME20 (kg)");
                                   let imeValue = ime ? parseFloat(ime.value) : null;
+                                  let sourceId = feature.metadata.find(x => x.name === "Source id");
+                                  let sourceIdValue = sourceId ? parseFloat(sourceId.value) : null;
                                   keys.push(
                                       Immutable.fromJS({
                                           name: feature.name,
@@ -47,6 +51,7 @@ export default class LayerSidebarReducer {
                                           datetime: feature.data_date_dt,
                                           flight_campaign: feature.airborne_flight_run_number.toString(),
                                           ime: imeValue,
+                                          sourceId: sourceId,
                                           metadata: feature.metadata.concat([
                                               {
                                                   name: "latitude",

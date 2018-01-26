@@ -18,6 +18,9 @@ import Button from "material-ui/Button";
 import IconButton from "material-ui/IconButton";
 import { CircularProgress } from "material-ui/Progress";
 import DomainIcon from "mdi-material-ui/Domain";
+import LeafIcon from "mdi-material-ui/Leaf";
+import FlashIcon from "mdi-material-ui/Flash";
+import DeleteIcon from "mdi-material-ui/Delete";
 import MyLocationIcon from "material-ui-icons/MyLocation";
 import InfoOutlineIcon from "material-ui-icons/InfoOutline";
 import InfoIcon from "material-ui-icons/Info";
@@ -72,47 +75,105 @@ export class InfrastructureContainer extends Component {
     //     return countyName ? countyName + " County" : "(no county)";
     // }
 
-    // truncateName(nameString) {
-    //     return nameString.length > 20 ? nameString.slice(0, 17) + "..." : nameString;
-    // }
+    getColorByCategoryId(categoryId) {
+        return layerSidebarTypes.INFRASTRUCTURE_INFO_BY_CATEGORY_ID[categoryId].fillNoTransparency;
+    }
+
+    getIconByCategoryId(categoryId) {
+        switch (layerSidebarTypes.INFRASTRUCTURE_INFO_BY_CATEGORY_ID[categoryId].sector) {
+            case layerSidebarTypes.SECTORS.AGRICULTURE:
+                return <LeafIcon />;
+            case layerSidebarTypes.SECTORS.ENERGY:
+                return <FlashIcon />;
+            case layerSidebarTypes.SECTORS.WASTE:
+                return <DeleteIcon />;
+        }
+    }
 
     makeListItem(feature) {
+        const isDetailPageOpen = this.props.activeDetailFeature.getIn(["feature", "id"])
+            ? true
+            : false;
         const isActive = this.isActiveFeature(feature);
         const isActiveDetail = this.isActiveDetailFeature(feature);
-        const itemClass = MiscUtilExtended.generateStringFromSet({
-            [layerSidebarStyles.selectedItem]: isActive || isActiveDetail,
+        const isItemPrimary = isActive;
+        const listItemRootClassnames = MiscUtilExtended.generateStringFromSet({
+            [layerSidebarStyles.selectedItem]: isItemPrimary,
             [layerSidebarStyles.itemRoot]: true
         });
-        const toggleLabelAction = () =>
-            this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, feature);
+        const toggleDetailAction = isActiveDetail
+            ? () => this.props.hideFeatureDetail()
+            : () => this.props.setFeatureDetail(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, feature);
 
-        const toggleDetailAction = () =>
-            isActiveDetail
-                ? this.props.hideFeatureDetail
-                : this.props.setFeatureDetail(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, feature);
+        const onListItemClick = () => {
+            if (isDetailPageOpen) {
+                // If the list item clicked is the same as current feature detail
+                // then close the detail
+                if (isActiveDetail) {
+                    this.props.hideFeatureDetail();
+                } else {
+                    this.props.setFeatureDetail(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, feature);
+                }
+            } else if (!isActive) {
+                this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, feature);
+            }
+        };
 
         const lat = MetadataUtil.getLat(feature, null);
         const long = MetadataUtil.getLong(feature, null);
         const centerMapAction =
             lat && long ? () => this.props.centerMapOnFeature(feature, "VISTA") : null;
+        const iconContainerClasses = MiscUtil.generateStringFromSet({
+            [layerSidebarStyles.iconContainer]: true
+        });
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem
-                    className={itemClass}
+                    className={listItemRootClassnames}
+                    classes={{
+                        root: listItemRootClassnames,
+                        container: layerSidebarStyles.listItemContainer
+                    }}
                     button
-                    onClick={isActiveDetail ? toggleDetailAction : toggleLabelAction}
+                    onClick={onListItemClick}
                 >
-                    <ListItemText
-                        primary={
-                            <Typography type="body1" noWrap>
-                                {feature.get("name")}
-                            </Typography>
-                        }
-                        secondary={feature.get("category")}
-                    />
+                    <div
+                        className={iconContainerClasses}
+                        style={{
+                            background: this.getColorByCategoryId(feature.get("categoryId"))
+                        }}
+                    >
+                        {this.getIconByCategoryId(feature.get("categoryId"))}
+                    </div>
+                    <div className={layerSidebarStyles.listItemTextContainer}>
+                        <Typography
+                            color={isItemPrimary ? "inherit" : "default"}
+                            className={layerSidebarStyles.listItemText}
+                            type="body1"
+                            noWrap
+                        >
+                            {feature.get("name")}
+                        </Typography>
+                        <Typography
+                            color={isItemPrimary ? "inherit" : "secondary"}
+                            className={layerSidebarStyles.listItemTextSecondary}
+                            type="caption"
+                            noWrap
+                        >
+                            No flyovers
+                        </Typography>
+                        <Typography
+                            color={isItemPrimary ? "inherit" : "secondary"}
+                            className={layerSidebarStyles.listItemTextSecondary}
+                            type="caption"
+                            noWrap
+                        >
+                            {feature.get("category")}
+                        </Typography>
+                    </div>
                     <ListItemSecondaryAction className={layerSidebarStyles.secondaryAction}>
                         <IconButton
-                            color="default"
+                            color={isItemPrimary ? "contrast" : "default"}
                             disabled={!lat || !long}
                             key={feature.get("id") + "_my_location_icon"}
                             onClick={centerMapAction}
@@ -120,7 +181,9 @@ export class InfrastructureContainer extends Component {
                             <MyLocationIcon />
                         </IconButton>
                         <IconButton
-                            color={isActiveDetail ? "primary" : "default"}
+                            color={
+                                isItemPrimary ? "contrast" : isActiveDetail ? "primary" : "default"
+                            }
                             key={feature.get("id") + "_info_icon"}
                             onClick={toggleDetailAction}
                         >
@@ -128,7 +191,6 @@ export class InfrastructureContainer extends Component {
                         </IconButton>
                     </ListItemSecondaryAction>
                 </ListItem>
-                <Divider />
             </React.Fragment>
         );
     }
@@ -146,67 +208,6 @@ export class InfrastructureContainer extends Component {
             .slice(currentPageIndex, endIndex)
             .map(feature => this.makeListItem(feature));
     }
-
-    // makeFacilityFilterList() {
-    //     if (!this.props.searchState.get("facilityFilterOptionsVisible")) {
-    //         return <div />;
-    //     }
-    //     const listItems = [];
-    //     const listGroups = Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).forEach(group => {
-    //         listItems.push(
-    //             <ListSubheader
-    //                 disableSticky={true}
-    //                 key={group}
-    //                 className={layerSidebarStyles.facilityFilterCategoryLabel}
-    //             >
-    //                 {group}
-    //             </ListSubheader>
-    //         );
-    //         listItems.push(
-    //             <div
-    //                 key={group + "_color"}
-    //                 className={layerSidebarStyles.categoryCircle}
-    //                 style={{
-    //                     background: layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].colors.stroke
-    //                 }}
-    //             />
-    //         );
-    //         layerSidebarTypes.INFRASTRUCTURE_GROUPS[group].categories.forEach(category => {
-
-    //             const checked = this.props.activeInfrastructureSubCategories.get(category) || false;
-    //             listItems.push(
-    //                 <ListItem
-    //                     button
-    //                     onClick={() =>
-    //                         this.props.updateInfrastructureCategoryFilter(category, !checked)
-    //                     }
-    //                     key={categoryName}
-    //                 >
-    //                     <Checkbox checked={checked} tabIndex={-1} disableRipple />
-    //                     <ListItemText primary={categoryName} />
-    //                 </ListItem>
-    //             );
-    //         });
-    //     });
-    //     return (
-    //         <div
-    //             className={`${layerSidebarStyles.filtersOverlay} ${
-    //                 layerSidebarStyles.facilityFilterList
-    //             }`}
-    //         >
-    //             <div className={layerSidebarStyles.headerBar}>
-    //                 <div className={layerSidebarStyles.headerTitle}>Select Infrastructure</div>
-    //                 <Button
-    //                     color="primary"
-    //                     onClick={this.props.toggleInfrastructureFacilityFilterOptionsVisible}
-    //                 >
-    //                     Done
-    //                 </Button>
-    //             </div>
-    //             <List className={layerSidebarStyles.facilityFilterList}>{listItems}</List>
-    //         </div>
-    //     );
-    // }
 
     makeLoadingModal() {
         if (this.props.isLoading) {

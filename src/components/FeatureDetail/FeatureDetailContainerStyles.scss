@@ -7,10 +7,10 @@
     left: $layer-sidebar-width;
     position: absolute;
     z-index: 1;
-    height: calc(100% - 42px);
+    height: calc(100% - 45px);
     width: calc(100% - #{$layer-sidebar-width});
     overflow: auto;
-    top: 42px;
+    top: 45px;
     background: $color-background;
     .floatingBackButton {
         position: fixed;

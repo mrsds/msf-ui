@@ -43,29 +43,63 @@ export const INFRASTRUCTURE_SUBCATEGORIES = {
     [VISTA_2017_SOCAB_BOUND]: 13
 };
 
-export const INFRASTRUCTURE_GROUPS = {
-    agriculture: {
-        categories: [VISTA_2017_LIVESTOCK_DAIRIES, VISTA_2017_ANAEROBIC_LAGOONS],
+export const SECTORS = {
+    AGRICULTURE: "agriculture",
+    ENERGY: "energy",
+    WASTE: "waste"
+};
 
-        colors: { fill: "rgba(212,125,39,0.3)", stroke: "rgba(212,125,39,1)" }
+let agricultureCategories = [VISTA_2017_LIVESTOCK_DAIRIES, VISTA_2017_ANAEROBIC_LAGOONS];
+let energyCategories = [
+    VISTA_2017_POWER_PLANT,
+    VISTA_2017_PETRO_REFINE,
+    VISTA_2017_OILGAS_WELLS,
+    VISTA_2017_NAT_GAS_STORE_FIELDS,
+    VISTA_2017_CNG_FUELING_STATIONS,
+    VISTA_2017_LNG_FUELING_STATIONS,
+    VISTA_2017_NAT_GAS_PROC_PLANT
+];
+let wasteCategories = [VISTA_2017_WASTEWTR_TREAT_PLNT, VISTA_2017_LANDFILL, VISTA_2017_SOCAB_BOUND];
+export const INFRASTRUCTURE_GROUPS = {
+    [SECTORS.AGRICULTURE]: {
+        categories: agricultureCategories,
+        categoryIds: agricultureCategories.map(x => INFRASTRUCTURE_SUBCATEGORIES[x]),
+        colors: {
+            fill: "rgba(212,125,39,0.3)",
+            stroke: "rgba(212,125,39,1)",
+            fillNoTransparency: "rgb(242, 216, 192)"
+        }
     },
-    energy: {
-        categories: [
-            VISTA_2017_POWER_PLANT,
-            VISTA_2017_PETRO_REFINE,
-            VISTA_2017_OILGAS_WELLS,
-            VISTA_2017_NAT_GAS_STORE_FIELDS,
-            VISTA_2017_CNG_FUELING_STATIONS,
-            VISTA_2017_LNG_FUELING_STATIONS,
-            VISTA_2017_NAT_GAS_PROC_PLANT
-        ],
-        colors: { fill: "rgba(181,181,54,0.3)", stroke: "rgba(181,181,54,1)" }
+    [SECTORS.ENERGY]: {
+        categories: energyCategories,
+        categoryIds: energyCategories.map(x => INFRASTRUCTURE_SUBCATEGORIES[x]),
+        colors: {
+            fill: "rgba(181,181,54,0.3)",
+            stroke: "rgba(181,181,54,1)",
+            fillNoTransparency: "rgb(233, 233, 197)"
+        }
     },
-    waste: {
+    [SECTORS.WASTE]: {
         categories: [VISTA_2017_WASTEWTR_TREAT_PLNT, VISTA_2017_LANDFILL, VISTA_2017_SOCAB_BOUND],
-        colors: { fill: "rgba(129,230,27,0.3)", stroke: "rgba(129,230,27,1)" }
+        categoryIds: wasteCategories.map(x => INFRASTRUCTURE_SUBCATEGORIES[x]),
+        colors: {
+            fill: "rgba(129,230,27,0.3)",
+            stroke: "rgba(129,230,27,1)",
+            fillNoTransparency: "rgb(218, 248, 192)"
+        }
     }
 };
+
+export const INFRASTRUCTURE_INFO_BY_CATEGORY_ID = {};
+Object.keys(INFRASTRUCTURE_GROUPS).map(key => {
+    let value = INFRASTRUCTURE_GROUPS[key];
+    value.categoryIds.map(x => {
+        INFRASTRUCTURE_INFO_BY_CATEGORY_ID[x] = {
+            fillNoTransparency: value.colors.fillNoTransparency,
+            sector: key
+        };
+    });
+});
 
 // export const INFRASTRUCTURE_SUBCATEGORY_SHAPES = {
 // 	[VISTA_2017_OILGAS_WELLS]: null,

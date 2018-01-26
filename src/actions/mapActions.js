@@ -154,7 +154,7 @@ export function centerMapOnFeature(feature, featureType) {
 
 export function toggleFeatureLabel(category, feature) {
     return dispatch => {
-        dispatch(featureDetailActions.hideFeatureDetailContainer());
+        // dispatch(featureDetailActions.hideFeatureDetailContainer());
         dispatch(clearFeatureLabels());
         dispatch(updateFeatureLabel(category, feature, false));
     };

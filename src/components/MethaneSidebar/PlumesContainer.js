@@ -58,17 +58,34 @@ export class PlumesContainer extends Component {
     }
 
     makeListItem(feature) {
+        const isDetailPageOpen = this.props.activeDetailFeature.getIn(["feature", "id"])
+            ? true
+            : false;
         const isActive = this.isActiveFeature(feature);
         const isActiveDetail = this.isActiveDetailFeature(feature);
-        const itemClass = MiscUtilExtended.generateStringFromSet({
-            [layerSidebarStyles.selectedItem]: isActive || isActiveDetail,
+        // const isItemPrimary = isActive || isActiveDetail;
+        const isItemPrimary = isActive;
+        const listItemRootClassnames = MiscUtilExtended.generateStringFromSet({
+            [layerSidebarStyles.selectedItem]: isItemPrimary,
             [layerSidebarStyles.itemRoot]: true
         });
-        const toggleLabelAction = () =>
-            this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_PLUMES, feature);
         const toggleDetailAction = isActiveDetail
             ? () => this.props.hideFeatureDetail()
             : () => this.props.setFeatureDetail(layerSidebarTypes.CATEGORY_PLUMES, feature);
+
+        const onListItemClick = () => {
+            if (isDetailPageOpen) {
+                // If the list item clicked is the same as current feature detail
+                // then close the detail
+                if (isActiveDetail) {
+                    this.props.hideFeatureDetail();
+                } else {
+                    this.props.setFeatureDetail(layerSidebarTypes.CATEGORY_PLUMES, feature);
+                }
+            } else if (!isActive) {
+                this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_PLUMES, feature);
+            }
+        };
         const lat = MetadataUtil.getLat(feature, null);
         const long = MetadataUtil.getLong(feature, null);
         const centerMapAction =
@@ -76,25 +93,51 @@ export class PlumesContainer extends Component {
 
         const datetime = feature.get("datetime");
         const dateString = MiscUtilExtended.formatPlumeDatetime(datetime);
-
+        const plumeThumbnail = feature.get("rgbqlctr_url");
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem
-                    className={itemClass}
+                    className={listItemRootClassnames}
+                    classes={{
+                        root: listItemRootClassnames,
+                        container: layerSidebarStyles.listItemContainer
+                    }}
                     button
-                    onClick={isActiveDetail ? toggleDetailAction : toggleLabelAction}
+                    onClick={onListItemClick}
                 >
-                    <ListItemText
-                        primary={
-                            <Typography type="body1" noWrap>
-                                {dateString}
-                            </Typography>
-                        }
-                        secondary={feature.get("name")}
-                    />
+                    <div className={layerSidebarStyles.imageContainer}>
+                        <img src={plumeThumbnail} />
+                    </div>
+                    <div className={layerSidebarStyles.listItemTextContainer}>
+                        <Typography
+                            color={isItemPrimary ? "inherit" : "default"}
+                            className={layerSidebarStyles.listItemText}
+                            type="body1"
+                            noWrap
+                        >
+                            {dateString}
+                        </Typography>
+                        <Typography
+                            color={isItemPrimary ? "inherit" : "secondary"}
+                            className={layerSidebarStyles.listItemTextSecondary}
+                            type="caption"
+                            noWrap
+                        >
+                            {MiscUtilExtended.roundTo(feature.get("ime"), 2) + " kg/m"}
+                            <sup>2</sup> IME
+                        </Typography>
+                        <Typography
+                            color={isItemPrimary ? "inherit" : "secondary"}
+                            className={layerSidebarStyles.listItemTextSecondary}
+                            type="caption"
+                            noWrap
+                        >
+                            {feature.get("name")}
+                        </Typography>
+                    </div>
                     <ListItemSecondaryAction>
                         <IconButton
-                            color="default"
+                            color={isItemPrimary ? "contrast" : "default"}
                             disabled={!lat || !long}
                             key={feature.get("id") + "_my_location_icon"}
                             onClick={centerMapAction}
@@ -102,7 +145,9 @@ export class PlumesContainer extends Component {
                             <MyLocationIcon />
                         </IconButton>
                         <IconButton
-                            color={isActiveDetail ? "primary" : "default"}
+                            color={
+                                isItemPrimary ? "contrast" : isActiveDetail ? "primary" : "default"
+                            }
                             key={feature.get("id") + "_info_icon"}
                             onClick={toggleDetailAction}
                         >
@@ -110,7 +155,6 @@ export class PlumesContainer extends Component {
                         </IconButton>
                     </ListItemSecondaryAction>
                 </ListItem>
-                <Divider />
             </React.Fragment>
         );
     }
