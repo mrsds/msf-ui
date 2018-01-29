@@ -21,15 +21,119 @@ import Ol_Source_XYZ from "ol/source/xyz";
 import Ol_Layer_Group from "ol/layer/group";
 import Ol_Feature from "ol/feature";
 import Ol_Geom_Point from "ol/geom/point";
+import Ol_View from "ol/view";
+import Ol_Proj from "ol/proj";
+import Ol_Interaction from "ol/interaction";
+import Ol_Map from "ol/map";
 import MapWrapperOpenlayers from "_core/utils/MapWrapperOpenlayers";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import appConfig from "constants/appConfig";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import tooltipStyles from "components/Map/MapTooltip.scss";
+// import tooltipStyles from "components/Map/MapTooltip.scss";
+import React, { Component } from "react";
+import { render } from "react-dom";
+// import MapLabel from "components/Map/MapLabel";
 
 const JSZip = require("jszip");
 
 export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
+    createMap(container, options) {
+        try {
+            // create default draw layer
+            let vectorSource = new Ol_Source_Vector({ wrapX: true });
+
+            let vectorLayer = new Ol_Layer_Vector({
+                source: vectorSource,
+                style: this.defaultGeometryStyle,
+                extent: appConfig.DEFAULT_MAP_EXTENT
+            });
+            vectorLayer.set("_layerId", "_vector_drawings");
+            vectorLayer.set("_layerType", appStrings.LAYER_GROUP_TYPE_REFERENCE);
+
+            // get the view options for the map
+            let viewOptions = options.get("view").toJS();
+            let mapProjection = Ol_Proj.get(appConfig.DEFAULT_PROJECTION.code);
+            let center = viewOptions.center;
+            this.overlay = this.createOverlay();
+
+            return new Ol_Map({
+                target: container,
+                renderer: ["canvas", "dom"],
+                layers: [vectorLayer],
+                overlays: [this.overlay],
+                view: new Ol_View({
+                    maxZoom: viewOptions.maxZoom,
+                    minZoom: viewOptions.minZoom,
+                    projection: mapProjection,
+                    maxResolution: viewOptions.maxResolution
+                }),
+                controls: [],
+                interactions: Ol_Interaction.defaults({
+                    altShiftDragRotate: false,
+                    pinchRotate: false,
+                    shiftDragZoom: false,
+                    keyboard: false
+                })
+            });
+        } catch (err) {
+            console.warn("Error in MapWrapperOpenlayers.createMap:", err);
+            return false;
+        }
+    }
+    createOverlay() {
+        // Create label domNode
+        // let labelContainer = <div id="olMapLabel" className={tooltipStyles.tooltip} />;
+        // let labelContainer = document.createElement("div");
+        // labelContainer.className = tooltipStyles.tooltip;
+        // labelContainer.id = "olMapLabel";
+
+        // let featureLabelTitleEl = document.createElement("div");
+        // featureLabelTitleEl.className = tooltipStyles.title;
+        // featureLabelTitleEl.innerHTML = title;
+
+        // let featureLabelSubtitleEl = document.createElement("div");
+        // featureLabelSubtitleEl.className = tooltipStyles.subtitle;
+        // featureLabelSubtitleEl.innerHTML = subtitle;
+
+        // featureLabelContainerEl.appendChild(featureLabelTitleEl);
+        // featureLabelContainerEl.appendChild(featureLabelSubtitleEl);
+
+        // create ol overlay
+        return new Ol_Overlay({
+            // element: labelContainer,
+            element: document.getElementById("mapTooltip"),
+            // offset: [0, -15],
+            positioning: "bottom-center",
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            },
+            stopEvent: true
+        });
+        // featureLabel.set("_featureId", id);
+
+        // store meta opt_meta
+        // for (let key in opt_meta) {
+        //     if (opt_meta.hasOwnProperty(key)) {
+        //         featureLabel.set(key, opt_meta[key], true);
+        //     }
+        // }
+
+        // // position and place
+        // this.map.addOverlay(featureLabel);
+        // featureLabel.setPosition(coords);
+        // let mapLabel = (
+        //     <MapLabel
+        //         title={title}
+        //         subtitle1={subtitle}
+        //         subtitle2={subtitle}
+        //         onDetailActionClick={onDetailActionClick}
+        //         onCenterMapClick={() => {
+        //             console.log("yo");
+        //         }}
+        //     />
+        // );
+    }
     createLayer(layer, fromCache = true) {
         let mapLayer = false;
 
@@ -421,7 +525,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             .find(layer => layer.get("_featureId") === id);
     }
 
-    handleAVIRISLabelToggle(pickedFeature, currentMapExtent, toggleOn) {
+    handleAVIRISLabelToggle(pickedFeature, currentMapExtent) {
         let featureId = pickedFeature.get("id");
         let featureLayer = this.getAVIRISFeatureLayerById(featureId);
         // const avirisLayerGroup = this.map
@@ -446,22 +550,18 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         const featureExtent = featureLayer.get("_featureExtent");
         const isVisible = Ol_Extent.containsExtent(currentMapExtent, featureExtent);
 
-        if (toggleOn) {
-            const center = Ol_Extent.getCenter(featureExtent);
-            this.addFeatureLabel(
-                featureId,
-                MiscUtilExtended.formatPlumeDatetime(pickedFeature.get("datetime")),
-                pickedFeature.get("name"),
-                center,
-                {
-                    // sourceLayerId: avirisLayerGroup.get("_layerId"),
-                    sourceLayerId: "AVIRIS",
-                    overlayType: "AVIRIS"
-                }
-            );
-            // iconFeature.setStyle(new Ol_Style({ display: "none" }));
-            return;
-        }
+        const center = Ol_Extent.getCenter(featureExtent);
+        this.addFeatureLabel(
+            featureId,
+            MiscUtilExtended.formatPlumeDatetime(pickedFeature.get("datetime")),
+            pickedFeature.get("name"),
+            center,
+            {
+                sourceLayerId: "AVIRIS",
+                overlayType: "AVIRIS"
+            }
+        );
+        // iconFeature.setStyle(new Ol_Style({ display: "none" }));
 
         // If toggling off, remove old overlay and restore the reference icon feature
         // const oldOverlay = this.map
@@ -472,7 +572,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         // iconFeature.setStyle(this.getAvirisIconStyle());
     }
 
-    handleVISTALabelToggle(pickedFeature, currentMapExtent, toggleOn) {
+    handleVISTALabelToggle(pickedFeature, currentMapExtent) {
         const selectedFeatureStyle = new Ol_Style({
             fill: new Ol_Style_Fill({
                 color: "rgba(255,255,255,0.4)"
@@ -493,28 +593,17 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
 
                     // If we're adding a label, we change the styling of the feature to be highlighted,
                     // center the map to the feature if it's not entirely in the map, and create/place a tooltip.
-                    if (toggleOn) {
-                        this.addFeatureLabel(
-                            featureId,
-                            pickedFeature.get("name"),
-                            pickedFeature.get("category"),
-                            center,
-                            {
-                                sourceLayerId: layer.get("_layerId"),
-                                overlayType: "VISTA"
-                            }
-                        );
-                        feature.setStyle(selectedFeatureStyle);
-                        return;
-                    }
-
-                    // If we're deselecting a feature, destroy the tooltip and revert the feature styling to default.
-                    // this.map.getOverlays().forEach(overlay => {
-                    //     if (overlay.getId() === featureId) {
-                    //         this.map.removeOverlay(overlay);
-                    //     }
-                    // });
-                    // feature.setStyle(null);
+                    this.addFeatureLabel(
+                        featureId,
+                        pickedFeature.get("name"),
+                        pickedFeature.get("category"),
+                        center,
+                        {
+                            sourceLayerId: layer.get("_layerId"),
+                            overlayType: "VISTA"
+                        }
+                    );
+                    feature.setStyle(selectedFeatureStyle);
                     return;
                 }
             });
@@ -572,64 +661,91 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
 
             // Remove overlay if it's AVIRIS or VISTA
             if (overlayType === "AVIRIS" || overlayType === "VISTA") {
-                this.map.removeOverlay(overlay);
+                // this.map.removeOverlay(overlay);
+                overlay.setVisible(false);
+                overlay.setPosition();
             }
         });
         return;
     }
 
-    setFeatureLabel(category, pickedFeature, toggleOn) {
+    setFeatureLabel(category, pickedFeature) {
         const currentMapExtent = this.map.getView().calculateExtent();
         switch (category) {
             case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
-                this.handleVISTALabelToggle(pickedFeature, currentMapExtent, toggleOn);
+                this.handleVISTALabelToggle(pickedFeature, currentMapExtent);
                 break;
             case layerSidebarTypes.CATEGORY_PLUMES:
-                this.handleAVIRISLabelToggle(pickedFeature, currentMapExtent, toggleOn);
+                this.handleAVIRISLabelToggle(pickedFeature, currentMapExtent);
                 break;
         }
     }
 
     addFeatureLabel(id, title, subtitle, coords, opt_meta = {}) {
         try {
-            // Create label domNode
-            let featureLabelContainerEl = document.createElement("div");
-            featureLabelContainerEl.className = tooltipStyles.tooltip;
-
-            let featureLabelTitleEl = document.createElement("div");
-            featureLabelTitleEl.className = tooltipStyles.title;
-            featureLabelTitleEl.innerHTML = title;
-
-            let featureLabelSubtitleEl = document.createElement("div");
-            featureLabelSubtitleEl.className = tooltipStyles.subtitle;
-            featureLabelSubtitleEl.innerHTML = subtitle;
-
-            featureLabelContainerEl.appendChild(featureLabelTitleEl);
-            featureLabelContainerEl.appendChild(featureLabelSubtitleEl);
-
-            // create ol overlay
-            let featureLabel = new Ol_Overlay({
-                element: featureLabelContainerEl,
-                // offset: [0, -15],
-                positioning: "bottom-center",
-                autoPan: true,
-                autoPanAnimation: {
-                    duration: 250
-                },
-                stopEvent: false
-            });
-            featureLabel.set("_featureId", id);
-
-            // store meta opt_meta
+            // // store meta opt_meta
             for (let key in opt_meta) {
                 if (opt_meta.hasOwnProperty(key)) {
-                    featureLabel.set(key, opt_meta[key], true);
+                    this.overlay.set(key, opt_meta[key], true);
                 }
             }
+            window.requestAnimationFrame(() => {
+                this.overlay.setVisible(true);
+                this.overlay.setPosition(coords);
+            });
+            // Create label domNode
+            // let labelContainer = <div id="olMapLabel" className={tooltipStyles.tooltip} />;
+            // let labelContainer = document.createElement("div");
+            // labelContainer.className = tooltipStyles.tooltip;
+            // labelContainer.id = "olMapLabel";
 
-            // position and place
-            this.map.addOverlay(featureLabel);
-            featureLabel.setPosition(coords);
+            // // let featureLabelTitleEl = document.createElement("div");
+            // // featureLabelTitleEl.className = tooltipStyles.title;
+            // // featureLabelTitleEl.innerHTML = title;
+
+            // // let featureLabelSubtitleEl = document.createElement("div");
+            // // featureLabelSubtitleEl.className = tooltipStyles.subtitle;
+            // // featureLabelSubtitleEl.innerHTML = subtitle;
+
+            // // featureLabelContainerEl.appendChild(featureLabelTitleEl);
+            // // featureLabelContainerEl.appendChild(featureLabelSubtitleEl);
+
+            // // create ol overlay
+            // let featureLabel = new Ol_Overlay({
+            //     // element: labelContainer,
+            //     element: document.getElementById("test"),
+            //     // offset: [0, -15],
+            //     positioning: "bottom-center",
+            //     autoPan: true,
+            //     autoPanAnimation: {
+            //         duration: 250
+            //     },
+            //     stopEvent: false
+            // });
+            // featureLabel.set("_featureId", id);
+
+            // // store meta opt_meta
+            // for (let key in opt_meta) {
+            //     if (opt_meta.hasOwnProperty(key)) {
+            //         featureLabel.set(key, opt_meta[key], true);
+            //     }
+            // }
+
+            // // position and place
+            // this.map.addOverlay(featureLabel);
+            // featureLabel.setPosition(coords);
+            // let mapLabel = (
+            //     <MapLabel
+            //         title={title}
+            //         subtitle1={subtitle}
+            //         subtitle2={subtitle}
+            //         onDetailActionClick={onDetailActionClick}
+            //         onCenterMapClick={() => {
+            //             console.log("yo");
+            //         }}
+            //     />
+            // );
+            // render(mapLabel, document.getElementById("olMapLabel"));
             return true;
         } catch (err) {
             console.warn("Error in MapWrapperOpenlayers.addLabel:", err);

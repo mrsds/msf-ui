@@ -50,6 +50,7 @@ import AppBarContainer from "components/AppBar/AppBarContainer";
 import LayerMenuContainerExtended from "components/LayerMenu/LayerMenuContainerExtended";
 import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContainer";
 import KeyboardControlsContainerExtended from "components/KeyboardControls/KeyboardControlsContainerExtended";
+import MapTooltip from "components/Map/MapTooltip";
 
 const theme = createMuiTheme({
     typography: {
@@ -144,6 +145,7 @@ export class AppContainer extends Component {
                     <FeatureDetailContainer />
                     <MapControlsContainerExtended />
                     <CoordinateTracker />
+                    <MapTooltip />
                 </div>
             </MuiThemeProvider>
         );

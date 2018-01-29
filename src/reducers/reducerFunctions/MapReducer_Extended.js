@@ -49,23 +49,24 @@ export default class MapReducer_Extended extends MapReducer {
     }
 
     static toggleFeatureLabel(state, action) {
-        const previousFeature = state.getIn(["activeFeature", "feature"]);
-        const previousCategory = state.getIn(["activeFeature", "category"]);
-        const toggleOn = !previousFeature || previousFeature.get("id") !== action.feature.get("id");
+        // const previousFeature = state.getIn(["activeFeature", "feature"]);
+        // const previousCategory = state.getIn(["activeFeature", "category"]);
+        // const toggleOn = !previousFeature || previousFeature.get("id") !== action.feature.get("id");
 
         // Turn off old feature label if there was a previously selected one
-        if (previousFeature) {
-            state
-                .get("maps")
-                .map(map => map.setFeatureLabel(previousCategory, previousFeature, false));
-        }
-        if (toggleOn) {
-            state.get("maps").map(map => {
-                map.setFeatureLabel(action.category, action.feature, true);
-            });
-        }
+        // if (previousFeature) {
+        //     state
+        //         .get("maps")
+        //         .map(map =>
+        //             map.setFeatureLabel(previousCategory, previousFeature, () => {}, false)
+        //         );
+        // }
+        // if (toggleOn) {
+        state.get("maps").map(map => {
+            map.setFeatureLabel(action.category, action.feature);
+        });
         return state
-            .setIn(["activeFeature", "feature"], toggleOn ? action.feature : null)
-            .setIn(["activeFeature", "category"], toggleOn ? action.category : null);
+            .setIn(["activeFeature", "feature"], action.feature)
+            .setIn(["activeFeature", "category"], action.category);
     }
 }

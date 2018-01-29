@@ -119,10 +119,6 @@ export class InfrastructureContainer extends Component {
             }
         };
 
-        const lat = MetadataUtil.getLat(feature, null);
-        const long = MetadataUtil.getLong(feature, null);
-        const centerMapAction =
-            lat && long ? () => this.props.centerMapOnFeature(feature, "VISTA") : null;
         const iconContainerClasses = MiscUtil.generateStringFromSet({
             [layerSidebarStyles.iconContainer]: true
         });
@@ -174,9 +170,8 @@ export class InfrastructureContainer extends Component {
                     <ListItemSecondaryAction className={layerSidebarStyles.secondaryAction}>
                         <IconButton
                             color={isItemPrimary ? "contrast" : "default"}
-                            disabled={!lat || !long}
                             key={feature.get("id") + "_my_location_icon"}
-                            onClick={centerMapAction}
+                            onClick={() => this.props.centerMapOnFeature(feature, "VISTA")}
                         >
                             <MyLocationIcon />
                         </IconButton>

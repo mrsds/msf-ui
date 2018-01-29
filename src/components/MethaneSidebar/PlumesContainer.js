@@ -2,12 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import List, {
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    ListItemSecondaryAction
-} from "material-ui/List";
+import List, { ListItem, ListItemSecondaryAction } from "material-ui/List";
 import Divider from "material-ui/Divider";
 import Typography from "material-ui/Typography";
 import * as layerSidebarActions from "actions/layerSidebarActions";
@@ -260,7 +255,6 @@ PlumesContainer.propTypes = {
     setFeatureDetail: PropTypes.func.isRequired,
     hideFeatureDetail: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    centerMapOnPoint: PropTypes.func.isRequired,
     centerMapOnFeature: PropTypes.func.isRequired,
     toggleFeatureLabel: PropTypes.func.isRequired
 };
@@ -279,7 +273,6 @@ function mapDispatchToProps(dispatch) {
         pageBackward: bindActionCreators(layerSidebarActions.pageBackward, dispatch),
         setFeatureDetail: bindActionCreators(layerSidebarActions.setFeatureDetail, dispatch),
         hideFeatureDetail: bindActionCreators(layerSidebarActions.hideFeatureDetail, dispatch),
-        centerMapOnPoint: bindActionCreators(mapActionsMSF.centerMapOnPoint, dispatch),
         centerMapOnFeature: bindActionCreators(mapActionsMSF.centerMapOnFeature, dispatch),
         toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch)
     };
