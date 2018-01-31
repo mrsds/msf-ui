@@ -18,11 +18,9 @@ import * as layerSidebarActions from "actions/layerSidebarActions";
 
 export class MapTooltip extends Component {
     shouldComponentUpdate(nextProps) {
-        console.log(nextProps, "np");
         return !nextProps.activeFeature.equals(this.props.activeFeature);
     }
     render() {
-        console.log("render", this.props.activeFeature);
         let title = "Title";
         let subtitle1 = "Subtitle1";
         let subtitle2 = "Subtitle2";
