@@ -17,7 +17,12 @@ import MetadataUtil from "utils/MetadataUtil";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 
 export class MapTooltip extends Component {
+    shouldComponentUpdate(nextProps) {
+        console.log(nextProps, "np");
+        return !nextProps.activeFeature.equals(this.props.activeFeature);
+    }
     render() {
+        console.log("render", this.props.activeFeature);
         let title = "Title";
         let subtitle1 = "Subtitle1";
         let subtitle2 = "Subtitle2";
@@ -81,13 +86,21 @@ export class MapTooltip extends Component {
                 <ListItemSecondaryAction>
                     <span ref={ref => (this.zoomToRef = ref)}>
                         <IconButton>
-                            <MyLocationIcon />
+                            {this.props.activeFeature.get("feature") ? (
+                                <MyLocationIcon />
+                            ) : (
+                                <span />
+                            )}
                         </IconButton>
                     </span>
 
                     <span ref={ref => (this.detailsRef = ref)}>
                         <IconButton>
-                            <InfoOutlineIcon />
+                            {this.props.activeFeature.get("feature") ? (
+                                <InfoOutlineIcon />
+                            ) : (
+                                <span />
+                            )}
                         </IconButton>
                     </span>
                 </ListItemSecondaryAction>
