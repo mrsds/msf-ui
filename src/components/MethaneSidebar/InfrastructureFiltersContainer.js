@@ -8,6 +8,7 @@ import List, {
     ListItem,
     ListSubheader,
     ListItemSecondaryAction,
+    ListItemIcon,
     ListItemText
 } from "material-ui/List";
 import Checkbox from "material-ui/Checkbox";
@@ -15,6 +16,8 @@ import Switch from "material-ui/Switch";
 import Popover from "material-ui/Popover";
 import Paper from "material-ui/Paper";
 import Search from "material-ui-icons/Search";
+import Sort from "material-ui-icons/SortByAlpha";
+import Check from "material-ui-icons/Check";
 import Clear from "material-ui-icons/Clear";
 import Grow from "material-ui/transitions/Grow";
 import ClickAwayListener from "material-ui/utils/ClickAwayListener";
@@ -36,8 +39,23 @@ export class PlumeFiltersContainer extends Component {
     constructor(props) {
         super(props);
         this.popperProps = Immutable.fromJS({
-            infrastructureSubcategories: false
+            infrastructureSubcategories: false,
+            sortBy: false
         });
+    }
+
+    shouldComponentUpdate(nextProps) {
+        console.log(
+            nextProps.activeInfrastructureSubCategories,
+            this.props.activeInfrastructureSubCategories
+        );
+        return (
+            (!nextProps.filters.equals(this.props.filters) ||
+                !nextProps.activeInfrastructureSubCategories.equals(
+                    this.props.activeInfrastructureSubCategories
+                )) &&
+            !!this.popperProps.find(v => v)
+        );
     }
 
     setPopperActive(key, active) {
@@ -62,6 +80,19 @@ export class PlumeFiltersContainer extends Component {
         let infrastructureSubcategoriesPopoverOpen = this.popperProps.get(
             "infrastructureSubcategories"
         );
+
+        let infrastructureSortByFilter = this.props.filters.get(
+            layerSidebarTypes.INFRASTRUCTURE_FILTER_SORT_BY
+        );
+        let infrastructureSortBySelectedValue = infrastructureSortByFilter.getIn([
+            "selectedValue",
+            "value"
+        ]);
+        let infrastructureSortBySelectedValueLabel = infrastructureSortByFilter.getIn([
+            "selectedValue",
+            "label"
+        ]);
+        let infrastructureSortByPopperActive = this.popperProps.get("sortBy");
 
         // Grab only active infra categories
         let activeInfrastructureSubCategories = this.props.activeInfrastructureSubCategories.filter(
@@ -104,7 +135,10 @@ export class PlumeFiltersContainer extends Component {
                 />
                 <ClickAwayListener
                     onClickAway={() => {
-                        if (infrastructureSubcategoriesPopoverOpen) {
+                        if (
+                            infrastructureSubcategoriesPopoverOpen ||
+                            infrastructureSortByPopperActive
+                        ) {
                             this.closeAllPoppers();
                         }
                     }}
@@ -146,7 +180,7 @@ export class PlumeFiltersContainer extends Component {
                             className={
                                 !infrastructureSubcategoriesPopoverOpen
                                     ? displayStyles.noPointer
-                                    : ""
+                                    : styles.pointer
                             }
                         >
                             <Grow
@@ -265,6 +299,75 @@ export class PlumeFiltersContainer extends Component {
                                                 </List>
                                             ))}
                                         </div>
+                                    </Paper>
+                                </div>
+                            </Grow>
+                        </Popper>
+                        <Target className={styles.sorterContainer}>
+                            <div
+                                className={styles.sorter}
+                                onClick={() =>
+                                    this.setPopperActive(
+                                        "sortBy",
+                                        !infrastructureSortByPopperActive
+                                    )
+                                }
+                            >
+                                Sort by: <Sort />
+                            </div>
+                        </Target>
+                        <Popper
+                            placement="bottom-end"
+                            modifiers={{
+                                computeStyle: {
+                                    gpuAcceleration: false
+                                }
+                            }}
+                            eventsEnabled={infrastructureSortByPopperActive}
+                            style={{ marginTop: "-47px", marginRight: "-16px" }}
+                            className={
+                                !infrastructureSortByPopperActive
+                                    ? displayStyles.noPointer
+                                    : styles.pointer
+                            }
+                        >
+                            <Grow
+                                style={{ transformOrigin: "right top" }}
+                                in={infrastructureSortByPopperActive}
+                            >
+                                <div>
+                                    <Paper elevation={8} className={styles.popoverPaper}>
+                                        <List>
+                                            <div className={styles.sorterHeader}>
+                                                Sort By<Sort />
+                                            </div>
+                                            {infrastructureSortByFilter
+                                                .get("selectableValues")
+                                                .map(x => (
+                                                    <ListItem
+                                                        dense
+                                                        button
+                                                        onClick={() => {
+                                                            this.props.setInfrastructureFilter(
+                                                                layerSidebarTypes.INFRASTRUCTURE_FILTER_SORT_BY,
+                                                                x
+                                                            );
+                                                            this.setPopperActive("sortBy", false);
+                                                        }}
+                                                        key={x.get("value")}
+                                                    >
+                                                        <ListItemIcon>
+                                                            {x.get("value") ===
+                                                            infrastructureSortBySelectedValue ? (
+                                                                <Check />
+                                                            ) : (
+                                                                <span />
+                                                            )}
+                                                        </ListItemIcon>
+                                                        <ListItemText primary={x.get("label")} />
+                                                    </ListItem>
+                                                ))}
+                                        </List>
                                     </Paper>
                                 </div>
                             </Grow>

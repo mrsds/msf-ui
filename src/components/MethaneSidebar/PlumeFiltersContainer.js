@@ -4,10 +4,19 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import List, {
+    ListItem,
+    ListSubheader,
+    ListItemSecondaryAction,
+    ListItemIcon,
+    ListItemText
+} from "material-ui/List";
 import Radio from "material-ui/Radio";
 import Popover from "material-ui/Popover";
 import Paper from "material-ui/Paper";
 import Search from "material-ui-icons/Search";
+import Sort from "material-ui-icons/SortByAlpha";
+import Check from "material-ui-icons/Check";
 import Clear from "material-ui-icons/Clear";
 import Grow from "material-ui/transitions/Grow";
 import ClickAwayListener from "material-ui/utils/ClickAwayListener";
@@ -31,8 +40,13 @@ export class PlumeFiltersContainer extends Component {
             flightCampaigns: false,
             plumeIME: false,
             plumeID: false,
-            source: false
+            source: false,
+            sortBy: false
         });
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return !nextProps.filters.equals(this.props.filters) && !!this.popperProps.find(v => v);
     }
 
     setPopperActive(key, active) {
@@ -62,6 +76,11 @@ export class PlumeFiltersContainer extends Component {
         let plumeIMEFilterSelectedValueLabel = plumeIMEFilter.getIn(["selectedValue", "label"]);
         let plumeIMEPopoverActive = this.popperProps.get("plumeIME");
 
+        let plumeSortByFilter = this.props.filters.get(layerSidebarTypes.PLUME_FILTER_SORT_BY);
+        let plumeSortBySelectedValue = plumeSortByFilter.getIn(["selectedValue", "value"]);
+        let plumeSortBySelectedValueLabel = plumeSortByFilter.getIn(["selectedValue", "label"]);
+        let plumeSortByPopperActive = this.popperProps.get("sortBy");
+
         return (
             <React.Fragment>
                 <SearchInput
@@ -88,7 +107,11 @@ export class PlumeFiltersContainer extends Component {
                 />
                 <ClickAwayListener
                     onClickAway={() => {
-                        if (plumeIMEPopoverActive || flightCampaignFilter) {
+                        if (
+                            plumeIMEPopoverActive ||
+                            flightCampaignsPopoverActive ||
+                            plumeSortByPopperActive
+                        ) {
                             this.closeAllPoppers();
                         }
                     }}
@@ -124,7 +147,9 @@ export class PlumeFiltersContainer extends Component {
                                 }
                             }}
                             eventsEnabled={plumeIMEPopoverActive}
-                            className={!plumeIMEPopoverActive ? displayStyles.noPointer : ""}
+                            className={
+                                !plumeIMEPopoverActive ? displayStyles.noPointer : styles.pointer
+                            }
                         >
                             <Grow
                                 style={{ transformOrigin: "left top" }}
@@ -237,7 +262,11 @@ export class PlumeFiltersContainer extends Component {
                                 }
                             }}
                             eventsEnabled={flightCampaignsPopoverActive}
-                            className={!flightCampaignsPopoverActive ? displayStyles.noPointer : ""}
+                            className={
+                                !flightCampaignsPopoverActive
+                                    ? displayStyles.noPointer
+                                    : styles.pointer
+                            }
                         >
                             <Grow
                                 style={{ transformOrigin: "left top" }}
@@ -313,6 +342,68 @@ export class PlumeFiltersContainer extends Component {
                                                 </div>
                                             ))}
                                         </div>
+                                    </Paper>
+                                </div>
+                            </Grow>
+                        </Popper>
+                        <Target className={styles.sorterContainer}>
+                            <div
+                                className={styles.sorter}
+                                onClick={() =>
+                                    this.setPopperActive("sortBy", !plumeSortByPopperActive)
+                                }
+                            >
+                                Sort by: <Sort />
+                            </div>
+                        </Target>
+                        <Popper
+                            placement="bottom-end"
+                            modifiers={{
+                                computeStyle: {
+                                    gpuAcceleration: false
+                                }
+                            }}
+                            eventsEnabled={plumeSortByPopperActive}
+                            style={{ marginTop: "-47px", marginRight: "-16px" }}
+                            className={
+                                !plumeSortByPopperActive ? displayStyles.noPointer : styles.pointer
+                            }
+                        >
+                            <Grow
+                                style={{ transformOrigin: "right top" }}
+                                in={plumeSortByPopperActive}
+                            >
+                                <div>
+                                    <Paper elevation={8} className={styles.popoverPaper}>
+                                        <List>
+                                            <div className={styles.sorterHeader}>
+                                                Sort By<Sort />
+                                            </div>
+                                            {plumeSortByFilter.get("selectableValues").map(x => (
+                                                <ListItem
+                                                    dense
+                                                    button
+                                                    onClick={() => {
+                                                        this.props.setPlumeFilter(
+                                                            layerSidebarTypes.PLUME_FILTER_SORT_BY,
+                                                            x
+                                                        );
+                                                        this.setPopperActive("sortBy", false);
+                                                    }}
+                                                    key={x.get("value")}
+                                                >
+                                                    <ListItemIcon>
+                                                        {x.get("value") ===
+                                                        plumeSortBySelectedValue ? (
+                                                            <Check />
+                                                        ) : (
+                                                            <span />
+                                                        )}
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={x.get("label")} />
+                                                </ListItem>
+                                            ))}
+                                        </List>
                                     </Paper>
                                 </div>
                             </Grow>

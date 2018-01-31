@@ -25,8 +25,32 @@ export const PLUME_FILTER_PLUME_IME = "Plume IME";
 export const PLUME_FILTER_PLUME_ID = "Plume ID";
 export const PLUME_FILTER_PLUME_START_DATE = "Plume Start Date";
 export const PLUME_FILTER_PLUME_END_DATE = "Plume End Date";
+export const PLUME_FILTER_PLUME_OBSERVATION_DATE = "Plume Observation Date";
+export const PLUME_FILTER_SORT_BY = "Plume Sort By";
+export const PLUME_FILTER_SORT_OPTIONS = [
+    {
+        value: PLUME_FILTER_PLUME_OBSERVATION_DATE,
+        label: "Plume Observation Date"
+    },
+    {
+        value: PLUME_FILTER_PLUME_IME,
+        label: "Plume IME"
+    }
+];
 
 export const INFRASTRUCTURE_FILTER_NAME = "Infrastructure Name";
+export const INFRASTRUCTURE_FILTER_SUBCATEGORY = "Infrastructure Subcategory";
+export const INFRASTRUCTURE_FILTER_SORT_BY = "Infrastructure Sort By";
+export const INFRASTRUCTURE_FILTER_SORT_OPTIONS = [
+    {
+        value: INFRASTRUCTURE_FILTER_NAME,
+        label: "Infrastructure Name"
+    },
+    {
+        value: INFRASTRUCTURE_FILTER_SUBCATEGORY,
+        label: "Infrastructure Type"
+    }
+];
 
 export const INFRASTRUCTURE_SUBCATEGORIES = {
     [VISTA_2017_OILGAS_WELLS]: 0,

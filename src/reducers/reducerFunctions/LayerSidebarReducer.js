@@ -174,6 +174,12 @@ export default class LayerSidebarReducer {
                 "value"
             ]);
 
+            const plumeSortOption = filters.getIn([
+                layerSidebarTypes.PLUME_FILTER_SORT_BY,
+                "selectedValue",
+                "value"
+            ]);
+
             // Filter by plumeID via Fuse
             searchResults = LayerSidebarReducer.getSearchResultsHelper(
                 action.category,
@@ -191,6 +197,22 @@ export default class LayerSidebarReducer {
                     (!plumeIME || feature.get("ime") >= plumeIME)
                 );
             });
+
+            // Sort list
+            let sortFn = sortOption => {
+                let sortByDate = (a, b) =>
+                    moment.utc(a.get("datetime")).isAfter(moment.utc(b.get("datetime"))) ? -1 : 1;
+                let sortByIME = (a, b) => (a.get("ime") > b.get("ime") ? -1 : 1);
+                switch (sortOption) {
+                    case layerSidebarTypes.PLUME_FILTER_PLUME_OBSERVATION_DATE:
+                        return sortByDate;
+                    case layerSidebarTypes.PLUME_FILTER_PLUME_IME:
+                        return sortByIME;
+                    default:
+                        return sortByDate;
+                }
+            };
+            searchResults = searchResults.sort(sortFn(plumeSortOption));
 
             // Determine selectableValues for each filter
             let flightCampaignSelectableValues = featureList
@@ -230,12 +252,33 @@ export default class LayerSidebarReducer {
                 "value"
             ]);
 
+            const infrastructureSortOption = filters.getIn([
+                layerSidebarTypes.INFRASTRUCTURE_FILTER_SORT_BY,
+                "selectedValue",
+                "value"
+            ]);
+
             // Filter by infrastructure name via Fuse
             searchResults = LayerSidebarReducer.getSearchResultsHelper(
                 action.category,
                 featureList,
                 infrastructureName
             );
+
+            // Sort list
+            let sortFn = sortOption => {
+                let sortByName = (a, b) => (a.get("name") < b.get("name") ? -1 : 1);
+                let sortBySubcategory = (a, b) => (a.get("category") < b.get("category") ? -1 : 1);
+                switch (sortOption) {
+                    case layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME:
+                        return sortByName;
+                    case layerSidebarTypes.INFRASTRUCTURE_FILTER_SUBCATEGORY:
+                        return sortBySubcategory;
+                    default:
+                        return sortByName;
+                }
+            };
+            searchResults = searchResults.sort(sortFn(infrastructureSortOption));
         }
         const newState = state
             .setIn(["searchState", action.category, "searchResults"], searchResults)
@@ -243,15 +286,6 @@ export default class LayerSidebarReducer {
 
         return this.updatePageIndex(newState, action.category);
     }
-
-    // static setInfrastructureFacilityFilterOptionsVisible(state, action) {
-    //     const path = [
-    //         "searchState",
-    //         layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-    //         "facilityFilterOptionsVisible"
-    //     ];
-    //     return state.setIn(path, !state.getIn(path));
-    // }
 
     static setPlumeFilter(state, action) {
         return state.setIn(

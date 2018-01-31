@@ -33,6 +33,10 @@ export const layerSidebarState = Immutable.fromJS({
                         label: ""
                     },
                     selectableValues: []
+                },
+                [layerSidebarTypes.INFRASTRUCTURE_FILTER_SORT_BY]: {
+                    selectedValue: appConfig.INFRASTRUCTURE_DEFAULT_SORT_BY,
+                    selectableValues: layerSidebarTypes.INFRASTRUCTURE_FILTER_SORT_OPTIONS
                 }
             },
             pageIndex: 0
@@ -41,6 +45,10 @@ export const layerSidebarState = Immutable.fromJS({
             searchResults: {},
             pageIndex: 0,
             filters: {
+                [layerSidebarTypes.PLUME_FILTER_SORT_BY]: {
+                    selectedValue: appConfig.PLUME_DEFAULT_SORT_BY,
+                    selectableValues: layerSidebarTypes.PLUME_FILTER_SORT_OPTIONS
+                },
                 [layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN]: {
                     selectedValue: {
                         value: "",
