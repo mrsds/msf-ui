@@ -93,10 +93,10 @@ export class FeatureDetailContainer extends Component {
         let googleMapsUri = "";
         let googleMapsStaticImgUrl = "./styles/resources/img/fake_info_img.png";
         if (lat && long) {
-            googleMapsUri = `http://maps.google.com/maps?q=${lat},${long}`;
+            googleMapsUri = `http://maps.google.com/maps?t=k&q=loc:${lat},${long}`;
             googleMapsStaticImgUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${long}&maptype=satellite&zoom=14&scale=2&size=800x175&key=AIzaSyCATObvFelK2TV949tuLWCIwRC4eFTnne4`;
         } else if (address) {
-            googleMapsUri = `http://maps.google.com/maps?q=${address}`;
+            googleMapsUri = `http://maps.google.com/maps?t=k&q=loc:${address}`;
             googleMapsStaticImgUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${address}&maptype=satellite&zoom=14&scale=2&size=800x175&key=AIzaSyCATObvFelK2TV949tuLWCIwRC4eFTnne4`;
         }
         const areaSqMi = MetadataUtil.getAreaSqMi(this.props.feature, "(no area)");
@@ -172,7 +172,8 @@ export class FeatureDetailContainer extends Component {
         const state = MetadataUtil.getState(this.props.feature, null);
         const lat = MetadataUtil.getLat(this.props.feature, null);
         const long = MetadataUtil.getLong(this.props.feature, null);
-        const googleMapsUri = lat && long ? `http://maps.google.com/maps?q=${lat},${long}` : null;
+        const googleMapsUri =
+            lat && long ? `http://maps.google.com/maps?t=k&q=loc:${lat},${long}` : null;
         let googleMapsStaticImgUrl = "./styles/resources/img/fake_info_img.png";
         if (lat && long) {
             googleMapsStaticImgUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${long}&maptype=satellite&zoom=14&scale=2&size=800x175&key=AIzaSyCATObvFelK2TV949tuLWCIwRC4eFTnne4`;
