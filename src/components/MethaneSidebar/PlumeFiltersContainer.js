@@ -98,12 +98,13 @@ export class PlumeFiltersContainer extends Component {
                     primaryDataTip="Filter by Plume ID"
                     primaryDataPlace="top"
                     actionIcon={<Clear />}
-                    onActionIconClick={() =>
+                    onActionIconClick={() => {
                         this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_ID, {
                             value: "",
                             label: ""
-                        })
-                    }
+                        });
+                        this.forceUpdate();
+                    }}
                 />
                 <ClickAwayListener
                     onClickAway={() => {

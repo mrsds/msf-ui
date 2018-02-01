@@ -45,10 +45,6 @@ export class PlumeFiltersContainer extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        console.log(
-            nextProps.activeInfrastructureSubCategories,
-            this.props.activeInfrastructureSubCategories
-        );
         return (
             (!nextProps.filters.equals(this.props.filters) ||
                 !nextProps.activeInfrastructureSubCategories.equals(
@@ -123,15 +119,16 @@ export class PlumeFiltersContainer extends Component {
                     primaryDataTip="Filter by Infrastructure Name"
                     primaryDataPlace="top"
                     actionIcon={<Clear />}
-                    onActionIconClick={() =>
+                    onActionIconClick={() => {
                         this.props.setInfrastructureFilter(
                             layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME,
                             {
                                 value: "",
                                 label: ""
                             }
-                        )
-                    }
+                        );
+                        this.forceUpdate();
+                    }}
                 />
                 <ClickAwayListener
                     onClickAway={() => {
