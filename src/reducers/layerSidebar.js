@@ -31,6 +31,8 @@ export default function layerSidebar(
             return opt_reducer.setInfrastructureFilter(state, action);
         case actionTypesMSF.TOGGLE_FEATURE_LABEL:
             return opt_reducer.selectFeatureInSidebar(state, action);
+        case actionTypesMSF.CLEAR_FEATURE_LABELS:
+            return opt_reducer.clearFeatureLabels(state, action);
         default:
             return state;
     }

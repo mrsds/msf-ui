@@ -337,6 +337,12 @@ export default class LayerSidebarReducer {
         );
     }
 
+    static clearFeatureLabels(state, action) {
+        return state
+            .setIn(["activeFeature", "feature"], null)
+            .setIn(["activeFeature", "category"], null);
+    }
+
     static updatePageIndex(state, category) {
         // If no active feature, set the page index to the first page
         const activeFeature = state.getIn(["activeFeature", "feature"]);
