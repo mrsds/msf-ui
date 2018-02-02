@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import ReactDOM from "react-dom";
 import List, { ListItem, ListItemSecondaryAction } from "material-ui/List";
 import Divider from "material-ui/Divider";
 import Typography from "material-ui/Typography";
@@ -29,6 +30,23 @@ import SearchInput from "components/Reusables/SearchInput";
 import MiscUtil from "_core/utils/MiscUtil";
 
 export class PlumesContainer extends Component {
+    // componentDidUpdate(prevProps) {
+    //     console.log(this.props.isLoading, "isloading");
+    //     if (
+    //         !this.props.isLoading &&
+    //         this.props.activeFeature.getIn(["feature", "id"]) &&
+    //         prevProps.activeFeature.getIn(["feature", "id"]) !==
+    //             this.props.activeFeature.getIn(["feature", "id"])
+    //     ) {
+    //         // Bring new active feature into view if needed
+    //         let item = ReactDOM.findDOMNode(this.activeListItemRef);
+    //         if (item) {
+    //             console.log(item);
+    //             console.log("item found, scrolling");
+    //             // item.scrollIntoView();
+    //         }
+    //     }
+    // }
     isActiveFeature(feature) {
         return (
             this.props.activeFeature.get("category") === layerSidebarTypes.CATEGORY_PLUMES &&
@@ -41,15 +59,6 @@ export class PlumesContainer extends Component {
             this.props.activeDetailFeature.get("category") === layerSidebarTypes.CATEGORY_PLUMES &&
             feature.get("id") === this.props.activeDetailFeature.getIn(["feature", "id"])
         );
-    }
-
-    getCountyLabel(feature) {
-        const countyName = MiscUtilExtended.getCountyFromFeature(feature, null);
-        return countyName ? countyName + " County" : "(no county)";
-    }
-
-    truncateName(nameString) {
-        return nameString.length > 20 ? nameString.slice(0, 17) + "..." : nameString;
     }
 
     makeListItem(feature) {
@@ -156,15 +165,16 @@ export class PlumesContainer extends Component {
 
     makeListItems() {
         const currentPageIndex = this.props.searchState.get("pageIndex");
+        const startIndex = currentPageIndex * layerSidebarTypes.FEATURES_PER_PAGE;
         const endIndex =
-            currentPageIndex + layerSidebarTypes.FEATURES_PER_PAGE >
+            (currentPageIndex + 1) * layerSidebarTypes.FEATURES_PER_PAGE >
             this.props.searchState.get("searchResults").size
                 ? this.props.searchState.get("searchResults").size
-                : currentPageIndex + layerSidebarTypes.FEATURES_PER_PAGE;
-        const listItems = [];
+                : (currentPageIndex + 1) * layerSidebarTypes.FEATURES_PER_PAGE;
+
         return this.props.searchState
             .get("searchResults")
-            .slice(currentPageIndex, endIndex)
+            .slice(startIndex, endIndex)
             .map(feature => this.makeListItem(feature));
     }
 

@@ -12,15 +12,19 @@ export const PageControls = props => {
     if (props.resultCount === 0) {
         return <div />;
     }
-    const endIndex =
-        props.currentPageIndex + layerSidebarTypes.FEATURES_PER_PAGE > props.resultCount
-            ? props.resultCount
-            : props.currentPageIndex + layerSidebarTypes.FEATURES_PER_PAGE;
+    const startIndex = props.currentPageIndex * layerSidebarTypes.FEATURES_PER_PAGE;
+    let endIndex;
+    let moreResults;
+    if ((props.currentPageIndex + 1) * layerSidebarTypes.FEATURES_PER_PAGE > props.resultCount) {
+        endIndex = props.resultCount;
+        moreResults = true;
+    } else {
+        endIndex = (props.currentPageIndex + 1) * layerSidebarTypes.FEATURES_PER_PAGE;
+        moreResults = false;
+    }
     const counterLabel =
         props.resultCount !== 0
-            ? `Displaying ${props.currentPageIndex + 1} – ${endIndex} of ${
-                  props.resultCount
-              } results`
+            ? `${startIndex + 1} – ${endIndex} of ${props.resultCount} results`
             : "No features found in the current viewport";
 
     return (
@@ -41,7 +45,7 @@ export const PageControls = props => {
                     <IconButtonSmall
                         key="chevronRight"
                         onClick={() => props.onPageForward()}
-                        disabled={endIndex === props.resultCount}
+                        disabled={moreResults}
                     >
                         <ChevronRightIcon />
                     </IconButtonSmall>

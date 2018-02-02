@@ -156,7 +156,7 @@ export function toggleFeatureLabel(category, feature) {
     return dispatch => {
         // dispatch(featureDetailActions.hideFeatureDetailContainer());
         dispatch(clearFeatureLabels());
-        dispatch(updateFeatureLabel(category, feature, false));
+        dispatch(updateFeatureLabel(category, feature));
     };
 }
 
@@ -175,7 +175,7 @@ export function pixelClick(clickEvt) {
         );
         dispatch(clearFeatureLabels());
         if (selectedFeature) {
-            dispatch(updateFeatureLabel(category, selectedFeature, true));
+            dispatch(updateFeatureLabel(category, selectedFeature));
         }
         return { type: types.PIXEL_CLICK, clickEvt };
     };
@@ -220,12 +220,11 @@ function getPixelFeatureId(clickEvt, mapState, category) {
     return featureId;
 }
 
-function updateFeatureLabel(category, feature, shuffleList) {
+function updateFeatureLabel(category, feature) {
     return {
         type: typesMSF.TOGGLE_FEATURE_LABEL,
         category,
-        feature,
-        shuffleList
+        feature
     };
 }
 

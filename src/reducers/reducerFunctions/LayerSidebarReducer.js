@@ -78,20 +78,18 @@ export default class LayerSidebarReducer {
     static pageForward(state, action) {
         const currentIndex = state.getIn(["searchState", action.category, "pageIndex"]);
         const resultsCount = state.getIn(["searchState", action.category, "searchResults"]).size;
-        const newIndex = currentIndex + layerSidebarTypes.FEATURES_PER_PAGE;
-        return state.setIn(
-            ["searchState", action.category, "pageIndex"],
-            newIndex > resultsCount - 1 ? resultsCount : newIndex
-        );
+        let newIndex = currentIndex + 1;
+        if (newIndex * layerSidebarTypes.FEATURES_PER_PAGE > resultsCount - 1) {
+            newIndex -= 1;
+        }
+
+        return state.setIn(["searchState", action.category, "pageIndex"], newIndex);
     }
 
     static pageBackward(state, action) {
         const currentIndex = state.getIn(["searchState", action.category, "pageIndex"]);
-        const newIndex = currentIndex - layerSidebarTypes.FEATURES_PER_PAGE;
-        return state.setIn(
-            ["searchState", action.category, "pageIndex"],
-            newIndex < 0 ? 0 : newIndex
-        );
+        let newIndex = currentIndex > 1 ? currentIndex - 1 : 0;
+        return state.setIn(["searchState", action.category, "pageIndex"], newIndex);
     }
 
     static changeSidebarCategory(state, action) {
@@ -280,11 +278,11 @@ export default class LayerSidebarReducer {
             };
             searchResults = searchResults.sort(sortFn(infrastructureSortOption));
         }
-        const newState = state
-            .setIn(["searchState", action.category, "searchResults"], searchResults)
-            .setIn(["searchState", action.category, "filters"], filters);
 
-        return this.updatePageIndex(newState, action.category);
+        return state
+            .setIn(["searchState", action.category, "searchResults"], searchResults)
+            .setIn(["searchState", action.category, "filters"], filters)
+            .setIn(["searchState", action.category, "pageIndex"], 0);
     }
 
     static setPlumeFilter(state, action) {
@@ -328,13 +326,10 @@ export default class LayerSidebarReducer {
     // }
 
     static selectFeatureInSidebar(state, action) {
-        if (!action.shuffleList) return state;
-        return this.updatePageIndex(
-            state
-                .setIn(["activeFeature", "category"], action.category)
-                .setIn(["activeFeature", "feature"], action.feature),
-            action.category
-        );
+        // if (!action.shuffleList) return state;
+        return state
+            .setIn(["activeFeature", "category"], action.category)
+            .setIn(["activeFeature", "feature"], action.feature);
     }
 
     static clearFeatureLabels(state, action) {
@@ -356,9 +351,14 @@ export default class LayerSidebarReducer {
             .getIn(["searchState", category, "searchResults"])
             .findIndex(feature => feature.get("id") === activeFeature.get("id"));
 
+        // Determine the pageIndex using results per page
+        let newPageIndex =
+            parseInt(Math.ceil((selectedFeatureIndex + 1) / layerSidebarTypes.FEATURES_PER_PAGE)) -
+            1;
+
         return state.setIn(
             ["searchState", category, "pageIndex"],
-            selectedFeatureIndex > -1 ? selectedFeatureIndex : 0
+            newPageIndex > -1 ? newPageIndex : 0
         );
     }
 }

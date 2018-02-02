@@ -192,15 +192,16 @@ export class InfrastructureContainer extends Component {
 
     makeListItems() {
         const currentPageIndex = this.props.searchState.get("pageIndex");
+        const startIndex = currentPageIndex * layerSidebarTypes.FEATURES_PER_PAGE;
         const endIndex =
-            currentPageIndex + layerSidebarTypes.FEATURES_PER_PAGE >
+            (currentPageIndex + 1) * layerSidebarTypes.FEATURES_PER_PAGE >
             this.props.searchState.get("searchResults").size
                 ? this.props.searchState.get("searchResults").size
-                : currentPageIndex + layerSidebarTypes.FEATURES_PER_PAGE;
-        const listItems = [];
+                : (currentPageIndex + 1) * layerSidebarTypes.FEATURES_PER_PAGE;
+
         return this.props.searchState
             .get("searchResults")
-            .slice(currentPageIndex, endIndex)
+            .slice(startIndex, endIndex)
             .map(feature => this.makeListItem(feature));
     }
 
