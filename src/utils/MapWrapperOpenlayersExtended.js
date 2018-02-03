@@ -774,4 +774,53 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
     updateSize() {
         this.map.updateSize();
     }
+
+    setActivePlumes(activeFeatures) {
+        const activeFeatureIds = activeFeatures
+            .filter(feature => feature && feature.get("id"))
+            .map(feature => feature.get("id"));
+
+        const avirisLayerGroup = this.map
+            .getLayers()
+            .getArray()
+            .find(l => l.get("_layerId") === "AVIRIS");
+
+        const avirisImageLayerGroup = avirisLayerGroup
+            .getLayers()
+            .getArray()
+            .find(l => l.get("_layerId") === "AVIRIS_IMAGE_LAYER_GROUP");
+
+        const avirisIconLayerGroup = avirisLayerGroup
+            .getLayers()
+            .getArray()
+            .find(l => l.get("_layerId") === "icons");
+
+        avirisImageLayerGroup
+            .getLayers()
+            .getArray()
+            .forEach(feature => {
+                const opacity =
+                    !activeFeatureIds.length || activeFeatureIds.includes(feature.get("_featureId"))
+                        ? 1
+                        : 0.2;
+                feature.setOpacity(opacity);
+            });
+
+        avirisIconLayerGroup.getSource().forEachFeature(feature => {
+            const opacity =
+                !activeFeatureIds.length ||
+                (feature.get("_featureId") && activeFeatureIds.includes(feature.get("_featureId")))
+                    ? 1
+                    : 0.2;
+
+            const newStyle = new Ol_Style({
+                image: new Ol_Style_Icon({
+                    opacity: opacity,
+                    src: "img/PlumeIcon.png",
+                    scale: 0.6
+                })
+            });
+            feature.setStyle(newStyle);
+        });
+    }
 }

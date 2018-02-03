@@ -16,7 +16,8 @@ export const mapState_Extended = mapState.mergeDeep(
         activeFeature: {
             feature: null,
             category: null
-        }
+        },
+        hoverPlume: null
     })
 );
 

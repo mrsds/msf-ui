@@ -174,6 +174,7 @@ export function pixelClick(clickEvt) {
             selectedFeatureId
         );
         dispatch(clearFeatureLabels());
+        updateHighlightedPlumes(getState);
         if (selectedFeature) {
             dispatch(updateFeatureLabel(category, selectedFeature));
         }
@@ -236,4 +237,28 @@ function getFeatureById(sidebarState, category, id) {
     return sidebarState
         .getIn(["searchState", category, "searchResults"])
         .find(feature => feature.get("id") === id);
+}
+
+function updateHighlightedPlumes(getState) {
+    const selectedPlume =
+        getState().layerSidebar.getIn(["activeFeature", "category"]) ===
+        layerSidebarTypes.CATEGORY_PLUMES
+            ? getState().layerSidebar.getIn(["activeFeature", "feature"])
+            : null;
+
+    const hoverPlume = getState().map.get("hoverPlume");
+    getState()
+        .map.get("maps")
+        .map(map => map.setActivePlumes([selectedPlume, hoverPlume]));
+}
+
+function updateHoverPlume(feature) {
+    return { type: typesMSF.SET_HOVER_PLUME, feature: feature };
+}
+
+export function setHoverPlume(feature) {
+    return (dispatch, getState) => {
+        dispatch(updateHoverPlume(feature));
+        updateHighlightedPlumes(getState);
+    };
 }

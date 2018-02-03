@@ -69,4 +69,8 @@ export default class MapReducer_Extended extends MapReducer {
             .setIn(["activeFeature", "feature"], action.feature)
             .setIn(["activeFeature", "category"], action.category);
     }
+
+    static setHoverPlume(state, action) {
+        return state.set("hoverPlume", action.feature);
+    }
 }

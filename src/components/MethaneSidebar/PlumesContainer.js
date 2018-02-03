@@ -90,6 +90,7 @@ export class PlumesContainer extends Component {
                 this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_PLUMES, feature);
             }
         };
+
         const lat = MetadataUtil.getLat(feature, null);
         const long = MetadataUtil.getLong(feature, null);
         const centerMapAction =
@@ -108,6 +109,8 @@ export class PlumesContainer extends Component {
                     }}
                     button
                     onClick={onListItemClick}
+                    onMouseEnter={() => this.props.setHoverPlume(feature)}
+                    onMouseLeave={() => this.props.setHoverPlume(null)}
                 >
                     <div className={layerSidebarStyles.imageContainer}>
                         <img src={plumeThumbnail} />
@@ -266,7 +269,8 @@ PlumesContainer.propTypes = {
     hideFeatureDetail: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
     centerMapOnFeature: PropTypes.func.isRequired,
-    toggleFeatureLabel: PropTypes.func.isRequired
+    toggleFeatureLabel: PropTypes.func.isRequired,
+    setHoverPlume: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -284,7 +288,8 @@ function mapDispatchToProps(dispatch) {
         setFeatureDetail: bindActionCreators(layerSidebarActions.setFeatureDetail, dispatch),
         hideFeatureDetail: bindActionCreators(layerSidebarActions.hideFeatureDetail, dispatch),
         centerMapOnFeature: bindActionCreators(mapActionsMSF.centerMapOnFeature, dispatch),
-        toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch)
+        toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch),
+        setHoverPlume: bindActionCreators(mapActionsMSF.setHoverPlume, dispatch)
     };
 }
 
