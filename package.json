@@ -8,7 +8,7 @@
     "precommit": "lint-staged",
     "start": "npm run open:src",
     "start:dist": "npm run build && npm run open:dist",
-    "open:src": "babel-node scripts/srcServer.js",
+    "open:src": "babel-node --max-old-space-size=4076 scripts/srcServer.js",
     "open:dist": "babel-node scripts/distServer.js",
     "prebuild": "npm run prep:dist",
     "build": "babel-node scripts/build.js > dist/build-report.txt",
