@@ -802,7 +802,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 const opacity =
                     !activeFeatureIds.length || activeFeatureIds.includes(feature.get("_featureId"))
                         ? 1
-                        : 0.2;
+                        : 0;
                 feature.setOpacity(opacity);
             });
 
@@ -811,7 +811,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 !activeFeatureIds.length ||
                 (feature.get("_featureId") && activeFeatureIds.includes(feature.get("_featureId")))
                     ? 1
-                    : 0.2;
+                    : 0;
 
             const newStyle = new Ol_Style({
                 image: new Ol_Style_Icon({

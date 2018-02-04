@@ -10,6 +10,7 @@ import * as appStrings from "_core/constants/appStrings";
 import KeyHandler, { KEYUP, KEYDOWN } from "react-key-handler";
 import { KeyboardControlsContainer as CoreKeyboardControlsContainer } from "_core/components/KeyboardControls/KeyboardControlsContainer";
 import * as featureDetailActions from "actions/featureDetailActions";
+import * as mapActionsMSF from "actions/mapActions";
 
 export class KeyboardControlsContainer extends CoreKeyboardControlsContainer {
     handleKeyUp_Escape() {
@@ -23,11 +24,47 @@ export class KeyboardControlsContainer extends CoreKeyboardControlsContainer {
             this.props.mapActions.disableMeasuring();
         }
     }
+
+    incrementActivePlume(increment) {
+        this.props.mapActionsMSF.incrementActivePlume(increment);
+    }
+
+    dateAutoIncrement() {
+        if (this.dateShouldAutoIncrement) {
+            clearTimeout(this.dateAutoIncrementInterval);
+            this.incrementActivePlume(this.dateIncrementForward);
+            this.dateAutoIncrementInterval = setTimeout(
+                () => this.dateAutoIncrement(),
+                this.dateAutoIncrementSpeed
+            );
+        }
+    }
+
+    beginDateAutoIncrement(increment) {
+        if (this.dateAutoIncrementEnabled) {
+            this.dateShouldAutoIncrement = true;
+            this.dateIncrementForward = increment;
+            if (this.dateAutoIncrementInterval === null) {
+                this.dateAutoIncrementInterval = setTimeout(
+                    () => this.dateAutoIncrement(),
+                    this.dateAutoIncrementSpeed
+                );
+                this.incrementActivePlume(increment);
+            }
+        }
+    }
+
+    endDateAutoIncrement() {
+        clearTimeout(this.dateAutoIncrementInterval);
+        this.dateShouldAutoIncrement = false;
+        this.dateAutoIncrementInterval = null;
+    }
 }
 
 KeyboardControlsContainer.propTypes = {
     maps: PropTypes.object.isRequired,
     mapActions: PropTypes.object.isRequired,
+    mapActionsMSF: PropTypes.object.isRequired,
     dateSliderActions: PropTypes.object.isRequired,
     isDrawingEnabled: PropTypes.bool.isRequired,
     isMeasuringEnabled: PropTypes.bool.isRequired,
@@ -51,6 +88,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         mapActions: bindActionCreators(mapActions, dispatch),
+        mapActionsMSF: bindActionCreators(mapActionsMSF, dispatch),
         dateSliderActions: bindActionCreators(dateSliderActions, dispatch),
         featureDetailActions: bindActionCreators(featureDetailActions, dispatch)
     };

@@ -153,10 +153,58 @@ export function centerMapOnFeature(feature, featureType) {
 }
 
 export function toggleFeatureLabel(category, feature) {
-    return dispatch => {
+    return (dispatch, getState) => {
         // dispatch(featureDetailActions.hideFeatureDetailContainer());
         dispatch(clearFeatureLabels());
         dispatch(updateFeatureLabel(category, feature));
+        updateHighlightedPlumes(getState);
+    };
+}
+
+export function incrementActivePlume(increment) {
+    return (dispatch, getState) => {
+        // Using getState here since we'll have to do some actions
+        // that fall outside of a single reducer's scope
+        const layerSidebarState = getState().layerSidebar;
+        const searchResults = layerSidebarState.getIn([
+            "searchState",
+            layerSidebarTypes.CATEGORY_PLUMES,
+            "searchResults"
+        ]);
+        // If active feature and it's a plume, incr/decr
+        const activePlume =
+            layerSidebarState.getIn(["activeFeature", "category"]) ===
+            layerSidebarTypes.CATEGORY_PLUMES
+                ? layerSidebarState.getIn(["activeFeature", "feature"])
+                : null;
+        if (activePlume) {
+            let activePlumeIndex = searchResults.findIndex(
+                x => x.get("id") === activePlume.get("id")
+            );
+            if (activePlumeIndex > -1) {
+                let nextActivePlume;
+                if (increment) {
+                    if (activePlumeIndex < searchResults.size) {
+                        let idx = activePlumeIndex + 1;
+                        nextActivePlume = searchResults.get(idx);
+                    }
+                } else {
+                    if (activePlumeIndex > 0) {
+                        let idx = activePlumeIndex - 1;
+                        nextActivePlume = searchResults.get(idx);
+                    }
+                }
+                if (nextActivePlume) {
+                    dispatch(
+                        toggleFeatureLabel(layerSidebarTypes.CATEGORY_PLUMES, nextActivePlume)
+                    );
+                    updateHighlightedPlumes(getState);
+                }
+            } else {
+                console.warn("Warning: unable to find active plume in search results", activePlume);
+            }
+        }
+        return { type: types.NO_ACTION };
     };
 }
 
@@ -174,10 +222,10 @@ export function pixelClick(clickEvt) {
             selectedFeatureId
         );
         dispatch(clearFeatureLabels());
-        updateHighlightedPlumes(getState);
         if (selectedFeature) {
             dispatch(updateFeatureLabel(category, selectedFeature));
         }
+        updateHighlightedPlumes(getState);
         return { type: types.PIXEL_CLICK, clickEvt };
     };
 }
@@ -245,7 +293,6 @@ function updateHighlightedPlumes(getState) {
         layerSidebarTypes.CATEGORY_PLUMES
             ? getState().layerSidebar.getIn(["activeFeature", "feature"])
             : null;
-
     const hoverPlume = getState().map.get("hoverPlume");
     getState()
         .map.get("maps")
