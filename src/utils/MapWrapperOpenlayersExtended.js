@@ -600,7 +600,8 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                         center,
                         {
                             sourceLayerId: layer.get("_layerId"),
-                            overlayType: "VISTA"
+                            overlayType: "VISTA",
+                            _featureId: featureId
                         }
                     );
                     feature.setStyle(selectedFeatureStyle);
@@ -640,6 +641,8 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                         .find(f => f.get("id") === overlay.getProperties()._featureId);
                     if (feature) {
                         feature.setStyle(null);
+                    } else {
+                        console.warn("Unable to find VISTA feature for overlay deselect");
                     }
                 } else {
                     console.warn("Unable to find VISTA layer for overlay deselect");
