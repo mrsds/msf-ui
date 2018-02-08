@@ -151,7 +151,7 @@
             "type": "data",
             "handleAs": "aviris_plume",
             "isDefault": true,
-            "url": "http://100.64.114.155:9090/aviris",
+            "url": "http://100.64.114.155:9090/aviris/plumes",
             "thumbnailImage": "img/AVIRIS.png",
             "palette": {
                 "name": "AVIRIS_plumes",

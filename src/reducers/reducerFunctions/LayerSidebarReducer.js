@@ -49,7 +49,7 @@ export default class LayerSidebarReducer {
                                           flight_id: feature.flight_id,
                                           id: feature.id,
                                           datetime: feature.data_date_dt,
-                                          flight_campaign: feature.airborne_flight_run_number.toString(),
+                                          flight_campaign: "Unknown",
                                           ime: imeValue,
                                           sourceId: sourceId,
                                           metadata: feature.metadata.concat([

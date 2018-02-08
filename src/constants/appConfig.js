@@ -16,7 +16,7 @@ const APP_CONFIG = Immutable.fromJS({
         vistaEndpoint:
             "http://100.64.114.155:9090/vista?maxLat={latMax}&maxLon={lonMax}&minLat={latMin}&minLon={lonMin}&category={category}",
         avirisEndpoint:
-            "http://100.64.114.155:9090/aviris?maxObjects=1000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}",
+            "http://100.64.114.155:9090/aviris/plumes?maxObjects=1000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}",
         layerConfig: [
             {
                 url: "default-data/msf-data/capabilities.xml",
