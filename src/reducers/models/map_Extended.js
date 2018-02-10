@@ -1,6 +1,7 @@
 import Immutable from "immutable";
 import { mapState, layerModel } from "_core/reducers/models/map";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import moment from "moment";
 
 export const mapState_Extended = mapState.mergeDeep(
     Immutable.fromJS({
@@ -17,7 +18,11 @@ export const mapState_Extended = mapState.mergeDeep(
             feature: null,
             category: null
         },
-        hoverPlume: null
+        hoverPlume: null,
+        griddedSettings: {
+            availableDates: [],
+            currentDate: moment()
+        }
     })
 );
 
@@ -25,7 +30,8 @@ export const layerModel_Extended = layerModel.mergeDeep(
     Immutable.fromJS({
         group: "",
         visibleInGroup: false,
-        layerOrder: null
+        layerOrder: null,
+        isGriddedMethane: false
     })
 );
 

@@ -161,8 +161,7 @@
             "max": 4000,
             "units": "density (kg/m^2)",
             "metadata": {
-                "url":
-                    "default-data/msf-data/layer-metadata/AVIRIS.json",
+                "url": "default-data/msf-data/layer-metadata/AVIRIS.json",
                 "handleAs": "json"
             },
             "updateParameters": { "time": false }
@@ -177,11 +176,26 @@
             "thumbnailImage": "img/gridded_methane_v1.png",
             "opacity": 0.3,
             "metadata": {
-                "url":
-                    "default-data/msf-data/layer-metadata/GRIDDED_EMISSIONS_V1.json",
+                "url": "default-data/msf-data/layer-metadata/GRIDDED_EMISSIONS_V1.json",
                 "handleAs": "json"
             },
             "updateParameters": { "time": false }
+        },
+        {
+            "id": "GRIDDED_EMISSIONS_V2",
+            "title": "Gridded Methane v2",
+            "type": "data",
+            "handleAs": "gridded_geojson",
+            "isDefault": false,
+            "url": "http://100.64.114.155/data/gridded/v2/Fluxes_20150128.geojson",
+            "thumbnailImage": "img/gridded_methane_v1.png",
+            "opacity": 0.3,
+            "metadata": {
+                "url": "default-data/msf-data/layer-metadata/GRIDDED_EMISSIONS_V1.json",
+                "handleAs": "json"
+            },
+            "updateParameters": { "time": false },
+            "isGriddedMethane": true
         },
 
         {

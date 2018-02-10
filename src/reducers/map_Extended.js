@@ -27,6 +27,10 @@ export default function map_Extended(
             return opt_reducer.setHoverPlume(state, action);
         // case actionTypesMSF.UPDATE_FEATURE_DETAIL:
         //     return opt_reducer.toggleFeatureLabel(state, action);
+        case actionTypesMSF.UPDATE_AVAILABLE_GRIDDED_DATES:
+            return opt_reducer.updateAvailableGriddedDates(state, action);
+        case actionTypesMSF.UPDATE_GRIDDED_DATE:
+            return opt_reducer.updateGriddedDate(state, action);
         default:
             return map.call(this, state, action, opt_reducer);
     }

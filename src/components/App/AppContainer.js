@@ -180,7 +180,7 @@ function mapDispatchToProps(dispatch) {
             appActions.checkBrowserFunctionalities,
             dispatch
         ),
-        loadInitialData: bindActionCreators(mapActions.loadInitialData, dispatch),
+        loadInitialData: bindActionCreators(mapActionsMSF.loadInitialData, dispatch),
         activateDefaultLayers: bindActionCreators(mapActions.activateDefaultLayers, dispatch),
         runUrlConfig: bindActionCreators(appActions.runUrlConfig, dispatch),
         initializeMap: bindActionCreators(mapActions.initializeMap, dispatch),

@@ -3,11 +3,17 @@ import * as layerSidebarTypes from "constants/layerSidebarTypes";
 export const LAYER_VECTOR_KMZ = "vector_kmz";
 export const LAYER_AVIRIS = "aviris_plume";
 export const LAYER_VISTA_GEOJSON = "vista_geojson";
+export const LAYER_GRIDDED_GEOJSON = "gridded_geojson";
 
 export const ALERTS = {
     LAYER_AVAILABILITY_LIST_LOAD_FAILED: {
         title: "Layer Availability List Loading Failed",
         formatString: "Failed to load layer availability list for the current viewport.",
+        severity: 3
+    },
+    AVAILABLE_GRIDDED_DATES_LIST_LOAD_FAILED: {
+        title: "Availabile Gridded Layer Date List Loading Failed",
+        formatString: "Failed to load date availability list for gridded layers.",
         severity: 3
     }
 };

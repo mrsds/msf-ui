@@ -12,18 +12,23 @@ import displayStyles from "_core/styles/display.scss";
 import Tooltip from "material-ui/Tooltip";
 import { ListItem, ListItemSecondaryAction, ListItemText } from "material-ui/List";
 import InfoOutlineIcon from "material-ui-icons/InfoOutline";
+import DateRangeIcon from "material-ui-icons/DateRange";
 import Collapse from "material-ui/transitions/Collapse";
 import Divider from "material-ui/Divider";
 import { Colorbar } from "_core/components/Colorbar";
 import colorbarStylesExtended from "components/LayerMenu/ColorbarStylesExtended.scss";
+import { Manager, Target, Popper } from "react-popper";
+import {
+    LayerPositionIcon,
+    LayerPositionControl,
+    LayerOpacityIcon,
+    LayerOpacityControl
+} from "_core/components/LayerMenu";
+import Grow from "material-ui/transitions/Grow";
+import ClickAwayListener from "material-ui/utils/ClickAwayListener";
+import stylesExtended from "components/LayerMenu/LayerControlContainerExtendedStyles.scss";
 
 export class LayerControlContainer extends LayerControlContainerCore {
-    setLayerActive(active) {
-        this.isChangingPosition = false;
-        this.isChangingOpacity = false;
-        this.props.mapActions.setLayerActive(this.props.layer.get("id"), !active);
-        this.props.mapActionsExtended.updateFeatureList_Layer(this.props.layer.get("id"), !active);
-    }
     renderTopContent() {
         return (
             <ListItem dense={true} classes={{ dense: styles.dense }}>
@@ -84,6 +89,102 @@ export class LayerControlContainer extends LayerControlContainerCore {
                 </Collapse>
                 <Divider />
             </div>
+        );
+    }
+
+    renderIconRow() {
+        return (
+            <span className={stylesExtended.layerControlIconRow}>
+                <Manager style={{ display: "inline-block" }}>
+                    <Target style={{ display: "inline-block" }}>
+                        <Tooltip title={"Set Layer Position"} placement="top">
+                            <LayerPositionIcon
+                                displayIndex={this.props.layer.get("displayIndex")}
+                                activeNum={this.props.activeNum}
+                                className={styles.iconButtonSmall}
+                                color={this.isChangingPosition ? "primary" : "default"}
+                                onClick={() => this.toggleChangingPosition()}
+                            />
+                        </Tooltip>
+                    </Target>
+                    <Popper
+                        placement="left"
+                        modifiers={{
+                            computeStyle: {
+                                gpuAcceleration: false
+                            }
+                        }}
+                        eventsEnabled={this.isChangingPosition}
+                        className={!this.isChangingPosition ? displayStyles.noPointer : ""}
+                    >
+                        <Grow style={{ transformOrigin: "right" }} in={this.isChangingPosition}>
+                            <div>
+                                <ClickAwayListener
+                                    onClickAway={() => {
+                                        if (this.isChangingPosition) {
+                                            this.toggleChangingPosition();
+                                        }
+                                    }}
+                                >
+                                    <LayerPositionControl
+                                        isActive={this.isChangingPosition}
+                                        moveToTop={() => this.moveToTop()}
+                                        moveToBottom={() => this.moveToBottom()}
+                                        moveUp={() => this.moveUp()}
+                                        moveDown={() => this.moveDown()}
+                                    />
+                                </ClickAwayListener>
+                            </div>
+                        </Grow>
+                    </Popper>
+                    <Target style={{ display: "inline-block" }}>
+                        <Tooltip title={"Set Layer Opacity"} placement="top">
+                            <LayerOpacityIcon
+                                opacity={this.props.layer.get("opacity")}
+                                className={styles.iconButtonSmall}
+                                color={this.isChangingOpacity ? "primary" : "default"}
+                                onClick={() => this.toggleChangingOpacity()}
+                            />
+                        </Tooltip>
+                    </Target>
+                    <Popper
+                        placement="left"
+                        modifiers={{
+                            computeStyle: {
+                                gpuAcceleration: false
+                            }
+                        }}
+                        className={!this.isChangingOpacity ? displayStyles.noPointer : ""}
+                        eventsEnabled={this.isChangingOpacity}
+                    >
+                        <Grow style={{ transformOrigin: "right" }} in={this.isChangingOpacity}>
+                            <div>
+                                <ClickAwayListener
+                                    onClickAway={() => {
+                                        if (this.isChangingOpacity) {
+                                            this.toggleChangingOpacity();
+                                        }
+                                    }}
+                                >
+                                    <LayerOpacityControl
+                                        isActive={this.isChangingOpacity}
+                                        opacity={this.props.layer.get("opacity")}
+                                        onChange={value => this.changeOpacity(value)}
+                                    />
+                                </ClickAwayListener>
+                            </div>
+                        </Grow>
+                    </Popper>
+                </Manager>
+                <Tooltip title="Layer information" placement="top">
+                    <IconButtonSmall
+                        className={styles.iconButtonSmall}
+                        onClick={() => this.openLayerInfo()}
+                    >
+                        <InfoOutlineIcon />
+                    </IconButtonSmall>
+                </Tooltip>
+            </span>
         );
     }
 }

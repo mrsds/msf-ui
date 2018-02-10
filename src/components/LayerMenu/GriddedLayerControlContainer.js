@@ -12,13 +12,11 @@ import displayStyles from "_core/styles/display.scss";
 import Tooltip from "material-ui/Tooltip";
 import { ListItem, ListItemSecondaryAction, ListItemText } from "material-ui/List";
 import InfoOutlineIcon from "material-ui-icons/InfoOutline";
+import DateRangeIcon from "material-ui-icons/DateRange";
 import Collapse from "material-ui/transitions/Collapse";
-import { Colorbar } from "_core/components/Colorbar";
 import Divider from "material-ui/Divider";
-import Grid from "material-ui/Grid";
-import colorbarStyles from "_core/components/Colorbar/Colorbar.scss";
+import { Colorbar } from "_core/components/Colorbar";
 import colorbarStylesExtended from "components/LayerMenu/ColorbarStylesExtended.scss";
-import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import { Manager, Target, Popper } from "react-popper";
 import {
     LayerPositionIcon,
@@ -29,13 +27,31 @@ import {
 import Grow from "material-ui/transitions/Grow";
 import ClickAwayListener from "material-ui/utils/ClickAwayListener";
 import stylesExtended from "components/LayerMenu/LayerControlContainerExtendedStyles.scss";
+import { MenuItem } from "material-ui/Menu";
+import LayerDateControl from "components/LayerMenu/LayerDateControl";
 
-export class InfrastructureControlContainer extends LayerControlContainerCore {
+export class GriddedLayerControlContainer extends LayerControlContainerCore {
+    constructor(props) {
+        super(props);
+
+        this.isChangingOpacity = false;
+        this.isChangingPosition = false;
+        this.opacityButton = null;
+        this.datePickerVisible = false;
+    }
+
+    toggleDatePickerVisible() {
+        this.datePickerVisible = !this.datePickerVisible;
+        this.forceUpdate();
+    }
+
     setLayerActive(active) {
         this.isChangingPosition = false;
         this.isChangingOpacity = false;
-        this.props.mapActionsExtended.setGroupVisible(this.props.layer, !active);
+        this.props.mapActions.setLayerActive(this.props.layer.get("id"), !active);
+        this.props.mapActionsExtended.updateFeatureList_Layer(this.props.layer.get("id"), !active);
     }
+
     renderTopContent() {
         return (
             <ListItem dense={true} classes={{ dense: styles.dense }}>
@@ -70,28 +86,6 @@ export class InfrastructureControlContainer extends LayerControlContainerCore {
             </ListItem>
         );
     }
-    renderLegend() {
-        return (
-            <span className={colorbarStylesExtended.infrastructureLegend}>
-                <Grid container spacing={0}>
-                    {Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).map(key => (
-                        <Grid key={key} item xs className={colorbarStyles.label}>
-                            <span
-                                className={colorbarStylesExtended.legendColor}
-                                style={{
-                                    background:
-                                        layerSidebarTypes.INFRASTRUCTURE_GROUPS[key].colors
-                                            .fillNoTransparency
-                                }}
-                            />
-                            <br />
-                            {key}
-                        </Grid>
-                    ))}
-                </Grid>
-            </span>
-        );
-    }
     renderBottomContent() {
         return (
             <div>
@@ -102,7 +96,17 @@ export class InfrastructureControlContainer extends LayerControlContainerCore {
                     classes={{ entered: styles.collapseEntered }}
                 >
                     <div className={styles.layerControlContent}>
-                        {this.renderLegend()}
+                        <Colorbar
+                            palette={this.props.palette}
+                            min={parseFloat(this.props.layer.get("min"))}
+                            max={parseFloat(this.props.layer.get("max"))}
+                            units={this.props.layer.get("units")}
+                            displayMin={parseFloat(this.props.layer.getIn(["palette", "min"]))}
+                            displayMax={parseFloat(this.props.layer.getIn(["palette", "max"]))}
+                            handleAs={this.props.layer.getIn(["palette", "handleAs"])}
+                            url={this.props.layer.getIn(["palette", "url"])}
+                            className={colorbarStylesExtended.colorbar}
+                        />
                         {this.renderIconRow()}
                     </div>
                 </Collapse>
@@ -110,10 +114,43 @@ export class InfrastructureControlContainer extends LayerControlContainerCore {
             </div>
         );
     }
+
     renderIconRow() {
         return (
             <span className={stylesExtended.layerControlIconRow}>
                 <Manager style={{ display: "inline-block" }}>
+                    <Target
+                        style={{
+                            display: "inline-block"
+                        }}
+                    >
+                        <Tooltip title="Choose date" placement="left">
+                            <IconButtonSmall onClick={() => this.toggleDatePickerVisible()}>
+                                <DateRangeIcon />
+                            </IconButtonSmall>
+                        </Tooltip>
+                    </Target>
+                    <Popper
+                        placement="left"
+                        modifiers={{
+                            computeStyle: {
+                                gpuAcceleration: false
+                            }
+                        }}
+                        eventsEnabled={this.datePickerVisible}
+                        className={!this.datePickerVisible ? displayStyles.noPointer : ""}
+                    >
+                        <Grow style={{ transformOrigin: "right" }} in={this.datePickerVisible}>
+                            <div>
+                                <LayerDateControl
+                                    updateDate={date =>
+                                        this.props.mapActionsExtended.updateGriddedDate(date)
+                                    }
+                                    onClose={() => this.toggleDatePickerVisible()}
+                                />
+                            </div>
+                        </Grow>
+                    </Popper>
                     <Target style={{ display: "inline-block" }}>
                         <Tooltip title={"Set Layer Position"} placement="top">
                             <LayerPositionIcon
@@ -207,18 +244,19 @@ export class InfrastructureControlContainer extends LayerControlContainerCore {
     }
 }
 
-InfrastructureControlContainer.propTypes = {
-    mapActionsExtended: PropTypes.object.isRequired,
+GriddedLayerControlContainer.propTypes = {
     mapActions: PropTypes.object.isRequired,
+    mapActionsExtended: PropTypes.object.isRequired,
+    layer: PropTypes.object.isRequired,
     activeNum: PropTypes.number.isRequired,
-    layer: PropTypes.object.isRequired
+    palette: PropTypes.object
 };
 
 function mapDispatchToProps(dispatch) {
     return {
-        mapActionsExtended: bindActionCreators(mapActionsExtended, dispatch),
-        mapActions: bindActionCreators(mapActions, dispatch)
+        mapActions: bindActionCreators(mapActions, dispatch),
+        mapActionsExtended: bindActionCreators(mapActionsExtended, dispatch)
     };
 }
 
-export default connect(null, mapDispatchToProps)(InfrastructureControlContainer);
+export default connect(null, mapDispatchToProps)(GriddedLayerControlContainer);

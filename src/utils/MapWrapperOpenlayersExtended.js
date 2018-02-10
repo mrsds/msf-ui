@@ -25,6 +25,7 @@ import Ol_View from "ol/view";
 import Ol_Proj from "ol/proj";
 import Ol_Interaction from "ol/interaction";
 import Ol_Map from "ol/map";
+import Ol_Format_GeoJSON from "ol/format/geojson";
 import MapWrapperOpenlayers from "_core/utils/MapWrapperOpenlayers";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import appConfig from "constants/appConfig";
@@ -174,6 +175,9 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             case appStringsMSF.LAYER_VECTOR_KMZ:
                 mapLayer = this.createKMZLayer(layer, fromCache);
                 break;
+            case appStringsMSF.LAYER_GRIDDED_GEOJSON:
+                mapLayer = this.createGriddedVectorLayer(layer, fromCache);
+                break;
             default:
                 console.warn(
                     "Error in MapWrapperOpenlayers.createLayer: unknown layer type - ",
@@ -192,6 +196,56 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         }
 
         return mapLayer;
+    }
+
+    griddedVectorLayerStyleFunction(feature, resolution) {
+        const dnValue = parseFloat(feature.getProperties().DN);
+        const fillOpacity = dnValue / 283;
+        // const strokeOpacity = xdnValue < 10 ? 0 : 1;
+        return new Ol_Style({
+            stroke: new Ol_Style_Stroke({ color: "#000000" }),
+            fill: new Ol_Style_Fill({ color: `rgba(191, 63, 63, ${fillOpacity})` })
+        });
+    }
+
+    createGriddedVectorLayer(layer, options) {
+        const layerSource = this.createLayerSource(
+            layer.set("handleAs", appStrings.LAYER_VECTOR_GEOJSON),
+            {
+                url: layer.get("url")
+            }
+        );
+        // layerSource.on("change", e => {
+        //     if (layerSource.getState() === "ready") {
+        //         layerSource.getFeatures().forEach(feature => feature.);
+        //     }
+        // });
+        const mapLayer = new Ol_Layer_Vector({
+            source: layerSource,
+            opacity: layer.get("opacity"),
+            style: this.griddedVectorLayerStyleFunction
+        });
+        mapLayer.set("_layerId", "griddedFlux");
+        return mapLayer;
+    }
+
+    changeGriddedVectorLayerDate(date) {
+        const griddedFluxLayer = this.map
+            .getLayers()
+            .getArray()
+            .find(l => l.get("_layerId") === "GRIDDED_EMISSIONS_V2");
+
+        const sourceUrl = appConfig.URLS.griddedVectorEndpoint.replace(
+            "{date}",
+            date.format("YYYYMMDD")
+        );
+
+        const newSource = new Ol_Source_Vector({
+            url: sourceUrl,
+            format: new Ol_Format_GeoJSON()
+        });
+
+        griddedFluxLayer.setSource(newSource);
     }
 
     createAvirisLayer(layerJson) {

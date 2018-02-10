@@ -1,0 +1,5 @@
+.layerControlIconRow {
+    composes: layerControlIconRow from "_core/components/LayerMenu/LayerControlContainer.scss";
+    position: relative;
+    float: right;
+}

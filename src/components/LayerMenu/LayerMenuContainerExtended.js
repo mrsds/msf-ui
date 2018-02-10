@@ -15,6 +15,7 @@ import * as mapActions from "_core/actions/mapActions";
 import { IconButtonSmall } from "_core/components/Reusables";
 import LayerControlContainerExtended from "components/LayerMenu/LayerControlContainerExtended";
 import InfrastructureControlContainer from "components/LayerMenu/InfrastructureControlContainer";
+import GriddedLayerControlContainer from "components/LayerMenu/GriddedLayerControlContainer";
 import MiscUtil from "_core/utils/MiscUtil";
 import styles from "_core/components/LayerMenu/LayerMenuContainer.scss";
 import stylesExtended from "components/LayerMenu/LayerMenuContainerExtendedStyles.scss";
@@ -46,7 +47,7 @@ export class LayerMenuContainer extends Component {
         });
 
         let plumeLayer = layerList.find(x => x.get("id") === "AVIRIS");
-        let griddedMethaneLayer = layerList.find(x => x.get("id") === "GRIDDED_EMISSIONS_V1");
+        let griddedMethaneLayer = layerList.find(x => x.get("id") === "GRIDDED_EMISSIONS_V2");
         let infrastructureLayer = this.props.groups.get(0);
         let plumeLayerControl = null;
         let infrastructureLayerControl = null;
@@ -70,7 +71,7 @@ export class LayerMenuContainer extends Component {
             );
 
             griddedMethaneLayerControl = (
-                <LayerControlContainerExtended
+                <GriddedLayerControlContainer
                     key={griddedMethaneLayer.get("id") + "_layer_listing"}
                     layer={griddedMethaneLayer}
                     activeNum={activeNum}

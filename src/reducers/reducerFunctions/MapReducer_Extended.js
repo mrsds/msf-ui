@@ -3,6 +3,7 @@ import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
 import { layerModel_Extended as layerModel } from "reducers/models/map_Extended";
 import { alert } from "_core/reducers/models/alert";
+import moment from "moment";
 
 export default class MapReducer_Extended extends MapReducer {
     static updateAvailableLayers(state, action) {
@@ -72,5 +73,30 @@ export default class MapReducer_Extended extends MapReducer {
 
     static setHoverPlume(state, action) {
         return state.set("hoverPlume", action.feature);
+    }
+
+    static updateAvailableGriddedDates(state, action) {
+        const sortedDateList = action.dateList
+            .map(date => moment(date, "YYYY-MM-DD"))
+            .sort((a, b) => (a.isBefore(b) ? -1 : a.isAfter(b) ? 1 : 0));
+        return state
+            .setIn(["griddedSettings", "availableDates"], sortedDateList)
+            .setIn(["griddedSettings", "currentDate"], sortedDateList[sortedDateList.length - 1]);
+    }
+
+    static updateGriddedDate(state, action) {
+        const snap = state.getIn(["griddedSettings", "availableDates"]).reduce((acc, date) => {
+            if (acc.snapped) return acc;
+            if (date.isSame(action.date)) {
+                acc.snapped = date;
+            } else if (date.isBefore(action.date)) {
+                acc.previous = date;
+            }
+            return acc;
+        }, {});
+        const newDate = snap.snapped || snap.previous;
+
+        state.get("maps").map(map => map.changeGriddedVectorLayerDate(newDate));
+        return state.setIn(["griddedSettings", "currentDate"], newDate);
     }
 }

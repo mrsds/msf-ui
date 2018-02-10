@@ -9,6 +9,7 @@ import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import * as appStrings from "_core/constants/appStrings";
 import * as featureDetailActions from "actions/featureDetailActions";
 import appConfig from "constants/appConfig";
+import * as asyncActions from "_core/actions/asyncActions";
 
 export function updateFeatureList_Layer(layer, active) {
     return (dispatch, getState) => {
@@ -24,7 +25,6 @@ export function setGroupVisible(group, active) {
             .forEach(layer => {
                 const inGroup = layer.get("group") === group.get("id");
                 const shouldSwitch = active ? layer.get("visibleInGroup") : true;
-                // if (inGroup && shouldSwitch) {
                 if (inGroup && shouldSwitch) {
                     dispatch(mapActions.setLayerActive(layer.get("id"), active));
                 }
@@ -308,4 +308,90 @@ export function setHoverPlume(feature) {
         dispatch(updateHoverPlume(feature));
         updateHighlightedPlumes(getState);
     };
+}
+
+export function updateGriddedDate(date) {
+    return { type: typesMSF.UPDATE_GRIDDED_DATE, date };
+}
+
+export function getAvailableGriddedDates() {
+    return dispatch => {
+        dispatch(setGriddedDateAvailabilityLoadingAsync(true, false));
+        return MiscUtil.asyncFetch({
+            url: appConfig.URLS.availableGriddedDates,
+            handleAs: "json"
+        }).then(
+            data => {
+                dispatch(updateAvailableGriddedDates(data));
+                dispatch(setGriddedDateAvailabilityLoadingAsync(false, false));
+            },
+            err => {
+                console.warn("Error getting available gridded layer dates:", err);
+                dispatch(setGriddedDateAvailabilityLoadingAsync(false, true));
+                dispatch(
+                    alertActions.addAlert({
+                        title: appStringsMSF.ALERTS.AVAILABLE_GRIDDED_DATES_LIST_LOAD_FAILED.title,
+                        body: appStringsMSF.ALERTS.AVAILABLE_GRIDDED_DATES_LIST_LOAD_FAILED,
+                        severity:
+                            appStringsMSF.ALERTS.AVAILABLE_GRIDDED_DATES_LIST_LOAD_FAILED.severity,
+                        time: new Date()
+                    })
+                );
+            }
+        );
+    };
+}
+
+function updateAvailableGriddedDates(dateList) {
+    return { type: typesMSF.UPDATE_AVAILABLE_GRIDDED_DATES, dateList };
+}
+
+export function loadInitialData(callback = null) {
+    return dispatch => {
+        // Set flag that initial layer data has begun loading
+        dispatch(setInitialDataLoadingAsync(true, false));
+        // Fetch all initial layer data
+        return Promise.all([
+            dispatch(mapActions.loadLayerData()),
+            dispatch(mapActions.loadPaletteData()),
+            dispatch(getAvailableGriddedDates())
+        ]).then(
+            () => {
+                // Set flag that initial layer data has finished loading
+                dispatch(setInitialDataLoadingAsync(false, false));
+                if (typeof callback === "function") {
+                    callback.call(this);
+                }
+            },
+            err => {
+                console.warn("Error in mapActions.loadInitialData:", err);
+                dispatch(
+                    alertActions.addAlert({
+                        title: appStrings.ALERTS.INITIAL_DATA_LOAD_FAILED.title,
+                        body: appStrings.ALERTS.INITIAL_DATA_LOAD_FAILED.formatString,
+                        severity: appStrings.ALERTS.INITIAL_DATA_LOAD_FAILED.severity,
+                        time: new Date()
+                    })
+                );
+                dispatch(setInitialDataLoadingAsync(false, true));
+                if (typeof callback === "function") {
+                    callback.call(this);
+                }
+            }
+        );
+    };
+}
+
+function setGriddedDateAvailabilityLoadingAsync(loading, failed) {
+    return asyncActions.setAsyncLoadingState("griddedDateAvailabilityAsync", {
+        loading: loading,
+        failed: failed
+    });
+}
+
+function setInitialDataLoadingAsync(loading, failed) {
+    return asyncActions.setAsyncLoadingState("initialDataAsync", {
+        loading: loading,
+        failed: failed
+    });
 }
