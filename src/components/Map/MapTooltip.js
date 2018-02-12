@@ -31,11 +31,7 @@ export class MapTooltip extends Component {
                 const dateString = MiscUtilExtended.formatPlumeDatetime(datetime);
                 let roundedIME = MiscUtilExtended.roundTo(feature.get("ime"), 2);
                 title = dateString;
-                subtitle1 = (
-                    <React.Fragment>
-                        {roundedIME} kg/m <sup>2</sup> IME
-                    </React.Fragment>
-                );
+                subtitle1 = <React.Fragment>{roundedIME} kg IME</React.Fragment>;
                 subtitle2 = feature.get("name");
             } else if (
                 this.props.activeFeature.get("category") ===
