@@ -156,7 +156,7 @@ export class InfrastructureContainer extends Component {
                             type="caption"
                             noWrap
                         >
-                            No flyovers
+                            {feature.get("flyoverCount") + " flyovers"}
                         </Typography>
                         <Typography
                             color={isItemPrimary ? "inherit" : "secondary"}

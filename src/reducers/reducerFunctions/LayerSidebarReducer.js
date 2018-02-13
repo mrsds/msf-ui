@@ -24,6 +24,9 @@ export default class LayerSidebarReducer {
                                           name: feature.properties.name,
                                           id: feature.properties.id,
                                           category: feature.properties.category,
+                                          flyoverCount:
+                                              feature.properties.num_flights_matching || 0,
+                                          plumeCount: feature.properties.num_plumes_matching || 0,
                                           categoryId: categoryId,
                                           metadata: feature.properties.metadata
                                       })
@@ -267,11 +270,15 @@ export default class LayerSidebarReducer {
             let sortFn = sortOption => {
                 let sortByName = (a, b) => (a.get("name") < b.get("name") ? -1 : 1);
                 let sortBySubcategory = (a, b) => (a.get("category") < b.get("category") ? -1 : 1);
+                let sortByFlyoverCount = (a, b) =>
+                    a.get("flyoverCount") > b.get("flyoverCount") ? -1 : 1;
                 switch (sortOption) {
                     case layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME:
                         return sortByName;
                     case layerSidebarTypes.INFRASTRUCTURE_FILTER_SUBCATEGORY:
                         return sortBySubcategory;
+                    case layerSidebarTypes.INFRASTRUCTURE_FILTER_FLYOVER_COUNT:
+                        return sortByFlyoverCount;
                     default:
                         return sortByName;
                 }

@@ -40,6 +40,7 @@ export const PLUME_FILTER_SORT_OPTIONS = [
 
 export const INFRASTRUCTURE_FILTER_NAME = "Infrastructure Name";
 export const INFRASTRUCTURE_FILTER_SUBCATEGORY = "Infrastructure Subcategory";
+export const INFRASTRUCTURE_FILTER_FLYOVER_COUNT = "Number of Flyovers";
 export const INFRASTRUCTURE_FILTER_SORT_BY = "Infrastructure Sort By";
 export const INFRASTRUCTURE_FILTER_SORT_OPTIONS = [
     {
@@ -49,6 +50,10 @@ export const INFRASTRUCTURE_FILTER_SORT_OPTIONS = [
     {
         value: INFRASTRUCTURE_FILTER_SUBCATEGORY,
         label: "Infrastructure Type"
+    },
+    {
+        value: INFRASTRUCTURE_FILTER_FLYOVER_COUNT,
+        label: "Number of Flyovers"
     }
 ];
 
