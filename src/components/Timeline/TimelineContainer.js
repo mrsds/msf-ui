@@ -421,7 +421,7 @@ export class TimelineContainerStyles extends Component {
                     plumeStatistics: {
                         avg: {
                             value: 0,
-                            label: "kg/m<sup>2</sup>"
+                            label: "kg"
                         }
                     }
                 });

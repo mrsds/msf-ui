@@ -159,7 +159,7 @@
             },
             "min": 0,
             "max": 4000,
-            "units": "density (kg/m^2)",
+            "units": "density (ppm-m)",
             "metadata": {
                 "url": "default-data/msf-data/layer-metadata/AVIRIS.json",
                 "handleAs": "json"

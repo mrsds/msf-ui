@@ -130,8 +130,7 @@ export class PlumesContainer extends Component {
                             type="caption"
                             noWrap
                         >
-                            {MiscUtilExtended.roundTo(feature.get("ime"), 2) + " kg/m"}
-                            <sup>2</sup> IME
+                            {MiscUtilExtended.roundTo(feature.get("ime"), 2) + " kg IME"}
                         </Typography>
                         <Typography
                             color={isItemPrimary ? "inherit" : "secondary"}
