@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -53,7 +60,8 @@ export class HelpContainer extends Component {
             : "";
         let listClasses = MiscUtil.generateStringFromSet({
             [styles.menu]: true,
-            [displayStyles.hidden]: this.props.helpPage !== ""
+            [displayStyles.hidden]: this.props.helpPage !== "",
+            [this.props.className]: typeof this.props.className !== "undefined"
         });
         let pageClasses = MiscUtil.generateStringFromSet({
             [displayStyles.hidden]: this.props.helpPage === ""
@@ -116,7 +124,7 @@ export class HelpContainer extends Component {
                             button
                             onClick={() => {
                                 MiscUtil.openLinkInNewTab(
-                                    "https://github.jpl.nasa.gov/CommonMappingClient/cmc-core"
+                                    "https://github.com/nasa/common-mapping-client"
                                 );
                             }}
                         >
@@ -129,7 +137,7 @@ export class HelpContainer extends Component {
                 </Paper>
                 <MarkdownPage className={pageClasses} content={pageContent} converted={true} />
                 <div className={versionClasses}>
-                    <Typography align="right" type="caption">
+                    <Typography align="right" variant="caption">
                         Version: {appConfig.APP_VERSION}
                     </Typography>
                 </div>
@@ -141,7 +149,8 @@ export class HelpContainer extends Component {
 HelpContainer.propTypes = {
     appActions: PropTypes.object.isRequired,
     helpOpen: PropTypes.bool.isRequired,
-    helpPage: PropTypes.string.isRequired
+    helpPage: PropTypes.string.isRequired,
+    className: PropTypes.string
 };
 
 function mapStateToProps(state) {

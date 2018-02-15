@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -13,7 +20,8 @@ export class DatePickerContainer extends Component {
         let containerClasses = MiscUtil.generateStringFromSet({
             [styles.datePickerContainer]: true,
             [displayStyles.hiddenFadeOut]: this.props.distractionFreeMode,
-            [displayStyles.hiddenFadeIn]: !this.props.distractionFreeMode
+            [displayStyles.hiddenFadeIn]: !this.props.distractionFreeMode,
+            [this.props.className]: typeof this.props.className !== "undefined"
         });
         return (
             <div className={containerClasses}>
@@ -26,7 +34,8 @@ export class DatePickerContainer extends Component {
 DatePickerContainer.propTypes = {
     date: PropTypes.object.isRequired,
     distractionFreeMode: PropTypes.bool.isRequired,
-    mapActions: PropTypes.object.isRequired
+    mapActions: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 function mapStateToProps(state) {

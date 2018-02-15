@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import * as appStrings from "_core/constants/appStrings";
 import MapUtil from "_core/utils/MapUtil";
 import MiscUtil from "_core/utils/MiscUtil";

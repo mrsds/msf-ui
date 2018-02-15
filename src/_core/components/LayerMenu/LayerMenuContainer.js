@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
@@ -32,7 +39,8 @@ export class LayerMenuContainer extends Component {
         let layerMenuClasses = MiscUtil.generateStringFromSet({
             [styles.layerMenu]: true,
             [displayStyles.hiddenFadeOut]: this.props.distractionFreeMode,
-            [displayStyles.hiddenFadeIn]: !this.props.distractionFreeMode
+            [displayStyles.hiddenFadeIn]: !this.props.distractionFreeMode,
+            [this.props.className]: typeof this.props.className !== "undefined"
         });
 
         let collapseIconClasses = MiscUtil.generateStringFromSet({
@@ -45,7 +53,7 @@ export class LayerMenuContainer extends Component {
                 <Paper elevation={1}>
                     <div className={styles.layerHeaderRow}>
                         <div className={styles.layerHeader}>
-                            <Typography type="subheading" color="inherit">
+                            <Typography variant="subheading" color="inherit">
                                 Map Layers
                             </Typography>
                         </div>
@@ -97,7 +105,8 @@ LayerMenuContainer.propTypes = {
     layerMenuOpen: PropTypes.bool.isRequired,
     layers: PropTypes.object.isRequired,
     distractionFreeMode: PropTypes.bool.isRequired,
-    palettes: PropTypes.object.isRequired
+    palettes: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 function mapStateToProps(state) {

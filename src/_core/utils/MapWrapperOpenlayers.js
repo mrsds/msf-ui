@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import Immutable from "immutable";
 import moment from "moment";
 import Ol_Map from "ol/map";
@@ -391,7 +398,6 @@ export default class MapWrapperOpenlayers extends MapWrapper {
                 let mapLayer = new Ol_Layer_Tile({
                     opacity: layer.get("opacity"),
                     visible: layer.get("isActive"),
-                    crossOrigin: "anonymous",
                     source: layerSource,
                     extent: appConfig.DEFAULT_MAP_EXTENT
                 });
@@ -1888,18 +1894,16 @@ export default class MapWrapperOpenlayers extends MapWrapper {
      * that are marked as type "data" and are
      * currently active
      *
+     * @param {string} [layerType=appStrings.LAYER_GROUP_TYPE_DATA] layer type to search for
      * @returns {array|boolean} list of string layer ids or false if it fails
      * @memberof MapWrapperOpenlayers
      */
-    getActiveLayerIds() {
+    getActiveLayerIds(layerType = appStrings.LAYER_GROUP_TYPE_DATA) {
         try {
             let retList = [];
             let mapLayers = this.map.getLayers();
             mapLayers.forEach(mapLayer => {
-                if (
-                    mapLayer.get("_layerType") === appStrings.LAYER_GROUP_TYPE_DATA &&
-                    mapLayer.getVisible()
-                ) {
+                if (mapLayer.get("_layerType") === layerType && mapLayer.getVisible()) {
                     retList.push(mapLayer.get("_layerId"));
                 }
             });
@@ -2118,6 +2122,7 @@ export default class MapWrapperOpenlayers extends MapWrapper {
                 tileSize: options.tileGrid.tileSize
             }),
             transition: appConfig.DEFAULT_TILE_TRANSITION_TIME,
+            crossOrigin: "anonymous",
             wrapX: true
         });
     }
@@ -2163,6 +2168,7 @@ export default class MapWrapperOpenlayers extends MapWrapper {
                 tileSize: options.tileGrid.tileSize
             }),
             transition: appConfig.DEFAULT_TILE_TRANSITION_TIME,
+            crossOrigin: "anonymous",
             wrapX: true
         });
     }
@@ -2195,6 +2201,7 @@ export default class MapWrapperOpenlayers extends MapWrapper {
             minZoom: options.tileGrid.minZoom,
             tileSize: options.tileGrid.tileSize,
             transition: appConfig.DEFAULT_TILE_TRANSITION_TIME,
+            crossOrigin: "anonymous",
             wrapX: true
         });
     }

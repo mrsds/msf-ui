@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import moment from "moment";
 import MapWrapper from "_core/utils/MapWrapper";
 import MiscUtil from "_core/utils/MiscUtil";
@@ -37,7 +44,14 @@ export default class MapWrapperCesium extends MapWrapper {
         // Create cesium scene
         window.CESIUM_BASE_URL = "assets/cesium";
         this.cesium = window.Cesium;
+
+        // handle multiple initializations of DrawHelper
+        if (typeof window.DrawHelper.isPrepped === "undefined") {
+            window.DrawHelper = window.DrawHelper();
+            window.DrawHelper.isPrepped = true;
+        }
         this.drawHelper = window.DrawHelper;
+
         this.map = this.createMap(container, options);
 
         this.initializationSuccess = this.map ? true : false;
@@ -1544,6 +1558,45 @@ export default class MapWrapperCesium extends MapWrapper {
             return false;
         } catch (err) {
             console.warn("Error in MapWrapperCesium.moveLayerDown:", err);
+            return false;
+        }
+    }
+
+    /**
+     * get a list of the layer ids for layers
+     * that are marked as type "data" and are
+     * currently active
+     *
+     * @param {string} [layerType=appStrings.LAYER_GROUP_TYPE_DATA] layer type to search for
+     * @returns {array|boolean} list of string layer ids or false if it fails
+     * @memberof MapWrapperCesium
+     */
+    getActiveLayerIds(layerType = appStrings.LAYER_GROUP_TYPE_DATA) {
+        try {
+            let retList = [];
+            let vectorLayers = this.map.dataSources;
+            let imageLayers = this.map.imageryLayers;
+
+            // added raster layer ids
+            for (let i = 0; i < imageLayers.length; ++i) {
+                let layer = imageLayers.get(i);
+                if (layer._layerType === layerType) {
+                    retList.push(layer._layerId);
+                }
+            }
+
+            // add vector layer ids
+            // NOTE: Cesium vector layers are not added to the list until their data source is loaded (asyncronous)
+            for (let i = 0; i < vectorLayers.length; ++i) {
+                let layer = vectorLayers.get(i);
+                if (layer._layerType === layerType) {
+                    retList.push(layer._layerId);
+                }
+            }
+
+            return retList;
+        } catch (err) {
+            console.warn("Error in MapWrapperCesium.getActiveLayerIds:", err);
             return false;
         }
     }

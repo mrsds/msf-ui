@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 export { default as ContextMenuSubMenu } from "_core/components/Reusables/ContextMenuSubMenu.js";
 export { default as CustomIcons } from "_core/components/Reusables/CustomIcons.js";
 export { default as EnhancedSwitch } from "_core/components/Reusables/EnhancedSwitch.js";

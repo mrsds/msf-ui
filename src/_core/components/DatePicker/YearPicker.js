@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -52,7 +59,8 @@ export class YearPicker extends Component {
         this.updateFromInternal = false;
         let containerClasses = MiscUtil.generateStringFromSet({
             [styles.datePickerSelector]: true,
-            [styles.datePickerSelectorError]: this.error
+            [styles.datePickerSelectorError]: this.error,
+            [this.props.className]: typeof this.props.className !== "undefined"
         });
         return (
             <div className={containerClasses}>
@@ -78,7 +86,8 @@ export class YearPicker extends Component {
 
 YearPicker.propTypes = {
     onUpdate: PropTypes.func.isRequired,
-    year: PropTypes.string.isRequired
+    year: PropTypes.string.isRequired,
+    className: PropTypes.string
 };
 
 export default connect()(YearPicker);

@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import Immutable from "immutable";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -26,13 +33,16 @@ export class SettingsContainer extends Component {
     }
 
     render() {
+        let containerClasses = MiscUtil.generateStringFromSet({
+            [this.props.className]: typeof this.props.className !== "undefined"
+        });
         return (
             <ModalMenu
                 title="Settings"
                 active={this.props.settingsOpen}
                 closeFunc={() => this.props.appActions.setSettingsOpen(false)}
             >
-                <List>
+                <List className={containerClasses}>
                     <ListSubheader disableSticky>Map Display</ListSubheader>
                     <ListItem>
                         <FormControl fullWidth>
@@ -145,7 +155,8 @@ SettingsContainer.propTypes = {
     appActions: PropTypes.object.isRequired,
     mapActions: PropTypes.object.isRequired,
     dateSliderActions: PropTypes.object.isRequired,
-    analyticsActions: PropTypes.object.isRequired
+    analyticsActions: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 function mapStateToProps(state) {

@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
@@ -541,7 +548,8 @@ export class TimelineContainer extends Component {
         let containerClasses = MiscUtil.generateStringFromSet({
             [styles.elementsContainer]: true,
             [displayStyles.hiddenFadeIn]: !this.props.distractionFreeMode,
-            [displayStyles.hiddenFadeOut]: this.props.distractionFreeMode
+            [displayStyles.hiddenFadeOut]: this.props.distractionFreeMode,
+            [this.props.className]: typeof this.props.className !== "undefined"
         });
         let timelineClasses = MiscUtil.generateStringFromSet({
             [styles.timeline]: true,
@@ -567,7 +575,8 @@ TimelineContainer.propTypes = {
     date: PropTypes.object.isRequired,
     mapActions: PropTypes.object.isRequired,
     distractionFreeMode: PropTypes.bool.isRequired,
-    dateSliderTimeResolution: PropTypes.object.isRequired
+    dateSliderTimeResolution: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 function mapStateToProps(state) {

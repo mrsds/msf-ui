@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
@@ -30,7 +37,6 @@ export class ResolutionStep extends Component {
             higherResolutionComponent = (
                 <Button
                     classes={{ label: styles.stepButtonLabel }}
-                    color="contrast"
                     onClick={() => {
                         this.props.dateSliderActions.setDateResolution(
                             appConfig.DATE_SLIDER_RESOLUTIONS[currentResolution.index + 1],
@@ -51,7 +57,6 @@ export class ResolutionStep extends Component {
             lowerResolutionComponent = (
                 <Button
                     classes={{ label: styles.stepButtonLabel }}
-                    color="contrast"
                     onClick={() => {
                         this.props.dateSliderActions.setDateResolution(
                             appConfig.DATE_SLIDER_RESOLUTIONS[currentResolution.index - 1],
@@ -66,8 +71,13 @@ export class ResolutionStep extends Component {
                 </Button>
             );
         }
+
+        let containerClasses = MiscUtil.generateStringFromSet({
+            [styles.container]: true,
+            [this.props.className]: typeof this.props.className !== "undefined"
+        });
         return (
-            <div className={styles.container}>
+            <div className={containerClasses}>
                 <Grid container spacing={0}>
                     <Grid item xs={12} className={styles.stepContainer}>
                         {higherResolutionComponent}
@@ -89,7 +99,8 @@ export class ResolutionStep extends Component {
 }
 ResolutionStep.propTypes = {
     dateSliderActions: PropTypes.object.isRequired,
-    resolution: PropTypes.object.isRequired
+    resolution: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 function mapDispatchToProps(dispatch) {

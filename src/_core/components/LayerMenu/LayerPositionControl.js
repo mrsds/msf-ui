@@ -1,14 +1,25 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React from "react";
 import PropTypes from "prop-types";
 import Button from "material-ui/Button";
 import Paper from "material-ui/Paper";
 import { LayerControlLabel } from "_core/components/LayerMenu";
 import { Arrow } from "react-popper";
+import MiscUtil from "_core/utils/MiscUtil";
 import styles from "_core/components/LayerMenu/LayerPositionControl.scss";
 
 const LayerPositionControl = props => {
+    let containerClasses = MiscUtil.generateStringFromSet({
+        [props.className]: typeof props.className !== "undefined"
+    });
     return (
-        <div>
+        <div className={containerClasses}>
             <Paper elevation={8} className={styles.positionControl}>
                 <LayerControlLabel>Layer Positioning</LayerControlLabel>
                 <div className={styles.buttonRow}>
@@ -54,7 +65,8 @@ LayerPositionControl.propTypes = {
     moveToTop: PropTypes.func.isRequired,
     moveToBottom: PropTypes.func.isRequired,
     moveUp: PropTypes.func.isRequired,
-    moveDown: PropTypes.func.isRequired
+    moveDown: PropTypes.func.isRequired,
+    className: PropTypes.string
 };
 
 export default LayerPositionControl;

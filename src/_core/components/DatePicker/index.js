@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 export { default as DatePickerContainer } from "_core/components/DatePicker/DatePickerContainer.js";
 export { default as DatePicker } from "_core/components/DatePicker/DatePicker.js";
 export { default as DayPicker } from "_core/components/DatePicker/DayPicker.js";

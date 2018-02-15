@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -32,7 +39,8 @@ export class MouseFollowerContainer extends Component {
         let containerClasses = MiscUtil.generateStringFromSet({
             [styles.mouseFollowerContainer]: true,
             [styles.active]: drawOrMeasure,
-            [styles.right]: left > maxLeft
+            [styles.right]: left > maxLeft,
+            [this.props.className]: typeof this.props.className !== "undefined"
         });
 
         // TODO - make a data display component
@@ -52,7 +60,8 @@ export class MouseFollowerContainer extends Component {
 MouseFollowerContainer.propTypes = {
     pixelCoordinate: PropTypes.object.isRequired,
     drawing: PropTypes.object.isRequired,
-    measuring: PropTypes.object.isRequired
+    measuring: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 function mapStateToProps(state) {

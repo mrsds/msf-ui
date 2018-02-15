@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import appConfig from "constants/appConfig";
 
 export default class MapWrapper {
@@ -186,7 +193,7 @@ export default class MapWrapper {
         console.warn("Error in MapWrapper.moveLayerDown: Method not implemented in subclass");
         return false;
     }
-    getActiveLayerIds() {
+    getActiveLayerIds(layerType) {
         console.warn("Error in MapWrapper.getActiveLayerIds: Method not implemented in subclass");
         return false;
     }

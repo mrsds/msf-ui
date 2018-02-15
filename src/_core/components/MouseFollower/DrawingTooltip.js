@@ -1,7 +1,15 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as appStrings from "_core/constants/appStrings";
+import MiscUtil from "_core/utils/MiscUtil";
 import styles from "_core/components/MouseFollower/DrawingTooltip.scss";
 
 export class DrawingTooltip extends Component {
@@ -25,9 +33,14 @@ export class DrawingTooltip extends Component {
             endHint = "Press enter or double-click to complete";
         }
 
+        let containerClasses = MiscUtil.generateStringFromSet({
+            [styles.drawingTooltip]: true,
+            [this.props.className]: typeof this.props.className !== "undefined"
+        });
+
         // TODO - make a data display component
         return (
-            <div className={styles.drawingTooltip}>
+            <div className={containerClasses}>
                 <div className={styles.beginHint}>{beginHint}</div>
                 <div className={styles.endHint}>{endHint}</div>
             </div>
@@ -37,7 +50,8 @@ export class DrawingTooltip extends Component {
 
 DrawingTooltip.propTypes = {
     drawing: PropTypes.object.isRequired,
-    measuring: PropTypes.object.isRequired
+    measuring: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 export default connect()(DrawingTooltip);

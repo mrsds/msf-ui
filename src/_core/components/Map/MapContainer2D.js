@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -119,7 +126,8 @@ export class MapContainer2D extends Component {
             [styles.mapRenderWrapper]: true,
             [displayStyles.hidden]: this.props.in3DMode,
             [displayStyles.animationFadeIn]: !this.props.in3DMode,
-            [displayStyles.animationFadeOut]: this.props.in3DMode
+            [displayStyles.animationFadeOut]: this.props.in3DMode,
+            [this.props.className]: typeof this.props.className !== "undefined"
         });
 
         return (
@@ -135,7 +143,8 @@ MapContainer2D.propTypes = {
     units: PropTypes.string.isRequired,
     in3DMode: PropTypes.bool.isRequired,
     initialLoadComplete: PropTypes.bool.isRequired,
-    mapActions: PropTypes.object.isRequired
+    mapActions: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 function mapStateToProps(state) {

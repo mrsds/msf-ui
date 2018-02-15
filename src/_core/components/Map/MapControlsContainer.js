@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -89,7 +96,9 @@ export class MapControlsContainer extends Component {
             [displayStyles.hiddenFadeOut]:
                 this.props.mapControlsHidden && this.props.distractionFreeMode,
             [displayStyles.hiddenFadeIn]:
-                !this.props.mapControlsHidden && this.props.distractionFreeMode
+                !this.props.mapControlsHidden && this.props.distractionFreeMode,
+            [this.props.className]: typeof this.props.className !== "undefined",
+            [styles.mapControlsContainer]: true
         });
         return (
             <div
@@ -97,91 +106,87 @@ export class MapControlsContainer extends Component {
                 onMouseLeave={() => this.onMapControlsMouseLeave()}
                 onMouseEnter={() => this.onMapControlsMouseEnter()}
             >
-                <div className={styles.mapControlsContainer}>
-                    <Paper elevation={2} className={styles.buttonGroup}>
-                        <Tooltip
-                            title={this.props.in3DMode ? "Switch to 2D map" : "Switch to 3D map"}
-                            placement="right"
-                        >
-                            <MapButton
-                                disabled={!Modernizr.webgl && !this.props.in3DMode ? true : false}
-                                onClick={() => this.setViewMode()}
-                                aria-label={
-                                    this.props.in3DMode ? "Switch to 2D map" : "Switch to 3D map"
-                                }
-                                className={styles.singleButton}
-                            >
-                                <Earth />
-                            </MapButton>
-                        </Tooltip>
-                    </Paper>
-                    <Paper elevation={2} className={styles.buttonGroup}>
-                        <Tooltip
-                            title={
-                                this.props.distractionFreeMode
-                                    ? "Disable distraction free mode"
-                                    : "Enable distraction free mode"
+                <Paper elevation={2} className={styles.buttonGroup}>
+                    <Tooltip
+                        title={this.props.in3DMode ? "Switch to 2D map" : "Switch to 3D map"}
+                        placement="right"
+                    >
+                        <MapButton
+                            disabled={!Modernizr.webgl && !this.props.in3DMode ? true : false}
+                            onClick={() => this.setViewMode()}
+                            aria-label={
+                                this.props.in3DMode ? "Switch to 2D map" : "Switch to 3D map"
                             }
-                            placement="right"
+                            className={styles.singleButton}
                         >
-                            <MapButton
-                                color={this.props.distractionFreeMode ? "primary" : "default"}
-                                onClick={() => {
-                                    this.props.appActions.setDistractionFreeMode(
-                                        !this.props.distractionFreeMode
-                                    );
-                                }}
-                                aria-label="Home"
-                                className={`${styles.firstButton} ${styles.lineButton}`}
-                            >
-                                {this.props.distractionFreeMode ? <Eye /> : <EyeOff />}
-                            </MapButton>
-                        </Tooltip>
-                        <MapToolsButton
-                            isOpen={this.props.mapControlsToolsOpen}
+                            <Earth />
+                        </MapButton>
+                    </Tooltip>
+                </Paper>
+                <Paper elevation={2} className={styles.buttonGroup}>
+                    <Tooltip
+                        title={
+                            this.props.distractionFreeMode
+                                ? "Disable distraction free mode"
+                                : "Enable distraction free mode"
+                        }
+                        placement="right"
+                    >
+                        <MapButton
+                            color={this.props.distractionFreeMode ? "primary" : "default"}
+                            onClick={() => {
+                                this.props.appActions.setDistractionFreeMode(
+                                    !this.props.distractionFreeMode
+                                );
+                            }}
+                            aria-label="Home"
+                            className={`${styles.firstButton} ${styles.lineButton}`}
+                        >
+                            {this.props.distractionFreeMode ? <Eye /> : <EyeOff />}
+                        </MapButton>
+                    </Tooltip>
+                    <MapToolsButton
+                        isOpen={this.props.mapControlsToolsOpen}
+                        className={styles.lineButton}
+                        setOpen={isOpen => this.props.appActions.setMapControlsToolsOpen(isOpen)}
+                    />
+                    <MapLabelsButton />
+                </Paper>
+                <Paper elevation={2} className={styles.buttonGroup}>
+                    <Tooltip title="Home" placement="right">
+                        <MapButton
+                            onClick={() => {
+                                this.props.mapActions.setMapView(
+                                    { extent: appConfig.DEFAULT_BBOX_EXTENT },
+                                    true
+                                );
+                            }}
+                            aria-label="Home"
+                            className={`${styles.firstButton} ${styles.lineButton}`}
+                        >
+                            <HomeIcon />
+                        </MapButton>
+                    </Tooltip>
+                    <Tooltip title="Zoom In" placement="right">
+                        <MapButton
+                            onClick={this.props.mapActions.zoomIn}
+                            aria-label="Zoom in"
                             className={styles.lineButton}
-                            setOpen={isOpen =>
-                                this.props.appActions.setMapControlsToolsOpen(isOpen)
-                            }
-                        />
-                        <MapLabelsButton />
-                    </Paper>
-                    <Paper elevation={2} className={styles.buttonGroup}>
-                        <Tooltip title="Home" placement="right">
-                            <MapButton
-                                onClick={() => {
-                                    this.props.mapActions.setMapView(
-                                        { extent: appConfig.DEFAULT_BBOX_EXTENT },
-                                        true
-                                    );
-                                }}
-                                aria-label="Home"
-                                className={`${styles.firstButton} ${styles.lineButton}`}
-                            >
-                                <HomeIcon />
-                            </MapButton>
-                        </Tooltip>
-                        <Tooltip title="Zoom In" placement="right">
-                            <MapButton
-                                onClick={this.props.mapActions.zoomIn}
-                                aria-label="Zoom in"
-                                className={styles.lineButton}
-                            >
-                                <PlusIcon />
-                            </MapButton>
-                        </Tooltip>
-                        <Tooltip title="Zoom Out" placement="right">
-                            <MapButton
-                                onClick={this.props.mapActions.zoomOut}
-                                aria-label="Zoom out"
-                                className={styles.lastButton}
-                            >
-                                <RemoveIcon />
-                            </MapButton>
-                        </Tooltip>
-                    </Paper>
-                    <BasemapPicker />
-                </div>
+                        >
+                            <PlusIcon />
+                        </MapButton>
+                    </Tooltip>
+                    <Tooltip title="Zoom Out" placement="right">
+                        <MapButton
+                            onClick={this.props.mapActions.zoomOut}
+                            aria-label="Zoom out"
+                            className={styles.lastButton}
+                        >
+                            <RemoveIcon />
+                        </MapButton>
+                    </Tooltip>
+                </Paper>
+                <BasemapPicker />
             </div>
         );
     }
@@ -193,7 +198,8 @@ MapControlsContainer.propTypes = {
     mapControlsHidden: PropTypes.bool.isRequired,
     mapControlsToolsOpen: PropTypes.bool.isRequired,
     mapActions: PropTypes.object.isRequired,
-    appActions: PropTypes.object.isRequired
+    appActions: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 function mapStateToProps(state) {

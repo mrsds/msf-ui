@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -29,7 +36,7 @@ export class AppButtons extends Component {
                     className={styles.btnWrapper}
                 >
                     <IconButtonSmall
-                        color="contrast"
+                        color="inherit"
                         className={styles.btn}
                         onClick={() => appActions.setHelpOpen(true)}
                     >
@@ -43,7 +50,7 @@ export class AppButtons extends Component {
                     className={styles.btnWrapper}
                 >
                     <IconButtonSmall
-                        color="contrast"
+                        color="inherit"
                         className={styles.btn}
                         onClick={() => appActions.setShareOpen(true)}
                     >
@@ -57,7 +64,7 @@ export class AppButtons extends Component {
                     className={styles.btnWrapper}
                 >
                     <IconButtonSmall
-                        color="contrast"
+                        color="inherit"
                         className={styles.btn}
                         onClick={() => appActions.setSettingsOpen(true)}
                     >

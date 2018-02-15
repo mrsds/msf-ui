@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -6,6 +13,7 @@ import Divider from "material-ui/Divider";
 import Typography from "material-ui/Typography";
 import { ModalMenu } from "_core/components/ModalMenu";
 import { AlertList } from "_core/components/Alerts";
+import MiscUtil from "_core/utils/MiscUtil";
 import * as appActions from "_core/actions/appActions";
 import styles from "_core/components/Alerts/AlertsContainer.scss";
 
@@ -18,11 +26,16 @@ export class AlertsContainer extends Component {
         let alerts = alertsPresent ? this.props.alerts : this.prevGroups ? this.prevGroups : [];
         this.prevGroups = this.props.alerts;
 
+        let containerClasses = MiscUtil.generateStringFromSet({
+            [styles.root]: true,
+            [this.props.className]: typeof this.props.className !== "undefined"
+        });
+
         return (
             <ModalMenu
                 title="Alert"
                 active={alertsPresent}
-                className={styles.root}
+                className={containerClasses}
                 closeFunc={() => {
                     this.props.appActions.dismissAllAlerts(this.props.alerts);
                 }}
@@ -35,7 +48,8 @@ export class AlertsContainer extends Component {
 
 AlertsContainer.propTypes = {
     appActions: PropTypes.object.isRequired,
-    alerts: PropTypes.object.isRequired
+    alerts: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 function mapStateToProps(state) {

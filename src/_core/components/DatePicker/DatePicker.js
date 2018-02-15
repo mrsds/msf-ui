@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -6,6 +13,7 @@ import moment from "moment";
 import Grid from "material-ui/Grid";
 import { YearPicker, MonthPicker, DayPicker, IncrementButton } from "_core/components/DatePicker";
 import appConfig from "constants/appConfig";
+import MiscUtil from "_core/utils/MiscUtil";
 import styles from "_core/components/DatePicker/DatePicker.scss";
 
 export class DatePicker extends Component {
@@ -54,8 +62,14 @@ export class DatePicker extends Component {
         let year = date.format("YYYY");
         let month = date.format("MMM");
         let day = date.format("DD");
+
+        let containerClasses = MiscUtil.generateStringFromSet({
+            [styles.datePicker]: true,
+            [this.props.className]: typeof this.props.className !== "undefined"
+        });
+
         return (
-            <div className={styles.datePicker}>
+            <div className={containerClasses}>
                 <Grid container spacing={0}>
                     <Grid item xs={5} className={styles.incrementButtonWrapper}>
                         <IncrementButton
@@ -132,7 +146,8 @@ export class DatePicker extends Component {
 
 DatePicker.propTypes = {
     setDate: PropTypes.func.isRequired,
-    date: PropTypes.object.isRequired
+    date: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 export default connect()(DatePicker);

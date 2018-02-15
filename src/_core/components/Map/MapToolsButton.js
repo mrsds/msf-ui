@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React from "react";
 import PropTypes from "prop-types";
 import Popover from "material-ui/Popover";
@@ -13,7 +20,7 @@ import displayStyles from "_core/styles/display.scss";
 
 const MapToolsButton = props => {
     let btnClasses = MiscUtil.generateStringFromSet({
-        [props.className]: typeof className !== "undefined"
+        [props.className]: typeof props.className !== "undefined"
     });
     return (
         <ClickAwayListener

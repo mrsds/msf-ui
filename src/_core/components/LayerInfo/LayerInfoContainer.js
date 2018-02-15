@@ -1,16 +1,23 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import Immutable from "immutable";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Dialog, { DialogContent } from "material-ui/Dialog";
-import { CircularProgress } from "material-ui/Progress";
 import List, { ListItem, ListItemText, ListItemIcon } from "material-ui/List";
 import Divider from "material-ui/Divider";
 import Icon from "material-ui/Icon";
 import ErrorOutlineIcon from "material-ui-icons/ErrorOutline";
 import AccessTimeIcon from "material-ui-icons/AccessTime";
 import Typography from "material-ui/Typography";
+import { LoadingSpinner } from "_core/components/Reusables";
 import { AsyncImage } from "_core/components/AsyncImage";
 import * as appActions from "_core/actions/appActions";
 import MiscUtil from "_core/utils/MiscUtil";
@@ -41,27 +48,32 @@ export class LayerInfoContainer extends Component {
                 this.props.layerMetadataAsync.get("failed")
         });
 
+        let contentClasses = MiscUtil.generateStringFromSet({
+            [styles.root]: true,
+            [this.props.className]: typeof this.props.className !== "undefined"
+        });
+
         return (
             <Dialog
                 classes={{ paper: styles.paper }}
                 open={this.props.isOpen}
                 onClose={this.props.appActions.closeLayerInfo}
             >
-                <DialogContent className={styles.root}>
+                <DialogContent className={contentClasses}>
                     <AsyncImage className={styles.thumbnailImage} src={this.props.thumbnailUrl} />
                     <div className={styles.layerInfoContent}>
                         <div className={loadingClasses}>
-                            <CircularProgress className={styles.layerInfoSpinner} />
+                            <LoadingSpinner className={styles.layerInfoSpinner} />
                         </div>
                         <div className={errorClasses}>
                             <div className={styles.errorContent}>
                                 <ErrorOutlineIcon />
-                                <Typography type="subheading" color="default">
+                                <Typography variant="subheading" color="default">
                                     No Metadata Available
                                 </Typography>
                             </div>
                         </div>
-                        <Typography type="headline" color="inherit">
+                        <Typography variant="headline" color="inherit">
                             {metadata.get("title")}
                         </Typography>
                         <List>
@@ -96,10 +108,12 @@ export class LayerInfoContainer extends Component {
                                     secondary="Date Range"
                                 />
                             </ListItem>
-                            <Divider />
                         </List>
-                        <Typography type="subheading">Description</Typography>
-                        <Typography type="body1">{metadata.get("description")}</Typography>
+                        <Divider className={styles.divider} />
+                        <Typography gutterBottom variant="subheading">
+                            Description
+                        </Typography>
+                        <Typography variant={"body1"}>{metadata.get("description")}</Typography>
                     </div>
                 </DialogContent>
             </Dialog>
@@ -113,7 +127,8 @@ LayerInfoContainer.propTypes = {
     layerId: PropTypes.string.isRequired,
     thumbnailUrl: PropTypes.string.isRequired,
     metadata: PropTypes.object.isRequired,
-    layerMetadataAsync: PropTypes.object.isRequired
+    layerMetadataAsync: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 function mapStateToProps(state) {

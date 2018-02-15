@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -25,13 +32,14 @@ export class MouseCoordinates extends Component {
             : " ------" + lonUnit + ", ------" + latUnit;
 
         let containerClasses = MiscUtil.generateStringFromSet({
-            "current-coordinate": true
+            [styles.text]: true,
+            [this.props.className]: typeof this.props.className !== "undefined"
         });
 
         return (
             <Typography
-                type="body1"
-                className={styles.text}
+                variant="body1"
+                className={containerClasses}
                 // eslint-disable-next-line react/no-danger
                 dangerouslySetInnerHTML={{ __html: displayText }}
             />
@@ -40,7 +48,8 @@ export class MouseCoordinates extends Component {
 }
 
 MouseCoordinates.propTypes = {
-    pixelCoordinate: PropTypes.object.isRequired
+    pixelCoordinate: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 function mapStateToProps(state) {

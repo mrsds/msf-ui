@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 @import "~styles/colors";
 
 .layerInfoLoading,
@@ -11,7 +18,6 @@
     z-index: 1;
     pointer-events: none;
     display: none;
-    transition: opacity 0.2s linear 0s, visibility 0s linear 0.21s;
     &.active {
         display: block;
         pointer-events: auto;
@@ -22,7 +28,12 @@
     position: absolute;
     top: 50%;
     left: 50%;
+    width: 50px;
+    height: 50px;
     transform: translate(-50%, -50%);
+    :global(.loadingSpinner) :global(.loadingSpinnerCircle) {
+        border-width: 3px;
+    }
 }
 
 .layerInfoError {
@@ -61,4 +72,11 @@
 
 .paper {
     width: 450px;
+}
+.divider {
+    margin-bottom: 16px;
+}
+
+.descriptionHeading {
+    padding-bottom: 8px;
 }

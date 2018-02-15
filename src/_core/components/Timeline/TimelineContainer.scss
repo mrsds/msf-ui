@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 .elementsContainer {
     position: absolute;
     bottom: 0px;
@@ -96,7 +103,7 @@
             margin-left: -30px;
         }
         :global(.vis-text):global(.vis-major) {
-            margin-left: -30px;
+            margin-left: -32px;
             text-align: left;
             padding: 3px 22px;
             div {

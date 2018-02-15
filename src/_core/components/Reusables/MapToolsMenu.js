@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -20,8 +27,12 @@ import styles from "_core/components/Reusables/MapToolsMenu.scss";
 
 export class MapToolsMenu extends Component {
     render() {
+        let containerClasses = MiscUtil.generateStringFromSet({
+            [styles.mapToolsMenu]: true,
+            [this.props.className]: typeof this.props.className !== "undefined"
+        });
         return (
-            <Paper className={styles.mapToolsMenu}>
+            <Paper className={containerClasses}>
                 <MenuList dense>
                     <ContextMenuSubMenu
                         title="Measure"
@@ -174,7 +185,8 @@ export class MapToolsMenu extends Component {
 MapToolsMenu.propTypes = {
     handleRequestClose: PropTypes.func.isRequired,
     appActions: PropTypes.object.isRequired,
-    mapActions: PropTypes.object.isRequired
+    mapActions: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 function mapDispatchToProps(dispatch) {

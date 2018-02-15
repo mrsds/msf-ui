@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import Immutable from "immutable";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -39,16 +46,16 @@ export class ModalMenu extends Component {
                     <Toolbar>
                         <IconButton
                             onClick={this.props.backFunc}
-                            color="contrast"
+                            color="inherit"
                             className={backClasses}
                         >
                             <ArrowBackIcon />
                         </IconButton>
-                        <Typography type="title" color="inherit" className={styles.flex}>
+                        <Typography variant="title" color="inherit" className={styles.flex}>
                             {this.props.title}
                         </Typography>
                         <IconButton
-                            color="contrast"
+                            color="inherit"
                             onClick={this.props.closeFunc}
                             className={closeClasses}
                         >

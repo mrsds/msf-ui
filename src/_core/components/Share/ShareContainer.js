@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -187,6 +194,12 @@ export class ShareContainer extends Component {
         } else if (window.location.hash !== "") {
             window.history.replaceState(undefined, undefined, "#");
         }
+
+        let containerClasses = MiscUtil.generateStringFromSet({
+            [styles.shareContainer]: true,
+            [this.props.className]: typeof this.props.className !== "undefined"
+        });
+
         return (
             <ModalMenu
                 small
@@ -197,7 +210,7 @@ export class ShareContainer extends Component {
                     this.focusTextArea();
                 }}
             >
-                <div className={styles.shareContainer}>
+                <div className={containerClasses}>
                     <p>
                         This URL contains the information to reproduce this current view of the map.
                     </p>
@@ -217,7 +230,7 @@ export class ShareContainer extends Component {
                         <Grid container spacing={0}>
                             <Grid item xs>
                                 <Button
-                                    fab
+                                    variant="fab"
                                     style={{ color: "white", background: "#505050" }}
                                     onClick={() => this.shareEmail(shareUrl)}
                                 >
@@ -226,7 +239,7 @@ export class ShareContainer extends Component {
                             </Grid>
                             <Grid item xs>
                                 <Button
-                                    fab
+                                    variant="fab"
                                     style={{ color: "white", background: "#3B5998" }}
                                     onClick={() => this.shareFacebook(shareUrl)}
                                 >
@@ -235,7 +248,7 @@ export class ShareContainer extends Component {
                             </Grid>
                             <Grid item xs>
                                 <Button
-                                    fab
+                                    variant="fab"
                                     style={{ color: "white", background: "#55ACEE" }}
                                     onClick={() => this.shareTwitter(shareUrl)}
                                 >
@@ -244,7 +257,7 @@ export class ShareContainer extends Component {
                             </Grid>
                             <Grid item xs>
                                 <Button
-                                    fab
+                                    variant="fab"
                                     style={{ color: "white", background: "#DD4B39" }}
                                     onClick={() => this.shareReddit(shareUrl)}
                                 >
@@ -270,7 +283,8 @@ ShareContainer.propTypes = {
     extent: PropTypes.object.isRequired,
     enableTerrain: PropTypes.bool.isRequired,
     mapDate: PropTypes.object.isRequired,
-    dateSliderResolution: PropTypes.object.isRequired
+    dateSliderResolution: PropTypes.object.isRequired,
+    className: PropTypes.string
 };
 
 function mapStateToProps(state) {
