@@ -14,6 +14,7 @@ import { ListItem, ListItemSecondaryAction, ListItemText } from "material-ui/Lis
 import InfoOutlineIcon from "material-ui-icons/InfoOutline";
 import DateRangeIcon from "material-ui-icons/DateRange";
 import Collapse from "material-ui/transitions/Collapse";
+import Typography from "material-ui/Typography";
 import Divider from "material-ui/Divider";
 import { Colorbar } from "_core/components/Colorbar";
 import colorbarStylesExtended from "components/LayerMenu/ColorbarStylesExtended.scss";
@@ -36,12 +37,28 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
 
         this.isChangingOpacity = false;
         this.isChangingPosition = false;
+        this.isChangingDate = false;
         this.opacityButton = null;
-        this.datePickerVisible = false;
     }
 
     toggleDatePickerVisible() {
-        this.datePickerVisible = !this.datePickerVisible;
+        this.isChangingDate = !this.isChangingDate;
+        this.isChangingPosition = false;
+        this.isChangingOpacity = false;
+        this.forceUpdate();
+    }
+
+    toggleChangingOpacity() {
+        this.isChangingOpacity = !this.isChangingOpacity;
+        this.isChangingPosition = false;
+        this.isChangingDate = false;
+        this.forceUpdate();
+    }
+
+    toggleChangingPosition() {
+        this.isChangingPosition = !this.isChangingPosition;
+        this.isChangingOpacity = false;
+        this.isChangingDate = false;
         this.forceUpdate();
     }
 
@@ -53,8 +70,22 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
     }
 
     renderTopContent() {
+        let currentGriddedDate = this.props.griddedSettings
+            .get("currentDate")
+            .format("MMM Do, YYYY");
+        let title = (
+            <div>
+                {this.props.layer.get("title")}
+                <Typography style={{ display: "inline" }} variant="caption">
+                    &nbsp;({currentGriddedDate})
+                </Typography>
+            </div>
+        );
         return (
-            <ListItem dense={true} classes={{ dense: styles.dense }}>
+            <ListItem
+                dense={true}
+                classes={{ dense: styles.dense, root: stylesExtended.griddedLayerListItem }}
+            >
                 <Tooltip
                     title={this.props.layer.get("isActive") ? "Hide Layer" : "Show Layer"}
                     placement="right"
@@ -66,7 +97,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                     />
                 </Tooltip>
                 <span className={textStyles.textEllipsis}>
-                    <ListItemText primary={this.props.layer.get("title")} />
+                    <ListItemText primary={title} />
                 </span>
                 <ListItemSecondaryAction
                     classes={{
@@ -137,16 +168,17 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                                 gpuAcceleration: false
                             }
                         }}
-                        eventsEnabled={this.datePickerVisible}
-                        className={!this.datePickerVisible ? displayStyles.noPointer : ""}
+                        eventsEnabled={this.isChangingDate}
+                        className={!this.isChangingDate ? displayStyles.noPointer : ""}
                     >
-                        <Grow style={{ transformOrigin: "right" }} in={this.datePickerVisible}>
+                        <Grow style={{ transformOrigin: "right" }} in={this.isChangingDate}>
                             <div>
                                 <LayerDateControl
                                     updateDate={date =>
                                         this.props.mapActionsExtended.updateGriddedDate(date)
                                     }
                                     onClose={() => this.toggleDatePickerVisible()}
+                                    griddedSettings={this.props.griddedSettings}
                                 />
                             </div>
                         </Grow>
@@ -248,6 +280,7 @@ GriddedLayerControlContainer.propTypes = {
     mapActions: PropTypes.object.isRequired,
     mapActionsExtended: PropTypes.object.isRequired,
     layer: PropTypes.object.isRequired,
+    griddedSettings: PropTypes.object.isRequired,
     activeNum: PropTypes.number.isRequired,
     palette: PropTypes.object
 };
@@ -259,4 +292,10 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(GriddedLayerControlContainer);
+function mapStateToProps(state) {
+    return {
+        griddedSettings: state.map.get("griddedSettings")
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GriddedLayerControlContainer);

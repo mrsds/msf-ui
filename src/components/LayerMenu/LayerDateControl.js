@@ -14,7 +14,8 @@ import { LayerControlLabel } from "_core/components/LayerMenu";
 import styles from "components/LayerMenu/LayerDateControlStyles.scss";
 
 export class LayerDateControl extends Component {
-    updateDatePart(value, period) {
+    updateDatePart(event, period) {
+        let value = event.target.value;
         const newDate = moment(this.props.griddedSettings.get("currentDate"));
         switch (period) {
             case "year":
@@ -69,14 +70,15 @@ export class LayerDateControl extends Component {
         return (
             <div>
                 <Paper elevation={8} className={styles.dateControl}>
-                    <LayerControlLabel>Select Gridded Methane Date</LayerControlLabel>
+                    <LayerControlLabel>Gridded Methane Date</LayerControlLabel>
                     <FormGroup row>
                         <FormControl className={yearClass}>
                             <InputLabel htmlFor="year-select">Year</InputLabel>
                             <Select
                                 value={currentDate.year()}
+                                autoWidth={true}
                                 input={<Input name="Year" id="year-select" />}
-                                onChange={event => this.updateDatePart(event.target.value, "year")}
+                                onChange={event => this.updateDatePart(event, "year")}
                             >
                                 {yearList.map(year => (
                                     <MenuItem key={year} value={year}>
@@ -89,8 +91,9 @@ export class LayerDateControl extends Component {
                             <InputLabel htmlFor="month-select">Month</InputLabel>
                             <Select
                                 value={currentDate.format("MMM")}
+                                autoWidth={true}
                                 input={<Input name="Month" id="month-select" />}
-                                onChange={event => this.updateDatePart(event.target.value, "month")}
+                                onChange={event => this.updateDatePart(event, "month")}
                             >
                                 {monthList.map(month => (
                                     <MenuItem key={month} value={month}>
@@ -103,8 +106,9 @@ export class LayerDateControl extends Component {
                             <InputLabel htmlFor="day-select">Day</InputLabel>
                             <Select
                                 value={currentDate.date()}
+                                autoWidth={true}
                                 input={<Input name="Day" id="day-select" />}
-                                onChange={event => this.updateDatePart(event.target.value, "day")}
+                                onChange={event => this.updateDatePart(event, "day")}
                             >
                                 {dayList.map(day => (
                                     <MenuItem key={day} value={day}>
@@ -134,10 +138,10 @@ LayerDateControl.propTypes = {
     onClose: PropTypes.func
 };
 
-function mapStateToProps(state) {
-    return {
-        griddedSettings: state.map.get("griddedSettings")
-    };
-}
+// function mapStateToProps(state) {
+//     return {
+//         griddedSettings: state.map.get("griddedSettings")
+//     };
+// }
 
-export default connect(mapStateToProps, null)(LayerDateControl);
+export default LayerDateControl;
