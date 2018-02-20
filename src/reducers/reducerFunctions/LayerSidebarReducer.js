@@ -66,7 +66,8 @@ export default class LayerSidebarReducer {
                                               }
                                           ]),
                                           png_url: feature.png_url,
-                                          rgbqlctr_url: feature.rgbqlctr_url
+                                          rgbqlctr_url: feature.rgbqlctr_url,
+                                          thumbnail: feature.plume_url_thumb
                                       })
                                   );
                                   return keys;
