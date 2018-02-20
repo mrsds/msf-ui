@@ -1,12 +1,20 @@
-## Welcome to the Common Mapping Client 2!
+## Welcome to the Common Mapping Client!
 
-![Preview](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/core.png)
+[![CircleCI](https://circleci.com/gh/nasa/common-mapping-client.svg?style=shield)](https://circleci.com/gh/nasa/common-mapping-client)
+[![Dependencies Status](https://david-dm.org/nasa/common-mapping-client/status.svg)](https://david-dm.org/nasa/common-mapping-client)
+[![Coverage Status](https://coveralls.io/repos/github/nasa/common-mapping-client/badge.svg?branch=master)](https://coveralls.io/github/nasa/common-mapping-client?branch=master)
+[![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+
+
+[![Preview](https://raw.githubusercontent.com/nasa/common-mapping-client/master/docs/core-docs/resources/screenshot_core.jpg)](https://nasa.github.io/common-mapping-client/branches/master/)
 
 ### Overview
 The Common Mapping Client (CMC) is a foundation for web-based mapping applications that
 leverages, combines, and abstracts certain commonly used mapping functionalities,
 enabling developers to spend less time reinventing the wheel and more time solving
-their specific problems.
+their specific problems. Sitting somewhere between a starter-kit and a framework,
+CMC aims fulfill the basic needs of a mapping application without getting in the
+way of any given project's unique goals.
 
 Over the years, there have been many projects that try to solve the same issue:
 put data on a map and explore it. Unfortunately, there is an increasingly steep
@@ -16,21 +24,13 @@ will give me the features I need? How to I glue all these together with
 a code layout that I won't want to burn next week? CMC solves this by bundling
 together a solid and modular base framework with robust mapping libraries,
 a well thought out structure, and a thick shield against feature-creep
-to deliver what is essentially a starter project for mapping that will let
-you start building the cool stuff faster.
+to let you start building the cool stuff faster.
 
 We maintain a list of further example projects and projects that began from CMC
 so that you can easily get examples of building intricate and detailed workflows
-on top of our client.
+on top of this tool.
 
-*General Philosophy*
-If a capability or widget is not in 85% of mapping applications, it will not be
-part of CMC-Core.
-
-### Live Demo
-- Check out our live demo http://graywhale:49160/master/
-- GHE code-coverage: http://graywhale:49160/master/test-results/coverage/
-- GHE unit test report: http://graywhale:49160/master/test-results/
+View our [live demo](https://nasa.github.io/common-mapping-client/branches/master/).
 
 ### Features
 * 2D/3D Map library abstraction
@@ -85,12 +85,13 @@ part of CMC-Core.
 *Contributing Directly to CMC-Core*
 
 You are more than welcome to create forks to fix bugs, add features or
-enhancements or otherwise improve the tool.
+enhancements or otherwise improve the tool. Please submit these changes through
+pull-requests for review.
 
 *Contributing to the CMC Ecosystem*
 
 If you use CMC for your own project, please let us know so that we may list it
-under our [Example Projects](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/docs/core-docs/EXAMPLE_PROJECTS.md) for others to find inspiration in.
+under our [Example Projects](EXAMPLE_PROJECTS.md) for others to find inspiration in.
 
 If you create a particularly useful or robust widget in your own CMC descendant,
 please create an example project demonstrating just that widget so that others
@@ -98,37 +99,5 @@ who have the same problem down the road may find a solution faster.
 
 ### Documentation Shortcut
 
-* [Developer Guide](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/docs/core-docs/DEVELOPER_MANUAL.md)
-* [Example Projects](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/docs/core-docs/EXAMPLE_PROJECTS.md)
-
-
-## Copyright and Export Classification
-
-```
-Copyright 2017, by the California Institute of Technology. ALL RIGHTS RESERVED.
-United States Government Sponsorship acknowledged. Any commercial use must be
-negotiated with the Office of Technology Transfer at the California Institute
-of Technology.
-
-This software is subject to U.S. export control laws and regulations and has
-been classified as EAR99.  By accepting this software, the user agrees to comply
-with all applicable U.S. export laws and regulations. User has the responsibility
-to obtain export licenses, or other export authority as may be required before
-exporting such information to foreign countries or providing access to foreign persons.
-```
-
-## Licensing
-
-```
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- ```
+* [Developer Guide](DEVELOPER_MANUAL.md)
+* [Example Projects](EXAMPLE_PROJECTS.md)

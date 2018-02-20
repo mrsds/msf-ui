@@ -116,7 +116,6 @@ export class LayerDateControl extends Component {
                     </FormGroup>
                     <Button
                         color="primary"
-                        dense
                         className={styles.doneButton}
                         onClick={this.props.onClose}
                     >

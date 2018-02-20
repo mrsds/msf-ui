@@ -59,8 +59,8 @@ export class FeatureDetailContainer extends Component {
         return (
             <div className={styles.featureDetailContainer}>
                 <Button
-                    raised
                     className={styles.floatingBackButton}
+                    variant="raised"
                     onClick={this.props.hideFeatureDetailContainer}
                 >
                     Back to Map
@@ -120,7 +120,7 @@ export class FeatureDetailContainer extends Component {
             <div>
                 <Card className={styles.cardRoot}>
                     <CardContent>
-                        <Typography type="headline" component="h2">
+                        <Typography variant="headline" component="h2">
                             Facility Overview
                         </Typography>
                         {this.makeInfoFields(observationDataFields)}
@@ -131,7 +131,6 @@ export class FeatureDetailContainer extends Component {
                             href={googleMapsUri}
                             target="_blank"
                             disabled={!googleMapsUri}
-                            dense
                         >
                             View In Google Maps
                         </Button>
@@ -139,7 +138,7 @@ export class FeatureDetailContainer extends Component {
                 </Card>
                 <Card className={styles.cardRoot}>
                     <CardContent>
-                        <Typography type="headline" component="h2">
+                        <Typography variant="headline" component="h2">
                             VISTA Facility Metadata
                         </Typography>
                         {this.makeInfoFields(
@@ -205,7 +204,7 @@ export class FeatureDetailContainer extends Component {
             <div>
                 <Card className={styles.cardRoot}>
                     <CardContent>
-                        <Typography type="headline" component="h2">
+                        <Typography variant="headline" component="h2">
                             Observation Data
                         </Typography>
                         {this.makeInfoFields(
@@ -221,7 +220,6 @@ export class FeatureDetailContainer extends Component {
                             href={googleMapsUri}
                             target="_blank"
                             disabled={!googleMapsUri}
-                            dense
                         >
                             View In Google Maps
                         </Button>
@@ -232,7 +230,7 @@ export class FeatureDetailContainer extends Component {
                         <Grid item xs>
                             <Card className={styles.cardRoot}>
                                 <CardContent>
-                                    <Typography type="headline" component="h2">
+                                    <Typography variant="headline" component="h2">
                                         Observation Methane Plume Imagery
                                     </Typography>
                                     <div className={styles.observationImage}>
@@ -244,7 +242,7 @@ export class FeatureDetailContainer extends Component {
                         <Grid item xs>
                             <Card className={styles.cardRoot}>
                                 <CardContent>
-                                    <Typography type="headline" component="h2">
+                                    <Typography variant="headline" component="h2">
                                         Observation RGB Imagery
                                     </Typography>
                                     <div className={styles.observationImage}>

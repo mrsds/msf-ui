@@ -1,3 +1,10 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 "use strict";
 
 const webpack = require("webpack");
@@ -140,14 +147,14 @@ module.exports = options => {
                 },
                 {
                     // Load our inline styles
-                    test: path.join(BASE_DIR, "src/styles/inlineStyles.css"),
-                    use: InternalCSS.extract([cssLoader(false), postCSSLoader])
+                    test: path.join(BASE_DIR, "src/styles/inlineStyles.scss"),
+                    use: InternalCSS.extract([cssLoader(false), postCSSLoader, sassLoader])
                 },
                 {
                     // Load our app styles through our main cssModule rules
                     test: /\.(css|scss)$/,
                     exclude: [
-                        path.join(BASE_DIR, "src/styles/inlineStyles.css"),
+                        path.join(BASE_DIR, "src/styles/inlineStyles.scss"),
                         path.join(BASE_DIR, "node_modules/")
                     ], // Ignore inlineStyles and node_modules
                     use: cssModuleRule
@@ -217,7 +224,6 @@ module.exports = options => {
     if (options.isProduction) {
         webpackConfig.plugins.push(
             new webpack.optimize.UglifyJsPlugin(), // Minimize scripts and css in output
-            new webpack.optimize.DedupePlugin(), // remove duplicated modules
             new webpack.optimize.OccurrenceOrderPlugin()
         );
     } else {

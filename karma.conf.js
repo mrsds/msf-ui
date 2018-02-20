@@ -1,6 +1,13 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 // Karma configuration
-var webpack = require("webpack");
-var path = require("path");
+const webpack = require("webpack");
+const path = require("path");
 
 const webpackConfig = require("./webpack/webpack.config.helper")({
     isProduction: false,
@@ -12,7 +19,7 @@ const webpackConfig = require("./webpack/webpack.config.helper")({
     }
 });
 
-var packageConfig = require("./package.json");
+const packageConfig = require("./package.json");
 
 module.exports = function(config) {
     config.set({
@@ -67,7 +74,7 @@ module.exports = function(config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ["progress", "coverage", "html"],
+        reporters: ["progress", "coverage", "html", "junit"],
 
         htmlReporter: {
             outputFile: "test-results/index.html",
@@ -78,9 +85,14 @@ module.exports = function(config) {
         },
 
         coverageReporter: {
-            type: "html",
             dir: "test-results",
-            subdir: "coverage"
+            reporters: [{ type: "lcov", subdir: "report" }]
+        },
+
+        junitReporter: {
+            outputDir: "test-results/junit",
+            outputFile: "test-results-junit.xml",
+            useBrowserName: false
         },
 
         // web server port

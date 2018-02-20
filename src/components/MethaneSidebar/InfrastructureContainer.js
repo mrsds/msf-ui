@@ -145,23 +145,23 @@ export class InfrastructureContainer extends Component {
                         <Typography
                             color={isItemPrimary ? "inherit" : "default"}
                             className={layerSidebarStyles.listItemText}
-                            type="body1"
+                            variant="body1"
                             noWrap
                         >
                             {feature.get("name")}
                         </Typography>
                         <Typography
-                            color={isItemPrimary ? "inherit" : "secondary"}
+                            color={isItemPrimary ? "inherit" : "default"}
                             className={layerSidebarStyles.listItemTextSecondary}
-                            type="caption"
+                            variant="caption"
                             noWrap
                         >
                             {feature.get("flyoverCount") + " flyovers"}
                         </Typography>
                         <Typography
-                            color={isItemPrimary ? "inherit" : "secondary"}
+                            color={isItemPrimary ? "inherit" : "default"}
                             className={layerSidebarStyles.listItemTextSecondary}
-                            type="caption"
+                            variant="caption"
                             noWrap
                         >
                             {feature.get("category")}
@@ -169,16 +169,15 @@ export class InfrastructureContainer extends Component {
                     </div>
                     <ListItemSecondaryAction className={layerSidebarStyles.secondaryAction}>
                         <IconButton
-                            color={isItemPrimary ? "contrast" : "default"}
+                            className={isItemPrimary ? layerSidebarStyles.buttonContrast : ""}
                             key={feature.get("id") + "_my_location_icon"}
                             onClick={() => this.props.centerMapOnFeature(feature, "VISTA")}
                         >
                             <MyLocationIcon />
                         </IconButton>
                         <IconButton
-                            color={
-                                isItemPrimary ? "contrast" : isActiveDetail ? "primary" : "default"
-                            }
+                            className={isItemPrimary ? layerSidebarStyles.buttonContrast : ""}
+                            color={isActiveDetail ? "primary" : "default"}
                             key={feature.get("id") + "_info_icon"}
                             onClick={toggleDetailAction}
                         >
@@ -270,7 +269,7 @@ export class InfrastructureContainer extends Component {
         return (
             <div className={containerClasses}>
                 <Paper elevation={1} className={layerSidebarStyles.searchFiltersContainer}>
-                    <Typography style={{ padding: "4px 0px 8px" }} type="subheading">
+                    <Typography style={{ padding: "4px 0px 8px" }} variant="subheading">
                         Browse Infrastructure
                     </Typography>
                     <InfrastructureFiltersContainer />

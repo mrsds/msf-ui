@@ -23,17 +23,18 @@ A detailed guide on getting starting with the Common Mapping Client. This guide 
     4. [Brief Note on Prettier](#cmc-build-process-prettier)
     5. [Brief Note on Serving CMC](#cmc-build-process-serving-cmc)
 7. [Styling CMC](#styling-cmc)
-    1. [React UI Component Library (React-Toolbox)](#styling-cmc-react-toolbox)
-    2. [SASS Usage](#styling-cmc-sass)
-    3. [CMC Style Architecture](#styling-cmc-sass-architecture)
-    4. [Overriding Core Styles](#styling-cmc-overrides)
-    5. [Overriding React-Toolbox SASS Variables](#styling-cmc-overrides-react-toolbox)
-    6. [Fonts](#styling-cmc-fonts)
+    1. [React UI Component Library (Material-UI)](#styling-cmc-material-ui)
+    2. [CMC Style Architecture](#styling-cmc-style-architecture)
+    3. [CSS Modules](#styling-cmc-css-modules)
+    4. [SASS Usage](#styling-cmc-sass)
+    5. [PostCSS](#styling-cmc-postcss)
+    6. [Overriding Core Styles](#styling-cmc-overrides)
+    7. [Overriding Material-UI Styles](#styling-cmc-overrides-material-ui)
+    8. [Fonts](#styling-cmc-fonts)
         1. [When to use Roboto ](#styling-cmc-using-roboto)
         2. [When to use Roboto Mono](#styling-cmc-using-roboto-mono)
-    7. [postCSS](#styling-cmc-postcss)
-    8. [Favicon Generation](#styling-cmc-favicons)
-    9. [Custom Icons](#styling-cmc-custom-icons)
+    9. [Favicon Generation](#styling-cmc-favicons)
+    10. [Custom Icons](#styling-cmc-custom-icons)
 8. [Components and State with React & Redux](#components-and-state-with-react-redux)
     1. [Things to Know about React/Redux](#things-to-know-about-react-redux)
     2. [CMC React & Redux Idioms](#cmc-react-redux-idioms)
@@ -238,7 +239,7 @@ export default rootReducer;
 
 This new index reducer replaces the Core map reducer function with the new map_Extended reducer function. When this modfied application is run, the default view should now be in 3D and you should see a log statement of "Modified Action" every time a layer is activated/deactivated.
 
-In general, the best way to start altering a part of `_core` is to copy the piece into an area outside of `_core`, make the modifications you want then alter the imports necessary to use your new version. It is sometimes the case that these alterations are recursive in nature (e.g. if `_core/A` imports `_core/B` and you want to modify `_core/B` you will need a new `B` and a new `A` to import it). If you are familiar with inheritance and composition, be sure to check if your altered version can simply extend the `_core` version and thus save you quite a bit of code duplication and management. Look through the [Example Projects](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/docs/core-docs/EXAMPLE_PROJECTS.md) to see these approaches in action.
+In general, the best way to start altering a part of `_core` is to copy the piece into an area outside of `_core`, make the modifications you want then alter the imports necessary to use your new version. It is sometimes the case that these alterations are recursive in nature (e.g. if `_core/A` imports `_core/B` and you want to modify `_core/B` you will need a new `B` and a new `A` to import it). If you are familiar with inheritance and composition, be sure to check if your altered version can simply extend the `_core` version and thus save you quite a bit of code duplication and management. Look through the [Example Projects](EXAMPLE_PROJECTS.md) to see these approaches in action.
 
 <a id="cmc-core-philosophy-modifying-core-config"></a>
 ### Overriding configs
@@ -263,7 +264,8 @@ These overrides/additions are accomplished by adding the parameters into the `AP
 
 <a id="cmc-build-process"></a>
 ## The CMC Build Process
-![It's really quite straight forward](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/black_box.png)
+
+![It's really quite straight forward](https://raw.githubusercontent.com/nasa/common-mapping-client/master/docs/core-docs/resources/black_box.png)
 
 The following sections outline the build process for CMC following installation (`npm install`) which involves copying files and folders, configuring and running Webpack to combine, compile, and minify code, running a development server, and much more. While it may seem a little overwhelming, Application Developers may never actually need to modify most of these steps. 
 
@@ -355,63 +357,65 @@ CMC ships with a BrowserSync server used to serve development and production ver
 
 <a id="styling-cmc"></a>
 ## Styling CMC
-The following sections outline how CMC is styled, how CMC styles are written, organized, and overwritten. 
 
-<a id="styling-cmc-react-toolbox"></a>
-### React UI Component Library (React-Toolbox)
-[React-Toolbox](http://react-toolbox.com/) is a React UI Component library
-that follows [Google's Material Design Standards](https://material.google.com/). React-Toolbox was chosen for CMC because React-Toolbox is fairly complete component-wise, does not inline CSS, and exposes most of the necessary selectors for overriding and tweaking its components. In general React-Toolbox was found to be more overridable and complete than most other React component libraries. At times certain CSS hacks _are_ necessary to style or fix certain components that don't expose the desired elements with classes or data-react-toolbox attributes.
+The following sections outline how CMC is styled, how CMC styles are written, organized, and overwritten. CMC uses a component libarary and bases most of it's design principles on [Google's Material Design Standards](https://material.google.com/). While additional interaction and display design inspiration is drawn from other tools, the Material Design spec provides a solid foundation for most components. The use of a component libarary that follows this design spec also allows CMC based applications to quickly decide on layouts and styles so that they can focus more time on feature implementation.
 
-**Why don't you like inline CSS**? Inline CSS is very difficult to override. The only option is to use `!important` which creates very brittle style structures. CMC was unable to find any component library that required no style modifications to suit it's needs (which is quite a common problem) and so the ability to modify styles cleanly and consistently was paramount.
+<a id="styling-cmc-material-ui"></a>
+### Material-UI Component Library (Material-UI)
+
+[Material-UI](https://github.com/mui-org/material-ui) is a React UI Component library
+that follows [Google's Material Design Standards](https://material.google.com/). Material-UI was chosen for CMC because it is: fairly complete (component-wise), straightforward to override, and well maintained. As of writing, Material-UI has not released a v1.0 product and CMC is using a beta version of the product. That means that it is subject to rapid changes that occasionally break things, but in tracking the history of these changes we've found them to be few and relatively easy to incorporate.
+
+<a id="styling-cmc-style-architecture"></a>
+### CMC Style Architecture
+CMC uses seperate css/js files as much as possible. Inline styles or even styles defined within a js file tend to be difficult to override and require an additional layer of abstraction or adjustment from "classic" web development that seem to outweigh its benefits. The bulk of CMC Core styles can be found alongside their respective components. In a few cases, multiple components draw from the same style file, and under `src/_core/styles` there are some common/generic styles. Under `src/styles` there are some prepopulated styles detailed below:
+
+- `_colors.scss`: This is a SASS partial file that simply defines reusable colors for the application. Note that changing the primary/secondary colors here will not affect Material-UI's themeing which is controlled elsewhere (see below). These colors are for direct use in CMC style modules.
+- `inlineStyles.scss`: This file is processed and inlined into `index.html` during build so that a small subset of styles are available as soon as the page loads. This allows something like a loading screen to be rendered more or less instantly while the rest of the js/css is being retrieved/processed by the browser. Edit this file as desired.
+- `inlineStyles.js`: This is a js wrapper used to load the `inlineStyles.scss` file.
+
+Additionally, there are external style files loaded from the `index.html` file:
+
+- [Roboto](https://fonts.google.com/specimen/Roboto) & [Roboto Mono](https://fonts.google.com/specimen/Roboto+Mono) – The two fonts used in CMC
+- [normalize.css](http://necolas.github.io/normalize.css/) - Used for more consistent cross-browser element rendering
+- [mapskin.min.css](http://mapsk.in/) - Used for additional mapping specific icons
+
+<a id="styling-cmc-css-modules"></a>
+### CSS Modules
+
+For all styles (except inlineStyles) CMC uses [CSS Modules](https://github.com/css-modules/css-modules). This allows insulated styles to be created for each component while also providing mechanisms to reuse styles across the application. Styles are defined in `.scss` files alongside the components they style, those files are then imported in the component which creates an object with a localized class name mapping. Example:
+
+`ComponentName.css`
+```CSS
+.foo {
+    background: red;
+}
+```
+`ComponentName.js`
+```JSX
+import styles from 'componentName.css';
+
+export default (props) => {
+    <div className={styles.foo}>CONTENT</div>
+}
+```
+
+When `ComponentName` is rendered, it will have a class like `ComponentName_foo_ASAKJHS` applied to it. There are special keys to skip name localization and to combine multiple classes into a single reference, see [CSS Modules documentation](https://github.com/css-modules/css-modules) for more details.
+
 
 <a id="styling-cmc-sass"></a>
 ### SASS Usage
+
 CMC uses SASS which is a popular CSS extension language. From SASS's [site](http://sass-lang.com/documentation/file.SASS_REFERENCE.html):
 
 >Sass is an extension of CSS that adds power and elegance to the basic language. It allows you to use variables, nested rules, mixins, inline imports, and more, all with a fully CSS-compatible syntax. Sass helps keep large stylesheets well-organized, and get small stylesheets up and running quickly...
 
-<a id="styling-cmc-sass-architecture"></a>
-### CMC Style Architecture
-CMC SASS files are separated into a few sections. The bulk of CMC Core styles are in `src/_core/styles`. In this directory are the SASS files for each Core React component. Note that SASS files use a syntax called SCSS and therefore use the `.scss` file extension name. All Core React component styles are `@import`ed into the `src/_core/styles/styles.scss` file which is the master Core style file which also contains all non-component specific styles. If Core component styles are not imported into this main file they will not be included in the application. Also in this file are imports of:
-
-- [normalize.css](http://necolas.github.io/normalize.css/) - Used for more consistent cross-browser element rendering
-- [flexboxgrid.min.css](http://flexboxgrid.com/) - A responsive grid system based on the CSS `flex` property
-- [Google's Material Icon font](https://material.io/icons/) - used as primary application icons, note that not all icons on the site are included in the icon font
-
-Note that some styles and fonts _are_ loaded outside of these stylesheets. In `index.html` there are imports of:
-
-- [mapskin.min.css](http://mapsk.in/) – A collection of scalable geospatial vector icons
-- [Roboto](https://fonts.google.com/specimen/Roboto) & [Roboto Mono](https://fonts.google.com/specimen/Roboto+Mono) – The two fonts used in CMC
-
-Other important SASS files are:
-
-- `src/styles/_theme.scss` - Used to override certain React-Toolbox variables
-- `src/styles/_variables.scss` - Used to define non-React-Toolbox variables for use in all CMC SASS files
-- `src/styles/styles.scss` - Used for non-Core style imports
-
-<a id="styling-cmc-overrides"></a>
-### Overriding Core Styles
-You can override Core styles by modifying `src/styles/styles.scss` to either override Core styles or by removing the import of `src/_core/styles/styles.scss` and importing only certain Core SASS files.
-
-<a id="styling-cmc-overrides-react-toolbox"></a>
-### Overriding React-Toolbox SASS Variables
-Many React-Toolbox components use SASS variables that can be overridden. Many of these variables are already overridden by Core in `src/styles/_theme.scss`. To find the React-Toolbox SASS variable names that can be overridden, dig around in `node_modules/react-toolbox/`. Many primary variables are defined in `node_modules/react-toolbox/components/_globals.scss` but many more are defined in SASS files that live alongside the React-Toolbox component sources, like `node_modules/react-toolbox/components/button/_config.scss`. Re-assigning something like `$button-neutral-color` in `src/styles/_theme.scss` will change the value for React-Toolbox components, making theming and recoloring fairly simple. For more on theming, check out the [cmc-example-dark-theme](https://github.jpl.nasa.gov/CommonMappingClient/cmc-example-dark-theme) repository.
-
-<a id="styling-cmc-fonts"></a>
-### Fonts
-CMC tries to stay within the Material Design specification by using Google's [Roboto](https://fonts.google.com/specimen/Roboto) and [Roboto Mono](https://fonts.google.com/specimen/Roboto+Mono) fonts. React-Toolbox is built to use Roboto and CMC attempts to mirror and/or inherit font choices made by React-Toolbox in CMC components. 
-
-<a id="styling-cmc-using-roboto"></a>
-##### When to use Roboto 
-Roboto is recommended for everything from titles to labels to paragraphs. CMC only uses three weights of Roboto – 300, 400, and 500 to keep load times down since fonts are large. If you need more weights feel free to add some more.
-
-<a id="styling-cmc-using-roboto-mono"></a>
-##### When to use Roboto Mono
-Roboto Mono is recommended for use as a contrasting font in limited cases including title font, numerical displays (like dates, slider amounts, counters, etc.) but should be avoided for default use. CMC uses three weights of Roboto Mono – 300, 400, and 700. 
+This is why all of the style files are `.scss` extensions. CMC primarily uses SASS for imports, variables, and nesting.
 
 <a id="styling-cmc-postcss"></a>
-### postCSS
-CMC uses [postCSS](http://postcss.org/) in both it's development and production webpack build processes. PostCSS provides a framework for CSS plugins that make writing CSS easier. CMC uses [PostCSS's autoprefixer](github.com/postcss/autoprefixer) that automatically adds vendor prefixes from [Can I Use](caniuse.com) to your CSS to ensure cross-browser compatibility. For example, take this snippet of CSS.
+### PostCSS
+
+CMC uses [PostCSS](http://postcss.org/) in both it's development and production webpack build processes. PostCSS provides a framework for CSS plugins that make writing CSS easier. CMC uses [PostCSS's autoprefixer](github.com/postcss/autoprefixer) that automatically adds vendor prefixes from [Can I Use](caniuse.com) to your CSS to ensure cross-browser compatibility. For example, take this snippet of CSS.
 
 ```CSS
 transition: opacity 0.1s linear 0s;
@@ -434,6 +438,33 @@ transition: opacity 0.1s linear 0s;
 
 There are many other PostCSS compatible plugins that you may find useful so feel free to add more.
 
+<a id="styling-cmc-overrides"></a>
+### Overriding Core Styles
+
+CMC Core components will generally include a `className` prop that will apply a class to the top level of a component. If you need more granular access to a component for styling, for instance styling a sub-component, you will need to create a new component in its place and compose from there. In general, CMC has taken the path of composability over customizability.
+
+<a id="styling-cmc-overrides-material-ui"></a>
+### Overriding Material-UI Styles
+
+*Application Theme*
+Material-UI has [a theme provider](https://material-ui-next.com/customization/themes/) module that passes themeing information down the component tree. CMC uses a theme provider at the top level of our `AppContainer` component to facilitate this. To change the theme of Material-UI components in your application, simply mimic `src/_core/components/App/AppContainer.js` by creating a Material-UI theme and using a `<MuiThemeProvider />` to wrap the application.
+
+*Component Specific Styles*
+Material-UI has [several approaches](https://material-ui-next.com/customization/overrides/) to overriding component styles. CMC favors the use of class name overrides as it dovetails nicely with CSS Modules.
+
+<a id="styling-cmc-fonts"></a>
+### Fonts
+CMC tries to stay within the Material Design specification by using Google's [Roboto](https://fonts.google.com/specimen/Roboto) and [Roboto Mono](https://fonts.google.com/specimen/Roboto+Mono) fonts. React-Toolbox is built to use Roboto and CMC attempts to mirror and/or inherit font choices made by React-Toolbox in CMC components. 
+
+<a id="styling-cmc-using-roboto"></a>
+##### When to use Roboto 
+Roboto is recommended for everything from titles to labels to paragraphs. CMC only uses three weights of Roboto – 300, 400, and 500 to keep load times down since fonts are large. If you need more weights feel free to add some more.
+
+<a id="styling-cmc-using-roboto-mono"></a>
+##### When to use Roboto Mono
+Roboto Mono is recommended for use as a contrasting font in limited cases including title font, numerical displays (like dates, slider amounts, counters, etc.) but should be avoided for default use. CMC uses three weights of Roboto Mono – 300, 400, and 700. 
+
+
 <a id="styling-cmc-favicons"></a>
 ### Favicon Generation
 CMC uses the NASA meatball favicon by default. The favicon is specified in `index.html` using the following imports:
@@ -454,11 +485,18 @@ Favicons specification varies quite a lot based on browser, device, and screen s
 When Material icons or Mapskin icons do not contain the icon you are looking for, you can easily add your own svg icon. CMC uses several custom icons and you can look in `src/_core/components/Share/ShareContainer.js` for a complete example, but in short the process involves declaring your icon  as shown below and tweaking the CSS, viewBox, and svg parameters.
 
 ```JSX
-const FacebookIcon = () => (
-    <svg className="shareIcon FacebookIcon" viewBox="0 0 24 24">
-        <path fill="white" d="M17,2V2H17V6H15C14.31,6 14,6.81 14,7.5V10H14L17,10V14H14V22H10V14H7V10H10V6A4,4 0 0,1 14,2H17Z" /> 
-    </svg>
+let LayerIconTop = props => (
+    <SvgIcon {...props}>
+        <svg viewBox="-1 1 38 35" style={{ height: "93%" }}>
+            <path
+                fillRule="evenodd"
+                d="M32.758 18.523c.048-.046.09-.097.125-.15.065-.09.074-.132.08-.154.022-.07.037-.134.046-.2.017-.134-.002-.275-.056-.41-.038-.114-.073-.15-.092-.17-.076-.093-.1-.117-.126-.14-.027-.024-.054-.043-.078-.06-.064-.05-.085-.063-.107-.075l-4.788-2.467 4.823-2.952c.07-.057.075-.062.076-.064.028-.02.054-.042.078-.065.048-.046.09-.097.125-.15.065-.09.074-.132.08-.154.022-.068.037-.133.046-.2.017-.133-.002-.274-.056-.41-.038-.113-.073-.15-.092-.168-.076-.094-.1-.118-.126-.14-.027-.025-.054-.044-.078-.06-.064-.05-.085-.064-.107-.076L18.62 3.09c-.033-.017-.065-.025-.085-.03-.15-.05-.23-.062-.31-.062-.06 0-.117.006-.174.018-.033.007-.067.016-.1.028-.088.035-.117.04-.15.06-.034.02-.057.034-.08.05l-.16.096-1.198.732L4.656 11.15l-.157.097c-.124.075-.218.13-.296.215-.13.14-.202.332-.203.536 0 .058.006.118.018.177.015.073.036.133.065.193.045.104.078.142.095.163.03.037.063.066.09.092.052.047.077.07.106.09.06.043.076.05.076.05l.082.044.173.09 4.555 2.348-4.587 2.81-.157.098c-.123.075-.217.13-.295.215-.164.177-.234.437-.188.7.022.097.042.152.068.206.045.104.078.142.095.163.03.035.063.065.092.09.05.048.076.07.105.092.06.042.076.05.076.05.027.014.055.03.082.043l.173.09c.075.04.15.078.226.117l5.24 2.702-5.534 3.39c-.052.03-.105.063-.157.096-.125.075-.22.13-.297.215-.166.18-.236.44-.188.702.017.08.038.143.068.204.045.104.078.142.095.163.03.034.063.064.092.09.05.047.076.07.105.092.062.042.07.045.077.05l.093.05.597.308 12.336 6.355.565.29.19.098c.043.02.084.043.126.064.037.02.075.04.125.05.093.033.128.04.162.047.042.007.086.01.13.01.126-.006.21-.016.286-.048.076-.025.12-.04.162-.064l13.36-8.176.074-.064c.026-.02.052-.042.076-.065.048-.046.09-.097.125-.15.066-.09.075-.132.08-.154.023-.068.038-.133.047-.2.018-.133 0-.274-.055-.41-.038-.113-.073-.15-.092-.168-.076-.094-.1-.118-.126-.14-.027-.025-.054-.044-.078-.06-.064-.05-.085-.065-.107-.077l-5.703-2.937 5.77-3.53c.11-.082.137-.104.16-.127zm-2.212 7.413l-11.79 7.215-.485-.25-.502-.258-1.15-.592-10.15-5.23 5.428-3.324 6.167 3.173.198.1.12.06.007.005c.03.016.068.035.118.046l.018.008.04.015c.035.01.07.02.104.025.042.007.086.01.13.01.024 0 .048 0 .07-.002.056-.004.14-.014.216-.046.01-.004.025-.01.04-.014.036-.01.08-.025.123-.05l.018-.01.005-.004 5.93-3.63 5.346 2.754zm-11.77-.74l-12.29-6.33 4.48-2.745 6.686 3.442-.032.02.205.082-.02.012.01-.007.01-.006.114.046.303.156.118.06.01.005c.03.017.067.036.117.047.003 0 .01.004.018.007l.04.015c.035.01.07.018.104.024.04.007.085.01.13.01.023 0 .047 0 .07-.002.055-.004.138-.014.215-.045l.025-.01.016-.004c.035-.01.078-.025.122-.05l.018-.01.005-.004 6.88-4.21 4.434 2.283-11.79 7.215v-.002z"
+            />
+        </svg>
+    </SvgIcon>
 );
+LayerIconTop.muiName = "SvgIcon";
+export { LayerIconTop };
 ```
 
 <a id="components-and-state-with-react-redux"></a>
@@ -487,7 +525,7 @@ Most of the syntax for components and the file structure paradigm are driven by 
 
 This data flow demonstrates how an interaction flows from the user through Redux/React and back to the user. The simple example is of a switch that toggles on and off. Notice how the actual DOM that the user sees isn't updated until the end.
 
-![Data flow diagram](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/data_flow.png)
+![Data flow diagram](https://raw.githubusercontent.com/nasa/common-mapping-client/master/docs/core-docs/resources/data_flow.png)
 
 Read up on [ReactJS](facebook.github.io/react/) and [ReduxJS](http://redux.js.org) for more detailed information.
 
@@ -538,7 +576,7 @@ This allows CMC to avoid tracking any map state except for what is needed by com
 
 This deviation in data flow is shown below. In this diagram, we use the same premise as the data flow diagram above with one change, the switch will now toggle a layer on the map on or off. Notice how the DOM for the switch is again not updated until the end but the map is updated from within the reducer itself.
 
-![Data flow diagram - map](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/data_flow_maps.png)
+![Data flow diagram - map](https://raw.githubusercontent.com/nasa/common-mapping-client/master/docs/core-docs/resources/data_flow_maps.png)
 
 <a id="cmc-react-redux-idioms-visjs"></a>
 #### With vis.js
@@ -549,7 +587,7 @@ This flow is very similar to how maps are handled in CMC with the main differenc
 
 Here is a data flow diagram to demonstrate this. In this example we are again toggling on a switch, however here we are assuming the switch is a VisJS component. Notice how the render cycle behaves normally up until component render time at which point the changes to the DOM are offloaded to VisJS and React does not need to do anything.
 
-![Data flow diagram - VisJS](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/data_flow_visjs.png)
+![Data flow diagram - VisJS](https://raw.githubusercontent.com/nasa/common-mapping-client/master/docs/core-docs/resources/data_flow_visjs.png)
 
 <a id="optimizing-react-redux-performance"></a>
 ### Notes on Optimizing React/Redux Performance
@@ -600,7 +638,7 @@ These two libraries were chosen for a few reasons:
 
 <a id="mapping-with-cmc-replacing-libs"></a>
 ### Replacing these libraries
-If an Application Developer wants to use Leaflet for their project, they need only create their own `MapWrapper_Leaflet.js` class that extends CMC Core's base `MapWrapper` class, modify the `MapCreator.js` file to instantiate that class instead of the default and that's it. You can see examples of this here: [Example Projects](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/docs/core-docs/EXAMPLE_PROJECTS.md). 
+If an Application Developer wants to use Leaflet for their project, they need only create their own `MapWrapper_Leaflet.js` class that extends CMC Core's base `MapWrapper` class, modify the `MapCreator.js` file to instantiate that class instead of the default and that's it. You can see examples of this here: [Example Projects](EXAMPLE_PROJECTS.md). 
 
 <a id="mapping-with-cmc-mapwrapper"></a>
 ### Overview of the MapWrapper classes
@@ -1135,7 +1173,7 @@ The analytics operates as a "silent reducer". It watches every action dispatched
 - "What percentage of people change the basemap?"
 - _and so on_
 
-To learn more about this analytics system and view a simple example of a server to collect and analyze these actions, check out our [CMC Analytics Example](https://github.jpl.nasa.gov/CommonMappingClient/cmc-example-analytics).
+To learn more about this analytics system and view a simple example of a server to collect and analyze these actions, check out our [CMC Analytics Example - COMING SOON]().
 
 <a id="google-analytics"></a>
 ### Google Analytics
@@ -1163,7 +1201,7 @@ This separation between Core and Non-Core is still being tweaked now and then to
 
 <a id="upgrading-cmc-steps"></a>
 ##### Upgrade Steps
-1. Add cmc-core as a git remote if you haven't done so already by running `git remote add core https://github.jpl.nasa.gov/CommonMappingClient/cmc-core`
+1. Add cmc-core as a git remote if you haven't done so already by running `git remote add core https://github.com/nasa/common-mapping-client.git`
 2. Fetch the latest from cmc-core by running `git fetch --tags core`
 3. Make a new branch (optional)
 4. Review the changes that have been made to Core since your version by looking in `docs/core-docs/CHANGELOG.MD`.
@@ -1253,16 +1291,16 @@ Github pages are a great way to host static content right out of your Github rep
 3. Make a copy of your entire repository folder and `cd` into the copy
 4. Run `chmod a+x scripts/deploy.bash` to give the deploy script correct permissions
 5. Run `git branch -D gh-pages` to ensure that your local gh-pages branch does not exist
-6. Run `npm run deploy` and verify that the deployment was successful by navigating to:`https://github.jpl.nasa.gov/pages/[USER_OR_ORG]/[REPO]/branches/[BRANCH]/`
-  1. Example: `https://github.jpl.nasa.gov/pages/CommonMappingClient/cmc-core/branches/master/` where `CommonMappingClient` is the organization name, `cmc-core` is the repository name, and `master` is the branch name.
+6. Run `npm run deploy` and verify that the deployment was successful by navigating to:`https://github.com/pages/[USER_OR_ORG]/[REPO]/branches/[BRANCH]/`
+  1. Example: `https://github.com/pages/nasa/common-mapping-client/branches/master/` where `nasa` is the organization name, `common-mapping-client` is the repository name, and `master` is the branch name.
 7. Cleanup by removing the folder you were just in
 
 <a id="main-tech-under-the-hood"></a>
 ## Main Technologies Under the Hood
 
-![Node dependencies](https://github.jpl.nasa.gov/CommonMappingClient/cmc-design/blob/master/screenshots/node_dependencies.png)
+![Node dependencies](https://raw.githubusercontent.com/nasa/common-mapping-client/master/docs/core-docs/resources/node_dependencies.png)
 
-Main tech under the hood. **Yes**, this is a lot of dependencies _(actually this isn't even the [full list](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/blob/master/package.json))_ but that's modern web development for you. We've tried to limit the number of unnecessary dependencies included in CMC but you may find that for your own application you may be able to remove some dependencies that your application does not require (e.g. Cesium, VisJS, react-ga, etc.)
+Main tech under the hood. **Yes**, this is a lot of dependencies _(actually this isn't even the [full list](https://github.com/nasa/common-mapping-client/blob/master/package.json))_ but that's modern web development for you. We've tried to limit the number of unnecessary dependencies included in CMC but you may find that for your own application you may be able to remove some dependencies that your application does not require (e.g. Cesium, VisJS, react-ga, etc.)
 
 
 | **Tech** | **Description** |**Learn More**|
@@ -1274,7 +1312,7 @@ Main tech under the hood. **Yes**, this is a lot of dependencies _(actually this
 | [vis.js](http://visjs.org/) | vis.js is a library for creating lightweight, dynamic data visualizations. |
 | [fetch](https://github.com/github/fetch) | An easier Javascript request library adhering to the new Fetch standard. |
 | [Moment](http://momentjs.com/) | Parse, validate, manipulate, and display dates in JavaScript. |
-| [React-Toolbox](http://react-toolbox.com/) | Bootstrap your application with beautiful Material Design Components. |
+| [Material-UI](http://www.material-ui.com/) | React components that implement Google's Material Design. |
 | [TurfJS](http://turfjs.org/) | Advanced geospatial analysis for browsers and node. |
 | [ArcJS](https://github.com/springmeyer/arc.js/) | Great Circle routes in Javascript. |
 | [Proj4js](http://proj4js.org/) | JavaScript library to transform coordinates from one coordinate system to another, including datum transformations. |
@@ -1287,7 +1325,7 @@ Main tech under the hood. **Yes**, this is a lot of dependencies _(actually this
 | [Prettier](https://github.com/prettier/prettier)| Prettier is an opinionated code formatter.| |
 | [SASS](http://sass-lang.com/) | Compiled CSS styles with variables, functions, and more. |
 | [npm Scripts](https://docs.npmjs.com/misc/scripts)| Glues all this together in a handy automated build. | [Why not Gulp?](https://medium.com/@housecor/why-i-left-gulp-and-grunt-for-npm-scripts-3d6853dd22b8#.vtaziro8n)  |
-| [postCSS](http://postcss.org/)| PostCSS is an CSS autoprefixer that automatically adds vendor prefixes from Can I Use to your CSS to ensure cross-browser compatibility |
+| [PostCSS](http://postcss.org/)| PostCSS is an CSS autoprefixer that automatically adds vendor prefixes from Can I Use to your CSS to ensure cross-browser compatibility |
 | [showdown](https://github.com/showdownjs/showdown)| A Markdown to HTML converter written in Javascript |
 | [react-ga](https://github.com/react-ga/react-ga)| A JavaScript module that can be used to include Google Analytics tracking code in a website or app that uses React for its front-end codebase. |
 | [react-slingshot](https://github.com/coryhouse/react-slingshot)| The React/Redux/Webpack starter kit CMC is based off of. CMC has diverged a fair bit from React-Slingshot in many respects but still owes a great deal of its webpack structure, config, npm scripts, and dev server code to react-slingshot.
@@ -1299,7 +1337,7 @@ The main contributors to CMC are Flynn Platt _flynn.platt@jpl.nasa.gov_ and Aaro
 
 We welcome contributions and ask that you submit pull requests through a fork of cmc-core. If you would like to be a more direct contributor to cmc-core then please contact us and we will discuss adding you to the cmc-core repository.
 
-For issue reporting please visit the github issues page for cmc-core [here](https://github.jpl.nasa.gov/CommonMappingClient/cmc-core/issues).
+For issue reporting please visit the github issues page for cmc-core [here](https://github.com/nasa/common-mapping-client/issues).
 
 If you use CMC for your project please let us know, we'd love to see what you're doing and add you to our list of projects that use CMC.
 

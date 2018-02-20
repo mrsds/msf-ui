@@ -119,23 +119,23 @@ export class PlumesContainer extends Component {
                         <Typography
                             color={isItemPrimary ? "inherit" : "default"}
                             className={layerSidebarStyles.listItemText}
-                            type="body1"
+                            variant="body1"
                             noWrap
                         >
                             {dateString}
                         </Typography>
                         <Typography
-                            color={isItemPrimary ? "inherit" : "secondary"}
+                            color={isItemPrimary ? "inherit" : "default"}
                             className={layerSidebarStyles.listItemTextSecondary}
-                            type="caption"
+                            variant="caption"
                             noWrap
                         >
                             {MiscUtilExtended.roundTo(feature.get("ime"), 2) + " kg IME"}
                         </Typography>
                         <Typography
-                            color={isItemPrimary ? "inherit" : "secondary"}
+                            color={isItemPrimary ? "inherit" : "default"}
                             className={layerSidebarStyles.listItemTextSecondary}
-                            type="caption"
+                            variant="caption"
                             noWrap
                         >
                             {feature.get("name")}
@@ -143,7 +143,7 @@ export class PlumesContainer extends Component {
                     </div>
                     <ListItemSecondaryAction>
                         <IconButton
-                            color={isItemPrimary ? "contrast" : "default"}
+                            className={isItemPrimary ? layerSidebarStyles.buttonContrast : ""}
                             disabled={!lat || !long}
                             key={feature.get("id") + "_my_location_icon"}
                             onClick={centerMapAction}
@@ -151,9 +151,8 @@ export class PlumesContainer extends Component {
                             <MyLocationIcon />
                         </IconButton>
                         <IconButton
-                            color={
-                                isItemPrimary ? "contrast" : isActiveDetail ? "primary" : "default"
-                            }
+                            className={isItemPrimary ? layerSidebarStyles.buttonContrast : ""}
+                            color={isActiveDetail ? "primary" : "default"}
                             key={feature.get("id") + "_info_icon"}
                             onClick={toggleDetailAction}
                         >
@@ -199,7 +198,7 @@ export class PlumesContainer extends Component {
         let innerContent = "";
         if (hasResults) {
             innerContent = (
-                <List dense className={layerSidebarStyles.featureItemList}>
+                <List dense={true} className={layerSidebarStyles.featureItemList}>
                     {this.makeListItems()}
                 </List>
             );
@@ -245,7 +244,7 @@ export class PlumesContainer extends Component {
         return (
             <div className={containerClasses}>
                 <Paper elevation={1} className={layerSidebarStyles.searchFiltersContainer}>
-                    <Typography style={{ padding: "4px 0px 8px" }} type="subheading">
+                    <Typography style={{ padding: "4px 0px 8px" }} variant="subheading">
                         Browse Plume Observations & Sources
                     </Typography>
                     <PlumeFiltersContainer />

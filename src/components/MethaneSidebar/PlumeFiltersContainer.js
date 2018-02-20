@@ -161,14 +161,14 @@ export class PlumeFiltersContainer extends Component {
                                         <AppBar elevation={0} className={styles.popoverAppBar}>
                                             <Toolbar className={styles.popoverHeader}>
                                                 <Typography
-                                                    type="body1"
+                                                    variant="body1"
                                                     color="inherit"
                                                     className={styles.popoverTitle}
                                                 >
                                                     Plume Integrated Methane Enhancement
                                                 </Typography>
                                                 <IconButtonSmall
-                                                    color="contrast"
+                                                    color="inherit"
                                                     onClick={() =>
                                                         this.setPopperActive("plumeIME", false)
                                                     }
@@ -278,14 +278,14 @@ export class PlumeFiltersContainer extends Component {
                                         <AppBar elevation={0} className={styles.popoverAppBar}>
                                             <Toolbar className={styles.popoverHeader}>
                                                 <Typography
-                                                    type="body1"
+                                                    variant="body1"
                                                     color="inherit"
                                                     className={styles.popoverTitle}
                                                 >
                                                     Flight Campaigns
                                                 </Typography>
                                                 <IconButtonSmall
-                                                    color="contrast"
+                                                    color="inherit"
                                                     onClick={() =>
                                                         this.setPopperActive(
                                                             "flightCampaigns",

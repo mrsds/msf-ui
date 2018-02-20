@@ -34,6 +34,7 @@
     max-height: 270px;
     width: 100%;
     display: block;
+    list-style: none;
 }
 .formControlLabel {
     margin-left: 0;
@@ -44,7 +45,7 @@
     display: inline;
 }
 .checkbox {
-    width: inherit;
+    width: 24px;
     height: inherit;
 }
 .subheader {

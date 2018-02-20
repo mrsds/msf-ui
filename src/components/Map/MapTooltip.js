@@ -67,13 +67,13 @@ export class MapTooltip extends Component {
         return (
             <div id="mapTooltip" className={styles.tooltip}>
                 <div>
-                    <Typography className={styles.title} color="default" type="body1" noWrap>
+                    <Typography className={styles.title} color="default" variant="body1" noWrap>
                         {title}
                     </Typography>
-                    <Typography color="secondary" type="caption" noWrap>
+                    <Typography color="default" variant="caption" noWrap>
                         {subtitle1}
                     </Typography>
-                    <Typography color="secondary" type="caption" noWrap>
+                    <Typography color="default" variant="caption" noWrap>
                         {subtitle2}
                     </Typography>
                 </div>

@@ -148,7 +148,7 @@
             -webkit-font-smoothing: auto;
         }
         .listItemTextSecondary {
-            color: rgba(255, 255, 255, 0.596);
+            color: rgba(255, 255, 255, 0.692);
             -webkit-font-smoothing: auto;
         }
     }
@@ -200,4 +200,7 @@
         width: 80px;
         height: 80px;
     }
+}
+.buttonContrast {
+    color: white !important;
 }

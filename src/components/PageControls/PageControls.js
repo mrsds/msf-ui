@@ -31,7 +31,7 @@ export const PageControls = props => {
         <React.Fragment>
             <Divider />
             <div className={styles.root}>
-                <Typography type="caption" className={styles.label}>
+                <Typography variant="caption" className={styles.label}>
                     {counterLabel}
                 </Typography>
                 <div className={styles.buttons}>

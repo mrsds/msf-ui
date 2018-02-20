@@ -22,7 +22,7 @@ const AppBarContainer = props => {
                         <span className={styles.appLogo}>
                             <AppLogo />
                         </span>
-                        <Typography type="title" color="inherit" className={styles.title}>
+                        <Typography variant="title" color="inherit" className={styles.title}>
                             Methane Source Finder
                         </Typography>
                         <AppButtons />

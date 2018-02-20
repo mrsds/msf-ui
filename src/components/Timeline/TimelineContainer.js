@@ -813,7 +813,7 @@ export class TimelineContainerStyles extends Component {
                         className={styles.timelineJumperLeft}
                         ref={ref => (this.jumperLeft = ref)}
                     >
-                        <Button color="contrast">
+                        <Button color="inherit">
                             <KeyboardArrowLeftIcon />
                         </Button>
                     </div>
@@ -828,7 +828,7 @@ export class TimelineContainerStyles extends Component {
                         className={styles.timelineJumperRight}
                         ref={ref => (this.jumperRight = ref)}
                     >
-                        <Button color="contrast">
+                        <Button color="inherit">
                             <KeyboardArrowRightIcon />
                         </Button>
                     </div>

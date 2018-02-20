@@ -1,6 +1,15 @@
+/**
+ * Copyright 2017 California Institute of Technology.
+ *
+ * This source code is licensed under the APACHE 2.0 license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
 // More info on Webpack's Node API here: https://webpack.github.io/docs/node.js-api.html
+
 // Allowing console calls below since this is a build file.
 /*eslint-disable no-console */
+
 import webpack from "webpack";
 import config from "../webpack/webpack.config.prod";
 import colors from "colors";

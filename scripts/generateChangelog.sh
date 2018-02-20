@@ -1,4 +1,11 @@
 #!/bin/bash
+
+# Copyright 2017 California Institute of Technology.
+#
+# This source code is licensed under the APACHE 2.0 license found in the
+# LICENSE.txt file in the root directory of this source tree.
+
+
 #
 # Generate a Markdown-formatted changelog from merge commits.
 #
@@ -17,8 +24,8 @@ MERGE_RE=Merge\ pull\ request\ #\([0-9]+\)\ from\ \([^/]+\)\/[^\ ]+\ \(.*\)
 #
 SQUASH_RE='([^\|]+)\|([^\(]+) \(#([0-9]+)\)'
 
-GITHUB_URL=https://github.jpl.nasa.gov/
-PULLS_URL=${GITHUB_URL}/CommonMappingClient/cmc-core/pull
+GITHUB_URL=https://github.com/
+PULLS_URL=${GITHUB_URL}/nasa/common-mapping-client/pull
 
 display_usage() {
   cat <<-EOF

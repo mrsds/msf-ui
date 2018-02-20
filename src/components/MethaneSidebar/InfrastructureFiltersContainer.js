@@ -96,7 +96,7 @@ export class PlumeFiltersContainer extends Component {
         );
         let infrastructureSubcategoriesFilterValueLabel =
             activeInfrastructureSubCategories.size > 0
-                ? activeInfrastructureSubCategories.size + " Active Infrastructure Types"
+                ? activeInfrastructureSubCategories.size + " Infrastructure Types"
                 : null;
 
         return (
@@ -189,14 +189,14 @@ export class PlumeFiltersContainer extends Component {
                                         <AppBar elevation={0} className={styles.popoverAppBar}>
                                             <Toolbar className={styles.popoverHeader}>
                                                 <Typography
-                                                    type="body1"
+                                                    variant="body1"
                                                     color="inherit"
                                                     className={styles.popoverTitle}
                                                 >
                                                     Infrastructure Types
                                                 </Typography>
                                                 <IconButtonSmall
-                                                    color="contrast"
+                                                    color="inherit"
                                                     onClick={() =>
                                                         this.setPopperActive(
                                                             "infrastructureSubcategories",

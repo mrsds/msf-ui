@@ -85,13 +85,9 @@ export class LayerMenuContainer extends Component {
         return (
             <div className={layerMenuClasses}>
                 <Paper elevation={1}>
-                    <Paper
-                        square={this.props.layerMenuOpen}
-                        elevation={1}
-                        className={stylesExtended.layerHeaderRow}
-                    >
+                    <div className={styles.layerHeaderRow}>
                         <div className={styles.layerHeader}>
-                            <Typography type="subheading" color="inherit">
+                            <Typography variant="subheading" color="inherit">
                                 Map Layers
                             </Typography>
                         </div>
@@ -115,7 +111,7 @@ export class LayerMenuContainer extends Component {
                                 </IconButtonSmall>
                             </Tooltip>
                         </div>
-                    </Paper>
+                    </div>
                     <Collapse
                         className={stylesExtended.collapseElement}
                         in={this.props.layerMenuOpen}
