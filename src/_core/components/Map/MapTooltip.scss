@@ -6,16 +6,20 @@
  */
 
 @import "~styles/colors";
-
+:global(.ol-overlay-container) {
+    pointer-events: none;
+}
 .tooltip {
     composes: fontRobotoMono from "_core/styles/text.scss";
     composes: light from "_core/styles/shadow.scss";
     position: relative;
+    margin-bottom: 23px;
     background: white;
     border-radius: 2px;
     padding: 4px 8px;
     white-space: nowrap;
     color: $color-dark;
+    pointer-events: all;
 }
 
 .tooltip:after {

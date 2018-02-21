@@ -279,27 +279,27 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         return plumeLayer;
     }
 
-    getAvirisIconStyle() {
-        return new Ol_Style({
-            // image: new Ol_Style_Circle({
-            //     radius: 10,
-            //     stroke: new Ol_Style_Stroke({
-            //         color: "#000000"
-            //     }),
-            //     fill: new Ol_Style_Fill({
-            //         color: "#3399CC"
-            //     })
-            // })
-            image: new Ol_Style_Icon({
-                // anchor: [0.5, 46],
-                // anchorXUnits: "fraction",
-                // anchorYUnits: "pixels",
-                // opacity: 0.75,
-                src: "img/PlumeIcon.png",
-                scale: 1
-            })
-        });
-    }
+    // getAvirisIconStyle() {
+    //     return new Ol_Style({
+    //         // image: new Ol_Style_Circle({
+    //         //     radius: 10,
+    //         //     stroke: new Ol_Style_Stroke({
+    //         //         color: "#000000"
+    //         //     }),
+    //         //     fill: new Ol_Style_Fill({
+    //         //         color: "#3399CC"
+    //         //     })
+    //         // })
+    //         image: new Ol_Style_Icon({
+    //             // anchor: [0.5, 46],
+    //             // anchorXUnits: "fraction",
+    //             // anchorYUnits: "pixels",
+    //             // opacity: 0.75,
+    //             src: "img/PlumeIcon.png",
+    //             scale: 1
+    //         })
+    //     });
+    // }
 
     createAvirisIconFeature(layerJson) {
         const shape = layerJson.shape;
@@ -312,6 +312,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         // iconFeature.setStyle(this.getAvirisIconStyle());
         iconFeature.set("_featureId", layerJson.id);
         iconFeature.set("_featureType", "icon");
+        iconFeature.set("_featureActive", false);
 
         return iconFeature;
     }
@@ -353,8 +354,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 avirisImageryLayerGroup.set("_layerId", "AVIRIS_IMAGE_LAYER_GROUP");
                 const avirisLayerGroup = new Ol_Layer_Group({
                     layers: [avirisImageryLayerGroup, avirisIconLayer],
-                    // layers: [avirisIconLayer],
-                    // layers: [avirisIconLayer],
                     opacity: layer.get("opacity")
                 });
                 avirisLayerGroup.set("_layerId", "AVIRIS");
@@ -872,21 +871,29 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 feature.setOpacity(opacity);
             });
 
-        avirisIconLayerGroup.getSource().forEachFeature(feature => {
-            const opacity =
-                !activeFeatureIds.length ||
-                (feature.get("_featureId") && activeFeatureIds.includes(feature.get("_featureId")))
-                    ? 1
-                    : 0;
+        let avirisIconLayerGroupSource = avirisIconLayerGroup.getSource();
+        const activePlumeStyle = new Ol_Style({
+            image: new Ol_Style_Icon({
+                opacity: 1,
+                src: "img/PlumeIconActive.png",
+                scale: 0.6
+            })
+        });
+        avirisIconLayerGroupSource.forEachFeature(feature => {
+            let featureIsActive =
+                feature.get("_featureId") && activeFeatureIds.includes(feature.get("_featureId"));
+            if (!featureIsActive && feature.get("_featureActive")) {
+                avirisIconLayerGroupSource.removeFeature(feature);
+            }
 
-            const newStyle = new Ol_Style({
-                image: new Ol_Style_Icon({
-                    opacity: opacity,
-                    src: "img/PlumeIcon.png",
-                    scale: 0.6
-                })
-            });
-            feature.setStyle(newStyle);
+            if (featureIsActive) {
+                let newFeature = new Ol_Feature({
+                    geometry: feature.get("geometry")
+                });
+                newFeature.set("_featureActive", true);
+                newFeature.setStyle(activePlumeStyle);
+                avirisIconLayerGroupSource.addFeature(newFeature);
+            }
         });
     }
 }

@@ -34,6 +34,7 @@ require("_core/styles/resources/img/layer_thumbnails/ESRI_World_Imagery.jpeg");
 require("styles/resources/img/layer_thumbnails/gridded_methane_v1.png");
 require("styles/resources/img/layer_thumbnails/AVIRIS.png");
 require("styles/resources/img/map_icons/PlumeIcon.png");
+require("styles/resources/img/map_icons/PlumeIconActive.png");
 
 const store = configureStore();
 
