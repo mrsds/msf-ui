@@ -642,6 +642,12 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             stroke: new Ol_Style_Stroke({
                 color: "#3399CC",
                 width: 1.25
+            }),
+            image: new Ol_Style_Circle({
+                radius: 4,
+                fill: new Ol_Style_Fill({
+                    color: "#3399CC"
+                })
             })
         });
         this.map.getLayers().forEach(layer => {
@@ -677,15 +683,15 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         // For each feature overlay, remove the overlay and set the style
         // of the corresponding feature to null
         let mapLayers = this.map.getLayers().getArray();
-        let avirisIconLayerFeatures = this.map
-            .getLayers()
-            .getArray()
-            .find(l => l.get("_layerId") === "AVIRIS")
-            .getLayers()
-            .getArray()
-            .find(layer => layer.get("_layerId") === "icons")
-            .getSource()
-            .getFeatures();
+        // let avirisIconLayerFeatures = this.map
+        //     .getLayers()
+        //     .getArray()
+        //     .find(l => l.get("_layerId") === "AVIRIS")
+        //     .getLayers()
+        //     .getArray()
+        //     .find(layer => layer.get("_layerId") === "icons")
+        //     .getSource()
+        //     .getFeatures();
         this.map.getOverlays().forEach(overlay => {
             // If overlay is VISTA we need to deselect the corresponding feature
             let overlayType = overlay.getProperties().overlayType;
@@ -849,6 +855,10 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             .getLayers()
             .getArray()
             .find(l => l.get("_layerId") === "AVIRIS");
+
+        if (!avirisLayerGroup) {
+            return;
+        }
 
         const avirisImageLayerGroup = avirisLayerGroup
             .getLayers()
