@@ -17,9 +17,8 @@ import Tooltip from "material-ui/Tooltip";
 import Collapse from "material-ui/transitions/Collapse";
 import Popover from "material-ui/Popover";
 import Grow from "material-ui/transitions/Grow";
-import ClickAwayListener from "material-ui/utils/ClickAwayListener";
 import { Manager, Target, Popper } from "react-popper";
-import { EnhancedSwitch, IconButtonSmall } from "_core/components/Reusables";
+import { EnhancedSwitch, IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
 import * as mapActions from "_core/actions/mapActions";
 import {
     LayerPositionIcon,
@@ -161,8 +160,8 @@ export class LayerControlContainer extends Component {
                             min={parseFloat(this.props.layer.get("min"))}
                             max={parseFloat(this.props.layer.get("max"))}
                             units={this.props.layer.get("units")}
-                            displayMin={parseFloat(this.props.layer.getIn(["palette", "min"]))}
-                            displayMax={parseFloat(this.props.layer.getIn(["palette", "max"]))}
+                            displayMin={this.props.layer.getIn(["palette", "min"])}
+                            displayMax={this.props.layer.getIn(["palette", "max"])}
                             handleAs={this.props.layer.getIn(["palette", "handleAs"])}
                             url={this.props.layer.getIn(["palette", "url"])}
                             className={styles.colorbar}
@@ -191,7 +190,7 @@ export class LayerControlContainer extends Component {
                         </Tooltip>
                     </Target>
                     <Popper
-                        placement="left"
+                        placement="left-end"
                         modifiers={{
                             computeStyle: {
                                 gpuAcceleration: false
@@ -199,6 +198,7 @@ export class LayerControlContainer extends Component {
                         }}
                         eventsEnabled={this.isChangingPosition}
                         className={!this.isChangingPosition ? displayStyles.noPointer : ""}
+                        style={{ transform: "translate(-4px, 0px)" }}
                     >
                         <Grow style={{ transformOrigin: "right" }} in={this.isChangingPosition}>
                             <div>
@@ -231,7 +231,7 @@ export class LayerControlContainer extends Component {
                         </Tooltip>
                     </Target>
                     <Popper
-                        placement="left"
+                        placement="left-end"
                         modifiers={{
                             computeStyle: {
                                 gpuAcceleration: false

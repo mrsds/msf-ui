@@ -35,26 +35,60 @@ export default class MapWrapperCesium extends MapWrapper {
     constructor(container, options) {
         super(container, options);
 
+        this.init(container, options);
+    }
+
+    /**
+     * Initialize instance variables
+     *
+     * @param {string|domnode} container the container to render this map into
+     * @param {object} options view options for constructing this map wrapper (usually map state from redux)
+     * @memberof MapWrapperCesium
+     */
+    init(container, options) {
+        this.initBools(container, options);
+        this.initStaticClasses(container, options);
+        this.initObjects(container, options);
+
+        this.initializationSuccess = this.map ? true : false;
+    }
+
+    /**
+     * Initialize boolean values for this instance
+     *
+     * @param {string|domnode} container the container to render this map into
+     * @param {object} options view options for constructing this map wrapper (usually map state from redux)
+     * @memberof MapWrapperCesium
+     */
+    initBools(container, options) {
         this.is3D = true;
         this.isActive = options.getIn(["view", "in3DMode"]);
+    }
+
+    /**
+     * Initialize static class references for this instance
+     *
+     * @param {string|domnode} container the container to render this map into
+     * @param {object} options view options for constructing this map wrapper (usually map state from redux)
+     * @memberof MapWrapperCesium
+     */
+    initStaticClasses(container, options) {
         this.tileHandler = TileHandler;
         this.mapUtil = MapUtil;
         this.miscUtil = MiscUtil;
 
-        // Create cesium scene
-        window.CESIUM_BASE_URL = "assets/cesium";
-        this.cesium = window.Cesium;
+        this.initCesium(container, options);
+    }
 
-        // handle multiple initializations of DrawHelper
-        if (typeof window.DrawHelper.isPrepped === "undefined") {
-            window.DrawHelper = window.DrawHelper();
-            window.DrawHelper.isPrepped = true;
-        }
-        this.drawHelper = window.DrawHelper;
-
+    /**
+     * Initialize object instances for this instance
+     *
+     * @param {string|domnode} container the container to render this map into
+     * @param {options} options
+     * @memberof MapWrapperCesium
+     */
+    initObjects(container, options) {
         this.map = this.createMap(container, options);
-
-        this.initializationSuccess = this.map ? true : false;
 
         // Only continue if map was created
         if (this.map) {
@@ -78,6 +112,27 @@ export default class MapWrapperCesium extends MapWrapper {
             };
         }
     }
+
+    /**
+     * Initialize Cesium references for this instance
+     *
+     * @param {string|domnode} container the container to render this map into
+     * @param {object} options view options for constructing this map wrapper (usually map state from redux)
+     * @memberof MapWrapperCesium
+     */
+    initCesium(container, options) {
+        // Create cesium scene
+        window.CESIUM_BASE_URL = "assets/cesium";
+        this.cesium = window.Cesium;
+
+        // handle multiple initializations of DrawHelper
+        if (typeof window.DrawHelper.isPrepped === "undefined") {
+            window.DrawHelper = window.DrawHelper();
+            window.DrawHelper.isPrepped = true;
+        }
+        this.drawHelper = window.DrawHelper;
+    }
+
     /**
      * create a cesium map object
      *
@@ -1054,12 +1109,14 @@ export default class MapWrapperCesium extends MapWrapper {
                         entity.polyline.material.color.setValue(c);
                     }
                     if (entity.billboard) {
-                        entity.billboard.color = new this.cesium.Color(
-                            1.0,
-                            1.0,
-                            1.0,
-                            opacity * 1.0
-                        );
+                        let c = entity.billboard.color.getValue();
+                        c.alpha = opacity * 1.0;
+                        entity.billboard.color.setValue(c);
+                    }
+                    if (entity.point) {
+                        let c = entity.point.color.getValue();
+                        c.alpha = opacity * 1.0;
+                        entity.point.color.setValue(c);
                     }
                 });
                 return true;
@@ -1696,7 +1753,10 @@ export default class MapWrapperCesium extends MapWrapper {
      * @memberof MapWrapperCesium
      */
     createTilingScheme(options, tileSchemeOptions) {
-        if (options.projection === appStrings.PROJECTIONS.latlon.code) {
+        if (
+            options.projection === appStrings.PROJECTIONS.latlon.code ||
+            appStrings.PROJECTIONS.latlon.aliases.indexOf(options.projection) !== -1
+        ) {
             if (options.handleAs === appStrings.LAYER_GIBS_RASTER) {
                 return new CesiumTilingScheme_GIBS(
                     { numberOfLevelZeroTilesX: 2, numberOfLevelZeroTilesY: 1 },
@@ -1704,7 +1764,10 @@ export default class MapWrapperCesium extends MapWrapper {
                 );
             }
             return new this.cesium.GeographicTilingScheme();
-        } else if (options.projection === appStrings.PROJECTIONS.webmercator.code) {
+        } else if (
+            options.projection === appStrings.PROJECTIONS.webmercator.code ||
+            appStrings.PROJECTIONS.webmercator.aliases.indexOf(options.projection) !== -1
+        ) {
             return new this.cesium.WebMercatorTilingScheme();
         }
         return false;

@@ -62,17 +62,61 @@ export default class MapWrapperOpenlayers extends MapWrapper {
      */
     constructor(container, options) {
         super(container, options);
+
+        this.init(container, options);
+    }
+
+    /**
+     * Initialize instance variables
+     *
+     * @param {string|domnode} container the container to render this map into
+     * @param {object} options view options for constructing this map wrapper (usually map state from redux)
+     * @memberof MapWrapperOpenlayers
+     */
+    init(container, options) {
+        this.initBools(container, options);
+        this.initStaticClasses(container, options);
+        this.initObjects(container, options);
+
+        this.initializationSuccess = this.map ? true : false;
+    }
+
+    /**
+     * Initialize boolean values for this instance
+     *
+     * @param {string|domnode} container the container to render this map into
+     * @param {object} options view options for constructing this map wrapper (usually map state from redux)
+     * @memberof MapWrapperOpenlayers
+     */
+    initBools(container, options) {
         this.is3D = false;
         this.isActive = !options.getIn(["view", "in3DMode"]);
-        this.layerCache = new Cache(appConfig.MAX_LAYER_CACHE);
+    }
+
+    /**
+     * Initialize static class references for this instance
+     *
+     * @param {string|domnode} container the container to render this map into
+     * @param {object} options view options for constructing this map wrapper (usually map state from redux)
+     * @memberof MapWrapperOpenlayers
+     */
+    initStaticClasses(container, options) {
         this.tileHandler = TileHandler;
         this.mapUtil = MapUtil;
         this.miscUtil = MiscUtil;
-        this.cachedGeometry = null;
-        this.configureStyles();
-        this.map = this.createMap(container, options);
+    }
 
-        this.initializationSuccess = this.map ? true : false;
+    /**
+     * Initialize object instances for this instance
+     *
+     * @param {string|domnode} container the container to render this map into
+     * @param {options} options
+     * @memberof MapWrapperOpenlayers
+     */
+    initObjects(container, options) {
+        this.layerCache = new Cache(appConfig.MAX_LAYER_CACHE);
+        this.configureStyles(container, options);
+        this.map = this.createMap(container, options);
     }
 
     /**
@@ -129,9 +173,11 @@ export default class MapWrapperOpenlayers extends MapWrapper {
      * prepare the default style objects that will be used
      * in drawing/measuring
      *
+     * @param {string|domnode} container the domnode to render to
+     * @param {object} options options for creating this map (usually map state from redux)
      * @memberof MapWrapperOpenlayers
      */
-    configureStyles() {
+    configureStyles(container, options) {
         let geometryStyles = {};
         geometryStyles[OL_Geom_GeometryType.POLYGON] = [
             new Ol_Style({
@@ -501,6 +547,14 @@ export default class MapWrapperOpenlayers extends MapWrapper {
     setExtent(extent) {
         try {
             if (extent) {
+                extent = Ol_Proj.transformExtent(
+                    extent,
+                    appStrings.PROJECTIONS.latlon.code,
+                    this.map
+                        .getView()
+                        .getProjection()
+                        .getCode()
+                );
                 let mapSize = this.map.getSize() || [];
                 this.map.getView().fit(extent, {
                     size: mapSize,
@@ -523,7 +577,15 @@ export default class MapWrapperOpenlayers extends MapWrapper {
      */
     getExtent() {
         try {
-            return this.map.getView().calculateExtent(this.map.getSize());
+            let extent = this.map.getView().calculateExtent(this.map.getSize());
+            return Ol_Proj.transformExtent(
+                extent,
+                this.map
+                    .getView()
+                    .getProjection()
+                    .getCode(),
+                appStrings.PROJECTIONS.latlon.code
+            );
         } catch (err) {
             console.warn("Error in MapWrapperOpenlayers.getExtent:", err);
             return false;
@@ -1744,6 +1806,14 @@ export default class MapWrapperOpenlayers extends MapWrapper {
     getLatLonFromPixelCoordinate(pixel) {
         try {
             let coordinate = this.map.getCoordinateFromPixel(pixel);
+            coordinate = Ol_Proj.transform(
+                coordinate,
+                this.map
+                    .getView()
+                    .getProjection()
+                    .getCode(),
+                appStrings.PROJECTIONS.latlon.code
+            );
             let constrainCoordinate = this.mapUtil.constrainCoordinates(coordinate);
             if (
                 typeof constrainCoordinate[0] !== "undefined" &&
@@ -2148,6 +2218,33 @@ export default class MapWrapperOpenlayers extends MapWrapper {
      * @memberof MapWrapperOpenlayers
      */
     createGIBSWMTSSource(layer, options) {
+        // determine if we have preset imagery resolutions
+        let resolutions = options.tileGrid.resolutions;
+        if (
+            options.projection === appStrings.PROJECTIONS.latlon.code ||
+            appStrings.PROJECTIONS.latlon.aliases.indexOf(options.projection) !== -1
+        ) {
+            resolutions = appConfig.GIBS_IMAGERY_RESOLUTIONS[appStrings.PROJECTIONS.latlon.code];
+        } else if (
+            options.projection === appStrings.PROJECTIONS.webmercator.code ||
+            appStrings.PROJECTIONS.webmercator.aliases.indexOf(options.projection) !== -1
+        ) {
+            resolutions =
+                appConfig.GIBS_IMAGERY_RESOLUTIONS[appStrings.PROJECTIONS.webmercator.code];
+        } else if (
+            options.projection === appStrings.PROJECTIONS.northpolar.code ||
+            appStrings.PROJECTIONS.northpolar.aliases.indexOf(options.projection) !== -1
+        ) {
+            resolutions =
+                appConfig.GIBS_IMAGERY_RESOLUTIONS[appStrings.PROJECTIONS.northpolar.code];
+        } else if (
+            options.projection === appStrings.PROJECTIONS.southpolar.code ||
+            appStrings.PROJECTIONS.southpolar.aliases.indexOf(options.projection) !== -1
+        ) {
+            resolutions =
+                appConfig.GIBS_IMAGERY_RESOLUTIONS[appStrings.PROJECTIONS.southpolar.code];
+        }
+
         return new Ol_Source_WMTS({
             url: options.url,
             layer: options.layer,
@@ -2158,13 +2255,8 @@ export default class MapWrapperOpenlayers extends MapWrapper {
             tileGrid: new Ol_Tilegrid_WMTS({
                 extent: options.extents,
                 origin: options.tileGrid.origin,
-                resolutions: options.tileGrid.resolutions.slice(
-                    2,
-                    appConfig.GIBS_IMAGERY_RESOLUTIONS.length
-                ),
-                // resolutions: options.tileGrid.resolutions,
-                matrixIds: options.tileGrid.matrixIds.slice(2, options.tileGrid.matrixIds.length),
-                // matrixIds: options.tileGrid.matrixIds,
+                resolutions: resolutions.slice(2, options.tileGrid.matrixIds.length), // top two zoom levels are misaligned
+                matrixIds: options.tileGrid.matrixIds.slice(2),
                 tileSize: options.tileGrid.tileSize
             }),
             transition: appConfig.DEFAULT_TILE_TRANSITION_TIME,
