@@ -82,23 +82,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         }
     }
     createOverlay() {
-        // Create label domNode
-        // let labelContainer = <div id="olMapLabel" className={tooltipStyles.tooltip} />;
-        // let labelContainer = document.createElement("div");
-        // labelContainer.className = tooltipStyles.tooltip;
-        // labelContainer.id = "olMapLabel";
-
-        // let featureLabelTitleEl = document.createElement("div");
-        // featureLabelTitleEl.className = tooltipStyles.title;
-        // featureLabelTitleEl.innerHTML = title;
-
-        // let featureLabelSubtitleEl = document.createElement("div");
-        // featureLabelSubtitleEl.className = tooltipStyles.subtitle;
-        // featureLabelSubtitleEl.innerHTML = subtitle;
-
-        // featureLabelContainerEl.appendChild(featureLabelTitleEl);
-        // featureLabelContainerEl.appendChild(featureLabelSubtitleEl);
-
         // create ol overlay
         return new Ol_Overlay({
             // element: labelContainer,
@@ -111,29 +94,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             },
             stopEvent: true
         });
-        // featureLabel.set("_featureId", id);
-
-        // store meta opt_meta
-        // for (let key in opt_meta) {
-        //     if (opt_meta.hasOwnProperty(key)) {
-        //         featureLabel.set(key, opt_meta[key], true);
-        //     }
-        // }
-
-        // // position and place
-        // this.map.addOverlay(featureLabel);
-        // featureLabel.setPosition(coords);
-        // let mapLabel = (
-        //     <MapLabel
-        //         title={title}
-        //         subtitle1={subtitle}
-        //         subtitle2={subtitle}
-        //         onDetailActionClick={onDetailActionClick}
-        //         onCenterMapClick={() => {
-        //             console.log("yo");
-        //         }}
-        //     />
-        // );
     }
     createLayer(layer, fromCache = true) {
         let mapLayer = false;
@@ -262,10 +222,22 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         let plume_url = layerJson.plume_url;
         let shape = layerJson.shape;
         let extent = [shape[0][0], shape[1][1], shape[2][0], shape[0][1]];
+        let transformedExtent = Ol_Proj.transformExtent(
+            extent.map(val => parseFloat(val)),
+            appStrings.PROJECTIONS.latlon.code,
+            this.map
+                .getView()
+                .getProjection()
+                .getCode()
+        );
 
         let staticPlumeImage = new Ol_Source_StaticImage({
             url: plume_url,
-            imageExtent: extent,
+            imageExtent: transformedExtent,
+            projection: this.map
+                .getView()
+                .getProjection()
+                .getCode(),
             crossOrigin: "anonymous"
         });
 
@@ -273,40 +245,26 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             source: staticPlumeImage
         });
         plumeLayer.set("_featureId", layerJson.id);
-        plumeLayer.set("_featureExtent", extent.map(val => parseFloat(val)));
+        plumeLayer.set("_featureExtent", transformedExtent.map(val => parseFloat(val)));
         plumeLayer.set("_featureType", "plume");
 
         return plumeLayer;
     }
 
-    // getAvirisIconStyle() {
-    //     return new Ol_Style({
-    //         // image: new Ol_Style_Circle({
-    //         //     radius: 10,
-    //         //     stroke: new Ol_Style_Stroke({
-    //         //         color: "#000000"
-    //         //     }),
-    //         //     fill: new Ol_Style_Fill({
-    //         //         color: "#3399CC"
-    //         //     })
-    //         // })
-    //         image: new Ol_Style_Icon({
-    //             // anchor: [0.5, 46],
-    //             // anchorXUnits: "fraction",
-    //             // anchorYUnits: "pixels",
-    //             // opacity: 0.75,
-    //             src: "img/PlumeIcon.png",
-    //             scale: 1
-    //         })
-    //     });
-    // }
-
     createAvirisIconFeature(layerJson) {
         const shape = layerJson.shape;
         const extent = [shape[0][0], shape[1][1], shape[2][0], shape[0][1]];
+        let transformedExtent = Ol_Proj.transformExtent(
+            extent.map(val => parseFloat(val)),
+            appStrings.PROJECTIONS.latlon.code,
+            this.map
+                .getView()
+                .getProjection()
+                .getCode()
+        );
 
         const iconFeature = new Ol_Feature({
-            geometry: new Ol_Geom_Point(Ol_Extent.getCenter(extent.map(val => parseFloat(val))))
+            geometry: new Ol_Geom_Point(Ol_Extent.getCenter(transformedExtent))
         });
 
         // iconFeature.setStyle(this.getAvirisIconStyle());
@@ -332,6 +290,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             .then(json => {
                 // Create an icon layer for each AVIRIS feature
                 const avirisIconLayer = new Ol_Layer_Vector({
+                    extent: appConfig.DEFAULT_MAP_EXTENT,
                     source: new Ol_Source_Vector({
                         features: json.map(json => this.createAvirisIconFeature(json))
                     }),
@@ -342,13 +301,13 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                             scale: 0.6
                         })
                     }),
-                    minResolution: 0.00005966144664679565
+                    minResolution: 38.2185141425881
                 });
                 avirisIconLayer.set("_layerId", "icons");
 
                 // Create layers for each AVIRIS feature and add the layer group (along with the icon layer) to the map
                 let avirisImageryLayerGroup = new Ol_Layer_Group({
-                    maxResolution: 0.0003036144664679565,
+                    maxResolution: 76.43702828517625,
                     layers: [...json.map(json => this.createAvirisLayer(json))]
                 });
                 avirisImageryLayerGroup.set("_layerId", "AVIRIS_IMAGE_LAYER_GROUP");
@@ -764,59 +723,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 this.overlay.setVisible(true);
                 this.overlay.setPosition(coords);
             });
-            // Create label domNode
-            // let labelContainer = <div id="olMapLabel" className={tooltipStyles.tooltip} />;
-            // let labelContainer = document.createElement("div");
-            // labelContainer.className = tooltipStyles.tooltip;
-            // labelContainer.id = "olMapLabel";
-
-            // // let featureLabelTitleEl = document.createElement("div");
-            // // featureLabelTitleEl.className = tooltipStyles.title;
-            // // featureLabelTitleEl.innerHTML = title;
-
-            // // let featureLabelSubtitleEl = document.createElement("div");
-            // // featureLabelSubtitleEl.className = tooltipStyles.subtitle;
-            // // featureLabelSubtitleEl.innerHTML = subtitle;
-
-            // // featureLabelContainerEl.appendChild(featureLabelTitleEl);
-            // // featureLabelContainerEl.appendChild(featureLabelSubtitleEl);
-
-            // // create ol overlay
-            // let featureLabel = new Ol_Overlay({
-            //     // element: labelContainer,
-            //     element: document.getElementById("test"),
-            //     // offset: [0, -15],
-            //     positioning: "bottom-center",
-            //     autoPan: true,
-            //     autoPanAnimation: {
-            //         duration: 250
-            //     },
-            //     stopEvent: false
-            // });
-            // featureLabel.set("_featureId", id);
-
-            // // store meta opt_meta
-            // for (let key in opt_meta) {
-            //     if (opt_meta.hasOwnProperty(key)) {
-            //         featureLabel.set(key, opt_meta[key], true);
-            //     }
-            // }
-
-            // // position and place
-            // this.map.addOverlay(featureLabel);
-            // featureLabel.setPosition(coords);
-            // let mapLabel = (
-            //     <MapLabel
-            //         title={title}
-            //         subtitle1={subtitle}
-            //         subtitle2={subtitle}
-            //         onDetailActionClick={onDetailActionClick}
-            //         onCenterMapClick={() => {
-            //             console.log("yo");
-            //         }}
-            //     />
-            // );
-            // render(mapLabel, document.getElementById("olMapLabel"));
             return true;
         } catch (err) {
             console.warn("Error in MapWrapperOpenlayers.addLabel:", err);
