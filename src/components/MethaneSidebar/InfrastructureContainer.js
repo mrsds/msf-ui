@@ -122,6 +122,11 @@ export class InfrastructureContainer extends Component {
         const iconContainerClasses = MiscUtil.generateStringFromSet({
             [layerSidebarStyles.iconContainer]: true
         });
+
+        const listItemSecondaryActionClasses = MiscUtil.generateStringFromSet({
+            [layerSidebarStyles.selectedItemSecondary]: isItemPrimary,
+            [layerSidebarStyles.listItemSecondaryAction]: true
+        });
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem
@@ -167,22 +172,22 @@ export class InfrastructureContainer extends Component {
                             {feature.get("category")}
                         </Typography>
                     </div>
-                    <ListItemSecondaryAction className={layerSidebarStyles.secondaryAction}>
-                        <IconButton
+                    <ListItemSecondaryAction className={listItemSecondaryActionClasses}>
+                        <Button
                             className={isItemPrimary ? layerSidebarStyles.buttonContrast : ""}
-                            key={feature.get("id") + "_my_location_icon"}
+                            key={feature.get("id") + "_my_location_button"}
                             onClick={() => this.props.centerMapOnFeature(feature, "VISTA")}
                         >
-                            <MyLocationIcon />
-                        </IconButton>
-                        <IconButton
+                            Zoom To
+                        </Button>
+                        <Button
                             className={isItemPrimary ? layerSidebarStyles.buttonContrast : ""}
                             color={isActiveDetail ? "primary" : "default"}
-                            key={feature.get("id") + "_info_icon"}
+                            key={feature.get("id") + "_info_button"}
                             onClick={toggleDetailAction}
                         >
-                            {isActiveDetail ? <InfoIcon /> : <InfoOutlineIcon />}
-                        </IconButton>
+                            Details
+                        </Button>
                     </ListItemSecondaryAction>
                 </ListItem>
             </React.Fragment>

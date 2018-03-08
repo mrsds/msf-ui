@@ -17,6 +17,7 @@ import MyLocationIcon from "material-ui-icons/MyLocation";
 import Select from "material-ui/Select";
 import { FormControl } from "material-ui/Form";
 import Input, { InputLabel } from "material-ui/Input";
+import Button from "material-ui/Button";
 import { MenuItem } from "material-ui/Menu";
 import Paper from "material-ui/Paper";
 import MiscUtilExtended from "utils/MiscUtilExtended";
@@ -100,6 +101,11 @@ export class PlumesContainer extends Component {
         const dateString = MiscUtilExtended.formatPlumeDatetime(datetime);
         // const plumeThumbnail = feature.get("rgbqlctr_url");
         const plumeThumbnail = feature.get("thumbnail");
+
+        const listItemSecondaryActionClasses = MiscUtil.generateStringFromSet({
+            [layerSidebarStyles.selectedItemSecondary]: isItemPrimary,
+            [layerSidebarStyles.listItemSecondaryAction]: true
+        });
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem
@@ -142,23 +148,27 @@ export class PlumesContainer extends Component {
                             {feature.get("name")}
                         </Typography>
                     </div>
-                    <ListItemSecondaryAction>
-                        <IconButton
+                    <ListItemSecondaryAction
+                        onMouseEnter={() => this.props.setHoverPlume(feature)}
+                        onMouseLeave={() => this.props.setHoverPlume(null)}
+                        className={listItemSecondaryActionClasses}
+                    >
+                        <Button
                             className={isItemPrimary ? layerSidebarStyles.buttonContrast : ""}
                             disabled={!lat || !long}
                             key={feature.get("id") + "_my_location_icon"}
                             onClick={centerMapAction}
                         >
-                            <MyLocationIcon />
-                        </IconButton>
-                        <IconButton
+                            Zoom To
+                        </Button>
+                        <Button
                             className={isItemPrimary ? layerSidebarStyles.buttonContrast : ""}
                             color={isActiveDetail ? "primary" : "default"}
                             key={feature.get("id") + "_info_icon"}
                             onClick={toggleDetailAction}
                         >
-                            {isActiveDetail ? <InfoIcon /> : <InfoOutlineIcon />}
-                        </IconButton>
+                            Details
+                        </Button>
                     </ListItemSecondaryAction>
                 </ListItem>
             </React.Fragment>
