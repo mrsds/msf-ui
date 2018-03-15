@@ -194,8 +194,7 @@
                 "url": "default-data/msf-data/layer-metadata/GRIDDED_EMISSIONS_V1.json",
                 "handleAs": "json"
             },
-            "updateParameters": { "time": false },
-            "isGriddedMethane": true
+            "updateParameters": { "time": false }
         },
 
         {

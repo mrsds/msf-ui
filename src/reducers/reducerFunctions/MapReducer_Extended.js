@@ -1,5 +1,6 @@
 import MapReducer from "_core/reducers/reducerFunctions/MapReducer";
 import * as appStrings from "_core/constants/appStrings";
+import * as appStringsMSF from "constants/appStrings";
 import appConfig from "constants/appConfig";
 import { layerModel_Extended as layerModel } from "reducers/models/map_Extended";
 import { alert } from "_core/reducers/models/alert";
@@ -73,6 +74,25 @@ export default class MapReducer_Extended extends MapReducer {
 
     static setHoverPlume(state, action) {
         return state.set("hoverPlume", action.feature);
+    }
+
+    static setLayerOpacity(state, action) {
+        let actionLayer = action.layer;
+        if (typeof actionLayer === "string") {
+            actionLayer = this.findLayerById(state, actionLayer);
+        }
+        if (actionLayer && actionLayer.get("type") === appStringsMSF.LAYER_GROUP_TYPE_GROUP) {
+            const updatedGroups = state
+                .get("groups")
+                .map(
+                    group =>
+                        group.get("id") === actionLayer.get("id")
+                            ? group.set("opacity", parseFloat(action.opacity))
+                            : group
+                );
+            state = state.set("groups", updatedGroups);
+        }
+        return MapReducer.setLayerOpacity(state, action);
     }
 
     static updateAvailableGriddedDates(state, action) {

@@ -10,7 +10,8 @@ export const mapState_Extended = mapState.mergeDeep(
                 id: "VISTA",
                 isActive: true,
                 title: "Infrastructure",
-                opacity: 100,
+                opacity: 1,
+                type: "group",
                 displayIndex: 0
             }
         ],
@@ -30,8 +31,7 @@ export const layerModel_Extended = layerModel.mergeDeep(
     Immutable.fromJS({
         group: "",
         visibleInGroup: false,
-        layerOrder: null,
-        isGriddedMethane: false
+        layerOrder: null
     })
 );
 

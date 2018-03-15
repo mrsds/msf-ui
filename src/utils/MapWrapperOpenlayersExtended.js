@@ -413,9 +413,17 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
     setLayerOpacity(layer, opacity) {
         try {
             let mapLayers = this.map.getLayers().getArray();
-            this.miscUtil
-                .findAllMatchingObjectsInArray(mapLayers, "_layerId", layer.get("id"))
-                .forEach(l => l.setOpacity(opacity));
+            // If we're dealing with a layer group we need to find all layers
+            // with _layerGroup equal to the id of the input layer
+            if (layer.get("type") === appStringsMSF.LAYER_GROUP_TYPE_GROUP) {
+                this.miscUtil
+                    .findAllMatchingObjectsInArray(mapLayers, "_layerGroup", layer.get("id"))
+                    .forEach(l => l.setOpacity(opacity));
+            } else {
+                this.miscUtil
+                    .findAllMatchingObjectsInArray(mapLayers, "_layerId", layer.get("id"))
+                    .forEach(l => l.setOpacity(opacity));
+            }
             return true;
         } catch (err) {
             console.warn("Error in MapWrapperOpenlayers.setLayerOpacity:", err);
@@ -470,7 +478,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 extent: appConfig.DEFAULT_MAP_EXTENT,
                 style
             });
-            vistaLayer.set("_layerId", "VISTA");
+            vistaLayer.set("_layerGroup", "VISTA");
             return vistaLayer;
         } catch (err) {
             console.warn("Error in MapWrapperOpenlayers.createVectorLayer:", err);
