@@ -579,7 +579,9 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         const featureExtent = featureLayer.get("_featureExtent");
         const isVisible = Ol_Extent.containsExtent(currentMapExtent, featureExtent);
 
-        const center = Ol_Extent.getCenter(featureExtent);
+        const centerCoords = Ol_Extent.getCenter(featureExtent);
+        const topLeft = Ol_Extent.getTopLeft(featureExtent);
+        const center = [centerCoords[0], topLeft[1]];
         this.addFeatureLabel(
             featureId,
             MiscUtilExtended.formatPlumeDatetime(pickedFeature.get("datetime")),
@@ -624,7 +626,9 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 const featureId = pickedFeature.get("id");
                 if (feature.getProperties().id === featureId) {
                     const featureExtent = feature.getGeometry().getExtent();
-                    const center = Ol_Extent.getCenter(featureExtent);
+                    const centerCoords = Ol_Extent.getCenter(featureExtent);
+                    const topLeft = Ol_Extent.getTopLeft(featureExtent);
+                    const center = [centerCoords[0], topLeft[1]];
 
                     // If we're adding a label, we change the styling of the feature to be highlighted,
                     // center the map to the feature if it's not entirely in the map, and create/place a tooltip.
