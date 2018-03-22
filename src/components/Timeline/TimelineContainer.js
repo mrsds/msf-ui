@@ -275,6 +275,9 @@ export class TimelineContainerStyles extends Component {
                 this.focusOnItem(firstItem.id);
             }
         }
+        if (prevProps.layerSidebarCollapsed !== this.props.layerSidebarCollapsed) {
+            this.resizeTimeline();
+        }
     }
 
     getTimelineOptions() {
@@ -799,7 +802,8 @@ export class TimelineContainerStyles extends Component {
         let stepSizeClass =
             styles["stepSize_" + this.props.dateSliderTimeResolution.get("resolution")];
         let containerClasses = MiscUtil.generateStringFromSet({
-            [styles.elementsContainer]: true
+            [styles.elementsContainer]: true,
+            [styles.fullWidth]: this.props.layerSidebarCollapsed
         });
         let timelineClasses = MiscUtil.generateStringFromSet({
             [styles.timeline]: true,
@@ -847,12 +851,14 @@ TimelineContainerStyles.propTypes = {
     searchResults: PropTypes.object.isRequired,
     activeFeature: PropTypes.object.isRequired,
     dateSliderTimeResolution: PropTypes.object.isRequired,
+    layerSidebarCollapsed: PropTypes.bool.isRequired,
     mapActionsMSF: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
     return {
         date: state.map.get("date"),
+        layerSidebarCollapsed: state.layerSidebar.get("layerSidebarCollapsed"),
         activeFeature: state.map.get("activeFeature"),
         searchResults: state.layerSidebar.getIn([
             "searchState",

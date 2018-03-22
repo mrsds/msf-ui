@@ -16,6 +16,13 @@ export function changeSidebarCategory(category) {
     return { type: types.CHANGE_LAYER_SIDEBAR_CATEGORY, category };
 }
 
+export function setLayerSidebarCollapsed(collapsed) {
+    return dispatch => {
+        dispatch({ type: types.SET_LAYER_SIDEBAR_COLLAPSED, collapsed });
+        dispatch(mapActions.resizeMap());
+    };
+}
+
 export function setFeatureDetail(category, feature) {
     return { type: types.UPDATE_FEATURE_DETAIL, category, feature };
 }

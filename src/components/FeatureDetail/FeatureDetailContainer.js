@@ -10,6 +10,7 @@ import Grid from "material-ui/Grid";
 import Card, { CardActions, CardContent, CardMedia } from "material-ui/Card";
 import MetadataUtil from "utils/MetadataUtil";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import MiscUtil from "_core/utils/MiscUtil";
 import styles from "components/FeatureDetail/FeatureDetailContainerStyles.scss";
 
 export class FeatureDetailContainer extends Component {
@@ -56,8 +57,16 @@ export class FeatureDetailContainer extends Component {
     }
 
     renderFeatureDetailContainer(headerImageUrl, title, subtitle, featureBody) {
+        let featureDetailContainerClasses = MiscUtil.generateStringFromSet({
+            [styles.featureDetailContainer]: true,
+            [styles.fullWidth]: this.props.layerSidebarCollapsed
+        });
+        let featureDetailClasses = MiscUtil.generateStringFromSet({
+            [styles.maxWidth]: true,
+            [styles.featureDetailBody]: true
+        });
         return (
-            <div className={styles.featureDetailContainer}>
+            <div className={featureDetailContainerClasses}>
                 <Button
                     className={styles.floatingBackButton}
                     variant="raised"
@@ -70,10 +79,12 @@ export class FeatureDetailContainer extends Component {
                     style={{ backgroundImage: `url("${headerImageUrl}")` }}
                 />
                 <div className={styles.header}>
-                    <h2 className={styles.headerTitle}>{title}</h2>
-                    <p className={styles.headerSubtitle}>{subtitle}</p>
+                    <div className={styles.maxWidth}>
+                        <h2 className={styles.headerTitle}>{title}</h2>
+                        <p className={styles.headerSubtitle}>{subtitle}</p>
+                    </div>
                 </div>
-                <div className={styles.featureDetailBody}>{featureBody}</div>
+                <div className={featureDetailClasses}>{featureBody}</div>
             </div>
         );
     }
@@ -279,6 +290,7 @@ export class FeatureDetailContainer extends Component {
 
 FeatureDetailContainer.propTypes = {
     category: PropTypes.string,
+    layerSidebarCollapsed: PropTypes.bool.isRequired,
     feature: PropTypes.object,
     hideFeatureDetailContainer: PropTypes.func.isRequired
 };
@@ -286,6 +298,7 @@ FeatureDetailContainer.propTypes = {
 function mapStateToProps(state) {
     return {
         category: state.featureDetail.get("category"),
+        layerSidebarCollapsed: state.layerSidebar.get("layerSidebarCollapsed"),
         feature: state.featureDetail.get("feature")
     };
 }

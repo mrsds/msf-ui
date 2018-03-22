@@ -97,6 +97,10 @@ export default class LayerSidebarReducer {
         return state.setIn(["searchState", action.category, "pageIndex"], newIndex);
     }
 
+    static setLayerSidebarCollapsed(state, action) {
+        return state.set("layerSidebarCollapsed", action.collapsed);
+    }
+
     static changeSidebarCategory(state, action) {
         return state.set("activeFeatureCategory", action.category);
     }

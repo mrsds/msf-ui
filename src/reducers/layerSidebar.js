@@ -11,6 +11,8 @@ export default function layerSidebar(
     switch (action.type) {
         case actionTypesMSF.SET_LAYER_SIDEBAR_CATEGORY:
             return opt_reducer.updateActiveCategory(state, action);
+        case actionTypesMSF.SET_LAYER_SIDEBAR_COLLAPSED:
+            return opt_reducer.setLayerSidebarCollapsed(state, action);
         case actionTypesMSF.UPDATE_AVAILABLE_FEATURES:
             return opt_reducer.updateAvailableFeatures(state, action);
         case actionTypesMSF.FEATURE_SIDEBAR_PAGE_FORWARD:

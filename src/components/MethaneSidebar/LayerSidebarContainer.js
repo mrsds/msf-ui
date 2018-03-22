@@ -9,6 +9,9 @@ import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import InfrastructureContainer from "components/MethaneSidebar/InfrastructureContainer";
 import PlumesContainer from "components/MethaneSidebar/PlumesContainer";
 import Paper from "material-ui/Paper";
+import Tooltip from "material-ui/Tooltip";
+import Button from "material-ui/Button";
+import ArrowDropDownIcon from "mdi-material-ui/MenuLeft";
 import styles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
 import MiscUtil from "_core/utils/MiscUtil";
@@ -69,11 +72,6 @@ export class LayerSidebarContainer extends Component {
     }
 
     render() {
-        const containerClass = this.props.availableFeatures.get(this.props.activeFeatureCategory)
-            .size
-            ? null
-            : "no-results";
-
         let plumesTabLabel = `${this.getNameForCategory(layerSidebarTypes.CATEGORY_PLUMES)} (${
             this.props.numPlumeSearchResults
         })`;
@@ -83,12 +81,32 @@ export class LayerSidebarContainer extends Component {
 
         let containerClasses = MiscUtil.generateStringFromSet({
             [styles.flexboxParent]: true,
-            [styles.layerSidebar]: true
+            [styles.layerSidebar]: true,
+            [styles.layerSidebarCollapsed]: this.props.layerSidebarCollapsed
+        });
+
+        let iconClasses = MiscUtil.generateStringFromSet({
+            [styles.sidebarCollapseButtonIcon]: true,
+            [styles.sidebarCollapseButtonIconRotated]: this.props.layerSidebarCollapsed
         });
 
         let activeTabIndex = this.getIndexForCategory(this.props.activeFeatureCategory);
         return (
             <Paper elevation={2} square={true} className={containerClasses}>
+                <Tooltip
+                    title={this.props.layerSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+                    placement="right"
+                >
+                    <Button
+                        variant="raised"
+                        className={styles.sidebarCollapseButton}
+                        onClick={() =>
+                            this.props.setLayerSidebarCollapsed(!this.props.layerSidebarCollapsed)
+                        }
+                    >
+                        <ArrowDropDownIcon className={iconClasses} />
+                    </Button>
+                </Tooltip>
                 <AppBar elevation={1} position="static">
                     <Tabs
                         className={styles.tabsRoot}
@@ -125,6 +143,8 @@ LayerSidebarContainer.propTypes = {
     activeFeatureCategory: PropTypes.string.isRequired,
     numPlumeSearchResults: PropTypes.number.isRequired,
     numInfrastructureSearchResults: PropTypes.number.isRequired,
+    layerSidebarCollapsed: PropTypes.bool.isRequired,
+    setLayerSidebarCollapsed: PropTypes.func.isRequired,
     pageForward: PropTypes.func.isRequired,
     pageBackward: PropTypes.func.isRequired,
     changeSidebarCategory: PropTypes.func.isRequired,
@@ -134,6 +154,7 @@ LayerSidebarContainer.propTypes = {
 function mapStateToProps(state) {
     return {
         availableFeatures: state.layerSidebar.get("availableFeatures"),
+        layerSidebarCollapsed: state.layerSidebar.get("layerSidebarCollapsed"),
         activeFeatureCategory: state.layerSidebar.get("activeFeatureCategory"),
         numPlumeSearchResults: state.layerSidebar.getIn([
             "searchState",
@@ -151,6 +172,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        setLayerSidebarCollapsed: bindActionCreators(
+            layerSidebarActions.setLayerSidebarCollapsed,
+            dispatch
+        ),
         pageForward: bindActionCreators(layerSidebarActions.pageForward, dispatch),
         pageBackward: bindActionCreators(layerSidebarActions.pageBackward, dispatch),
         changeSidebarCategory: bindActionCreators(

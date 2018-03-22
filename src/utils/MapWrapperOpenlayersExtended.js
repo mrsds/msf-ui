@@ -756,10 +756,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         });
     }
 
-    updateSize() {
-        this.map.updateSize();
-    }
-
     setActivePlumes(activeFeatures) {
         const activeFeatureIds = activeFeatures
             .filter(feature => feature && feature.get("id"))
@@ -819,5 +815,24 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 avirisIconLayerGroupSource.addFeature(newFeature);
             }
         });
+    }
+
+    /**
+     * adjusts the rendered map size to it's container
+     * and uses rAF
+     *
+     * @returns {boolean} true if it succeeds
+     * @memberof MapWrapperOpenlayers
+     */
+    resize() {
+        try {
+            window.requestAnimationFrame(() => {
+                this.map.updateSize();
+            });
+            return true;
+        } catch (err) {
+            console.warn("Error in MapWrapperOpenlayers.resize:", err);
+            return false;
+        }
     }
 }

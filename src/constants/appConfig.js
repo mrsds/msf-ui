@@ -39,8 +39,8 @@ const APP_CONFIG = Immutable.fromJS({
         griddedVectorEndpoint: "http://100.64.114.155/data/gridded/v2/Fluxes_{date}.geojson"
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
-    PLUME_START_DATE: new Date(2010, 0, 1),
-    PLUME_END_DATE: new Date(2025, 0, 1),
+    PLUME_START_DATE: new Date(2000, 0, 1),
+    PLUME_END_DATE: new Date(2030, 0, 1),
     PLUME_DEFAULT_SORT_BY: layerSidebarTypes.PLUME_FILTER_SORT_OPTIONS[0],
     INFRASTRUCTURE_DEFAULT_SORT_BY: layerSidebarTypes.INFRASTRUCTURE_FILTER_SORT_OPTIONS[0],
     MAX_ZOOM: 25,

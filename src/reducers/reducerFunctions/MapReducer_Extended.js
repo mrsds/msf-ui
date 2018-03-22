@@ -119,4 +119,11 @@ export default class MapReducer_Extended extends MapReducer {
         state.get("maps").map(map => map.changeGriddedVectorLayerDate(newDate));
         return state.setIn(["griddedSettings", "currentDate"], newDate);
     }
+
+    static resizeMap(state, action) {
+        state.get("maps").map(map => {
+            map.resize();
+        });
+        return state;
+    }
 }

@@ -12,11 +12,18 @@
     overflow: auto;
     top: 45px;
     background: $color-background;
+    &.fullWidth {
+        width: 100%;
+        left: 0;
+        .floatingBackButton {
+            left: 35px;
+        }
+    }
     .floatingBackButton {
         position: fixed;
         z-index: 1;
-        left: calc(15px + #{$layer-sidebar-width});
-        top: 57px;
+        left: calc(35px + #{$layer-sidebar-width});
+        top: 52px;
         color: $color-primary !important;
         background: white;
         padding: 0rem 1rem;
@@ -41,11 +48,13 @@
         margin-top: 2px;
         margin-bottom: 0px;
     }
+    .maxWidth {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1000px;
+    }
     .featureDetailBody {
         padding: 10px;
-    }
-    .cardTitle {
-        margin: 0;
     }
     .imageCardsContainer {
         display: flex;
@@ -55,6 +64,9 @@
     }
     .cardRoot {
         margin-top: 15px;
+        h2 {
+            margin-bottom: 16px;
+        }
     }
     .observationImage {
         display: flex;

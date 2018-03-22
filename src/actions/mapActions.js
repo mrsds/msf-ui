@@ -36,6 +36,10 @@ function setGroupActiveState(group, active) {
     return { type: typesMSF.SET_GROUP_ACTIVE, group, active };
 }
 
+export function resizeMap() {
+    return { type: typesMSF.RESIZE_MAP };
+}
+
 export function updateFeatureList_Map(category) {
     return (dispatch, getState) => {
         const mapState = getState().map;
