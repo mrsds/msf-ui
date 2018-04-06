@@ -7,7 +7,7 @@
             "handleAs": "vista_geojson",
             "isDefault": false,
             "visibleInGroup": false,
-            "url": "http://100.64.114.155:9090/vista?category=0&maxObjects=10000",
+            "url": "http://100.64.114.155:9090/vista?category=0&maxObjects=100000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
