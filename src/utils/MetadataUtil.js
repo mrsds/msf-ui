@@ -78,4 +78,19 @@ export default class MetadataUtil {
         const fields = ["IME20 (kg)"];
         return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
     }
+
+    static getCandidateID(feature, errTxt = null) {
+        const fields = ["# Candidate id"];
+        return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
+    }
+
+    static getSourceID(feature, errTxt = null) {
+        const fields = ["Source id"];
+        return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
+    }
+
+    static getPlumeID(feature, errTxt = null) {
+        const fields = ["Plume id"];
+        return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
+    }
 }

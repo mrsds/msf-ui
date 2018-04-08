@@ -182,6 +182,7 @@ export class FeatureDetailContainer extends Component {
         const state = MetadataUtil.getState(this.props.feature, null);
         const lat = MetadataUtil.getLat(this.props.feature, null);
         const long = MetadataUtil.getLong(this.props.feature, null);
+
         const googleMapsUri =
             lat && long ? `http://maps.google.com/maps?t=k&q=loc:${lat},${long}` : null;
         let googleMapsStaticImgUrl = "./styles/resources/img/fake_info_img.png";
@@ -196,17 +197,12 @@ export class FeatureDetailContainer extends Component {
             : "(No Date)";
 
         // Bin together the various field:value pairs
-        // const observationDataFields = [
-        //   { name: "Methane Flux", value: "(not specified in metadata)" },
-        //   { name: "Observation Time", value: "" },
-        //   { name: "Plume IME", value: "(not specified in metadata)" },
-        //   { name: "Observation Location", value: `${lat}, ${long}` },
-        //   { name: "Gas Detected", value: "(not specified in metadata)" },
-        //   {
-        //     name: "Observation Altitude",
-        //     value: "(not specified in metadata)"
-        //   }
-        // ];
+        const plumeDataFields = [
+            { name: "Candidate ID", value: MetadataUtil.getCandidateID(this.props.feature, null) },
+            { name: "Location", value: lat && long ? `${lat}°N, ${long}°W` : "(No Location)" },
+            { name: "Plume ID", value: MetadataUtil.getPlumeID(this.props.feature, null) },
+            { name: "Source ID", value: MetadataUtil.getSourceID(this.props.feature, null) }
+        ];
 
         let featureTitle = dateString;
         let featureSubtitle = name;
@@ -218,12 +214,7 @@ export class FeatureDetailContainer extends Component {
                         <Typography variant="headline" component="h2">
                             Observation Data
                         </Typography>
-                        {this.makeInfoFields(
-                            this.props.feature
-                                .get("metadata")
-                                .sortBy(x => x.get("name"))
-                                .toJS()
-                        )}
+                        {this.makeInfoFields(plumeDataFields)}
                     </CardContent>
                     <CardActions>
                         <Button
