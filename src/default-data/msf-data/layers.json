@@ -7,7 +7,7 @@
             "handleAs": "vista_geojson",
             "isDefault": false,
             "visibleInGroup": false,
-            "url": "http://100.64.114.155:9090/vista?category=0&maxObjects=10000",
+            "url": "http://100.64.114.187:9090/vista?category=0&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -19,7 +19,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://100.64.114.155:9090/vista?category=1&maxObjects=10000",
+            "url": "http://100.64.114.187:9090/vista?category=1&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -31,7 +31,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://100.64.114.155:9090/vista?category=2&maxObjects=10000",
+            "url": "http://100.64.114.187:9090/vista?category=2&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -43,7 +43,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://100.64.114.155:9090/vista?category=3&maxObjects=10000",
+            "url": "http://100.64.114.187:9090/vista?category=3&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -55,7 +55,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://100.64.114.155:9090/vista?category=4&maxObjects=10000",
+            "url": "http://100.64.114.187:9090/vista?category=4&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -67,7 +67,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://100.64.114.155:9090/vista?category=5&maxObjects=10000",
+            "url": "http://100.64.114.187:9090/vista?category=5&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -79,7 +79,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://100.64.114.155:9090/vista?category=6&maxObjects=10000",
+            "url": "http://100.64.114.187:9090/vista?category=6&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -91,7 +91,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://100.64.114.155:9090/vista?category=8&maxObjects=10000",
+            "url": "http://100.64.114.187:9090/vista?category=8&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -103,7 +103,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://100.64.114.155:9090/vista?category=9&maxObjects=10000",
+            "url": "http://100.64.114.187:9090/vista?category=9&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -115,7 +115,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://100.64.114.155:9090/vista?category=10&maxObjects=10000",
+            "url": "http://100.64.114.187:9090/vista?category=10&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -127,7 +127,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://100.64.114.155:9090/vista?category=11&maxObjects=10000",
+            "url": "http://100.64.114.187:9090/vista?category=11&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -139,7 +139,7 @@
             "handleAs": "vista_geojson",
             "isDefault": false,
             "visibleInGroup": false,
-            "url": "http://100.64.114.155:9090/vista?category=13&maxObjects=10000",
+            "url": "http://100.64.114.187:9090/vista?category=13&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -151,7 +151,7 @@
             "type": "data",
             "handleAs": "aviris_plume",
             "isDefault": true,
-            "url": "http://100.64.114.155:9090/aviris/plumes",
+            "url": "http://100.64.114.187:9090/aviris/plumes",
             "thumbnailImage": "img/AVIRIS.png",
             "palette": {
                 "name": "AVIRIS_plumes",
@@ -172,7 +172,7 @@
             "type": "data",
             "handleAs": "vector_kmz",
             "isDefault": false,
-            "url": "http://100.64.114.155/data/gridded/v1/kmz/vista_emissions.kmz",
+            "url": "http://100.64.114.187/data/gridded/v1/kmz/vista_emissions.kmz",
             "thumbnailImage": "img/gridded_methane_v1.png",
             "opacity": 0.3,
             "metadata": {
@@ -187,7 +187,7 @@
             "type": "data",
             "handleAs": "gridded_geojson",
             "isDefault": false,
-            "url": "http://100.64.114.155/data/gridded/v2/Fluxes_20150128.geojson",
+            "url": "http://100.64.114.187/data/gridded/v2/Fluxes_20150128.geojson",
             "thumbnailImage": "img/gridded_methane_v1.png",
             "opacity": 0.3,
             "metadata": {
@@ -284,7 +284,7 @@
                     "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
                 "tileGrid": {
                     "minZoom": 1,
-                    "maxZoom":19,
+                    "maxZoom": 19,
                     "tileSize": 256
                 }
             }

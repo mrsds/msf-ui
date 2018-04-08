@@ -21,9 +21,9 @@ const OPS_CONFIG = Immutable.fromJS(window.APPLICATION_CONFIG);
 const APP_CONFIG = Immutable.fromJS({
     URLS: {
         vistaEndpoint:
-            "http://100.64.114.155:9090/vista?maxLat={latMax}&maxLon={lonMax}&minLat={latMin}&minLon={lonMin}&category={category}",
+            "http://100.64.114.187:9090/vista?maxLat={latMax}&maxLon={lonMax}&minLat={latMin}&minLon={lonMin}&category={category}",
         avirisEndpoint:
-            "http://100.64.114.155:9090/aviris/plumes?maxObjects=1000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}",
+            "http://100.64.114.187:9090/aviris/plumes?maxObjects=1000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}",
         layerConfig: [
             {
                 url: "default-data/msf-data/capabilities.xml",
@@ -35,8 +35,8 @@ const APP_CONFIG = Immutable.fromJS({
             }
         ],
         paletteConfig: "default-data/msf-data/palettes.json",
-        availableGriddedDates: "http://100.64.114.155/data/gridded/gridded_date_list.json",
-        griddedVectorEndpoint: "http://100.64.114.155/data/gridded/v2/Fluxes_{date}.geojson"
+        availableGriddedDates: "http://100.64.114.187/data/gridded/gridded_date_list.json",
+        griddedVectorEndpoint: "http://100.64.114.187/data/gridded/v2/Fluxes_{date}.geojson"
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
     PLUME_START_DATE: new Date(2000, 0, 1),
