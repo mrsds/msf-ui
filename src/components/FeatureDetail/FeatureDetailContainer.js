@@ -240,7 +240,7 @@ export class FeatureDetailContainer extends Component {
                     <Grid container spacing={16}>
                         <Grid item xs>
                             <Card className={styles.cardRoot}>
-                                <CardContent>
+                                <CardContent className={styles.noPadding}>
                                     <Typography variant="headline" component="h2">
                                         Observation Methane Plume Imagery
                                     </Typography>
@@ -252,7 +252,7 @@ export class FeatureDetailContainer extends Component {
                         </Grid>
                         <Grid item xs>
                             <Card className={styles.cardRoot}>
-                                <CardContent>
+                                <CardContent className={styles.noPadding}>
                                     <Typography variant="headline" component="h2">
                                         Observation RGB Imagery
                                     </Typography>

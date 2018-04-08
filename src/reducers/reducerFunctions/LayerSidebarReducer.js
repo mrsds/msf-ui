@@ -18,6 +18,7 @@ export default class LayerSidebarReducer {
                         !action.featureList
                             ? []
                             : action.featureList.features.reduce((keys, feature) => {
+                                  console.log(feature.properties);
                                   let categoryId = feature.properties.category_id;
                                   keys.push(
                                       Immutable.fromJS({

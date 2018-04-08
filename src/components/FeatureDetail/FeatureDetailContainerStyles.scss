@@ -37,6 +37,9 @@
     .header {
         background: $color-primary;
         padding: 15px;
+        .maxWidth {
+            max-width: 979px;
+        }
     }
     .headerTitle {
         margin: 0;
@@ -55,11 +58,16 @@
     }
     .featureDetailBody {
         padding: 10px;
+        padding-bottom: 20px;
     }
     .imageCardsContainer {
         display: flex;
-        .card:first-child {
-            margin-right: 10px;
+        .noPadding {
+            padding: 0;
+        }
+        h2 {
+            margin: 0 !important;
+            padding: 16px;
         }
     }
     .cardRoot {
