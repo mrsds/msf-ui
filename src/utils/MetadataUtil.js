@@ -27,17 +27,17 @@ export default class MetadataUtil {
     }
 
     static getCity(feature, errTxt) {
-        const fields = ["site", "city", "city_1", "placename"];
+        const fields = ["site", "city", "city_1", "placename", "LCity"];
         return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
     }
 
     static getState(feature, errTxt) {
-        const fields = ["state", "statename"];
+        const fields = ["state", "statename", "LState"];
         return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
     }
 
     static getLat(feature, errTxt) {
-        const fields = ["latitude", "latitude_1"];
+        const fields = ["latitude", "latitude_1", "LLat"];
         const res = this.tryFields(fields, this.getMetadata(feature));
         if (res) {
             return typeof res === "number" ? res.toString() : res;
@@ -46,7 +46,7 @@ export default class MetadataUtil {
     }
 
     static getLong(feature, errTxt) {
-        const fields = ["longitude", "longitude_1"];
+        const fields = ["longitude", "longitude_1", "LLong"];
         const res = this.tryFields(fields, this.getMetadata(feature));
         if (res) {
             return typeof res === "number" ? res.toString() : res;
@@ -55,7 +55,14 @@ export default class MetadataUtil {
     }
 
     static getAddress(feature, errTxt) {
-        const fields = ["address", "Street_Add", "Station_Add", "F_Address", "location"];
+        const fields = [
+            "address",
+            "Street_Add",
+            "Station_Add",
+            "F_Address",
+            "location",
+            "LAddress"
+        ];
         return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
     }
 
@@ -91,6 +98,21 @@ export default class MetadataUtil {
 
     static getPlumeID(feature, errTxt = null) {
         const fields = ["Plume id"];
+        return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
+    }
+
+    static getSiteName(feature, errTxt = null) {
+        const fields = ["LSiteName"];
+        return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
+    }
+
+    static getFacilityTypeName(feature, errTxt = null) {
+        const fields = ["LSector"];
+        return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
+    }
+
+    static getOperatorName(feature, errTxt = null) {
+        const fields = ["LOperator"];
         return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
     }
 }

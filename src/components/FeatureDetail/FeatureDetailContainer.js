@@ -124,6 +124,29 @@ export class FeatureDetailContainer extends Component {
             { name: "Facility Address", value: address || "(No Address)", unit: null }
         ];
 
+        const facilityOverviewFields = [
+            { name: "Site", value: MetadataUtil.getSiteName(this.props.feature, "(no site name)") },
+            {
+                name: "Facility Type",
+                value: MetadataUtil.getFacilityTypeName(this.props.feature, "(no sector name)")
+            },
+            {
+                name: "Operator",
+                value: MetadataUtil.getOperatorName(this.props.feature, "(no operator name)")
+            },
+            {
+                name: "Location",
+                value: lat && long ? `${lat}°N, ${long}°W` : "(no location)"
+            },
+            {
+                name: "Facility Address",
+                value: `${address || "(no address)"}, ${city || "(no city)"}, ${state ||
+                    "(no state)"}`,
+                unit: null
+            },
+            { name: "Number of Flyovers", value: this.props.feature.get("flyoverCount") }
+        ];
+
         let featureTitle = name;
         let featureSubtitle = `${category} · ${city}, ${state}`;
         let featureHeaderImage = googleMapsStaticImgUrl;
@@ -134,7 +157,7 @@ export class FeatureDetailContainer extends Component {
                         <Typography variant="headline" component="h2">
                             Facility Overview
                         </Typography>
-                        {this.makeInfoFields(observationDataFields)}
+                        {this.makeInfoFields(facilityOverviewFields)}
                     </CardContent>
                     <CardActions>
                         <Button
