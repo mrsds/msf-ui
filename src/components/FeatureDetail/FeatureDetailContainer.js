@@ -26,9 +26,15 @@ export class FeatureDetailContainer extends Component {
     //     }
     // }
 
+    truncateField(str, limit) {
+        const stripped = str.replace(/(\s*$)/, "");
+        return stripped.substring(0, limit - 3) + "...";
+    }
+
     makeInfoFields(fieldInfo) {
         const fields = fieldInfo.map(field => {
-            const unit = field.unit ? <unit>{" " + field.unit}</unit> : null;
+            const unit = field.unit ? `(${field.unit})` : null;
+            const value = field.value;
             if (field.subtitle) {
                 return (
                     <div key={field.name + field.subtitle}>
@@ -36,20 +42,16 @@ export class FeatureDetailContainer extends Component {
                             <span className={styles.main}>{field.name}</span>
                             <span className={styles.sub}>{field.subtitle}</span>
                         </label>
-                        <span>
-                            {field.value}
-                            {unit}
-                        </span>
+                        <span>{value}</span>
                     </div>
                 );
             }
             return (
                 <div key={field.name}>
-                    <label>{field.name}</label>
-                    <span>
-                        {field.value}
-                        {unit}
-                    </span>
+                    <label>
+                        {field.name} {unit}
+                    </label>
+                    <span>{value}</span>
                 </div>
             );
         });
@@ -90,6 +92,7 @@ export class FeatureDetailContainer extends Component {
     }
 
     makeInfrastructureDetail() {
+        console.log(this.props.feature.toJS());
         if (!this.props.feature.size) return null;
 
         // Get all the properties we'll be using later on using metadata searches
@@ -101,6 +104,7 @@ export class FeatureDetailContainer extends Component {
         const lat = MetadataUtil.getLat(this.props.feature, null);
         const long = MetadataUtil.getLong(this.props.feature, null);
         const address = MetadataUtil.getAddress(this.props.feature, null);
+        const sector = MetadataUtil.getFacilityTypeName(this.props.feature, "(no sector name)");
         let googleMapsUri = "";
         let googleMapsStaticImgUrl = "./styles/resources/img/fake_info_img.png";
         if (lat && long) {
@@ -128,7 +132,7 @@ export class FeatureDetailContainer extends Component {
             { name: "Site", value: MetadataUtil.getSiteName(this.props.feature, "(no site name)") },
             {
                 name: "Facility Type",
-                value: MetadataUtil.getFacilityTypeName(this.props.feature, "(no sector name)")
+                value: sector
             },
             {
                 name: "Operator",
@@ -148,7 +152,7 @@ export class FeatureDetailContainer extends Component {
         ];
 
         let featureTitle = name;
-        let featureSubtitle = `${category} · ${city}, ${state}`;
+        let featureSubtitle = `${sector} · ${city}, ${state}`;
         let featureHeaderImage = googleMapsStaticImgUrl;
         let featureBody = (
             <div>
@@ -179,6 +183,8 @@ export class FeatureDetailContainer extends Component {
                             this.props.feature
                                 .get("metadata")
                                 .sortBy(x => x.get("name"))
+                                // Omitting metadata fields that begin with "L"
+                                .filter(x => x.get("name").charAt(0) !== "L")
                                 .toJS()
                         )}
                     </CardContent>
@@ -224,7 +230,13 @@ export class FeatureDetailContainer extends Component {
             { name: "Candidate ID", value: MetadataUtil.getCandidateID(this.props.feature, null) },
             { name: "Location", value: lat && long ? `${lat}°N, ${long}°W` : "(No Location)" },
             { name: "Plume ID", value: MetadataUtil.getPlumeID(this.props.feature, null) },
-            { name: "Source ID", value: MetadataUtil.getSourceID(this.props.feature, null) }
+            { name: "IME", unit: "kg", value: MetadataUtil.getIME(this.props.feature, "20", null) },
+            { name: "Source ID", value: MetadataUtil.getSourceID(this.props.feature, null) },
+            {
+                name: "Fetch",
+                unit: "m",
+                value: MetadataUtil.getFetch(this.props.feature, "20", null)
+            }
         ];
 
         let featureTitle = dateString;

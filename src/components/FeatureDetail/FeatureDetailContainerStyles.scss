@@ -92,8 +92,9 @@
             flex-basis: 50%;
             margin: 5px 0;
             label {
+                height: 100%;
                 display: inline-block;
-                width: 200px;
+                min-width: 150px;
                 color: #7f7f7f;
                 &.stacked {
                     .main {
@@ -104,10 +105,12 @@
                     }
                 }
             }
-        }
-        span {
-            unit {
-                color: #7f7f7f;
+            span {
+                white-space: normal;
+                margin-right: 5px;
+                unit {
+                    color: #7f7f7f;
+                }
             }
         }
     }

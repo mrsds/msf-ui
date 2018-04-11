@@ -169,7 +169,7 @@ export class InfrastructureContainer extends Component {
                             variant="caption"
                             noWrap
                         >
-                            {feature.get("category")}
+                            {MetadataUtil.getFacilityTypeName(feature)}
                         </Typography>
                     </div>
                     <ListItemSecondaryAction className={listItemSecondaryActionClasses}>

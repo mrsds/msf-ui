@@ -115,4 +115,14 @@ export default class MetadataUtil {
         const fields = ["LOperator"];
         return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
     }
+
+    static getIME(feature, num = 20, errTxt = null) {
+        const fields = [`IME${num} (kg)`];
+        return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
+    }
+
+    static getFetch(feature, num = 20, errTxt = null) {
+        const fields = [`Fetch${num} (m)`];
+        return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
+    }
 }
