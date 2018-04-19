@@ -133,8 +133,8 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                             min={parseFloat(this.props.layer.get("min"))}
                             max={parseFloat(this.props.layer.get("max"))}
                             units={this.props.layer.get("units")}
-                            displayMin={parseFloat(this.props.layer.getIn(["palette", "min"]))}
-                            displayMax={parseFloat(this.props.layer.getIn(["palette", "max"]))}
+                            displayMin={this.props.layer.getIn(["palette", "min"])}
+                            displayMax={this.props.layer.getIn(["palette", "max"])}
                             handleAs={this.props.layer.getIn(["palette", "handleAs"])}
                             url={this.props.layer.getIn(["palette", "url"])}
                             className={colorbarStylesExtended.colorbar}
