@@ -431,6 +431,52 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         }
     }
 
+    getVistaStyle(layerId, visible = true) {
+        const { fill, stroke } = Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).reduce(
+            (acc, groupName) => {
+                const group = layerSidebarTypes.INFRASTRUCTURE_GROUPS[groupName];
+                if (acc) return acc;
+                const categoryInGroup = group.categories.some(category => category === layerId);
+                if (categoryInGroup) return group.colors;
+            },
+            null
+        );
+
+        if (!visible) {
+            return new Ol_Style({
+                fill: new Ol_Style_Fill({
+                    color: [0, 0, 0, 0]
+                }),
+                stroke: new Ol_Style_Stroke({
+                    color: [0, 0, 0, 0],
+                    width: 0
+                }),
+                image: new Ol_Style_Circle({
+                    radius: 4,
+                    fill: new Ol_Style_Fill({
+                        color: [0, 0, 0, 0]
+                    })
+                })
+            });
+        }
+
+        return new Ol_Style({
+            fill: new Ol_Style_Fill({
+                color: fill
+            }),
+            stroke: new Ol_Style_Stroke({
+                color: stroke,
+                width: 1
+            }),
+            image: new Ol_Style_Circle({
+                radius: 4,
+                fill: new Ol_Style_Fill({
+                    color: stroke
+                })
+            })
+        });
+    }
+
     createVistaLayer(layer, fromCache = true) {
         try {
             let layerSource = this.createLayerSource(
@@ -443,33 +489,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 layerSource = new Ol_Source_Cluster({ source: layerSource });
             }
 
-            const { fill, stroke } = Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).reduce(
-                (acc, groupName) => {
-                    const group = layerSidebarTypes.INFRASTRUCTURE_GROUPS[groupName];
-                    if (acc) return acc;
-                    const categoryInGroup = group.categories.some(
-                        category => category === layer.get("id")
-                    );
-                    if (categoryInGroup) return group.colors;
-                },
-                null
-            );
-
-            const style = new Ol_Style({
-                fill: new Ol_Style_Fill({
-                    color: fill
-                }),
-                stroke: new Ol_Style_Stroke({
-                    color: stroke,
-                    width: 1
-                }),
-                image: new Ol_Style_Circle({
-                    radius: 4,
-                    fill: new Ol_Style_Fill({
-                        color: stroke
-                    })
-                })
-            });
+            const style = this.getVistaStyle(layer.get("id"));
 
             const vistaLayer = new Ol_Layer_Vector({
                 source: layerSource,
@@ -760,7 +780,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         });
     }
 
-    setActivePlumes(activeFeatures) {
+    setActivePlumes(activeFeatures, hideAll) {
         const activeFeatureIds = activeFeatures
             .filter(feature => feature && feature.get("id"))
             .map(feature => feature.get("id"));
@@ -789,7 +809,9 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             .getArray()
             .forEach(feature => {
                 const opacity =
-                    !activeFeatureIds.length || activeFeatureIds.includes(feature.get("_featureId"))
+                    !hideAll &&
+                    (!activeFeatureIds.length ||
+                        activeFeatureIds.includes(feature.get("_featureId")))
                         ? 1
                         : 0;
                 feature.setOpacity(opacity);
@@ -806,7 +828,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         avirisIconLayerGroupSource.forEachFeature(feature => {
             let featureIsActive =
                 feature.get("_featureId") && activeFeatureIds.includes(feature.get("_featureId"));
-            if (!featureIsActive && feature.get("_featureActive")) {
+            if (hideAll || (!featureIsActive && feature.get("_featureActive"))) {
                 avirisIconLayerGroupSource.removeFeature(feature);
             }
 
@@ -818,6 +840,43 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 newFeature.setStyle(activePlumeStyle);
                 avirisIconLayerGroupSource.addFeature(newFeature);
             }
+        });
+    }
+
+    setActiveInfrastructure(activeFeatures, hideAll) {
+        const activeInfrastructureIds = activeFeatures
+            .filter(feature => feature && feature.get("id"))
+            .map(feature => feature.get("id"));
+
+        const activeInfrastructureCategoryIds = activeFeatures.reduce((acc, feature) => {
+            if (!acc.includes(feature.get("categoryId"))) acc.push(feature.get("categoryId"));
+            return acc;
+        }, []);
+
+        const vistaLayers = this.map
+            .getLayers()
+            .getArray()
+            .filter(layer => layer.get("_layerGroup") === "VISTA");
+
+        vistaLayers.forEach(layer => {
+            const layerId = layer.get("_layerId");
+
+            layer
+                .getSource()
+                .getFeatures()
+                .forEach(feature => {
+                    if (hideAll) {
+                        return feature.setStyle(this.getVistaStyle(layerId, false));
+                    }
+                    if (!activeFeatures.length) {
+                        return feature.setStyle(this.getVistaStyle(layerId, true));
+                    }
+                    if (activeInfrastructureIds.includes(feature.get("id"))) {
+                        return feature.setStyle(this.getVistaStyle(layerId, true));
+                    } else {
+                        return feature.setStyle(this.getVistaStyle(layerId, false));
+                    }
+                });
         });
     }
 
@@ -838,5 +897,13 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             console.warn("Error in MapWrapperOpenlayers.resize:", err);
             return false;
         }
+    }
+
+    soloFeature(feature, category) {
+        const plumes = category === layerSidebarTypes.CATEGORY_PLUMES ? [feature] : [];
+        const infrastructure =
+            category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE ? [feature] : [];
+        this.setActivePlumes(plumes, infrastructure.length);
+        this.setActiveInfrastructure(infrastructure, plumes.length);
     }
 }

@@ -59,6 +59,7 @@ import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContai
 import KeyboardControlsContainerExtended from "components/KeyboardControls/KeyboardControlsContainerExtended";
 import HelpContainerExtended from "components/Help/HelpContainerExtended";
 import MapTooltip from "components/Map/MapTooltip";
+import FeaturePicker from "components/FeaturePicker/FeaturePicker";
 
 const theme = createMuiTheme({
     typography: {
@@ -154,6 +155,7 @@ export class AppContainer extends Component {
                     <MapControlsContainerExtended />
                     <CoordinateTracker />
                     <MapTooltip />
+                    <FeaturePicker />
                 </div>
             </MuiThemeProvider>
         );

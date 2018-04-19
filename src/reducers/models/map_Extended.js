@@ -23,6 +23,13 @@ export const mapState_Extended = mapState.mergeDeep(
         griddedSettings: {
             availableDates: [],
             currentDate: moment()
+        },
+        featurePicker: {
+            clickEvt: null,
+            infrastructure: [],
+            plumes: [],
+            activeFeature: null,
+            activeFeatureCategory: null
         }
     })
 );

@@ -92,7 +92,6 @@ export class FeatureDetailContainer extends Component {
     }
 
     makeInfrastructureDetail() {
-        console.log(this.props.feature.toJS());
         if (!this.props.feature.size) return null;
 
         // Get all the properties we'll be using later on using metadata searches

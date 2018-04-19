@@ -126,4 +126,32 @@ export default class MapReducer_Extended extends MapReducer {
         });
         return state;
     }
+
+    static updateFeaturePicker(state, action) {
+        return state
+            .setIn(["featurePicker", "clickEvt"], action.clickEvt)
+            .setIn(["featurePicker", "infrastructure"], action.infrastructure)
+            .setIn(["featurePicker", "plumes"], action.plumes);
+    }
+
+    static closeFeaturePicker(state, action) {
+        return state
+            .setIn(["featurePicker", "clickEvt"], null)
+            .setIn(["featurePicker", "infrastructure"], null)
+            .setIn(["featurePicker", "plumes"], null);
+    }
+
+    static setActivePickerFeature(state, action) {
+        state.get("maps").map(map => {
+            map.soloFeature(action.feature, action.category);
+        });
+        return state
+            .setIn(["featurePicker", "activeFeature"], action.feature)
+            .setIn(["featurePicker", "activeFeatureCategory"], action.category);
+    }
+
+    static setMapView(state, action) {
+        const updatedState = this.closeFeaturePicker(state, action);
+        return MapReducer.setMapView(updatedState, action);
+    }
 }

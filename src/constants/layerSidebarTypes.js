@@ -94,8 +94,8 @@ export const INFRASTRUCTURE_GROUPS = {
         categories: agricultureCategories,
         categoryIds: agricultureCategories.map(x => INFRASTRUCTURE_SUBCATEGORIES[x]),
         colors: {
-            fill: "rgba(212,125,39,0.3)",
-            stroke: "rgba(212,125,39,1)",
+            fill: [212, 125, 39, 0.3],
+            stroke: [212, 125, 39, 1],
             fillNoTransparency: "rgb(242, 216, 192)"
         }
     },
@@ -103,8 +103,8 @@ export const INFRASTRUCTURE_GROUPS = {
         categories: energyCategories,
         categoryIds: energyCategories.map(x => INFRASTRUCTURE_SUBCATEGORIES[x]),
         colors: {
-            fill: "rgba(181,181,54,0.3)",
-            stroke: "rgba(181,181,54,1)",
+            fill: [181, 181, 54, 0.3],
+            stroke: [181, 181, 54, 1],
             fillNoTransparency: "rgb(233, 233, 197)"
         }
     },
@@ -112,8 +112,8 @@ export const INFRASTRUCTURE_GROUPS = {
         categories: [VISTA_2017_WASTEWTR_TREAT_PLNT, VISTA_2017_LANDFILL, VISTA_2017_SOCAB_BOUND],
         categoryIds: wasteCategories.map(x => INFRASTRUCTURE_SUBCATEGORIES[x]),
         colors: {
-            fill: "rgba(129,230,27,0.3)",
-            stroke: "rgba(129,230,27,1)",
+            fill: [129, 230, 27, 0.3],
+            stroke: [129, 230, 27, 1],
             fillNoTransparency: "rgb(218, 248, 192)"
         }
     }
@@ -131,16 +131,16 @@ Object.keys(INFRASTRUCTURE_GROUPS).map(key => {
 });
 
 // export const INFRASTRUCTURE_SUBCATEGORY_SHAPES = {
-// 	[VISTA_2017_OILGAS_WELLS]: null,
-// 	[VISTA_2017_LIVESTOCK_DAIRIES]: 1,
-// 	[VISTA_2017_ANAEROBIC_LAGOONS]: 2,
-// 	[VISTA_2017_CNG_FUELING_STATIONS]: 3,
-// 	[VISTA_2017_LNG_FUELING_STATIONS]: 4,
-// 	[VISTA_2017_NAT_GAS_STORE_FIELDS]: 5,
-// 	[VISTA_2017_NAT_GAS_PROC_PLANT]: 6,
-// 	[VISTA_2017_PETRO_REFINE]: 8,
-// 	[VISTA_2017_WASTEWTR_TREAT_PLNT]: 9,
-// 	[VISTA_2017_POWER_PLANT]: 10,
-// 	[VISTA_2017_LANDFILL]: 11,
-// 	[VISTA_2017_SOCAB_BOUND]: 13
+//  [VISTA_2017_OILGAS_WELLS]: null,
+//  [VISTA_2017_LIVESTOCK_DAIRIES]: 1,
+//  [VISTA_2017_ANAEROBIC_LAGOONS]: 2,
+//  [VISTA_2017_CNG_FUELING_STATIONS]: 3,
+//  [VISTA_2017_LNG_FUELING_STATIONS]: 4,
+//  [VISTA_2017_NAT_GAS_STORE_FIELDS]: 5,
+//  [VISTA_2017_NAT_GAS_PROC_PLANT]: 6,
+//  [VISTA_2017_PETRO_REFINE]: 8,
+//  [VISTA_2017_WASTEWTR_TREAT_PLNT]: 9,
+//  [VISTA_2017_POWER_PLANT]: 10,
+//  [VISTA_2017_LANDFILL]: 11,
+//  [VISTA_2017_SOCAB_BOUND]: 13
 // };
