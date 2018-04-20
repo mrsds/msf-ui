@@ -981,7 +981,7 @@
             {
                   "name": "gridded_methane_inversion",
                   "values": [
-                        ["0.0", "000000ff"],
+                        ["0.0", "ffffff00"],
                         ["38.0", "94ce58ff"],
                         ["70.0", "fffe38ff"],
                         ["130.0", "fec02dff"],
