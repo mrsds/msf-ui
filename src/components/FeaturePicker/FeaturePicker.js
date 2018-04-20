@@ -14,7 +14,6 @@ import List, {
     ListItemSecondaryAction
 } from "material-ui/List";
 import Typography from "material-ui/Typography";
-import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 import MetadataUtil from "utils/MetadataUtil";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import Divider from "material-ui/Divider";
@@ -30,16 +29,16 @@ export class FeaturePicker extends Component {
         const isActive =
             this.props.activeFeature && feature.get("id") === this.props.activeFeature.get("id");
         const listItemRootClassnames = MiscUtilExtended.generateStringFromSet({
-            [layerSidebarStyles.selectedItem]: isActive,
-            [layerSidebarStyles.itemRoot]: true
+            [styles.selectedItem]: isActive,
+            [styles.itemRoot]: true
         });
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem
-                    className={layerSidebarStyles.itemRoot}
+                    className={styles.itemRoot}
                     classes={{
                         root: listItemRootClassnames,
-                        container: layerSidebarStyles.listItemContainer
+                        container: styles.listItemContainer
                     }}
                     onClick={() =>
                         this.props.toggleFeatureLabel(
@@ -56,10 +55,10 @@ export class FeaturePicker extends Component {
                     onMouseLeave={() => this.props.setActivePickerFeature()}
                     button
                 >
-                    <div className={layerSidebarStyles.listItemTextContainer}>
+                    <div className={styles.listItemTextContainer}>
                         <Typography
                             color="default"
-                            className={layerSidebarStyles.listItemText}
+                            className={styles.listItemText}
                             variant="body1"
                             noWrap
                         >
@@ -67,7 +66,7 @@ export class FeaturePicker extends Component {
                         </Typography>
                         <Typography
                             color="default"
-                            className={layerSidebarStyles.listItemTextSecondary}
+                            className={styles.listItemTextSecondary}
                             variant="caption"
                             noWrap
                         >
@@ -100,18 +99,18 @@ export class FeaturePicker extends Component {
         const isActive =
             this.props.activeFeature && feature.get("id") === this.props.activeFeature.get("id");
         const listItemRootClassnames = MiscUtilExtended.generateStringFromSet({
-            [layerSidebarStyles.selectedItem]: isActive,
-            [layerSidebarStyles.itemRoot]: true
+            [styles.selectedItem]: isActive,
+            [styles.itemRoot]: true
         });
         const datetime = feature.get("datetime");
         const dateString = MiscUtilExtended.formatPlumeDatetime(datetime);
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem
-                    className={layerSidebarStyles.itemRoot}
+                    className={styles.itemRoot}
                     classes={{
                         root: listItemRootClassnames,
-                        container: layerSidebarStyles.listItemContainer
+                        container: styles.listItemContainer
                     }}
                     onClick={() =>
                         this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_PLUMES, feature)
@@ -125,10 +124,10 @@ export class FeaturePicker extends Component {
                     onMouseLeave={() => this.props.setActivePickerFeature()}
                     button
                 >
-                    <div className={layerSidebarStyles.listItemTextContainer}>
+                    <div className={styles.listItemTextContainer}>
                         <Typography
                             color="default"
-                            className={layerSidebarStyles.listItemText}
+                            className={styles.listItemText}
                             variant="body1"
                             noWrap
                         >
@@ -136,7 +135,7 @@ export class FeaturePicker extends Component {
                         </Typography>
                         <Typography
                             color="default"
-                            className={layerSidebarStyles.listItemTextSecondary}
+                            className={styles.listItemTextSecondary}
                             variant="caption"
                             noWrap
                         >
@@ -189,7 +188,7 @@ export class FeaturePicker extends Component {
             <div className={styles.featurePicker} style={this.getPickerStyle()}>
                 <Card>
                     <CardContent>
-                        <List dense={true} className={layerSidebarStyles.featureItemList}>
+                        <List dense={true} className={styles.featureItemList}>
                             <Subheader hidden={!this.props.infrastructure.size}>
                                 Infrastructure
                             </Subheader>
