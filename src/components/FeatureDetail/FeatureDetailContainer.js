@@ -12,6 +12,8 @@ import MetadataUtil from "utils/MetadataUtil";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import MiscUtil from "_core/utils/MiscUtil";
 import styles from "components/FeatureDetail/FeatureDetailContainerStyles.scss";
+import PlumeChartingContainer from "components/FeatureDetail/PlumeChartingContainer";
+import InfrastructureChartingContainer from "components/FeatureDetail/InfrastructureChartingContainer";
 
 export class FeatureDetailContainer extends Component {
     // getCategory() {
@@ -116,17 +118,6 @@ export class FeatureDetailContainer extends Component {
         const areaSqMi = MetadataUtil.getAreaSqMi(this.props.feature, "(no area)");
 
         // Bin together the various field:value pairs
-        const observationDataFields = [
-            { name: "Facility Type", value: category || "(No Type)", unit: null },
-            {
-                name: "Facility Location",
-                value: lat && long ? `${lat}, ${long}` : "(No Location)",
-                unit: null
-            },
-            { name: "Number of Flyovers", value: "(n/a)", unit: null },
-            { name: "Facility Address", value: address || "(No Address)", unit: null }
-        ];
-
         const facilityOverviewFields = [
             { name: "Site", value: MetadataUtil.getSiteName(this.props.feature, "(no site name)") },
             {
@@ -188,6 +179,7 @@ export class FeatureDetailContainer extends Component {
                         )}
                     </CardContent>
                 </Card>
+                <InfrastructureChartingContainer />
             </div>
         );
 
@@ -289,6 +281,7 @@ export class FeatureDetailContainer extends Component {
                         </Grid>
                     </Grid>
                 </div>
+                <PlumeChartingContainer />
             </div>
         );
 

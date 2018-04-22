@@ -3,6 +3,7 @@ const Fuse = require("fuse.js");
 import Immutable from "immutable";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import * as appConfig from "constants/appConfig.js";
+import MiscUtilExtended from "utils/MiscUtilExtended";
 
 export default class LayerSidebarReducer {
     static updateActiveCategory(state, action) {
@@ -42,38 +43,7 @@ export default class LayerSidebarReducer {
                     Immutable.fromJS(
                         !action.featureList
                             ? []
-                            : action.featureList.reduce((keys, feature) => {
-                                  let ime = feature.metadata.find(x => x.name === "IME20 (kg)");
-                                  let imeValue = ime ? parseFloat(ime.value) : null;
-                                  let sourceId = feature.metadata.find(x => x.name === "Source id");
-                                  let sourceIdValue = sourceId ? parseFloat(sourceId.value) : null;
-                                  keys.push(
-                                      Immutable.fromJS({
-                                          name: feature.name,
-                                          flight_id: feature.flight_id,
-                                          id: feature.id,
-                                          datetime: feature.data_date_dt,
-                                          flight_campaign: "Unknown",
-                                          ime: imeValue,
-                                          sourceId: sourceId,
-                                          metadata: feature.metadata.concat([
-                                              {
-                                                  name: "latitude",
-                                                  value: feature.location[0]
-                                              },
-                                              {
-                                                  name: "longitude",
-                                                  value: feature.location[1]
-                                              }
-                                          ]),
-                                          png_url: feature.png_url,
-                                          rgbqlctr_url: feature.rgbqlctr_url,
-                                          thumbnail: feature.rgbqlctr_url_thumb
-                                          //   thumbnail: feature.plume_url_thumb
-                                      })
-                                  );
-                                  return keys;
-                              }, [])
+                            : MiscUtilExtended.processFeatureGeojson(action.featureList)
                     )
                 );
             default:

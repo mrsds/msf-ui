@@ -2,7 +2,12 @@ import * as types from "constants/actionTypes";
 import * as mapActions from "actions/mapActions";
 import * as coreMapActions from "_core/actions/mapActions";
 import * as appStrings from "_core/constants/appStrings";
+import * as appStringsMSF from "constants/appStrings";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import appConfig from "constants/appConfig";
+import MiscUtil from "_core/utils/MiscUtil";
+import * as alertActions from "_core/actions/alertActions";
+import Immutable from "immutable";
 
 export function pageForward(category) {
     return { type: types.FEATURE_SIDEBAR_PAGE_FORWARD, category };
@@ -24,19 +29,41 @@ export function setLayerSidebarCollapsed(collapsed) {
 }
 
 export function setFeatureDetail(category, feature) {
-    return { type: types.UPDATE_FEATURE_DETAIL, category, feature };
+    return dispatch => {
+        dispatch({ type: types.FEATURE_DETAIL_PLUME_LIST_LOADING });
+        dispatch({ type: types.UPDATE_FEATURE_DETAIL, category, feature });
+        return MiscUtil.asyncFetch({
+            url: appConfig.URLS.plumeListQueryEndpoint,
+            handleAs: "json"
+        }).then(
+            data => {
+                dispatch({
+                    type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST,
+                    data
+                });
+            },
+            err => {
+                console.warn(
+                    `Error getting available layer list for feature: ${feature.get("name")}`,
+                    err
+                );
+                dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data: [] });
+                dispatch(
+                    alertActions.addAlert({
+                        title: appStringsMSF.ALERTS.FEATURE_DETAIL_PLUME_LIST_LOAD_FAILED.title,
+                        body: appStringsMSF.ALERTS.FEATURE_DETAIL_PLUME_LIST_LOAD_FAILED,
+                        severity:
+                            appStringsMSF.ALERTS.FEATURE_DETAIL_PLUME_LIST_LOAD_FAILED.severity,
+                        time: new Date()
+                    })
+                );
+            }
+        );
+    };
 }
 
 export function hideFeatureDetail() {
     return { type: types.HIDE_FEATURE_DETAIL };
-}
-
-function featureFocusInfoLoading() {
-    return { type: types.FEATURE_FOCUS_INFO_LOADING };
-}
-
-function featureFocusInfoLoaded() {
-    return { type: types.FEATURE_FOCUS_INFO_LOADED };
 }
 
 function updateFeatureSearchTextState(category, value) {
