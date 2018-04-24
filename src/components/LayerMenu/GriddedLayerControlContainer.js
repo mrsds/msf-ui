@@ -41,7 +41,16 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
         this.isChangingDate = false;
         this.opacityButton = null;
     }
-
+    shouldComponentUpdate(nextProps) {
+        if (
+            !nextProps.griddedSettings
+                .get("currentDate")
+                .isSame(this.props.griddedSettings.get("currentDate"))
+        ) {
+            return true;
+        }
+        return LayerControlContainerCore.prototype.shouldComponentUpdate.call(this, nextProps);
+    }
     toggleDatePickerVisible() {
         this.isChangingDate = !this.isChangingDate;
         this.isChangingPosition = false;
@@ -307,7 +316,7 @@ GriddedLayerControlContainer.propTypes = {
     mapActions: PropTypes.object.isRequired,
     mapActionsExtended: PropTypes.object.isRequired,
     layer: PropTypes.object.isRequired,
-    griddedSettings: PropTypes.object.isRequired,
+    // griddedSettings: PropTypes.object.isRequired,
     activeNum: PropTypes.number.isRequired,
     palette: PropTypes.object
 };
