@@ -12,7 +12,8 @@ export const mapState_Extended = mapState.mergeDeep(
                 title: "Infrastructure",
                 opacity: 1,
                 type: "group",
-                displayIndex: 0
+                displayIndex: 0,
+                layerOrder: 1
             }
         ],
         activeFeature: {
@@ -38,7 +39,7 @@ export const layerModel_Extended = layerModel.mergeDeep(
     Immutable.fromJS({
         group: "",
         visibleInGroup: false,
-        layerOrder: null
+        displayIndex: null
     })
 );
 
@@ -47,5 +48,6 @@ export const groupModel = Immutable.fromJS({
     isActive: false,
     opacity: 1,
     displayIndex: 0,
-    title: ""
+    title: "",
+    layerOrder: 0
 });

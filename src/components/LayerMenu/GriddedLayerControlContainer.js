@@ -209,52 +209,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                             </div>
                         </Grow>
                     </Popper>
-                    <ClickAwayListener
-                        onClickAway={() => {
-                            if (this.isChangingPosition) {
-                                this.toggleChangingPosition();
-                            }
-                        }}
-                    >
-                        <span>
-                            <Target style={{ display: "inline-block" }}>
-                                <Tooltip title={"Set Layer Position"} placement="top">
-                                    <LayerPositionIcon
-                                        displayIndex={this.props.layer.get("displayIndex")}
-                                        activeNum={this.props.activeNum}
-                                        className={styles.iconButtonSmall}
-                                        color={this.isChangingPosition ? "primary" : "default"}
-                                        onClick={() => this.toggleChangingPosition()}
-                                    />
-                                </Tooltip>
-                            </Target>
-                            <Popper
-                                placement="left-end"
-                                modifiers={{
-                                    computeStyle: {
-                                        gpuAcceleration: false
-                                    }
-                                }}
-                                eventsEnabled={this.isChangingPosition}
-                                className={positionPopoverClasses}
-                            >
-                                <Grow
-                                    style={{ transformOrigin: "right" }}
-                                    in={this.isChangingPosition}
-                                >
-                                    <div>
-                                        <LayerPositionControl
-                                            isActive={this.isChangingPosition}
-                                            moveToTop={() => this.moveToTop()}
-                                            moveToBottom={() => this.moveToBottom()}
-                                            moveUp={() => this.moveUp()}
-                                            moveDown={() => this.moveDown()}
-                                        />
-                                    </div>
-                                </Grow>
-                            </Popper>
-                        </span>
-                    </ClickAwayListener>
+
                     <ClickAwayListener
                         onClickAway={() => {
                             if (this.isChangingOpacity) {
