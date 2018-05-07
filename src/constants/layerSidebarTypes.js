@@ -72,6 +72,20 @@ export const INFRASTRUCTURE_SUBCATEGORIES = {
     [VISTA_2017_SOCAB_BOUND]: 13
 };
 
+export const INFRASTRUCTURE_FACILITY_TYPE_TO_NAME = {
+    [VISTA_2017_OILGAS_WELLS]: "Oil and Natural Gas Wells",
+    [VISTA_2017_LIVESTOCK_DAIRIES]: "Dairies",
+    [VISTA_2017_ANAEROBIC_LAGOONS]: "Anaerobic Lagoons",
+    [VISTA_2017_CNG_FUELING_STATIONS]: "CNG Fueling Stations",
+    [VISTA_2017_LNG_FUELING_STATIONS]: "LNG Fueling Stations",
+    [VISTA_2017_NAT_GAS_STORE_FIELDS]: "Natural Gas Storage Fields",
+    [VISTA_2017_NAT_GAS_PROC_PLANT]: "Natural Gas Processing Plants",
+    [VISTA_2017_PETRO_REFINE]: "Petroleum Refineries",
+    [VISTA_2017_WASTEWTR_TREAT_PLNT]: "Wastewater Treatment Plants",
+    [VISTA_2017_POWER_PLANT]: "Power Plants",
+    [VISTA_2017_LANDFILL]: "Landfills",
+    [VISTA_2017_SOCAB_BOUND]: "SOCAB Bound"
+};
 export const SECTORS = {
     AGRICULTURE: "agriculture",
     ENERGY: "energy",
@@ -97,7 +111,8 @@ export const INFRASTRUCTURE_GROUPS = {
             fill: [212, 125, 39, 0.3],
             stroke: [212, 125, 39, 1],
             fillNoTransparency: "rgb(242, 216, 192)"
-        }
+        },
+        categoryNames: agricultureCategories.map(x => INFRASTRUCTURE_FACILITY_TYPE_TO_NAME[x])
     },
     [SECTORS.ENERGY]: {
         categories: energyCategories,
@@ -106,7 +121,8 @@ export const INFRASTRUCTURE_GROUPS = {
             fill: [181, 181, 54, 0.3],
             stroke: [181, 181, 54, 1],
             fillNoTransparency: "rgb(233, 233, 197)"
-        }
+        },
+        categoryNames: energyCategories.map(x => INFRASTRUCTURE_FACILITY_TYPE_TO_NAME[x])
     },
     [SECTORS.WASTE]: {
         categories: [VISTA_2017_WASTEWTR_TREAT_PLNT, VISTA_2017_LANDFILL, VISTA_2017_SOCAB_BOUND],
@@ -115,7 +131,8 @@ export const INFRASTRUCTURE_GROUPS = {
             fill: [129, 230, 27, 0.3],
             stroke: [129, 230, 27, 1],
             fillNoTransparency: "rgb(218, 248, 192)"
-        }
+        },
+        categoryNames: wasteCategories.map(x => INFRASTRUCTURE_FACILITY_TYPE_TO_NAME[x])
     }
 };
 
@@ -129,18 +146,3 @@ Object.keys(INFRASTRUCTURE_GROUPS).map(key => {
         };
     });
 });
-
-// export const INFRASTRUCTURE_SUBCATEGORY_SHAPES = {
-//  [VISTA_2017_OILGAS_WELLS]: null,
-//  [VISTA_2017_LIVESTOCK_DAIRIES]: 1,
-//  [VISTA_2017_ANAEROBIC_LAGOONS]: 2,
-//  [VISTA_2017_CNG_FUELING_STATIONS]: 3,
-//  [VISTA_2017_LNG_FUELING_STATIONS]: 4,
-//  [VISTA_2017_NAT_GAS_STORE_FIELDS]: 5,
-//  [VISTA_2017_NAT_GAS_PROC_PLANT]: 6,
-//  [VISTA_2017_PETRO_REFINE]: 8,
-//  [VISTA_2017_WASTEWTR_TREAT_PLNT]: 9,
-//  [VISTA_2017_POWER_PLANT]: 10,
-//  [VISTA_2017_LANDFILL]: 11,
-//  [VISTA_2017_SOCAB_BOUND]: 13
-// };

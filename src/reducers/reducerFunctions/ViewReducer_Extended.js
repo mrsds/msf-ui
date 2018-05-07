@@ -8,4 +8,7 @@ export default class ViewReducer_Extended extends ViewReducer {
     // static showMapControlContainer(state, action) {
     //     return state.set("mapControlsBoxVisible", true);
     // }
+    static changeAppMode(state, action) {
+        return state.set("appMode", action.mode);
+    }
 }

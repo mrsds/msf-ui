@@ -60,6 +60,8 @@ import KeyboardControlsContainerExtended from "components/KeyboardControls/Keybo
 import HelpContainerExtended from "components/Help/HelpContainerExtended";
 import MapTooltip from "components/Map/MapTooltip";
 import FeaturePicker from "components/FeaturePicker/FeaturePicker";
+import * as MSFTypes from "constants/MSFTypes";
+import MSFAnalyticsContainer from "components/MSFAnalytics/MSFAnalyticsContainer";
 
 const theme = createMuiTheme({
     typography: {
@@ -133,29 +135,40 @@ export class AppContainer extends Component {
             [displayStyles.mouseVisible]: !hideMouse,
             [displayStyles.mouseHidden]: hideMouse
         });
+        const mapContainerStyle =
+            this.props.appMode === MSFTypes.APP_MODE_MAP ? containerClasses : displayStyles.hidden;
+        const analyticsContainerStyle =
+            this.props.appMode === MSFTypes.APP_MODE_ANALYTICS
+                ? containerClasses
+                : displayStyles.hidden;
         return (
             <MuiThemeProvider theme={theme}>
                 <div className={containerClasses}>
-                    <HelpContainerExtended />
-                    <LayerSidebarContainer />
-                    <MapContainerExtended />
                     <AppBarContainer />
-                    <SettingsContainerExtended />
-                    <ShareContainer />
-                    <LayerInfoContainer />
-                    <LayerMenuContainerExtended />
-                    <TimelineContainer />
-                    <AlertsContainer />
-                    <LoadingContainer />
-                    <MapContextMenu />
-                    <MouseFollowerContainer />
-                    <AnalyticsContainer />
-                    <KeyboardControlsContainerExtended />
-                    <FeatureDetailContainer />
-                    <MapControlsContainerExtended />
-                    <CoordinateTracker />
-                    <MapTooltip />
-                    <FeaturePicker />
+                    <div className={mapContainerStyle}>
+                        <HelpContainerExtended />
+                        <LayerSidebarContainer />
+                        <MapContainerExtended />
+                        <SettingsContainerExtended />
+                        <ShareContainer />
+                        <LayerInfoContainer />
+                        <LayerMenuContainerExtended />
+                        <TimelineContainer />
+                        <AlertsContainer />
+                        <LoadingContainer />
+                        <MapContextMenu />
+                        <MouseFollowerContainer />
+                        <AnalyticsContainer />
+                        <KeyboardControlsContainerExtended />
+                        <FeatureDetailContainer />
+                        <MapControlsContainerExtended />
+                        <CoordinateTracker />
+                        <MapTooltip />
+                        <FeaturePicker />
+                    </div>
+                    <div className={analyticsContainerStyle}>
+                        <MSFAnalyticsContainer />
+                    </div>
                 </div>
             </MuiThemeProvider>
         );
@@ -172,13 +185,15 @@ AppContainer.propTypes = {
     setMapView: PropTypes.func.isRequired,
     updateFeatureList_Map: PropTypes.func.isRequired,
     distractionFreeMode: PropTypes.bool.isRequired,
-    mapControlsHidden: PropTypes.bool.isRequired
+    mapControlsHidden: PropTypes.bool.isRequired,
+    appMode: PropTypes.number.isRequired
 };
 
 function mapStateToProps(state) {
     return {
         distractionFreeMode: state.view.get("distractionFreeMode"),
-        mapControlsHidden: state.view.get("mapControlsHidden")
+        mapControlsHidden: state.view.get("mapControlsHidden"),
+        appMode: state.view.get("appMode")
     };
 }
 

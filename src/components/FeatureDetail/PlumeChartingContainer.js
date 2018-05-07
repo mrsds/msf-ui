@@ -229,7 +229,7 @@ export class PlumeChartingContainer extends Component {
                             Flyovers of Connected Plume Source:
                             <strong> {this.props.feature.getIn(["sourceId", "value"])}</strong>
                             <Typography variant="caption">
-                                Uncertainty Warning:{" "}
+                                Uncertainty Warning:
                                 <i>
                                     Plume sources are currently identified through a manual process.
                                 </i>

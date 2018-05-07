@@ -12,6 +12,8 @@ import Toolbar from "material-ui/Toolbar";
 import MiscUtil from "_core/utils/MiscUtil";
 import Divider from "material-ui/Divider";
 import styles from "components/AppBar/AppBarContainerStyles.scss";
+import Tabs, { Tab } from "material-ui/Tabs";
+import * as viewActions from "actions/viewActions";
 
 const AppBarContainer = props => {
     return (
@@ -19,12 +21,29 @@ const AppBarContainer = props => {
             <div className={styles.root}>
                 <AppBar elevation={0} position="static">
                     <Toolbar classes={{ root: styles.toolbarRoot }}>
-                        <span className={styles.appLogo}>
-                            <AppLogo />
-                        </span>
-                        <Typography variant="title" color="inherit" className={styles.title}>
-                            Methane Source Finder
-                        </Typography>
+                        <div className={styles.toolbarLeft}>
+                            <span className={styles.appLogo}>
+                                <AppLogo />
+                            </span>
+                            <Typography variant="title" color="inherit" className={styles.title}>
+                                Methane Source Finder
+                            </Typography>
+                        </div>
+                        <Tabs
+                            value={props.appMode}
+                            className={styles.tabsRoot}
+                            indicatorColor="white"
+                            onChange={(event, index) => props.setAppMode(index)}
+                        >
+                            <Tab
+                                label="Map"
+                                classes={{ labelContainer: styles.tabLabelContainer }}
+                            />
+                            <Tab
+                                label="Analytics"
+                                classes={{ labelContainer: styles.tabLabelContainer }}
+                            />
+                        </Tabs>
                         <AppButtons />
                     </Toolbar>
                 </AppBar>
@@ -35,4 +54,21 @@ const AppBarContainer = props => {
     );
 };
 
-export default AppBarContainer;
+AppBarContainer.propTypes = {
+    appMode: PropTypes.number.isRequired,
+    setAppMode: PropTypes.func.isRequired
+};
+
+function mapStateToProps(state) {
+    return {
+        appMode: state.view.get("appMode")
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        setAppMode: bindActionCreators(viewActions.setAppMode, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppBarContainer);

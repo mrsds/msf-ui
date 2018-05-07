@@ -17,6 +17,7 @@
 }
 .toolbarRoot {
     min-height: 45px;
+    justify-content: space-between;
 }
 .title {
     flex: 1;
@@ -25,6 +26,7 @@
     color: $color-light;
     font-size: 1.4rem;
     -webkit-font-smoothing: antialiased;
+    flex-grow: 0;
     // letter-spacing: 0.0756em;
 }
 
@@ -35,4 +37,19 @@
     top: 1px;
     position: relative;
     margin-right: 11px;
+}
+
+.tabsRoot {
+    width: $layer-sidebar-width;
+    // background: $color-secondary;
+}
+.tabLabelContainer {
+    width: 200px;
+    span {
+        -webkit-font-smoothing: antialiased;
+    }
+}
+.toolbarLeft {
+    display: flex;
+    align-items: center;
 }

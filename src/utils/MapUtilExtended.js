@@ -42,7 +42,7 @@ export default class MapUtilExtended extends MapUtil {
     }
 
     static getInfrastructureCategoryHumanName(category) {
-        return appStrings.INFRASTRUCTURE_FACILITY_TYPE_TO_NAME[category];
+        return layerSidebarTypes.INFRASTRUCTURE_FACILITY_TYPE_TO_NAME[category];
     }
 
     static buildAvirisFeatureQueryString(extent) {

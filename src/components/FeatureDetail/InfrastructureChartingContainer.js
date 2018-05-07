@@ -278,7 +278,6 @@ export class InfrastructureChartingContainer extends Component {
 
         return (
             <React.Fragment>
-                {" "}
                 <Manager className={styles.manager}>
                     <ClickAwayListener
                         onClickAway={() => {
