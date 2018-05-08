@@ -59,6 +59,7 @@ import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContai
 import KeyboardControlsContainerExtended from "components/KeyboardControls/KeyboardControlsContainerExtended";
 import HelpContainerExtended from "components/Help/HelpContainerExtended";
 import MapTooltip from "components/Map/MapTooltip";
+import DisclaimerContainer from "components/DisclaimerContainer/DisclaimerContainer";
 
 const theme = createMuiTheme({
     typography: {
@@ -135,6 +136,7 @@ export class AppContainer extends Component {
         return (
             <MuiThemeProvider theme={theme}>
                 <div className={containerClasses}>
+                    <DisclaimerContainer />
                     <HelpContainerExtended />
                     <LayerSidebarContainer />
                     <MapContainerExtended />
