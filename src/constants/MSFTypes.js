@@ -1,0 +1,7 @@
+export const PLUME_SOURCES_LIST = 0;
+export const PLUME_SOURCES_THUMB = 1;
+export const PLUME_SOURCES_CHART = 2;
+
+export const INFRASTRUCTURE_SOURCES_LIST = 0;
+export const INFRASTRUCTURE_SOURCES_THUMB = 1;
+export const INFRASTRUCTURE_SOURCES_CHART = 2;

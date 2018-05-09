@@ -1,6 +1,7 @@
 import { mapState_Extended } from "reducers/models/map_Extended";
 import map from "_core/reducers/map";
 import MapReducer_Extended from "reducers/reducerFunctions/MapReducer_Extended";
+import * as actionTypes from "_core/constants/actionTypes";
 import * as actionTypesMSF from "constants/actionTypes";
 
 export default function map_Extended(
@@ -33,6 +34,14 @@ export default function map_Extended(
             return opt_reducer.updateGriddedDate(state, action);
         case actionTypesMSF.RESIZE_MAP:
             return opt_reducer.resizeMap(state, action);
+        case actionTypesMSF.UPDATE_FEATURE_PICKER:
+            return opt_reducer.updateFeaturePicker(state, action);
+        case actionTypesMSF.SET_ACTIVE_PICKER_FEATURE:
+            return opt_reducer.setActivePickerFeature(state, action);
+        case actionTypes.SET_MAP_VIEW:
+            return opt_reducer.setMapView(state, action);
+        case actionTypes.SET_LAYER_ACTIVE:
+            return opt_reducer.setLayerActive(state, action);
         default:
             return map.call(this, state, action, opt_reducer);
     }

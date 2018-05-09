@@ -13,10 +13,6 @@ export default function asynchronous_Extended(
             return opt_reducer.availableFeatureListLoading(state, action);
         case actionTypesMSF.AVAILABLE_LAYER_LIST_LOADED:
             return opt_reducer.availableFeatureListLoaded(state, action);
-        case actionTypesMSF.FEATURE_FOCUS_INFO_LOADING:
-            return opt_reducer.featureFocusListLoading(state, action);
-        case actionTypesMSF.UPDATE_FEATURE_FOCUS_INFO:
-            return opt_reducer.featureFocusListLoaded(state, action);
         default:
             return async.call(this, state, action, opt_reducer);
     }

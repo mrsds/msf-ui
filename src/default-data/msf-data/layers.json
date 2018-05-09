@@ -164,7 +164,8 @@
                 "url": "default-data/msf-data/layer-metadata/AVIRIS.json",
                 "handleAs": "json"
             },
-            "updateParameters": { "time": false }
+            "updateParameters": { "time": false },
+            "layerOrder": 2
         },
         {
             "id": "GRIDDED_EMISSIONS_V1",
@@ -194,7 +195,14 @@
                 "url": "default-data/msf-data/layer-metadata/GRIDDED_EMISSIONS_V1.json",
                 "handleAs": "json"
             },
-            "updateParameters": { "time": false }
+            "updateParameters": { "time": false },
+            "palette": {
+                "name": "gridded_methane_inversion",
+                "handleAs": "json-fixed",
+                "min": "0",
+                "max": "> 130"
+            },
+            "layerOrder": 0
         },
 
         {

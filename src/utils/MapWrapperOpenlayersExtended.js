@@ -38,63 +38,6 @@ import { render } from "react-dom";
 const JSZip = require("jszip");
 
 export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
-    createMap(container, options) {
-        try {
-            // create default draw layer
-            let vectorSource = new Ol_Source_Vector({ wrapX: true });
-
-            let vectorLayer = new Ol_Layer_Vector({
-                source: vectorSource,
-                style: this.defaultGeometryStyle,
-                extent: appConfig.DEFAULT_MAP_EXTENT
-            });
-            vectorLayer.set("_layerId", "_vector_drawings");
-            vectorLayer.set("_layerType", appStrings.LAYER_GROUP_TYPE_REFERENCE);
-
-            // get the view options for the map
-            let viewOptions = options.get("view").toJS();
-            let mapProjection = Ol_Proj.get(appConfig.DEFAULT_PROJECTION.code);
-            let center = viewOptions.center;
-            this.overlay = this.createOverlay();
-
-            return new Ol_Map({
-                target: container,
-                renderer: ["canvas", "dom"],
-                layers: [vectorLayer],
-                overlays: [this.overlay],
-                view: new Ol_View({
-                    maxZoom: viewOptions.maxZoom,
-                    minZoom: viewOptions.minZoom,
-                    projection: mapProjection,
-                    maxResolution: viewOptions.maxResolution
-                }),
-                controls: [],
-                interactions: Ol_Interaction.defaults({
-                    altShiftDragRotate: false,
-                    pinchRotate: false,
-                    shiftDragZoom: false,
-                    keyboard: false
-                })
-            });
-        } catch (err) {
-            console.warn("Error in MapWrapperOpenlayers.createMap:", err);
-            return false;
-        }
-    }
-    createOverlay() {
-        // create ol overlay
-        return new Ol_Overlay({
-            // element: labelContainer,
-            element: document.getElementById("mapTooltip"),
-            // offset: [0, -15],
-            positioning: "bottom-center",
-            autoPan: true,
-            autoPanAnimation: {
-                duration: 250
-            },
-            stopEvent: true
-        });
-    }
     createLayer(layer, fromCache = true) {
         let mapLayer = false;
 
@@ -158,6 +101,64 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         return mapLayer;
     }
 
+    createMap(container, options) {
+        try {
+            // create default draw layer
+            let vectorSource = new Ol_Source_Vector({ wrapX: true });
+
+            let vectorLayer = new Ol_Layer_Vector({
+                source: vectorSource,
+                style: this.defaultGeometryStyle,
+                extent: appConfig.DEFAULT_MAP_EXTENT
+            });
+            vectorLayer.set("_layerId", "_vector_drawings");
+            vectorLayer.set("_layerType", appStrings.LAYER_GROUP_TYPE_REFERENCE);
+
+            // get the view options for the map
+            let viewOptions = options.get("view").toJS();
+            let mapProjection = Ol_Proj.get(appConfig.DEFAULT_PROJECTION.code);
+            let center = viewOptions.center;
+            this.overlay = this.createOverlay();
+
+            return new Ol_Map({
+                target: container,
+                renderer: ["canvas", "dom"],
+                layers: [vectorLayer],
+                overlays: [this.overlay],
+                view: new Ol_View({
+                    maxZoom: viewOptions.maxZoom,
+                    minZoom: viewOptions.minZoom,
+                    projection: mapProjection,
+                    maxResolution: viewOptions.maxResolution
+                }),
+                controls: [],
+                interactions: Ol_Interaction.defaults({
+                    altShiftDragRotate: false,
+                    pinchRotate: false,
+                    shiftDragZoom: false,
+                    keyboard: false
+                })
+            });
+        } catch (err) {
+            console.warn("Error in MapWrapperOpenlayers.createMap:", err);
+            return false;
+        }
+    }
+    createOverlay() {
+        // create ol overlay
+        return new Ol_Overlay({
+            // element: labelContainer,
+            element: document.getElementById("mapTooltip"),
+            // offset: [0, -15],
+            positioning: "bottom-center",
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            },
+            stopEvent: true
+        });
+    }
+
     griddedVectorLayerStyleFunction(feature, resolution) {
         const dnValue = parseFloat(feature.getProperties().DN);
 
@@ -184,18 +185,54 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 url: layer.get("url")
             }
         );
-        // layerSource.on("change", e => {
-        //     if (layerSource.getState() === "ready") {
-        //         layerSource.getFeatures().forEach(feature => feature.);
-        //     }
-        // });
+
         const mapLayer = new Ol_Layer_Vector({
             source: layerSource,
             opacity: layer.get("opacity"),
             style: this.griddedVectorLayerStyleFunction
         });
         mapLayer.set("_layerId", "griddedFlux");
+        mapLayer.set("_layerOrder", layer.get("layerOrder"));
         return mapLayer;
+    }
+
+    addLayer(mapLayer) {
+        try {
+            const layerOrder = mapLayer.get("_layerOrder");
+            let index;
+            if (typeof layerOrder === "undefined") {
+                index = this.findTopInsertIndexForLayer(mapLayer);
+            } else {
+                index = this.findFixedInsertIndexForLayer(mapLayer);
+            }
+            this.map.getLayers().insertAt(index + layerOrder, mapLayer);
+            this.addLayerToCache(mapLayer, appConfig.TILE_LAYER_UPDATE_STRATEGY);
+            return true;
+        } catch (err) {
+            console.warn("Error in MapWrapperOpenlayers.addLayer:", err);
+            return false;
+        }
+    }
+
+    /* Inserts a layer at a certain index, relative to others. So, if a certain layer has a "layerOrder" of 1, 
+    this function finds the position index of the next-highest layer that's active and inserts the layer at
+    an index right below it.*/
+    findFixedInsertIndexForLayer(mapLayer) {
+        const targetOrder = mapLayer.get("_layerOrder");
+        const layerCollection = this.map.getLayers();
+
+        let lastLayerOrder = 100;
+        let lastLayerIndex = 100;
+        for (let i = 0; i < layerCollection.getLength(); i++) {
+            const layer = layerCollection.item(i);
+            if (layer.get("_layerType") !== appStrings.LAYER_GROUP_TYPE_DATA) continue;
+            const layerOrder = layer.get("_layerOrder");
+            if (layerOrder > targetOrder && layerOrder < lastLayerOrder && i < lastLayerIndex) {
+                lastLayerOrder = layerOrder;
+                lastLayerIndex = i;
+            }
+        }
+        return lastLayerIndex - 1;
     }
 
     changeGriddedVectorLayerDate(date) {
@@ -318,9 +355,14 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 avirisLayerGroup.set("_layerId", "AVIRIS");
                 avirisLayerGroup.set("_layerType", layer.get("type"));
 
+                const layerOrder = layer.get("layerOrder");
+                avirisLayerGroup.set("_layerOrder", layerOrder);
                 this.map
                     .getLayers()
-                    .insertAt(this.findTopInsertIndexForLayer(avirisLayerGroup), avirisLayerGroup);
+                    .insertAt(
+                        this.findTopInsertIndexForLayer(avirisLayerGroup) + layerOrder,
+                        avirisLayerGroup
+                    );
             });
     }
 
@@ -373,6 +415,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             // check if layer already exists on map, just move to top
             let mapLayer = this.miscUtil.findObjectInArray(mapLayers, "_layerId", layer.get("id"));
             if (mapLayer) {
+                console.log("exists");
                 this.moveLayerToTop(layer);
                 return true;
             }
@@ -431,6 +474,52 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         }
     }
 
+    getVistaStyle(layerId, visible = true) {
+        const { fill, stroke } = Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).reduce(
+            (acc, groupName) => {
+                const group = layerSidebarTypes.INFRASTRUCTURE_GROUPS[groupName];
+                if (acc) return acc;
+                const categoryInGroup = group.categories.some(category => category === layerId);
+                if (categoryInGroup) return group.colors;
+            },
+            null
+        );
+
+        if (!visible) {
+            return new Ol_Style({
+                fill: new Ol_Style_Fill({
+                    color: [0, 0, 0, 0]
+                }),
+                stroke: new Ol_Style_Stroke({
+                    color: [0, 0, 0, 0],
+                    width: 0
+                }),
+                image: new Ol_Style_Circle({
+                    radius: 4,
+                    fill: new Ol_Style_Fill({
+                        color: [0, 0, 0, 0]
+                    })
+                })
+            });
+        }
+
+        return new Ol_Style({
+            fill: new Ol_Style_Fill({
+                color: fill
+            }),
+            stroke: new Ol_Style_Stroke({
+                color: stroke,
+                width: 1
+            }),
+            image: new Ol_Style_Circle({
+                radius: 4,
+                fill: new Ol_Style_Fill({
+                    color: stroke
+                })
+            })
+        });
+    }
+
     createVistaLayer(layer, fromCache = true) {
         try {
             let layerSource = this.createLayerSource(
@@ -443,33 +532,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 layerSource = new Ol_Source_Cluster({ source: layerSource });
             }
 
-            const { fill, stroke } = Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).reduce(
-                (acc, groupName) => {
-                    const group = layerSidebarTypes.INFRASTRUCTURE_GROUPS[groupName];
-                    if (acc) return acc;
-                    const categoryInGroup = group.categories.some(
-                        category => category === layer.get("id")
-                    );
-                    if (categoryInGroup) return group.colors;
-                },
-                null
-            );
-
-            const style = new Ol_Style({
-                fill: new Ol_Style_Fill({
-                    color: fill
-                }),
-                stroke: new Ol_Style_Stroke({
-                    color: stroke,
-                    width: 1
-                }),
-                image: new Ol_Style_Circle({
-                    radius: 4,
-                    fill: new Ol_Style_Fill({
-                        color: stroke
-                    })
-                })
-            });
+            const style = this.getVistaStyle(layer.get("id"));
 
             const vistaLayer = new Ol_Layer_Vector({
                 source: layerSource,
@@ -479,6 +542,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 style
             });
             vistaLayer.set("_layerGroup", "VISTA");
+            vistaLayer.set("_layerOrder", 1);
             return vistaLayer;
         } catch (err) {
             console.warn("Error in MapWrapperOpenlayers.createVectorLayer:", err);
@@ -760,7 +824,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         });
     }
 
-    setActivePlumes(activeFeatures) {
+    setActivePlumes(activeFeatures, hideAll) {
         const activeFeatureIds = activeFeatures
             .filter(feature => feature && feature.get("id"))
             .map(feature => feature.get("id"));
@@ -789,7 +853,9 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             .getArray()
             .forEach(feature => {
                 const opacity =
-                    !activeFeatureIds.length || activeFeatureIds.includes(feature.get("_featureId"))
+                    !hideAll &&
+                    (!activeFeatureIds.length ||
+                        activeFeatureIds.includes(feature.get("_featureId")))
                         ? 1
                         : 0;
                 feature.setOpacity(opacity);
@@ -806,7 +872,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         avirisIconLayerGroupSource.forEachFeature(feature => {
             let featureIsActive =
                 feature.get("_featureId") && activeFeatureIds.includes(feature.get("_featureId"));
-            if (!featureIsActive && feature.get("_featureActive")) {
+            if (hideAll || (!featureIsActive && feature.get("_featureActive"))) {
                 avirisIconLayerGroupSource.removeFeature(feature);
             }
 
@@ -818,6 +884,43 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 newFeature.setStyle(activePlumeStyle);
                 avirisIconLayerGroupSource.addFeature(newFeature);
             }
+        });
+    }
+
+    setActiveInfrastructure(activeFeatures, hideAll) {
+        const activeInfrastructureIds = activeFeatures
+            .filter(feature => feature && feature.get("id"))
+            .map(feature => feature.get("id"));
+
+        const activeInfrastructureCategoryIds = activeFeatures.reduce((acc, feature) => {
+            if (!acc.includes(feature.get("categoryId"))) acc.push(feature.get("categoryId"));
+            return acc;
+        }, []);
+
+        const vistaLayers = this.map
+            .getLayers()
+            .getArray()
+            .filter(layer => layer.get("_layerGroup") === "VISTA");
+
+        vistaLayers.forEach(layer => {
+            const layerId = layer.get("_layerId");
+
+            layer
+                .getSource()
+                .getFeatures()
+                .forEach(feature => {
+                    if (hideAll) {
+                        return feature.setStyle(this.getVistaStyle(layerId, false));
+                    }
+                    if (!activeFeatures.length) {
+                        return feature.setStyle(this.getVistaStyle(layerId, true));
+                    }
+                    if (activeInfrastructureIds.includes(feature.get("id"))) {
+                        return feature.setStyle(this.getVistaStyle(layerId, true));
+                    } else {
+                        return feature.setStyle(this.getVistaStyle(layerId, false));
+                    }
+                });
         });
     }
 
@@ -838,5 +941,13 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             console.warn("Error in MapWrapperOpenlayers.resize:", err);
             return false;
         }
+    }
+
+    soloFeature(feature, category) {
+        const plumes = category === layerSidebarTypes.CATEGORY_PLUMES ? [feature] : [];
+        const infrastructure =
+            category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE ? [feature] : [];
+        this.setActivePlumes(plumes, infrastructure.length);
+        this.setActiveInfrastructure(infrastructure, plumes.length);
     }
 }

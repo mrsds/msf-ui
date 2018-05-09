@@ -10,6 +10,7 @@ import * as appStrings from "_core/constants/appStrings";
 import * as featureDetailActions from "actions/featureDetailActions";
 import appConfig from "constants/appConfig";
 import * as asyncActions from "_core/actions/asyncActions";
+import Immutable from "immutable";
 
 export function updateFeatureList_Layer(layer, active) {
     return (dispatch, getState) => {
@@ -159,6 +160,9 @@ export function centerMapOnFeature(feature, featureType) {
 export function toggleFeatureLabel(category, feature) {
     return (dispatch, getState) => {
         // dispatch(featureDetailActions.hideFeatureDetailContainer());
+        dispatch(closeFeaturePicker());
+        revealAllPlumes(getState().map);
+        revealAllInfrastructure(getState().map);
         dispatch(clearFeatureLabels());
         dispatch(updateFeatureLabel(category, feature));
         updateHighlightedPlumes(getState);
@@ -218,25 +222,89 @@ export function selectFeatureInSidebar(id) {
 
 export function pixelClick(clickEvt) {
     return (dispatch, getState) => {
-        const category = getState().layerSidebar.get("activeFeatureCategory");
-        const selectedFeatureId = getPixelFeatureId(clickEvt, getState().map, category);
-        const selectedFeature = getFeatureById(
-            getState().layerSidebar,
-            category,
-            selectedFeatureId
-        );
+        const mapState = getState().map.getIn(["maps", "openlayers"]).map;
+        const layerSidebarState = getState().layerSidebar;
+        const vistaFeatures = getVistaFeaturesAtPixel(clickEvt, mapState, layerSidebarState);
+        const avirisFeatures = getAvirisFeaturesAtPixel(clickEvt, mapState, layerSidebarState);
+
+        // Update the layer destacking list
+        dispatch({
+            type: typesMSF.UPDATE_FEATURE_PICKER,
+            clickEvt,
+            infrastructure: Immutable.List(vistaFeatures),
+            plumes: Immutable.List(avirisFeatures)
+        });
+        const selectedFeature =
+            (!vistaFeatures.length && avirisFeatures.length === 1 && avirisFeatures[0]) ||
+            (!avirisFeatures.length && vistaFeatures.length === 1 && vistaFeatures[0]);
+
+        if (!selectedFeature) return;
+
+        const category =
+            (avirisFeatures.length && layerSidebarTypes.CATEGORY_PLUMES) ||
+            (vistaFeatures.length && layerSidebarTypes.CA);
+
         dispatch(clearFeatureLabels());
-        if (selectedFeature) {
-            dispatch(updateFeatureLabel(category, selectedFeature));
-        }
+        dispatch(updateFeatureLabel(category, selectedFeature));
+
         updateHighlightedPlumes(getState);
         return { type: types.PIXEL_CLICK, clickEvt };
+
+        // const category = getState().layerSidebar.get("activeFeatureCategory");
+        // const selectedFeatureId = getPixelFeatureId(clickEvt, getState().map, category);
+        // const selectedFeature = getFeatureById(
+        //     getState().layerSidebar,
+        //     category,
+        //     selectedFeatureId
+        // );
+        // dispatch(clearFeatureLabels());
+        // if (selectedFeature) {
+        //     dispatch(updateFeatureLabel(category, selectedFeature));
+        // }
+        // updateHighlightedPlumes(getState);
+        // return { type: types.PIXEL_CLICK, clickEvt };
     };
+}
+
+function getVistaFeaturesAtPixel(clickEvt, mapState, layerSidebarState) {
+    return mapState
+        .getLayers()
+        .getArray()
+        .filter(layer => layer.get("_layerGroup") === "VISTA")
+        .reduce((acc, layer) => {
+            return acc.concat(
+                layer
+                    .getSource()
+                    .getFeaturesAtCoordinate(mapState.getCoordinateFromPixel(clickEvt.pixel))
+                    .reduce((acc, feature) => {
+                        const featureInfo = layerSidebarState
+                            .getIn([
+                                "searchState",
+                                layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+                                "searchResults"
+                            ])
+                            .find(f => f.get("id") === feature.get("id"));
+                        if (featureInfo) acc.push(featureInfo);
+                        return acc;
+                    }, [])
+            );
+        }, []);
+}
+
+function getAvirisFeaturesAtPixel(clickEvt, mapState, layerSidebarState) {
+    const featureIds = [];
+    mapState.forEachLayerAtPixel(clickEvt.pixel, layer => {
+        if (layer.get("_featureType") === "plume") featureIds.push(layer.get("_featureId"));
+    });
+    return featureIds.map(id =>
+        layerSidebarState
+            .getIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES, "searchResults"])
+            .find(f => f.get("id") === id)
+    );
 }
 
 function getPixelFeatureId(clickEvt, mapState, category) {
     if (mapState.getIn(["view", "in3DMode"])) {
-        console.log("TODO: setup pixel listener for cesium");
         return;
     }
 
@@ -398,4 +466,25 @@ function setInitialDataLoadingAsync(loading, failed) {
         loading: loading,
         failed: failed
     });
+}
+
+export function closeFeaturePicker() {
+    return {
+        type: typesMSF.UPDATE_FEATURE_PICKER,
+        clickEvt: null,
+        infrastructure: Immutable.List([]),
+        plumes: Immutable.List([])
+    };
+}
+
+export function setActivePickerFeature(category, feature) {
+    return { type: typesMSF.SET_ACTIVE_PICKER_FEATURE, feature, category };
+}
+
+function revealAllPlumes(mapState) {
+    mapState.get("maps").map(map => map.setActivePlumes([]));
+}
+
+function revealAllInfrastructure(mapState) {
+    mapState.get("maps").map(map => map.setActiveInfrastructure([]));
 }

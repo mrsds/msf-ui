@@ -79,8 +79,8 @@ export class LayerControlContainer extends LayerControlContainerCore {
                             min={parseFloat(this.props.layer.get("min"))}
                             max={parseFloat(this.props.layer.get("max"))}
                             units={this.props.layer.get("units")}
-                            displayMin={parseFloat(this.props.layer.getIn(["palette", "min"]))}
-                            displayMax={parseFloat(this.props.layer.getIn(["palette", "max"]))}
+                            displayMin={this.props.layer.getIn(["palette", "min"])}
+                            displayMax={this.props.layer.getIn(["palette", "max"])}
                             handleAs={this.props.layer.getIn(["palette", "handleAs"])}
                             url={this.props.layer.getIn(["palette", "url"])}
                             className={colorbarStylesExtended.colorbar}
@@ -113,52 +113,6 @@ export class LayerControlContainer extends LayerControlContainerCore {
         return (
             <span className={containerClasses}>
                 <Manager style={{ display: "inline-block" }}>
-                    <ClickAwayListener
-                        onClickAway={() => {
-                            if (this.isChangingPosition) {
-                                this.toggleChangingPosition();
-                            }
-                        }}
-                    >
-                        <span>
-                            <Target style={{ display: "inline-block" }}>
-                                <Tooltip title={"Set Layer Position"} placement="top">
-                                    <LayerPositionIcon
-                                        displayIndex={this.props.layer.get("displayIndex")}
-                                        activeNum={this.props.activeNum}
-                                        className={styles.iconButtonSmall}
-                                        color={this.isChangingPosition ? "primary" : "default"}
-                                        onClick={() => this.toggleChangingPosition()}
-                                    />
-                                </Tooltip>
-                            </Target>
-                            <Popper
-                                placement="left-end"
-                                modifiers={{
-                                    computeStyle: {
-                                        gpuAcceleration: false
-                                    }
-                                }}
-                                eventsEnabled={this.isChangingPosition}
-                                className={positionPopoverClasses}
-                            >
-                                <Grow
-                                    style={{ transformOrigin: "right" }}
-                                    in={this.isChangingPosition}
-                                >
-                                    <div>
-                                        <LayerPositionControl
-                                            isActive={this.isChangingPosition}
-                                            moveToTop={() => this.moveToTop()}
-                                            moveToBottom={() => this.moveToBottom()}
-                                            moveUp={() => this.moveUp()}
-                                            moveDown={() => this.moveDown()}
-                                        />
-                                    </div>
-                                </Grow>
-                            </Popper>
-                        </span>
-                    </ClickAwayListener>
                     <ClickAwayListener
                         onClickAway={() => {
                             if (this.isChangingOpacity) {

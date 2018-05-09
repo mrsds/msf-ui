@@ -41,7 +41,16 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
         this.isChangingDate = false;
         this.opacityButton = null;
     }
-
+    shouldComponentUpdate(nextProps) {
+        if (
+            !nextProps.griddedSettings
+                .get("currentDate")
+                .isSame(this.props.griddedSettings.get("currentDate"))
+        ) {
+            return true;
+        }
+        return LayerControlContainerCore.prototype.shouldComponentUpdate.call(this, nextProps);
+    }
     toggleDatePickerVisible() {
         this.isChangingDate = !this.isChangingDate;
         this.isChangingPosition = false;
@@ -133,8 +142,8 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                             min={parseFloat(this.props.layer.get("min"))}
                             max={parseFloat(this.props.layer.get("max"))}
                             units={this.props.layer.get("units")}
-                            displayMin={parseFloat(this.props.layer.getIn(["palette", "min"]))}
-                            displayMax={parseFloat(this.props.layer.getIn(["palette", "max"]))}
+                            displayMin={this.props.layer.getIn(["palette", "min"])}
+                            displayMax={this.props.layer.getIn(["palette", "max"])}
                             handleAs={this.props.layer.getIn(["palette", "handleAs"])}
                             url={this.props.layer.getIn(["palette", "url"])}
                             className={colorbarStylesExtended.colorbar}
@@ -200,52 +209,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                             </div>
                         </Grow>
                     </Popper>
-                    <ClickAwayListener
-                        onClickAway={() => {
-                            if (this.isChangingPosition) {
-                                this.toggleChangingPosition();
-                            }
-                        }}
-                    >
-                        <span>
-                            <Target style={{ display: "inline-block" }}>
-                                <Tooltip title={"Set Layer Position"} placement="top">
-                                    <LayerPositionIcon
-                                        displayIndex={this.props.layer.get("displayIndex")}
-                                        activeNum={this.props.activeNum}
-                                        className={styles.iconButtonSmall}
-                                        color={this.isChangingPosition ? "primary" : "default"}
-                                        onClick={() => this.toggleChangingPosition()}
-                                    />
-                                </Tooltip>
-                            </Target>
-                            <Popper
-                                placement="left-end"
-                                modifiers={{
-                                    computeStyle: {
-                                        gpuAcceleration: false
-                                    }
-                                }}
-                                eventsEnabled={this.isChangingPosition}
-                                className={positionPopoverClasses}
-                            >
-                                <Grow
-                                    style={{ transformOrigin: "right" }}
-                                    in={this.isChangingPosition}
-                                >
-                                    <div>
-                                        <LayerPositionControl
-                                            isActive={this.isChangingPosition}
-                                            moveToTop={() => this.moveToTop()}
-                                            moveToBottom={() => this.moveToBottom()}
-                                            moveUp={() => this.moveUp()}
-                                            moveDown={() => this.moveDown()}
-                                        />
-                                    </div>
-                                </Grow>
-                            </Popper>
-                        </span>
-                    </ClickAwayListener>
+
                     <ClickAwayListener
                         onClickAway={() => {
                             if (this.isChangingOpacity) {
@@ -307,7 +271,7 @@ GriddedLayerControlContainer.propTypes = {
     mapActions: PropTypes.object.isRequired,
     mapActionsExtended: PropTypes.object.isRequired,
     layer: PropTypes.object.isRequired,
-    griddedSettings: PropTypes.object.isRequired,
+    // griddedSettings: PropTypes.object.isRequired,
     activeNum: PropTypes.number.isRequired,
     palette: PropTypes.object
 };

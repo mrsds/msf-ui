@@ -16,6 +16,11 @@ export const ALERTS = {
         title: "Availabile Gridded Layer Date List Loading Failed",
         formatString: "Failed to load date availability list for gridded layers.",
         severity: 3
+    },
+    FEATURE_DETAIL_PLUME_LIST_LOAD_FAILED: {
+        title: "Plume List for Feature Failed",
+        formatString: "Failed to load plume list for selected feature",
+        severity: 3
     }
 };
 

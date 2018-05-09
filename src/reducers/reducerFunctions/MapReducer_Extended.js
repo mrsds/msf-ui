@@ -126,4 +126,87 @@ export default class MapReducer_Extended extends MapReducer {
         });
         return state;
     }
+
+    static updateFeaturePicker(state, action) {
+        return state
+            .setIn(["featurePicker", "clickEvt"], action.clickEvt)
+            .setIn(["featurePicker", "infrastructure"], action.infrastructure)
+            .setIn(["featurePicker", "plumes"], action.plumes);
+    }
+
+    static closeFeaturePicker(state, action) {
+        return state
+            .setIn(["featurePicker", "clickEvt"], null)
+            .setIn(["featurePicker", "infrastructure"], null)
+            .setIn(["featurePicker", "plumes"], null);
+    }
+
+    static setActivePickerFeature(state, action) {
+        state.get("maps").map(map => {
+            map.soloFeature(action.feature, action.category);
+        });
+        return state
+            .setIn(["featurePicker", "activeFeature"], action.feature)
+            .setIn(["featurePicker", "activeFeatureCategory"], action.category);
+    }
+
+    static setMapView(state, action) {
+        const updatedState = this.closeFeaturePicker(state, action);
+        return MapReducer.setMapView(updatedState, action);
+    }
+
+    static setLayerActive(state, action) {
+        let alerts = state.get("alerts");
+
+        // resolve layer from id if necessary
+        let actionLayer = action.layer;
+        if (typeof actionLayer === "string") {
+            actionLayer = this.findLayerById(state, actionLayer);
+            if (typeof actionLayer === "undefined") {
+                alerts = alerts.push(
+                    alert.merge({
+                        title: appStrings.ALERTS.LAYER_ACTIVATION_FAILED.title,
+                        body: appStrings.ALERTS.LAYER_ACTIVATION_FAILED.formatString
+                            .replace("{LAYER}", action.layer)
+                            .replace("{MAP}", "the"),
+                        severity: appStrings.ALERTS.LAYER_ACTIVATION_FAILED.severity,
+                        time: new Date()
+                    })
+                );
+            }
+        }
+
+        if (typeof actionLayer !== "undefined" && actionLayer.get("isActive") !== action.active) {
+            let anySucceed = state.get("maps").reduce((acc, map) => {
+                if (map.setLayerActive(actionLayer, action.active)) {
+                    return true;
+                } else {
+                    let contextStr = map.is3D ? "3D" : "2D";
+                    alerts = alerts.push(
+                        alert.merge({
+                            title: appStrings.ALERTS.LAYER_ACTIVATION_FAILED.title,
+                            body: appStrings.ALERTS.LAYER_ACTIVATION_FAILED.formatString
+                                .replace("{LAYER}", actionLayer.get("title"))
+                                .replace("{MAP}", contextStr),
+                            severity: appStrings.ALERTS.LAYER_ACTIVATION_FAILED.severity,
+                            time: new Date()
+                        })
+                    );
+                }
+                return acc;
+            }, false);
+
+            if (anySucceed) {
+                let newLayer = actionLayer.set("isActive", action.active);
+                state = state.setIn(
+                    ["layers", actionLayer.get("type"), actionLayer.get("id")],
+                    newLayer
+                );
+            }
+
+            state = this.updateLayerOrder(state, {});
+        }
+
+        return state.set("alerts", alerts);
+    }
 }

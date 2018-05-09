@@ -1,0 +1,57 @@
+@import "~styles/colors";
+
+.itemRoot {
+    // background-color: white;
+    transition: background-color 50ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+        color 50ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    padding: 10px;
+    &:hover {
+        background: inherit;
+    }
+    &.selectedItem {
+        background-color: $color-primary !important;
+        .listItemText {
+            color: white;
+            -webkit-font-smoothing: auto;
+        }
+        .listItemTextSecondary {
+            color: rgba(255, 255, 255, 0.692);
+            -webkit-font-smoothing: auto;
+        }
+        .listItemSecondaryAction {
+            opacity: 1;
+            pointer-events: all;
+        }
+    }
+}
+
+.listItemTextContainer {
+    flex: 1 1 auto;
+    padding: 0 16px;
+    min-width: 0;
+    font-size: 1.3rem;
+}
+
+.listItemText {
+    max-width: 250px;
+    padding-bottom: 4px;
+}
+
+.featurePicker {
+    width: 350px;
+    z-index: 1;
+}
+
+.featurePicker:after {
+    width: 0;
+    height: 0;
+    border-right: 8px solid $color-light;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    margin-left: -8px;
+    top: 5%;
+    left: 0;
+}
