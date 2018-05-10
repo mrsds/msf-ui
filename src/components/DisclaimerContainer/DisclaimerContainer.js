@@ -47,12 +47,12 @@ export class DisclaimerContainer extends Component {
                         </a>) or Riley Duren (<a href="mailto:Riley.M.Duren@jpl.nasa.gov">
                             Riley.M.Duren@jpl.nasa.gov
                         </a>) at JPL, respectively, for questions regarding portal functionality or
-                        data content.
+                        data content or before sharing the login information for other colleagues.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => this.closeDialog()} variant="raised" color="primary">
-                        I will ask Rob or Riley to share site access with my colleagues
+                        I understand
                     </Button>
                 </DialogActions>
             </Dialog>
