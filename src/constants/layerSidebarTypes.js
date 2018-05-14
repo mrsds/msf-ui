@@ -103,6 +103,12 @@ let energyCategories = [
     VISTA_2017_NAT_GAS_PROC_PLANT
 ];
 let wasteCategories = [VISTA_2017_WASTEWTR_TREAT_PLNT, VISTA_2017_LANDFILL, VISTA_2017_SOCAB_BOUND];
+
+export const INFRASTRUCTURE_ID_TO_SECTOR = {};
+agricultureCategories.map(x => (INFRASTRUCTURE_ID_TO_SECTOR[x] = SECTORS.AGRICULTURE));
+energyCategories.map(x => (INFRASTRUCTURE_ID_TO_SECTOR[x] = SECTORS.ENERGY));
+wasteCategories.map(x => (INFRASTRUCTURE_ID_TO_SECTOR[x] = SECTORS.WASTE));
+
 export const INFRASTRUCTURE_GROUPS = {
     [SECTORS.AGRICULTURE]: {
         categories: agricultureCategories,

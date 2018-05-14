@@ -36,6 +36,51 @@ import { render } from "react-dom";
 // import MapLabel from "components/Map/MapLabel";
 
 const JSZip = require("jszip");
+const INVISIBLE_VISTA_STYLE = new Ol_Style({
+    fill: new Ol_Style_Fill({
+        color: [0, 0, 0, 0]
+    }),
+    stroke: new Ol_Style_Stroke({
+        color: [0, 0, 0, 0],
+        width: 0
+    }),
+    image: new Ol_Style_Circle({
+        radius: 4,
+        fill: new Ol_Style_Fill({
+            color: [0, 0, 0, 0]
+        })
+    })
+});
+
+const VISTA_STYLES_BY_SECTOR = {};
+Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).forEach(groupName => {
+    const group = layerSidebarTypes.INFRASTRUCTURE_GROUPS[groupName];
+    VISTA_STYLES_BY_SECTOR[groupName] = new Ol_Style({
+        fill: new Ol_Style_Fill({
+            color: group.colors.fill
+        }),
+        stroke: new Ol_Style_Stroke({
+            color: group.colors.stroke,
+            width: 1
+        }),
+        image: new Ol_Style_Circle({
+            radius: 4,
+            fill: new Ol_Style_Fill({
+                color: group.colors.stroke
+            })
+        })
+    });
+});
+
+// const { fill, stroke } = Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).reduce(
+//     (acc, groupName) => {
+//         const group = layerSidebarTypes.INFRASTRUCTURE_GROUPS[groupName];
+//         if (acc) return acc;
+//         const categoryInGroup = group.categories.some(category => category === layerId);
+//         if (categoryInGroup) return group.colors;
+//     },
+//     null
+// );
 
 export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
     createLayer(layer, fromCache = true) {
@@ -214,7 +259,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         }
     }
 
-    /* Inserts a layer at a certain index, relative to others. So, if a certain layer has a "layerOrder" of 1, 
+    /* Inserts a layer at a certain index, relative to others. So, if a certain layer has a "layerOrder" of 1,
     this function finds the position index of the next-highest layer that's active and inserts the layer at
     an index right below it.*/
     findFixedInsertIndexForLayer(mapLayer) {
@@ -475,49 +520,11 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
     }
 
     getVistaStyle(layerId, visible = true) {
-        const { fill, stroke } = Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).reduce(
-            (acc, groupName) => {
-                const group = layerSidebarTypes.INFRASTRUCTURE_GROUPS[groupName];
-                if (acc) return acc;
-                const categoryInGroup = group.categories.some(category => category === layerId);
-                if (categoryInGroup) return group.colors;
-            },
-            null
-        );
-
         if (!visible) {
-            return new Ol_Style({
-                fill: new Ol_Style_Fill({
-                    color: [0, 0, 0, 0]
-                }),
-                stroke: new Ol_Style_Stroke({
-                    color: [0, 0, 0, 0],
-                    width: 0
-                }),
-                image: new Ol_Style_Circle({
-                    radius: 4,
-                    fill: new Ol_Style_Fill({
-                        color: [0, 0, 0, 0]
-                    })
-                })
-            });
+            return INVISIBLE_VISTA_STYLE;
         }
-
-        return new Ol_Style({
-            fill: new Ol_Style_Fill({
-                color: fill
-            }),
-            stroke: new Ol_Style_Stroke({
-                color: stroke,
-                width: 1
-            }),
-            image: new Ol_Style_Circle({
-                radius: 4,
-                fill: new Ol_Style_Fill({
-                    color: stroke
-                })
-            })
-        });
+        // console.log(layerId,"?", VISTA_STYLES_BY_SECTOR, layerSidebarTypes.INFRASTRUCTURE_ID_TO_SECTOR)
+        return VISTA_STYLES_BY_SECTOR[layerSidebarTypes.INFRASTRUCTURE_ID_TO_SECTOR[layerId]];
     }
 
     createVistaLayer(layer, fromCache = true) {
