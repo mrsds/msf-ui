@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import MiscUtil from "_core/utils/MiscUtil";
 import styles from "components/FeaturePicker/FeaturePickerStyles.scss";
 import { Popover, PopoverAnimationVertical } from "material-ui/Popover";
+import Button from "material-ui/Button";
 import { Menu, MenuItem } from "material-ui/Menu";
 import Card, { CardActions, CardContent, CardMedia } from "material-ui/Card";
 import List, {
@@ -72,18 +73,20 @@ export class FeaturePicker extends Component {
                         >
                             {MetadataUtil.getFacilityTypeName(feature)}
                         </Typography>
-                    </div>{" "}
-                    <ListItemSecondaryAction>
-                        <IconButton>
-                            <InfoOutlineIcon
-                                onClick={() =>
-                                    this.props.setFeatureDetail(
-                                        layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-                                        feature
-                                    )
-                                }
-                            />
-                        </IconButton>
+                    </div>
+                    <ListItemSecondaryAction className={styles.listItemSecondaryAction}>
+                        <Button
+                            color="default"
+                            key={feature.get("id") + "popup_info_icon"}
+                            onClick={() =>
+                                this.props.setFeatureDetail(
+                                    layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+                                    feature
+                                )
+                            }
+                        >
+                            Details
+                        </Button>
                     </ListItemSecondaryAction>
                 </ListItem>
             </React.Fragment>
@@ -142,19 +145,19 @@ export class FeaturePicker extends Component {
                             {feature.get("name")}
                         </Typography>
                     </div>
-                    <ListItemSecondaryAction>
-                        <span>
-                            <IconButton>
-                                <InfoOutlineIcon
-                                    onClick={() =>
-                                        this.props.setFeatureDetail(
-                                            layerSidebarTypes.CATEGORY_PLUMES,
-                                            feature
-                                        )
-                                    }
-                                />
-                            </IconButton>
-                        </span>
+                    <ListItemSecondaryAction className={styles.listItemSecondaryAction}>
+                        <Button
+                            color="default"
+                            key={feature.get("id") + "popup_info_icon"}
+                            onClick={() =>
+                                this.props.setFeatureDetail(
+                                    layerSidebarTypes.CATEGORY_PLUMES,
+                                    feature
+                                )
+                            }
+                        >
+                            Details
+                        </Button>
                     </ListItemSecondaryAction>
                 </ListItem>
             </React.Fragment>
@@ -187,7 +190,7 @@ export class FeaturePicker extends Component {
         return (
             <div className={styles.featurePicker} style={this.getPickerStyle()}>
                 <Card>
-                    <CardContent>
+                    <CardContent className={styles.cardContentRoot}>
                         <List dense={true} className={styles.featureItemList}>
                             <Subheader hidden={!this.props.infrastructure.size}>
                                 Infrastructure
