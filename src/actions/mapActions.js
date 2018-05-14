@@ -241,10 +241,9 @@ export function pixelClick(clickEvt) {
             (avirisFeatures.length && layerSidebarTypes.CATEGORY_PLUMES) ||
             (vistaFeatures.length && layerSidebarTypes.CATEGORY_INFRASTRUCTURE);
 
+        dispatch(clearFeatureLabels());
         if (selectedFeature) {
             dispatch(updateFeatureLabel(category, selectedFeature));
-        } else {
-            dispatch(clearFeatureLabels());
         }
 
         updateHighlightedPlumes(getState);
