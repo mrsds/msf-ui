@@ -226,7 +226,6 @@ export function pixelClick(clickEvt) {
         const layerSidebarState = getState().layerSidebar;
         const vistaFeatures = getVistaFeaturesAtPixel(clickEvt, mapState, layerSidebarState);
         const avirisFeatures = getAvirisFeaturesAtPixel(clickEvt, mapState, layerSidebarState);
-
         // Update the layer destacking list
         dispatch({
             type: typesMSF.UPDATE_FEATURE_PICKER,
@@ -238,14 +237,15 @@ export function pixelClick(clickEvt) {
             (!vistaFeatures.length && avirisFeatures.length === 1 && avirisFeatures[0]) ||
             (!avirisFeatures.length && vistaFeatures.length === 1 && vistaFeatures[0]);
 
-        if (!selectedFeature) return;
-
         const category =
             (avirisFeatures.length && layerSidebarTypes.CATEGORY_PLUMES) ||
-            (vistaFeatures.length && layerSidebarTypes.CA);
+            (vistaFeatures.length && layerSidebarTypes.CATEGORY_INFRASTRUCTURE);
 
-        dispatch(clearFeatureLabels());
-        dispatch(updateFeatureLabel(category, selectedFeature));
+        if (selectedFeature) {
+            dispatch(updateFeatureLabel(category, selectedFeature));
+        } else {
+            dispatch(clearFeatureLabels());
+        }
 
         updateHighlightedPlumes(getState);
         return { type: types.PIXEL_CLICK, clickEvt };
