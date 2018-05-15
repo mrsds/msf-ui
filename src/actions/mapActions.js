@@ -266,34 +266,40 @@ export function pixelClick(clickEvt) {
 }
 
 function getVistaFeaturesAtPixel(clickEvt, mapState, layerSidebarState) {
-    return mapState
-        .getLayers()
-        .getArray()
-        .filter(layer => layer.get("_layerGroup") === "VISTA")
-        .reduce((acc, layer) => {
-            return acc.concat(
-                layer
-                    .getSource()
-                    .getFeaturesAtCoordinate(mapState.getCoordinateFromPixel(clickEvt.pixel))
-                    .reduce((acc, feature) => {
-                        const featureInfo = layerSidebarState
-                            .getIn([
-                                "searchState",
-                                layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-                                "searchResults"
-                            ])
-                            .find(f => f.get("id") === feature.get("id"));
-                        if (featureInfo) acc.push(featureInfo);
-                        return acc;
-                    }, [])
-            );
-        }, []);
+    let features = [];
+    mapState.forEachFeatureAtPixel(
+        clickEvt.pixel,
+        feature => {
+            const featureInfo = layerSidebarState
+                .getIn(["searchState", layerSidebarTypes.CATEGORY_INFRASTRUCTURE, "searchResults"])
+                .find(f => f.get("id") === feature.get("id"));
+            if (featureInfo) features.push(featureInfo);
+        },
+        {
+            hitTolerance: 3,
+            layerFilter: function(l) {
+                return l.get("_layerGroup") === "VISTA";
+            }
+        }
+    );
+    return features;
 }
 
 function getAvirisFeaturesAtPixel(clickEvt, mapState, layerSidebarState) {
     const featureIds = [];
+    // Get aviris images
     mapState.forEachLayerAtPixel(clickEvt.pixel, layer => {
         if (layer.get("_featureType") === "plume") featureIds.push(layer.get("_featureId"));
+    });
+    // Get aviris icons
+    mapState.forEachFeatureAtPixel(clickEvt.pixel, feature => {
+        if (feature.get("_featureType") === "icon") {
+            const featureId = feature.get("_featureId");
+            // Only add if we haven't gotten the id from the image by chance
+            if (featureIds.indexOf(featureId) === -1) {
+                featureIds.push(featureId);
+            }
+        }
     });
     return featureIds.map(id =>
         layerSidebarState
