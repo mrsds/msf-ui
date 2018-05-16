@@ -21,7 +21,8 @@ export const layerSidebarState = Immutable.fromJS({
         [layerSidebarTypes.VISTA_2017_WASTEWTR_TREAT_PLNT]: true,
         [layerSidebarTypes.VISTA_2017_POWER_PLANT]: true,
         [layerSidebarTypes.VISTA_2017_LANDFILL]: true,
-        [layerSidebarTypes.VISTA_2017_SOCAB_BOUND]: false
+        [layerSidebarTypes.VISTA_2017_SOCAB_BOUND]: false,
+        [layerSidebarTypes.VISTA_2017_CEC_PIPELINES]: true
     },
     searchState: {
         [layerSidebarTypes.CATEGORY_INFRASTRUCTURE]: {
