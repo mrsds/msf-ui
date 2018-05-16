@@ -33,26 +33,6 @@ export class SettingsContainerExtended extends Component {
                 closeFunc={() => this.props.appActions.setSettingsOpen(false)}
             >
                 <List>
-                    <ListSubheader disableSticky>Map Display</ListSubheader>
-                    <ListItem>
-                        <FormControl fullWidth>
-                            <InputLabel htmlFor="scale-units-select">Scale Units</InputLabel>
-                            <Select
-                                value={this.props.mapSettings.get("selectedScaleUnits")}
-                                onChange={event =>
-                                    this.props.mapActions.setScaleUnits(event.target.value)
-                                }
-                                input={<Input name="Scale Units" id="scale-units-select" />}
-                            >
-                                {appConfig.SCALE_OPTIONS.map(x => (
-                                    <MenuItem key={x.value} value={x.value}>
-                                        {x.label}
-                                        <small style={{ marginLeft: "7px" }}>{x.abbrev}</small>
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </ListItem>
                     <ListSubheader disableSticky>Application Configuration</ListSubheader>
                     <ListItem
                         button

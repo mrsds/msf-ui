@@ -25,6 +25,8 @@ import Ol_View from "ol/view";
 import Ol_Proj from "ol/proj";
 import Ol_Interaction from "ol/interaction";
 import Ol_Map from "ol/map";
+import Ol_Control from "ol/control";
+import Ol_Scaleline from "ol/control/scaleline";
 import Ol_Format_GeoJSON from "ol/format/geojson";
 import MapWrapperOpenlayers from "_core/utils/MapWrapperOpenlayers";
 import MiscUtilExtended from "utils/MiscUtilExtended";
@@ -176,7 +178,11 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                     projection: mapProjection,
                     maxResolution: viewOptions.maxResolution
                 }),
-                controls: [],
+                controls: new Ol_Control.defaults({
+                    attributionOptions: {
+                        collapsible: false
+                    }
+                }).extend([new Ol_Scaleline()]),
                 interactions: Ol_Interaction.defaults({
                     altShiftDragRotate: false,
                     pinchRotate: false,
