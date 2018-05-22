@@ -103,7 +103,7 @@ export class PlumeChartingContainer extends Component {
         return (
             <React.Fragment key={feature.get("name")}>
                 <TableRow>
-                    <TableCell>Maybe?</TableCell>
+                    <TableCell>Yes</TableCell>
                     <TableCell>{dateString}</TableCell>
                     <TableCell>{MetadataUtil.getPlumeID(feature, "(none)")}</TableCell>
                     <TableCell numeric>(none)</TableCell>
@@ -197,18 +197,22 @@ export class PlumeChartingContainer extends Component {
                         scaleLabel: { display: true, labelString: "IME (kg)" }
                     }
                 ],
-                xAxes: [{ ticks: { autoSkip: false } }]
+                xAxes: [{ type: "time", ticks: { autoSkip: true, autoSkipPadding: 2 } }]
             }
         };
 
+        const sortedData = this.props.plumeList.sort(
+            (a, b) => moment(a.get("datetime")).toDate() - moment(b.get("datetime")).toDate()
+        );
         const data = {
-            labels: this.props.plumeList.map(feature =>
-                moment(feature.get("datetime")).format("MMMM Do, YYYY, H:mm [UTC]")
-            ),
+            labels: sortedData
+                .map(feature => moment(feature.get("datetime")).toDate())
+                .sort((a, b) => a - b),
             datasets: [
                 {
-                    data: this.props.plumeList.map(feature => feature.get("ime")),
-                    borderColor: "#4285F4"
+                    data: sortedData.map(feature => feature.get("ime")),
+                    borderColor: "#4285F4",
+                    fill: false
                 }
             ]
         };
@@ -229,7 +233,7 @@ export class PlumeChartingContainer extends Component {
                             Flyovers of Connected Plume Source:
                             <strong> {this.props.feature.getIn(["sourceId", "value"])}</strong>
                             <Typography variant="caption">
-                                Uncertainty Warning:
+                                Uncertainty Warning:{" "}
                                 <i>
                                     Plume sources are currently identified through a manual process.
                                 </i>
