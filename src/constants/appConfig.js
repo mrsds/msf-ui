@@ -37,7 +37,8 @@ const APP_CONFIG = Immutable.fromJS({
         paletteConfig: "default-data/msf-data/palettes.json",
         availableGriddedDates: "http://100.64.114.187/data/gridded/gridded_date_list.json",
         griddedVectorEndpoint: "http://100.64.114.187/data/gridded/v2/Fluxes_{date}.geojson",
-        plumeListQueryEndpoint: "http://100.64.114.187/data/query_test.geojson"
+        plumeListQueryEndpoint:
+            "http://100.64.114.187:9090/aviris/plumes?maxObjects=1000&source={source_id}"
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
     PLUME_START_DATE: new Date(2000, 0, 1),

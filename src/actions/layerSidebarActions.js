@@ -8,6 +8,7 @@ import appConfig from "constants/appConfig";
 import MiscUtil from "_core/utils/MiscUtil";
 import * as alertActions from "_core/actions/alertActions";
 import Immutable from "immutable";
+import MetadataUtil from "utils/MetadataUtil";
 
 export function pageForward(category) {
     return { type: types.FEATURE_SIDEBAR_PAGE_FORWARD, category };
@@ -32,11 +33,16 @@ export function setFeatureDetail(category, feature) {
     return dispatch => {
         dispatch({ type: types.FEATURE_DETAIL_PLUME_LIST_LOADING });
         dispatch({ type: types.UPDATE_FEATURE_DETAIL, category, feature });
+        const plumeRequestUrl = appConfig.URLS.plumeListQueryEndpoint.replace(
+            "{source_id}",
+            MetadataUtil.getSourceID(feature)
+        );
         return MiscUtil.asyncFetch({
-            url: appConfig.URLS.plumeListQueryEndpoint,
+            url: plumeRequestUrl,
             handleAs: "json"
         }).then(
             data => {
+                console.log(data);
                 dispatch({
                     type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST,
                     data

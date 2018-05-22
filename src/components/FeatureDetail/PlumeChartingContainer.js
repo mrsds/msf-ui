@@ -205,9 +205,7 @@ export class PlumeChartingContainer extends Component {
             (a, b) => moment(a.get("datetime")).toDate() - moment(b.get("datetime")).toDate()
         );
         const data = {
-            labels: sortedData
-                .map(feature => moment(feature.get("datetime")).toDate())
-                .sort((a, b) => a - b),
+            labels: sortedData.map(feature => moment(feature.get("datetime")).toDate()),
             datasets: [
                 {
                     data: sortedData.map(feature => feature.get("ime")),

@@ -92,7 +92,7 @@ export default class MetadataUtil {
     }
 
     static getSourceID(feature, errTxt = null) {
-        const fields = ["Source id"];
+        const fields = ["Source id", "source_identifier_s"];
         return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
     }
 

@@ -353,7 +353,7 @@ export class InfrastructureChartingContainer extends Component {
         return (
             <React.Fragment key={feature.get("name")}>
                 <TableRow>
-                    <TableCell>Maybe?</TableCell>
+                    <TableCell>Yes</TableCell>
                     <TableCell>{dateString}</TableCell>
                     <TableCell>{MetadataUtil.getPlumeID(feature, "(none)")}</TableCell>
                     <TableCell numeric>(none)</TableCell>
@@ -449,18 +449,20 @@ export class InfrastructureChartingContainer extends Component {
                         scaleLabel: { display: true, labelString: "IME (kg)" }
                     }
                 ],
-                xAxes: [{ ticks: { autoSkip: false } }]
+                xAxes: [{ type: "time", ticks: { autoSkip: true, autoSkipPadding: 2 } }]
             }
         };
 
+        const sortedData = this.getDateFilteredPlumeList().sort(
+            (a, b) => moment(a.get("datetime")).toDate() - moment(b.get("datetime")).toDate()
+        );
         const data = {
-            labels: this.getDateFilteredPlumeList().map(feature =>
-                moment(feature.get("datetime")).format("MMMM Do, YYYY, H:mm [UTC]")
-            ),
+            labels: sortedData.map(feature => moment(feature.get("datetime")).toDate()),
             datasets: [
                 {
-                    data: this.getDateFilteredPlumeList().map(feature => feature.get("ime")),
-                    borderColor: "#4285F4"
+                    data: sortedData.map(feature => feature.get("ime")),
+                    borderColor: "#4285F4",
+                    fill: false
                 }
             ]
         };
