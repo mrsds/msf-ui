@@ -177,7 +177,8 @@ export class FeaturePicker extends Component {
             return { display: "none" };
         }
         const topPos = this.props.clickEvt.pixel[1] + "px";
-        const leftPos = this.props.clickEvt.pixel[0] + 470 + "px";
+        const leftPos =
+            this.props.clickEvt.pixel[0] + (!this.props.layerSidebarCollapsed ? 470 : 20) + "px";
         return {
             position: "absolute",
             top: topPos,
@@ -218,6 +219,7 @@ FeaturePicker.propTypes = {
     setActivePickerFeature: PropTypes.func.isRequired,
     toggleFeatureLabel: PropTypes.func.isRequired,
     setFeatureDetail: PropTypes.func.isRequired,
+    layerSidebarCollapsed: PropTypes.bool.isRequired,
     featureDetailActiveFeature: PropTypes.object
 };
 
@@ -227,6 +229,7 @@ function mapStateToProps(state) {
         infrastructure: state.map.getIn(["featurePicker", "infrastructure"]),
         plumes: state.map.getIn(["featurePicker", "plumes"]),
         activeFeature: state.map.getIn(["featurePicker", "activeFeature"]),
+        layerSidebarCollapsed: state.layerSidebar.get("layerSidebarCollapsed"),
         featureDetailActiveFeature: state.featureDetail.get("feature")
     };
 }
