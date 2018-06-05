@@ -158,11 +158,13 @@ export default class LayerSidebarReducer {
                 "value"
             ]);
 
-            // Filter by plumeID via Fuse
-            searchResults = LayerSidebarReducer.getSearchResultsHelper(
-                action.category,
-                featureList,
-                plumeID
+            // Filter by plumeID exact match within string
+            searchResults = featureList.filter(
+                x =>
+                    x
+                        .get("name")
+                        .toLowerCase()
+                        .indexOf(plumeID) !== -1
             );
 
             // Filter by other filters
