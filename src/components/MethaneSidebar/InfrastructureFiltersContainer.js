@@ -4,34 +4,32 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import List, {
-    ListItem,
-    ListSubheader,
-    ListItemSecondaryAction,
-    ListItemIcon,
-    ListItemText
-} from "material-ui/List";
-import Checkbox from "material-ui/Checkbox";
-import Switch from "material-ui/Switch";
-import Popover from "material-ui/Popover";
-import Paper from "material-ui/Paper";
-import Search from "material-ui-icons/Search";
-import Sort from "material-ui-icons/SortByAlpha";
-import Check from "material-ui-icons/Check";
-import Clear from "material-ui-icons/Clear";
-import Grow from "material-ui/transitions/Grow";
-import ClickAwayListener from "material-ui/utils/ClickAwayListener";
-import AppBar from "material-ui/AppBar";
-import Typography from "material-ui/Typography";
-import Toolbar from "material-ui/Toolbar";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Checkbox from "@material-ui/core/Checkbox";
+import Switch from "@material-ui/core/Switch";
+import Popover from "@material-ui/core/Popover";
+import Paper from "@material-ui/core/Paper";
+import Search from "@material-ui/icons/Search";
+import Sort from "@material-ui/icons/SortByAlpha";
+import Check from "@material-ui/icons/Check";
+import Clear from "@material-ui/icons/Clear";
+import Grow from "@material-ui/core/Grow";
+import AppBar from "@material-ui/core/AppBar";
+import Typography from "@material-ui/core/Typography";
+import Toolbar from "@material-ui/core/Toolbar";
 import DomainIcon from "mdi-material-ui/Domain";
-import CloseIcon from "material-ui-icons/Close";
+import CloseIcon from "@material-ui/icons/Close";
 import { Manager, Target, Popper } from "react-popper";
 import ChipDropdown from "components/Reusables/ChipDropdown";
 import SearchInput from "components/Reusables/SearchInput";
 import styles from "components/MethaneSidebar/FiltersContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
-import { IconButtonSmall } from "_core/components/Reusables";
+import { IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
 import MapUtilExtended from "utils/MapUtilExtended";
 import Immutable from "immutable";
 

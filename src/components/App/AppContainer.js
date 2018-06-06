@@ -25,7 +25,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { appColorPalette } from "styles/appColorPalette";
 import * as appActions from "_core/actions/appActions";
 import * as mapActionsMSF from "actions/mapActions";
@@ -68,7 +68,8 @@ const theme = createMuiTheme({
         htmlFontSize: 10
     },
     palette: {
-        primary: appColorPalette
+        primary: appColorPalette,
+        secondary: appColorPalette
     }
 });
 

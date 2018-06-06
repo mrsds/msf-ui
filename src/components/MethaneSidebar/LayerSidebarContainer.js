@@ -2,15 +2,16 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import AppBar from "material-ui/AppBar";
-import Tabs, { Tab } from "material-ui/Tabs";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import InfrastructureContainer from "components/MethaneSidebar/InfrastructureContainer";
 import PlumesContainer from "components/MethaneSidebar/PlumesContainer";
-import Paper from "material-ui/Paper";
-import Tooltip from "material-ui/Tooltip";
-import Button from "material-ui/Button";
+import Paper from "@material-ui/core/Paper";
+import Tooltip from "@material-ui/core/Tooltip";
+import Button from "@material-ui/core/Button";
 import ArrowDropDownIcon from "mdi-material-ui/MenuLeft";
 import styles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
@@ -111,7 +112,10 @@ export class LayerSidebarContainer extends Component {
                     <Tabs
                         className={styles.tabsRoot}
                         fullWidth
-                        indicatorColor="white"
+                        indicatorColor="secondary"
+                        TabIndicatorProps={{
+                            className: styles.tabsIndicator
+                        }}
                         value={activeTabIndex}
                         onChange={(event, index) => this.handleChange(index)}
                     >

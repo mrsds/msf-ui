@@ -1,5 +1,5 @@
 import React from "react";
-import SvgIcon from "material-ui/SvgIcon";
+import SvgIcon from "@material-ui/core/SvgIcon";
 
 let AppLogo = () => (
     <svg viewBox="0 0 30 30" version="1.1">

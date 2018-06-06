@@ -5,17 +5,19 @@ import { connect } from "react-redux";
 import * as mapActions from "_core/actions/mapActions";
 import * as mapActionsExtended from "actions/mapActions";
 import { LayerControlContainer as LayerControlContainerCore } from "_core/components/LayerMenu/LayerControlContainer.js";
-import { EnhancedSwitch, IconButtonSmall } from "_core/components/Reusables";
+import { EnhancedSwitch, IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
 import styles from "_core/components/LayerMenu/LayerControlContainer.scss";
 import textStyles from "_core/styles/text.scss";
 import displayStyles from "_core/styles/display.scss";
-import Tooltip from "material-ui/Tooltip";
-import { ListItem, ListItemSecondaryAction, ListItemText } from "material-ui/List";
-import InfoOutlineIcon from "material-ui-icons/InfoOutline";
-import DateRangeIcon from "material-ui-icons/DateRange";
-import Collapse from "material-ui/transitions/Collapse";
-import Typography from "material-ui/Typography";
-import Divider from "material-ui/Divider";
+import Tooltip from "@material-ui/core/Tooltip";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
+import InfoOutlineIcon from "@material-ui/icons/InfoOutline";
+import DateRangeIcon from "@material-ui/icons/DateRange";
+import Collapse from "@material-ui/core/Collapse";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 import { Colorbar } from "_core/components/Colorbar";
 import colorbarStylesExtended from "components/LayerMenu/ColorbarStylesExtended.scss";
 import { Manager, Target, Popper } from "react-popper";
@@ -25,10 +27,9 @@ import {
     LayerOpacityIcon,
     LayerOpacityControl
 } from "_core/components/LayerMenu";
-import Grow from "material-ui/transitions/Grow";
-import ClickAwayListener from "material-ui/utils/ClickAwayListener";
+import Grow from "@material-ui/core/Grow";
 import stylesExtended from "components/LayerMenu/LayerControlContainerExtendedStyles.scss";
-import { MenuItem } from "material-ui/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import LayerDateControl from "components/LayerMenu/LayerDateControl";
 import MiscUtil from "_core/utils/MiscUtil";
 
