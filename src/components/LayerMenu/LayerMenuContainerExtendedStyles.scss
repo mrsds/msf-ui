@@ -1,8 +1,9 @@
 @import "~styles/colors";
+@import "~styles/misc";
 
 .layerMenu {
     width: 410px;
-    top: 45px;
+    top: $app-bar-height;
     right: 15px;
     left: initial;
 }

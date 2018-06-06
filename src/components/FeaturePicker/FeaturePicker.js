@@ -196,14 +196,22 @@ export class FeaturePicker extends Component {
                 <Card>
                     <CardContent className={styles.cardContentRoot}>
                         <List dense={true} className={styles.featureItemList}>
-                            <Subheader hidden={!this.props.infrastructure.size}>
+                            <Subheader
+                                className={styles.subheader}
+                                hidden={!this.props.infrastructure.size}
+                            >
                                 Infrastructure
                             </Subheader>
                             {this.makeInfrastructureItems()}
                             <Divider
                                 hidden={!this.props.plumes.size || !this.props.infrastructure.size}
                             />
-                            <Subheader hidden={!this.props.plumes.size}>Plumes</Subheader>
+                            <Subheader
+                                className={styles.subheader}
+                                hidden={!this.props.plumes.size}
+                            >
+                                Plumes
+                            </Subheader>
                             {this.makePlumeItems()}
                         </List>
                     </CardContent>

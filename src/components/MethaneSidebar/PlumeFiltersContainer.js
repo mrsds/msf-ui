@@ -396,7 +396,7 @@ export class PlumeFiltersContainer extends Component {
                                                         plumeSortBySelectedValue ? (
                                                             <Check />
                                                         ) : (
-                                                            <span />
+                                                            <span className={styles.blankIcon} />
                                                         )}
                                                     </ListItemIcon>
                                                     <ListItemText primary={x.get("label")} />

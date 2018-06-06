@@ -7,10 +7,10 @@
     left: $layer-sidebar-width;
     position: absolute;
     z-index: 1;
-    height: calc(100% - 45px);
+    height: calc(100% - #{$app-bar-height});
     width: calc(100% - #{$layer-sidebar-width});
     overflow: auto;
-    top: 45px;
+    top: $app-bar-height;
     background: $color-background;
     &.fullWidth {
         width: 100%;
@@ -71,6 +71,7 @@
         }
     }
     .cardRoot {
+        overflow: visible;
         margin-top: 15px;
         h2 {
             margin-bottom: 16px;
