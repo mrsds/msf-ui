@@ -104,8 +104,8 @@ export class InfrastructureControlContainer extends LayerControlContainerCore {
                     classes={{ entered: styles.collapseEntered }}
                 >
                     <div className={styles.layerControlContent}>
-                        {this.renderLegend()}
                         {this.renderIconRow()}
+                        {this.renderLegend()}
                     </div>
                 </Collapse>
                 <Divider />

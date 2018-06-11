@@ -138,6 +138,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                     classes={{ entered: styles.collapseEntered }}
                 >
                     <div className={styles.layerControlContent}>
+                        {this.renderIconRow()}
                         <Colorbar
                             palette={this.props.palette}
                             min={parseFloat(this.props.layer.get("min"))}
@@ -149,7 +150,6 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                             url={this.props.layer.getIn(["palette", "url"])}
                             className={colorbarStylesExtended.colorbar}
                         />
-                        {this.renderIconRow()}
                     </div>
                 </Collapse>
                 <Divider />
