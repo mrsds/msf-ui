@@ -4,14 +4,13 @@ import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Switch from "@material-ui/core/Switch";
 import Grid from "@material-ui/core/Grid";
-import GridList, { GridListTile, GridListTileBar } from "@material-ui/core/GridList";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import GridListTileBar from "@material-ui/core/GridListTileBar";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
 import TableCell from "@material-ui/core/TableCell";
@@ -27,7 +26,6 @@ import styles from "components/FeatureDetail/ChartingContainerStyles.scss";
 import { Line as LineChart } from "react-chartjs-2";
 import moment from "moment";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import PlumeDateFilterControl from "components/FeatureDetail/PlumeDateFilterControl";
 
 export class PlumeChartingContainer extends Component {
     makeObservationToggle() {
