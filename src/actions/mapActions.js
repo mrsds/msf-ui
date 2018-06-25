@@ -47,52 +47,100 @@ export function updateFeatureList_Map(category) {
         const layerSidebarState = getState().layerSidebar;
         const extent = mapState.getIn(["view", "extent"]);
 
-        // Routine for getting VISTA (infrastructure) features
-        const infrastructureLayerActive = mapState
-            .get("groups")
-            .find(group => group.get("id") === "VISTA")
-            .get("isActive");
-        const activeInfrastructureCategories = layerSidebarState
-            .get("activeInfrastructureSubCategories")
-            .some(cat => cat);
-        const infrastructureVisible = infrastructureLayerActive && activeInfrastructureCategories;
-
-        if (!category || category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE) {
-            dispatch(availableFeatureListLoading(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
-
-            if (!infrastructureVisible) {
-                dispatch(updateAvailableFeatures(category, null));
-                dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
-            } else {
-                requestAvailableFeatures(
-                    layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-                    extent,
-                    layerSidebarState,
-                    dispatch
-                );
-            }
-        }
-
-        // Routine for getting AVIRIS (plume) features
-        const plumeLayerVisible = mapState
-            .getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA, "AVIRIS"])
-            .get("isActive");
-        if (!category || category === layerSidebarTypes.CATEGORY_PLUMES) {
-            dispatch(availableFeatureListLoading(layerSidebarTypes.CATEGORY_PLUMES));
-
-            if (!plumeLayerVisible) {
-                dispatch(updateAvailableFeatures(category, null));
-                dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_PLUMES));
-            } else {
-                requestAvailableFeatures(
-                    layerSidebarTypes.CATEGORY_PLUMES,
-                    extent,
-                    layerSidebarState,
-                    dispatch
-                );
-            }
-        }
+        updateInfrastructure(dispatch, mapState, layerSidebarState, extent);
+        updatePlumes(dispatch, mapState, layerSidebarState, extent, category);
     };
+}
+
+function updatePlumes(dispatch, mapState, layerSidebarState, extent, category) {
+    // Routine for getting AVIRIS (plume) features
+    const plumeLayerVisible = mapState
+        .getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA, "AVIRIS"])
+        .get("isActive");
+    if (!category || category === layerSidebarTypes.CATEGORY_PLUMES) {
+        dispatch(availableFeatureListLoading(layerSidebarTypes.CATEGORY_PLUMES));
+
+        if (!plumeLayerVisible) {
+            dispatch(updateAvailableFeatures(category, null));
+            dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_PLUMES));
+        } else {
+            requestAvailableFeatures(
+                layerSidebarTypes.CATEGORY_PLUMES,
+                MapUtilExtended.buildAvirisFeatureQueryString(extent),
+                dispatch
+            );
+        }
+    }
+}
+
+function updateInfrastructure(dispatch, mapState, layerSidebarState, extent) {
+    const infrastructureLayerActive = mapState
+        .get("groups")
+        .find(group => group.get("id") === "VISTA")
+        .get("isActive");
+
+    // If VISTA isn't active or there are no sub-categories selected, clear out the features list.
+    if (
+        !infrastructureLayerActive ||
+        layerSidebarState.get("activeInfrastructureSubCategories").every(val => !val)
+    ) {
+        dispatch(updateAvailableFeatures(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, null));
+        dispatch(updateAvailableOilWells(null));
+        dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+        return;
+    }
+
+    requestAvailableFeatures(
+        layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+        MapUtilExtended.buildVistaFeatureQueryString(
+            extent,
+            layerSidebarState.get("activeInfrastructureSubCategories")
+        ),
+        dispatch
+    );
+
+    // If wells are active, handle those separately.
+    const wellsSelected = layerSidebarState.getIn([
+        "activeInfrastructureSubCategories",
+        layerSidebarTypes.VISTA_2017_OILGAS_FIELDS
+    ]);
+
+    console.log(
+        mapState
+            .getIn(["maps", "openlayers"])
+            .map.getView()
+            .getZoom()
+    );
+    const wellsVisible =
+        mapState
+            .getIn(["maps", "openlayers"])
+            .map.getView()
+            .getZoom() >= appConfig.OIL_WELLS_MIN_ZOOM;
+
+    if (wellsSelected && wellsVisible) {
+        getWells(dispatch, mapState);
+    } else {
+        dispatch(updateAvailableOilWells(null));
+        dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+    }
+}
+
+function getActiveInfrastructureSubCategories(layerSidebarState, mapState) {
+    let activeSubCategories = layerSidebarState.get("activeInfrastructureSubCategories");
+    const wellsActive = activeSubCategories.some(
+        (_, cat) => cat === layerSidebarTypes.VISTA_2017_OILGAS_WELLS
+    );
+    const wellsVisible =
+        mapState
+            .getIn(["maps", "openlayers"])
+            .map.getView()
+            .getZoom() > appConfig.OIL_WELLS_MIN_ZOOM;
+    if (wellsActive && !wellsVisible) {
+        activeSubCategories = activeSubCategories.filter(
+            (_, cat) => cat !== layerSidebarTypes.VISTA_2017_OILGAS_WELLS
+        );
+    }
+    return activeSubCategories;
 }
 
 function availableLayerListLoading() {
@@ -115,8 +163,7 @@ function updateAvailableFeatures(category, featureList) {
     };
 }
 
-function requestAvailableFeatures(category, extent, layerSidebarState, dispatch) {
-    const queryUrl = getQueryString(category, extent, layerSidebarState);
+function requestAvailableFeatures(category, queryUrl, dispatch) {
     return MiscUtil.asyncFetch({
         url: queryUrl,
         handleAs: "json"
@@ -140,10 +187,48 @@ function requestAvailableFeatures(category, extent, layerSidebarState, dispatch)
     );
 }
 
-function getQueryString(category, extent, layerSidebarState) {
+function getWells(dispatch, mapState) {
+    return MiscUtil.asyncFetch({
+        url: MapUtilExtended.buildVistaFeatureQueryString(
+            mapState.getIn(["view", "extent"]),
+            Immutable.fromJS({ [layerSidebarTypes.VISTA_2017_OILGAS_WELLS]: true })
+        ),
+        handleAs: appStrings.FILE_TYPE_TEXT
+    }).then(
+        data => {
+            dispatch(updateAvailableOilWells(data));
+            dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+        },
+        err => {
+            console.warn("Error getting oil well features for current view bbox:", err);
+            dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+            dispatch(
+                alertActions.addAlert({
+                    title: appStringsMSF.ALERTS.LAYER_AVAILABILITY_LIST_LOAD_FAILED.title,
+                    body: appStringsMSF.ALERTS.LAYER_AVAILABILITY_LIST_LOAD_FAILED,
+                    severity: appStringsMSF.ALERTS.LAYER_AVAILABILITY_LIST_LOAD_FAILED.severity,
+                    time: new Date()
+                })
+            );
+        }
+    );
+}
+
+function updateAvailableOilWells(data) {
+    return {
+        type: typesMSF.UPDATE_OIL_WELLS,
+        data
+    };
+}
+
+function getQueryString(category, extent, layerSidebarState, mapState) {
     switch (category) {
         case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
-            return MapUtilExtended.buildVistaFeatureQueryString(extent, layerSidebarState);
+            return MapUtilExtended.buildVistaFeatureQueryString(
+                extent,
+                layerSidebarState,
+                mapState
+            );
         case layerSidebarTypes.CATEGORY_PLUMES:
             return MapUtilExtended.buildAvirisFeatureQueryString(extent);
     }

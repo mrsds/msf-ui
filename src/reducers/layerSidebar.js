@@ -35,6 +35,8 @@ export default function layerSidebar(
             return opt_reducer.selectFeatureInSidebar(state, action);
         case actionTypesMSF.CLEAR_FEATURE_LABELS:
             return opt_reducer.clearFeatureLabels(state, action);
+        case actionTypesMSF.UPDATE_OIL_WELLS:
+            return opt_reducer.updateOilWells(state, action);
         default:
             return state;
     }

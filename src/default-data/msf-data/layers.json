@@ -1,18 +1,6 @@
 {
     "layers": [
         {
-            "id": "VISTA_2017_OILGAS_WELLS",
-            "title": "Vista 2017 - Oil & Gas Wells",
-            "type": "data",
-            "handleAs": "vista_geojson",
-            "isDefault": false,
-            "visibleInGroup": false,
-            "url": "http://100.64.114.187:9090/vista?category=0&maxObjects=10000",
-            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
-            "group": "VISTA",
-            "updateParameters": { "time": false }
-        },
-        {
             "id": "VISTA_2017_LIVESTOCK_DAIRIES",
             "title": "Vista 2017 - Livestock Dairies",
             "type": "data",
@@ -152,6 +140,18 @@
             "isDefault": false,
             "visibleInGroup": false,
             "url": "http://100.64.114.187:9090/vista?category=12&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "VISTA_2017_OILGAS_FIELDS",
+            "title": "Vista 2017 - Oil and Gas Fields",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.187:9090/vista?category=13&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }

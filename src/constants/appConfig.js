@@ -86,7 +86,8 @@ const APP_CONFIG = Immutable.fromJS({
             format: "YYYY",
             visMajorFormat: "YYYY"
         }
-    ]
+    ],
+    OIL_WELLS_MIN_ZOOM: 15
 });
 
 // define and export the final config

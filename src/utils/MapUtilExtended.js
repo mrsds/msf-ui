@@ -16,7 +16,7 @@ export default class MapUtilExtended extends MapUtil {
         return MapWrapperOpenlayers.getWmtsOptions(options);
     }
 
-    static buildVistaFeatureQueryString(extent, sidebarState) {
+    static buildVistaFeatureQueryString(extent, subCategoryState) {
         const [lonMax, latMax] = this.constrainCoordinates([
             parseFloat(extent.get(2)),
             parseFloat(extent.get(3))
@@ -25,7 +25,10 @@ export default class MapUtilExtended extends MapUtil {
             parseFloat(extent.get(0)),
             parseFloat(extent.get(1))
         ]);
-        const categoryString = this.getActiveInfrastructureCategories(sidebarState).join(",");
+        const categoryString = subCategoryState
+            .filter(val => val)
+            .map((val, key) => layerSidebarTypes.INFRASTRUCTURE_SUBCATEGORIES[key])
+            .join(",");
         return appConfig.URLS.vistaEndpoint
             .replace("{latMax}", latMax)
             .replace("{lonMax}", lonMax)

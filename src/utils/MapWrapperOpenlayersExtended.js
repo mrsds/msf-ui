@@ -963,4 +963,39 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         this.setActivePlumes(plumes, infrastructure.length);
         this.setActiveInfrastructure(infrastructure, plumes.length);
     }
+
+    setOilWellLayer(data) {
+        const oldOilWellLayer = this.map
+            .getLayers()
+            .getArray()
+            .find(layer => layer.get("_layerId") === "OIL_WELLS");
+        if (oldOilWellLayer) this.removeLayer(oldOilWellLayer);
+
+        if (!data) return;
+
+        // HACK ALERT -- for some reason Ol_Source_Vector doesn't read from JSON strings, only URLs.
+        const blob = new Blob([data], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const format = new Ol_Format_GeoJSON();
+        const vistaLayerSource = new Ol_Source_Vector({
+            url,
+            format
+        });
+
+        const vistaLayer = new Ol_Layer_Vector({
+            source: vistaLayerSource,
+            visible: true,
+            extent: this.map.getView().calculateExtent(),
+            style: this.getVistaStyle(layerSidebarTypes.VISTA_2017_OILGAS_WELLS)
+        });
+
+        vistaLayer.set("_layerGroup", "VISTA");
+        vistaLayer.set("_layerOrder", 1);
+        vistaLayer.set("_layerId", "OIL_WELLS");
+        vistaLayer.set("_layerType", appStrings.LAYER_GROUP_TYPE_DATA);
+
+        vistaLayer.setVisible(true);
+        this.addLayer(vistaLayer);
+        this.map.updateSize();
+    }
 }

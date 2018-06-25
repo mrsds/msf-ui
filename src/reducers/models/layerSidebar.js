@@ -7,10 +7,11 @@ export const layerSidebarState = Immutable.fromJS({
     layerSidebarCollapsed: false,
     availableFeatures: {
         [layerSidebarTypes.CATEGORY_INFRASTRUCTURE]: [],
-        [layerSidebarTypes.CATEGORY_PLUMES]: []
+        [layerSidebarTypes.CATEGORY_PLUMES]: [],
+        oilWells: []
     },
     activeInfrastructureSubCategories: {
-        [layerSidebarTypes.VISTA_2017_OILGAS_WELLS]: false,
+        [layerSidebarTypes.VISTA_2017_OILGAS_FIELDS]: false,
         [layerSidebarTypes.VISTA_2017_LIVESTOCK_DAIRIES]: true,
         [layerSidebarTypes.VISTA_2017_ANAEROBIC_LAGOONS]: true,
         [layerSidebarTypes.VISTA_2017_CNG_FUELING_STATIONS]: true,

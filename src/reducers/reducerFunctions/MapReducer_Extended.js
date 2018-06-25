@@ -209,4 +209,11 @@ export default class MapReducer_Extended extends MapReducer {
 
         return state.set("alerts", alerts);
     }
+
+    static updateOilWells(state, action) {
+        state.get("maps").map(map => {
+            map.setOilWellLayer(action.data);
+        });
+        return state;
+    }
 }
