@@ -4,25 +4,28 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import MiscUtil from "_core/utils/MiscUtil";
 import styles from "components/FeaturePicker/FeaturePickerStyles.scss";
-import { Popover, PopoverAnimationVertical } from "material-ui/Popover";
-import Button from "material-ui/Button";
-import { Menu, MenuItem } from "material-ui/Menu";
-import Card, { CardActions, CardContent, CardMedia } from "material-ui/Card";
-import List, {
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    ListItemSecondaryAction
-} from "material-ui/List";
-import Typography from "material-ui/Typography";
+import { Popover, PopoverAnimationVertical } from "@material-ui/core/Popover";
+import Button from "@material-ui/core/Button";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import Typography from "@material-ui/core/Typography";
 import MetadataUtil from "utils/MetadataUtil";
 import MiscUtilExtended from "utils/MiscUtilExtended";
-import Divider from "material-ui/Divider";
-import Subheader from "material-ui/List/ListSubheader";
+import Divider from "@material-ui/core/Divider";
+import Subheader from "@material-ui/core/ListSubheader";
 import * as mapActionsMSF from "actions/mapActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import IconButton from "material-ui/IconButton";
-import InfoOutlineIcon from "material-ui-icons/InfoOutline";
+import IconButton from "@material-ui/core/IconButton";
+import InfoOutlineIcon from "@material-ui/icons/InfoOutline";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 
 export class FeaturePicker extends Component {
@@ -193,14 +196,22 @@ export class FeaturePicker extends Component {
                 <Card>
                     <CardContent className={styles.cardContentRoot}>
                         <List dense={true} className={styles.featureItemList}>
-                            <Subheader hidden={!this.props.infrastructure.size}>
+                            <Subheader
+                                className={styles.subheader}
+                                hidden={!this.props.infrastructure.size}
+                            >
                                 Infrastructure
                             </Subheader>
                             {this.makeInfrastructureItems()}
                             <Divider
                                 hidden={!this.props.plumes.size || !this.props.infrastructure.size}
                             />
-                            <Subheader hidden={!this.props.plumes.size}>Plumes</Subheader>
+                            <Subheader
+                                className={styles.subheader}
+                                hidden={!this.props.plumes.size}
+                            >
+                                Plumes
+                            </Subheader>
                             {this.makePlumeItems()}
                         </List>
                     </CardContent>

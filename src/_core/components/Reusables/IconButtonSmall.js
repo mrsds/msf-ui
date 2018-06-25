@@ -7,11 +7,11 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import IconButton from "material-ui/IconButton";
+import IconButton from "@material-ui/core/IconButton";
 import styles from "_core/components/Reusables/IconButtonSmall.scss";
 
 const IconButtonSmall = props => {
-    return <IconButton classes={{ root: styles.root }} {...props} />;
+    return <IconButton classes={{ root: styles.root, label: styles.label }} {...props} />;
 };
 
 export default IconButtonSmall;

@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Card, { CardActions, CardContent, CardMedia } from "material-ui/Card";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
 import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
-import Typography from "material-ui/Typography";
-import { FormGroup, FormControl, FormHelperText } from "material-ui/Form";
-import Input, { InputLabel } from "material-ui/Input";
-import { MenuItem } from "material-ui/Menu";
-import Select from "material-ui/Select";
+import Typography from "@material-ui/core/Typography";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 import { bindActionCreators } from "redux";
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
 import * as MSFTypes from "constants/MSFTypes";
@@ -15,11 +21,11 @@ import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import { Manager, Target, Popper } from "react-popper";
 import ChipDropdown from "components/Reusables/ChipDropdown";
 import displayStyles from "_core/styles/display.scss";
-import Grow from "material-ui/transitions/Grow";
-import Paper from "material-ui/Paper";
-import Radio from "material-ui/Radio";
+import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
+import Radio from "@material-ui/core/Radio";
 import Immutable from "immutable";
-import ClickAwayListener from "material-ui/utils/ClickAwayListener";
+import { ClickAwayListener } from "_core/components/Reusables";
 
 export class DataFilterContainer extends Component {
     constructor(props) {

@@ -9,16 +9,22 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { ListItem, ListItemSecondaryAction, ListItemText } from "material-ui/List";
-import Divider from "material-ui/Divider";
-import InfoOutlineIcon from "material-ui-icons/InfoOutline";
-import Typography from "material-ui/Typography";
-import Tooltip from "material-ui/Tooltip";
-import Collapse from "material-ui/transitions/Collapse";
-import Popover from "material-ui/Popover";
-import Grow from "material-ui/transitions/Grow";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import Divider from "@material-ui/core/Divider";
+import InfoOutlineIcon from "@material-ui/icons/InfoOutline";
+import Typography from "@material-ui/core/Typography";
+import Collapse from "@material-ui/core/Collapse";
+import Grow from "@material-ui/core/Grow";
+import Popover from "@material-ui/core/Popover";
 import { Manager, Target, Popper } from "react-popper";
-import { EnhancedSwitch, IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
+import {
+    EnhancedSwitch,
+    IconButtonSmall,
+    ClickAwayListener,
+    EnhancedTooltip
+} from "_core/components/Reusables";
 import * as mapActions from "_core/actions/mapActions";
 import {
     LayerPositionIcon,
@@ -111,9 +117,13 @@ export class LayerControlContainer extends Component {
     }
 
     renderTopContent() {
+        let secondaryActionClasses = MiscUtil.generateStringFromSet({
+            [displayStyles.invisible]: this.props.layer.get("isActive"),
+            [displayStyles.hiddenFadeIn]: !this.props.layer.get("isActive")
+        });
         return (
             <ListItem dense={true} classes={{ dense: styles.dense }}>
-                <Tooltip
+                <EnhancedTooltip
                     title={this.props.layer.get("isActive") ? "Hide Layer" : "Show Layer"}
                     placement="top"
                 >
@@ -122,24 +132,16 @@ export class LayerControlContainer extends Component {
                         onChange={(value, checked) => this.setLayerActive(!checked)}
                         onClick={evt => this.setLayerActive(evt.target.checked)}
                     />
-                </Tooltip>
+                </EnhancedTooltip>
                 <span className={textStyles.textEllipsis}>
                     <ListItemText primary={this.props.layer.get("title")} />
                 </span>
-                <ListItemSecondaryAction
-                    classes={{
-                        root: `${styles.secondaryActionRoot} ${
-                            this.props.layer.get("isActive")
-                                ? displayStyles.invisible
-                                : displayStyles.hiddenFadeIn
-                        }`
-                    }}
-                >
-                    <Tooltip title="Layer information" placement="left">
+                <ListItemSecondaryAction className={secondaryActionClasses}>
+                    <EnhancedTooltip title="Layer information" placement="left">
                         <IconButtonSmall onClick={() => this.openLayerInfo()}>
                             <InfoOutlineIcon />
                         </IconButtonSmall>
-                    </Tooltip>
+                    </EnhancedTooltip>
                 </ListItemSecondaryAction>
             </ListItem>
         );
@@ -190,14 +192,15 @@ export class LayerControlContainer extends Component {
             <span className={styles.layerControlIconRow}>
                 <Manager style={{ display: "inline-block" }}>
                     <ClickAwayListener
+                        wrap={true}
                         onClickAway={() => {
                             if (this.isChangingPosition) {
                                 this.toggleChangingPosition();
                             }
                         }}
                     >
-                        <Target style={{ display: "inline-block" }}>
-                            <Tooltip title={"Set Layer Position"} placement="top">
+                        <Target>
+                            <EnhancedTooltip title={"Set Layer Position"} placement="top">
                                 <LayerPositionIcon
                                     displayIndex={this.props.layer.get("displayIndex")}
                                     activeNum={this.props.activeNum}
@@ -205,10 +208,10 @@ export class LayerControlContainer extends Component {
                                     color={this.isChangingPosition ? "primary" : "default"}
                                     onClick={() => this.toggleChangingPosition()}
                                 />
-                            </Tooltip>
+                            </EnhancedTooltip>
                         </Target>
                         <Popper
-                            placement="left-end"
+                            placement="left"
                             modifiers={{
                                 computeStyle: {
                                     gpuAcceleration: false
@@ -231,24 +234,25 @@ export class LayerControlContainer extends Component {
                         </Popper>
                     </ClickAwayListener>
                     <ClickAwayListener
+                        wrap={true}
                         onClickAway={() => {
                             if (this.isChangingOpacity) {
                                 this.toggleChangingOpacity();
                             }
                         }}
                     >
-                        <Target style={{ display: "inline-block" }}>
-                            <Tooltip title={"Set Layer Opacity"} placement="top">
+                        <Target>
+                            <EnhancedTooltip title={"Set Layer Opacity"} placement="top">
                                 <LayerOpacityIcon
                                     opacity={this.props.layer.get("opacity")}
                                     className={styles.iconButtonSmall}
                                     color={this.isChangingOpacity ? "primary" : "default"}
                                     onClick={() => this.toggleChangingOpacity()}
                                 />
-                            </Tooltip>
+                            </EnhancedTooltip>
                         </Target>
                         <Popper
-                            placement="left-end"
+                            placement="left"
                             modifiers={{
                                 computeStyle: {
                                     gpuAcceleration: false
@@ -269,14 +273,14 @@ export class LayerControlContainer extends Component {
                         </Popper>
                     </ClickAwayListener>
                 </Manager>
-                <Tooltip title="Layer information" placement="top">
+                <EnhancedTooltip title="Layer information" placement="top">
                     <IconButtonSmall
                         className={styles.iconButtonSmall}
                         onClick={() => this.openLayerInfo()}
                     >
                         <InfoOutlineIcon />
                     </IconButtonSmall>
-                </Tooltip>
+                </EnhancedTooltip>
             </span>
         );
     }

@@ -3,16 +3,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { AppButtons } from "_core/components/AppBar";
-import Paper from "material-ui/Paper";
-import AppBar from "material-ui/AppBar";
+import Paper from "@material-ui/core/Paper";
+import AppBar from "@material-ui/core/AppBar";
 import AppLogo from "components/AppBar/AppLogo";
-import Typography from "material-ui/Typography";
-import Toolbar from "material-ui/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Toolbar from "@material-ui/core/Toolbar";
 // // import { appColorPalette } from "styles/appColorPalette";
 import MiscUtil from "_core/utils/MiscUtil";
-import Divider from "material-ui/Divider";
+import Divider from "@material-ui/core/Divider";
 import styles from "components/AppBar/AppBarContainerStyles.scss";
-import Tabs, { Tab } from "material-ui/Tabs";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import * as viewActions from "actions/viewActions";
 
 const AppBarContainer = props => {
@@ -32,16 +33,23 @@ const AppBarContainer = props => {
                         <Tabs
                             value={props.appMode}
                             className={styles.tabsRoot}
-                            indicatorColor="white"
+                            indicatorColor="secondary"
+                            TabIndicatorProps={{
+                                className: styles.tabsIndicator
+                            }}
                             onChange={(event, index) => props.setAppMode(index)}
                         >
                             <Tab
                                 label="Map"
-                                classes={{ labelContainer: styles.tabLabelContainer }}
+                                classes={{
+                                    labelContainer: styles.tabLabelContainer
+                                }}
                             />
                             <Tab
                                 label="Analytics"
-                                classes={{ labelContainer: styles.tabLabelContainer }}
+                                classes={{
+                                    labelContainer: styles.tabLabelContainer
+                                }}
                             />
                         </Tabs>
                         <AppButtons />
