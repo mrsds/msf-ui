@@ -20,7 +20,7 @@ import * as MSFTypes from "constants/MSFTypes";
 import * as featureDetailActions from "actions/featureDetailActions";
 import featureDetailStyles from "components/FeatureDetail/FeatureDetailContainerStyles.scss";
 import styles from "components/FeatureDetail/ChartingContainerStyles.scss";
-import { Line as LineChart } from "react-chartjs-2";
+import { Scatter as ScatterChart } from "react-chartjs-2";
 import Immutable from "immutable";
 import { Manager, Target, Popper } from "react-popper";
 import ChipDropdown from "components/Reusables/ChipDropdown";
@@ -468,7 +468,7 @@ export class InfrastructureChartingContainer extends Component {
 
         return (
             <div className={styles.chartContainer}>
-                <LineChart data={data} options={options} height={250} />
+                <ScatterChart data={data} options={options} height={250} />
             </div>
         );
     }
