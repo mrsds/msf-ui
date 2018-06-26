@@ -731,15 +731,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         // For each feature overlay, remove the overlay and set the style
         // of the corresponding feature to null
         let mapLayers = this.map.getLayers().getArray();
-        // let avirisIconLayerFeatures = this.map
-        //     .getLayers()
-        //     .getArray()
-        //     .find(l => l.get("_layerId") === "AVIRIS")
-        //     .getLayers()
-        //     .getArray()
-        //     .find(layer => layer.get("_layerId") === "icons")
-        //     .getSource()
-        //     .getFeatures();
+
         this.map.getOverlays().forEach(overlay => {
             // If overlay is VISTA we need to deselect the corresponding feature
             let overlayType = overlay.getProperties().overlayType;
@@ -873,31 +865,17 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                         : 0;
                 feature.setOpacity(opacity);
             });
+    }
 
-        let avirisIconLayerGroupSource = avirisIconLayerGroup.getSource();
-        const activePlumeStyle = new Ol_Style({
-            image: new Ol_Style_Icon({
-                opacity: 1,
-                src: "img/PlumeIconActive.png",
-                scale: 0.6
-            })
-        });
-        avirisIconLayerGroupSource.forEachFeature(feature => {
-            let featureIsActive =
-                feature.get("_featureId") && activeFeatureIds.includes(feature.get("_featureId"));
-            if (hideAll || (!featureIsActive && feature.get("_featureActive"))) {
-                avirisIconLayerGroupSource.removeFeature(feature);
-            }
-
-            if (featureIsActive) {
-                let newFeature = new Ol_Feature({
-                    geometry: feature.get("geometry")
-                });
-                newFeature.set("_featureActive", true);
-                newFeature.setStyle(activePlumeStyle);
-                avirisIconLayerGroupSource.addFeature(newFeature);
-            }
-        });
+    togglePlumeIcons(iconsOff) {
+        this.map
+            .getLayers()
+            .getArray()
+            .find(l => l.get("_layerId") === "AVIRIS")
+            .getLayers()
+            .getArray()
+            .find(l => l.get("_layerId") === "icons")
+            .setOpacity(iconsOff ? 0 : 1);
     }
 
     setActiveInfrastructure(activeFeatures, hideAll) {

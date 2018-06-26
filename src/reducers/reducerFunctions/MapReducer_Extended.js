@@ -142,6 +142,7 @@ export default class MapReducer_Extended extends MapReducer {
     }
 
     static setActivePickerFeature(state, action) {
+        state.get("maps").map(map => map.togglePlumeIcons(action.feature));
         state.get("maps").map(map => {
             map.soloFeature(action.feature, action.category);
         });
