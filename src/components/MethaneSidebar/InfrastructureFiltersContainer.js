@@ -259,38 +259,44 @@ export class PlumeFiltersContainer extends Component {
                                                 >
                                                     {layerSidebarTypes.INFRASTRUCTURE_GROUPS[
                                                         group
-                                                    ].categories.map(category => {
-                                                        const categoryName = MapUtilExtended.getInfrastructureCategoryHumanName(
-                                                            category
-                                                        );
-                                                        const checked =
-                                                            this.props.activeInfrastructureSubCategories.get(
+                                                    ].categories
+                                                        .filter(
+                                                            category =>
+                                                                category !==
+                                                                layerSidebarTypes.VISTA_2017_OILGAS_WELLS
+                                                        )
+                                                        .map(category => {
+                                                            const categoryName = MapUtilExtended.getInfrastructureCategoryHumanName(
                                                                 category
-                                                            ) || false;
-                                                        return (
-                                                            <ListItem
-                                                                key={category}
-                                                                dense
-                                                                button
-                                                                onClick={() =>
-                                                                    this.props.updateInfrastructureCategoryFilter(
-                                                                        category,
-                                                                        !checked
-                                                                    )
-                                                                }
-                                                            >
-                                                                <Checkbox
-                                                                    className={styles.checkbox}
-                                                                    checked={checked}
-                                                                    tabIndex={-1}
-                                                                    disableRipple
-                                                                />
-                                                                <ListItemText
-                                                                    primary={categoryName}
-                                                                />
-                                                            </ListItem>
-                                                        );
-                                                    })}
+                                                            );
+                                                            const checked =
+                                                                this.props.activeInfrastructureSubCategories.get(
+                                                                    category
+                                                                ) || false;
+                                                            return (
+                                                                <ListItem
+                                                                    key={category}
+                                                                    dense
+                                                                    button
+                                                                    onClick={() =>
+                                                                        this.props.updateInfrastructureCategoryFilter(
+                                                                            category,
+                                                                            !checked
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <Checkbox
+                                                                        className={styles.checkbox}
+                                                                        checked={checked}
+                                                                        tabIndex={-1}
+                                                                        disableRipple
+                                                                    />
+                                                                    <ListItemText
+                                                                        primary={categoryName}
+                                                                    />
+                                                                </ListItem>
+                                                            );
+                                                        })}
                                                 </List>
                                             ))}
                                         </div>
