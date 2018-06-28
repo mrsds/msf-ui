@@ -346,19 +346,33 @@ export class InfrastructureChartingContainer extends Component {
 
     makePlumeListItem(feature) {
         const datetime = feature.get("datetime");
-        const dateString = datetime
-            ? moment(datetime).format("MMMM Do, YYYY, H:mm [UTC]")
-            : "(No Date)";
+        const dateString = datetime ? moment(datetime).format("M/D/YYYY") : "(No Date)";
+        const timeString = datetime ? moment(datetime).format("H:mm [UTC]") : "";
         return (
             <React.Fragment key={feature.get("name")}>
                 <TableRow>
-                    <TableCell>Yes</TableCell>
-                    <TableCell>{dateString}</TableCell>
-                    <TableCell>{MetadataUtil.getPlumeID(feature, "(none)")}</TableCell>
-                    <TableCell numeric>(none)</TableCell>
-                    <TableCell numeric>{MetadataUtil.getFetch(feature, "20", "(none)")}</TableCell>
-                    <TableCell numeric>(none)</TableCell>
-                    <TableCell numeric>{MetadataUtil.getIME(feature, "20", "(none)")}</TableCell>
+                    <TableCell padding="dense">Yes</TableCell>
+                    <TableCell padding="dense">
+                        {" "}
+                        {dateString}
+                        <br />
+                        {timeString}
+                    </TableCell>
+                    <TableCell padding="dense">
+                        {MetadataUtil.getPlumeID(feature, "(none)")}
+                    </TableCell>
+                    <TableCell numeric padding="dense">
+                        (none)
+                    </TableCell>
+                    <TableCell numeric padding="dense">
+                        {Math.round(MetadataUtil.getFetch(feature, "20", "(none)") * 100) / 100}
+                    </TableCell>
+                    <TableCell numeric padding="dense">
+                        (none)
+                    </TableCell>
+                    <TableCell numeric padding="dense">
+                        {Math.round(MetadataUtil.getIME(feature, "20", "(none)") * 100) / 100}
+                    </TableCell>
                 </TableRow>
             </React.Fragment>
         );
@@ -386,13 +400,23 @@ export class InfrastructureChartingContainer extends Component {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Plume Detected</TableCell>
-                                <TableCell>Flyover Date</TableCell>
-                                <TableCell>Plume ID</TableCell>
-                                <TableCell numeric>Wind (mph/hr)</TableCell>
-                                <TableCell numeric>Fetch (m)</TableCell>
-                                <TableCell numeric>Flux (kg/hr)</TableCell>
-                                <TableCell numeric>IME (kg)</TableCell>
+                                <TableCell padding="dense">
+                                    Plume<br />Detected
+                                </TableCell>
+                                <TableCell padding="dense">Flyover Date</TableCell>
+                                <TableCell padding="dense">Plume ID</TableCell>
+                                <TableCell numeric padding="dense">
+                                    Wind (mph/hr)
+                                </TableCell>
+                                <TableCell numeric padding="dense">
+                                    Fetch (m)
+                                </TableCell>
+                                <TableCell numeric padding="dense">
+                                    Flux (kg/hr)
+                                </TableCell>
+                                <TableCell numeric padding="dense">
+                                    IME (kg)
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>{this.makePlumeTableBody()}</TableBody>
