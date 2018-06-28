@@ -163,6 +163,7 @@ export class FeatureDetailContainer extends Component {
                             href={googleMapsUri}
                             target="_blank"
                             disabled={!googleMapsUri}
+                            variant="outlined"
                         >
                             View In Google Maps
                         </Button>
@@ -252,6 +253,7 @@ export class FeatureDetailContainer extends Component {
                             href={googleMapsUri}
                             target="_blank"
                             disabled={!googleMapsUri}
+                            variant="outlined"
                         >
                             View In Google Maps
                         </Button>{" "}
@@ -263,6 +265,7 @@ export class FeatureDetailContainer extends Component {
                                 this.props.feature.get("name")
                             )}
                             target="_blank"
+                            variant="outlined"
                         >
                             Download Plume Data
                         </Button>
