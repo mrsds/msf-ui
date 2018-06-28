@@ -20,7 +20,7 @@ export default class MiscUtilExtended extends MiscUtil {
     }
 
     static formatPlumeDatetime(datetime) {
-        return datetime ? moment(datetime).format("MMMM Do, YYYY, H:mm [UTC]") : "(no date)";
+        return datetime ? moment(datetime).format("MMMM Do, YYYY, H:mm") : "(no date)";
     }
 
     static roundTo(num, place) {
@@ -66,6 +66,24 @@ export default class MiscUtilExtended extends MiscUtil {
                     rgbqlctr_url: feature.rgbqlctr_url,
                     thumbnail: feature.rgbqlctr_url_thumb
                     //   thumbnail: feature.plume_url_thumb
+                })
+            );
+            return keys;
+        }, []);
+    }
+
+    static vistaFeatureProcessor(featureList) {
+        return featureList.features.reduce((keys, feature) => {
+            let categoryId = feature.properties.category_id;
+            keys.push(
+                Immutable.fromJS({
+                    name: feature.properties.name,
+                    id: feature.properties.id,
+                    category: feature.properties.category,
+                    flyoverCount: feature.properties.num_flights_matching || 0,
+                    plumeCount: feature.properties.num_plumes_matching || 0,
+                    categoryId: categoryId,
+                    metadata: feature.properties.metadata
                 })
             );
             return keys;

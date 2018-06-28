@@ -217,9 +217,7 @@ export class FeatureDetailContainer extends Component {
 
         const areaSqMi = MetadataUtil.getAreaSqMi(this.props.feature, null);
         const datetime = this.props.feature.get("datetime");
-        const dateString = datetime
-            ? moment(datetime).format("MMMM Do, YYYY, H:mm [UTC]")
-            : "(No Date)";
+        const dateString = datetime ? moment(datetime).format("MMMM Do, YYYY, H:mm") : "(No Date)";
 
         // Bin together the various field:value pairs
         const plumeDataFields = [

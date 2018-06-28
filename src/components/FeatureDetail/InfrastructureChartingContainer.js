@@ -347,7 +347,7 @@ export class InfrastructureChartingContainer extends Component {
     makePlumeListItem(feature) {
         const datetime = feature.get("datetime");
         const dateString = datetime ? moment(datetime).format("M/D/YYYY") : "(No Date)";
-        const timeString = datetime ? moment(datetime).format("H:mm [UTC]") : "";
+        const timeString = datetime ? moment(datetime).format("H:mm") : "";
         return (
             <React.Fragment key={feature.get("name")}>
                 <TableRow>
@@ -433,7 +433,7 @@ export class InfrastructureChartingContainer extends Component {
                     {this.getDateFilteredPlumeList().map(feature => {
                         const datetime = feature.get("datetime");
                         const dateString = datetime
-                            ? moment(datetime).format("MMMM Do, YYYY, H:mm [UTC]")
+                            ? moment(datetime).format("MMMM Do, YYYY, H:mm")
                             : "(No Date)";
                         return (
                             <GridListTile key={feature.get("name")}>

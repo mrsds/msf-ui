@@ -10,31 +10,15 @@ export default class LayerSidebarReducer {
         return state.set("activeCategory", action.category);
     }
 
-    static vistaFeatureProcessor(featureList) {
-        return featureList.features.reduce((keys, feature) => {
-            let categoryId = feature.properties.category_id;
-            keys.push(
-                Immutable.fromJS({
-                    name: feature.properties.name,
-                    id: feature.properties.id,
-                    category: feature.properties.category,
-                    flyoverCount: feature.properties.num_flights_matching || 0,
-                    plumeCount: feature.properties.num_plumes_matching || 0,
-                    categoryId: categoryId,
-                    metadata: feature.properties.metadata
-                })
-            );
-            return keys;
-        }, []);
-    }
-
     static updateAvailableFeatures(state, action) {
         switch (action.category) {
             case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
                 return state.setIn(
                     ["availableFeatures", layerSidebarTypes.CATEGORY_INFRASTRUCTURE],
                     Immutable.fromJS(
-                        !action.featureList ? [] : this.vistaFeatureProcessor(action.featureList)
+                        !action.featureList
+                            ? []
+                            : MiscUtilExtended.vistaFeatureProcessor(action.featureList)
                     )
                 );
             case layerSidebarTypes.CATEGORY_PLUMES:
@@ -119,14 +103,14 @@ export default class LayerSidebarReducer {
         const featureList = state.getIn(["availableFeatures", layerSidebarTypes.CATEGORY_PLUMES]);
         let searchResults = Immutable.Map();
         // Extract search filters
-        const startDate = moment.utc(
+        const startDate = moment(
             filters.getIn([
                 layerSidebarTypes.PLUME_FILTER_PLUME_START_DATE,
                 "selectedValue",
                 "value"
             ])
         );
-        const endDate = moment.utc(
+        const endDate = moment(
             filters.getIn([layerSidebarTypes.PLUME_FILTER_PLUME_END_DATE, "selectedValue", "value"])
         );
         const flightCampaign = filters.getIn([
@@ -163,7 +147,7 @@ export default class LayerSidebarReducer {
         // Filter by other filters
         searchResults = searchResults.filter(feature => {
             return (
-                moment.utc(feature.get("datetime")).isBetween(startDate, endDate, "day", "[]") &&
+                moment(feature.get("datetime")).isBetween(startDate, endDate, "day", "[]") &&
                 (!flightCampaign || feature.get("flight_campaign") === flightCampaign) &&
                 (!plumeIME || feature.get("ime") >= plumeIME)
             );
@@ -172,7 +156,7 @@ export default class LayerSidebarReducer {
         // Sort list
         let sortFn = sortOption => {
             let sortByDate = (a, b) =>
-                moment.utc(a.get("datetime")).isAfter(moment.utc(b.get("datetime"))) ? -1 : 1;
+                moment(a.get("datetime")).isAfter(moment(b.get("datetime"))) ? -1 : 1;
             let sortByIME = (a, b) => (a.get("ime") > b.get("ime") ? -1 : 1);
             switch (sortOption) {
                 case layerSidebarTypes.PLUME_FILTER_PLUME_OBSERVATION_DATE:
