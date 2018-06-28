@@ -17,6 +17,7 @@ import MiscUtil from "_core/utils/MiscUtil";
 import styles from "components/FeatureDetail/FeatureDetailContainerStyles.scss";
 import PlumeChartingContainer from "components/FeatureDetail/PlumeChartingContainer";
 import InfrastructureChartingContainer from "components/FeatureDetail/InfrastructureChartingContainer";
+import appConfig from "constants/appConfig";
 
 export class FeatureDetailContainer extends Component {
     // getCategory() {
@@ -253,6 +254,17 @@ export class FeatureDetailContainer extends Component {
                             disabled={!googleMapsUri}
                         >
                             View In Google Maps
+                        </Button>{" "}
+                        <Button
+                            className={styles.rightButton}
+                            color="primary"
+                            href={appConfig.URLS.plumeDownloadEndpoint.replace(
+                                "{source_id}",
+                                this.props.feature.get("name")
+                            )}
+                            target="_blank"
+                        >
+                            Download Plume Data
                         </Button>
                     </CardActions>
                 </Card>
