@@ -31,6 +31,7 @@ import {
 import Grow from "@material-ui/core/Grow";
 import stylesExtended from "components/LayerMenu/LayerControlContainerExtendedStyles.scss";
 import MiscUtil from "_core/utils/MiscUtil";
+import MiscUtilExtended from "utils/MiscUtilExtended";
 
 export class InfrastructureControlContainer extends LayerControlContainerCore {
     setLayerActive(active) {
@@ -81,9 +82,11 @@ export class InfrastructureControlContainer extends LayerControlContainerCore {
                             <span
                                 className={colorbarStylesExtended.legendColor}
                                 style={{
-                                    background:
+                                    background: MiscUtilExtended.increaseColorSaturation(
                                         layerSidebarTypes.INFRASTRUCTURE_GROUPS[key].colors
-                                            .fillNoTransparency
+                                            .fillNoTransparency,
+                                        3.972
+                                    )
                                 }}
                             />
                             <br />
