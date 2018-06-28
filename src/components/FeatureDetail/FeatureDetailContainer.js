@@ -6,11 +6,11 @@ import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import * as featureDetailActions from "actions/featureDetailActions";
 import Typography from "@material-ui/core/Typography";
+import FileDownloadIcon from "@material-ui/icons/FileDownload";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import MetadataUtil from "utils/MetadataUtil";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import MiscUtil from "_core/utils/MiscUtil";
@@ -64,7 +64,14 @@ export class FeatureDetailContainer extends Component {
         return <div className={styles.infoBox}>{fields}</div>;
     }
 
-    renderFeatureDetailContainer(headerImageUrl, title, subtitle, featureBody) {
+    renderFeatureDetailContainer(
+        headerImageUrl,
+        title,
+        subtitle,
+        downloadLabel,
+        enableDownloads,
+        featureBody
+    ) {
         let featureDetailContainerClasses = MiscUtil.generateStringFromSet({
             [styles.featureDetailContainer]: true,
             [styles.fullWidth]: this.props.layerSidebarCollapsed
@@ -73,6 +80,26 @@ export class FeatureDetailContainer extends Component {
             [styles.maxWidth]: true,
             [styles.featureDetailBody]: true
         });
+        let downloadFAB = <div />;
+        if (enableDownloads) {
+            downloadFAB = (
+                <div className={styles.fabContainer}>
+                    <Button
+                        className={styles.fab}
+                        color="inherit"
+                        href={appConfig.URLS.plumeDownloadEndpoint.replace(
+                            "{source_id}",
+                            this.props.feature.get("name")
+                        )}
+                        target="_blank"
+                        variant="fab"
+                    >
+                        <FileDownloadIcon />
+                    </Button>
+                    <span className={styles.fabLabel}>{downloadLabel}</span>
+                </div>
+            );
+        }
         return (
             <div className={featureDetailContainerClasses}>
                 <Button
@@ -88,6 +115,7 @@ export class FeatureDetailContainer extends Component {
                 />
                 <div className={styles.header}>
                     <div className={styles.maxWidth}>
+                        {downloadFAB}
                         <h2 className={styles.headerTitle}>{title}</h2>
                         <p className={styles.headerSubtitle}>{subtitle}</p>
                     </div>
@@ -192,6 +220,8 @@ export class FeatureDetailContainer extends Component {
             featureHeaderImage,
             featureTitle,
             featureSubtitle,
+            "Download Flyover Data",
+            false,
             featureBody
         );
     }
@@ -254,18 +284,6 @@ export class FeatureDetailContainer extends Component {
                             variant="outlined"
                         >
                             View In Google Maps
-                        </Button>{" "}
-                        <Button
-                            className={styles.rightButton}
-                            color="primary"
-                            href={appConfig.URLS.plumeDownloadEndpoint.replace(
-                                "{source_id}",
-                                this.props.feature.get("name")
-                            )}
-                            target="_blank"
-                            variant="outlined"
-                        >
-                            Download Plume Data
                         </Button>
                     </CardActions>
                 </Card>
@@ -305,6 +323,8 @@ export class FeatureDetailContainer extends Component {
             featureHeaderImage,
             featureTitle,
             featureSubtitle,
+            "Download Plume Data",
+            true,
             featureBody
         );
     }
