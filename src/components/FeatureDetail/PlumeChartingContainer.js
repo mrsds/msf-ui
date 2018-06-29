@@ -156,9 +156,7 @@ export class PlumeChartingContainer extends Component {
                     <Table className={styles.tableContent}>
                         <TableHead>
                             <TableRow>
-                                <TableCell padding="dense">
-                                    Plume<br />Detected
-                                </TableCell>
+                                <TableCell padding="dense">Plume Detected</TableCell>
                                 <TableCell padding="dense">Flyover Date</TableCell>
                                 <TableCell padding="dense">Plume ID</TableCell>
                                 <TableCell numeric padding="dense">
