@@ -946,7 +946,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         const oldOilWellLayer = this.map
             .getLayers()
             .getArray()
-            .find(layer => layer.get("_layerId") === "OIL_WELLS");
+            .find(layer => layer.get("_layerId") === "VISTA_OIL_WELLS");
         if (oldOilWellLayer) this.removeLayer(oldOilWellLayer);
 
         if (!data) return;
@@ -969,7 +969,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
 
         vistaLayer.set("_layerGroup", "VISTA");
         vistaLayer.set("_layerOrder", 1);
-        vistaLayer.set("_layerId", "OIL_WELLS");
+        vistaLayer.set("_layerId", "VISTA_OIL_WELLS");
         vistaLayer.set("_layerType", appStrings.LAYER_GROUP_TYPE_DATA);
 
         vistaLayer.setVisible(true);
