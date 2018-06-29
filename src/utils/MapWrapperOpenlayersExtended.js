@@ -868,10 +868,14 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
     }
 
     togglePlumeIcons(iconsOff) {
-        this.map
+        const avirisLayers = this.map
             .getLayers()
             .getArray()
-            .find(l => l.get("_layerId") === "AVIRIS")
+            .find(l => l.get("_layerId") === "AVIRIS");
+
+        if (!avirisLayers) return;
+
+        avirisLayers
             .getLayers()
             .getArray()
             .find(l => l.get("_layerId") === "icons")
