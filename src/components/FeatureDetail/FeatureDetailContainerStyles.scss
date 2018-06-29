@@ -1,6 +1,5 @@
 @import "~styles/colors";
 @import "~styles/misc";
-
 .featureDetailContainer {
     user-select: text;
     background: white;
@@ -115,7 +114,19 @@
             }
         }
     }
-    .rightButton {
-        margin-left: 30%;
+    .fabContainer {
+        float: right;
+        text-align: center;
+        top: -44px;
+        position: relative;
+    }
+    .fabLabel {
+        display: block;
+        margin-top: 15px;
+        color: white;
+    }
+    .fab {
+        background: white;
+        color: $color-primary;
     }
 }
