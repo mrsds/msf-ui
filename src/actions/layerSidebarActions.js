@@ -42,7 +42,6 @@ export function setFeatureDetail(category, feature) {
             handleAs: "json"
         }).then(
             data => {
-                console.log(data);
                 dispatch({
                     type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST,
                     data

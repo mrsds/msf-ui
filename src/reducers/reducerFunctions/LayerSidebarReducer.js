@@ -356,7 +356,9 @@ export default class LayerSidebarReducer {
     static updateOilWells(state, action) {
         return state.setIn(
             ["availableFeatures", "oilWells"],
-            Immutable.fromJS(action.data ? this.vistaFeatureProcessor(JSON.parse(action.data)) : [])
+            Immutable.fromJS(
+                action.data ? MiscUtilExtended.vistaFeatureProcessor(JSON.parse(action.data)) : []
+            )
         );
     }
 }
