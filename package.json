@@ -126,6 +126,7 @@
     "requirejs": "2.3.5",
     "rimraf": "2.6.2",
     "sass-loader": "6.0.6",
+    "save-as": "0.1.8",
     "script-loader": "0.7.2",
     "showdown": "1.8.6",
     "sinon": "4.1.3",
