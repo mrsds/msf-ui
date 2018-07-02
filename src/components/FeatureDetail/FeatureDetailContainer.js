@@ -69,6 +69,7 @@ export class FeatureDetailContainer extends Component {
         title,
         subtitle,
         downloadLabel,
+        downloadFnc,
         enableDownloads,
         featureBody
     ) {
@@ -87,10 +88,7 @@ export class FeatureDetailContainer extends Component {
                     <Button
                         className={styles.fab}
                         color="inherit"
-                        href={appConfig.URLS.plumeDownloadEndpoint.replace(
-                            "{source_id}",
-                            this.props.feature.get("name")
-                        )}
+                        onClick={() => downloadFnc(this.props.feature)}
                         target="_blank"
                         variant="fab"
                     >
@@ -220,6 +218,7 @@ export class FeatureDetailContainer extends Component {
             featureHeaderImage,
             featureTitle,
             featureSubtitle,
+            null,
             "Download Flyover Data",
             false,
             featureBody
@@ -324,6 +323,7 @@ export class FeatureDetailContainer extends Component {
             featureTitle,
             featureSubtitle,
             "Download Plume Data",
+            this.props.downloadPlumeData,
             true,
             featureBody
         );
@@ -346,7 +346,8 @@ FeatureDetailContainer.propTypes = {
     category: PropTypes.string,
     layerSidebarCollapsed: PropTypes.bool.isRequired,
     feature: PropTypes.object,
-    hideFeatureDetailContainer: PropTypes.func.isRequired
+    hideFeatureDetailContainer: PropTypes.func.isRequired,
+    downloadPlumeData: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -362,7 +363,8 @@ function mapDispatchToProps(dispatch) {
         hideFeatureDetailContainer: bindActionCreators(
             featureDetailActions.hideFeatureDetailContainer,
             dispatch
-        )
+        ),
+        downloadPlumeData: bindActionCreators(featureDetailActions.downloadPlumeData, dispatch)
     };
 }
 

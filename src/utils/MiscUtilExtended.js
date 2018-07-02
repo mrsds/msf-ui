@@ -40,7 +40,7 @@ export default class MiscUtilExtended extends MiscUtil {
     static processFeatureGeojson(featureList) {
         return featureList.reduce((keys, feature) => {
             let ime = feature.metadata.find(x => x.name === "IME20 (kg)");
-            let imeValue = ime ? parseFloat(ime.value) : null;
+            let imeValue = ime ? parseFloat(ime.value) : 0;
             let sourceId = feature.metadata.find(x => x.name === "Source id");
             let sourceIdValue = sourceId ? parseFloat(sourceId.value) : null;
             keys.push(
@@ -64,7 +64,9 @@ export default class MiscUtilExtended extends MiscUtil {
                     ]),
                     png_url: feature.png_url,
                     rgbqlctr_url: feature.rgbqlctr_url,
-                    thumbnail: feature.rgbqlctr_url_thumb
+                    thumbnail: feature.rgbqlctr_url_thumb,
+                    plume_tiff_url: feature.plume_tiff_url,
+                    rgb_tiff_url: feature.rgb_tiff_url
                     //   thumbnail: feature.plume_url_thumb
                 })
             );
