@@ -74,25 +74,34 @@ export class InfrastructureControlContainer extends LayerControlContainerCore {
         );
     }
     renderLegend() {
-        return (
-            <span className={colorbarStylesExtended.infrastructureLegend}>
-                <Grid container spacing={0}>
-                    {Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).map(key => (
-                        <Grid key={key} item xs className={colorbarStyles.label}>
-                            <span
-                                className={colorbarStylesExtended.legendColor}
-                                style={{
+        {
+            /*  style={{
                                     background: MiscUtilExtended.increaseColorSaturation(
                                         layerSidebarTypes.INFRASTRUCTURE_GROUPS[key].colors
                                             .fillNoTransparency,
                                         3.972
                                     )
-                                }}
-                            />
-                            <br />
-                            {key}
-                        </Grid>
-                    ))}
+                                }} */
+        }
+        return (
+            <span className={colorbarStylesExtended.infrastructureLegend}>
+                <Grid container spacing={0}>
+                    {Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).map(key => {
+                        const strokeRGB =
+                            layerSidebarTypes.INFRASTRUCTURE_GROUPS[key].colors.stroke;
+                        return (
+                            <Grid key={key} item xs className={colorbarStyles.label}>
+                                <span
+                                    className={colorbarStylesExtended.legendColor}
+                                    style={{
+                                        background: `rgb(${strokeRGB.join(",")})`
+                                    }}
+                                />
+                                <br />
+                                {key}
+                            </Grid>
+                        );
+                    })}
                 </Grid>
             </span>
         );

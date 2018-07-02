@@ -122,9 +122,9 @@ export const INFRASTRUCTURE_GROUPS = {
         categories: agricultureCategories,
         categoryIds: agricultureCategories.map(x => INFRASTRUCTURE_SUBCATEGORIES[x]),
         colors: {
-            fill: [212, 125, 39, 0.3],
-            stroke: [212, 125, 39, 1],
-            fillNoTransparency: "rgb(242, 216, 192)"
+            fill: [129, 230, 27, 0.1],
+            stroke: [129, 230, 27, 1],
+            fillNoTransparency: "rgb(218, 248, 192)"
         },
         categoryNames: agricultureCategories.map(x => INFRASTRUCTURE_FACILITY_TYPE_TO_NAME[x])
     },
@@ -132,9 +132,9 @@ export const INFRASTRUCTURE_GROUPS = {
         categories: energyCategories,
         categoryIds: energyCategories.map(x => INFRASTRUCTURE_SUBCATEGORIES[x]),
         colors: {
-            fill: [181, 181, 54, 0.3],
-            stroke: [181, 181, 54, 1],
-            fillNoTransparency: "rgb(233, 233, 197)"
+            fill: [255, 235, 0, 0.1],
+            stroke: [255, 235, 0, 1],
+            fillNoTransparency: "rgb(255, 235, 0)"
         },
         categoryNames: energyCategories.map(x => INFRASTRUCTURE_FACILITY_TYPE_TO_NAME[x])
     },
@@ -142,9 +142,9 @@ export const INFRASTRUCTURE_GROUPS = {
         categories: [VISTA_2017_WASTEWTR_TREAT_PLNT, VISTA_2017_LANDFILL, VISTA_2017_SOCAB_BOUND],
         categoryIds: wasteCategories.map(x => INFRASTRUCTURE_SUBCATEGORIES[x]),
         colors: {
-            fill: [129, 230, 27, 0.3],
-            stroke: [129, 230, 27, 1],
-            fillNoTransparency: "rgb(218, 248, 192)"
+            fill: [64, 220, 255, 0.1],
+            stroke: [64, 220, 255, 1],
+            fillNoTransparency: "rgb(64, 220, 255)"
         },
         categoryNames: wasteCategories.map(x => INFRASTRUCTURE_FACILITY_TYPE_TO_NAME[x])
     }

@@ -15,6 +15,7 @@ import Ol_Style_Stroke from "ol/style/stroke";
 import Ol_Style_Circle from "ol/style/circle";
 import Ol_Style_Text from "ol/style/text";
 import Ol_Style_Icon from "ol/style/icon";
+import Ol_Geom_Circle from "ol/geom/circle";
 import Ol_Overlay from "ol/overlay";
 import Ol_Extent from "ol/extent";
 import Ol_Source_XYZ from "ol/source/xyz";
@@ -55,23 +56,93 @@ const INVISIBLE_VISTA_STYLE = new Ol_Style({
 });
 
 const VISTA_STYLES_BY_SECTOR = {};
+
 Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).forEach(groupName => {
     const group = layerSidebarTypes.INFRASTRUCTURE_GROUPS[groupName];
-    VISTA_STYLES_BY_SECTOR[groupName] = new Ol_Style({
-        fill: new Ol_Style_Fill({
-            color: group.colors.fill
-        }),
-        stroke: new Ol_Style_Stroke({
-            color: group.colors.stroke,
-            width: 1
-        }),
-        image: new Ol_Style_Circle({
-            radius: 4,
+
+    const polygonStyle = [
+        new Ol_Style({
             fill: new Ol_Style_Fill({
-                color: group.colors.stroke
+                color: group.colors.fill
+            }),
+            stroke: new Ol_Style_Stroke({
+                color: group.colors.stroke,
+                width: 1.5
+            })
+        }),
+        new Ol_Style({
+            fill: new Ol_Style_Fill({
+                color: group.colors.fill
+            }),
+            stroke: new Ol_Style_Stroke({
+                color: group.colors.stroke,
+                width: 1.5
             })
         })
+    ];
+    const pointStroke = new Ol_Style_Stroke({
+        color: "rgba(0, 0, 0, 0.2)",
+        width: 1.5
     });
+    const pointFill = new Ol_Style_Fill({
+        color: group.colors.stroke
+    });
+    const pointStyle = (f, r) => {
+        if (r < 100) {
+            return [
+                new Ol_Style({
+                    fill: pointFill,
+                    stroke: new Ol_Style_Stroke({
+                        color: "rgba(0, 0, 0, 0.8)",
+                        width: 1.5
+                    }),
+                    geometry: new Ol_Geom_Circle(f.getGeometry().getCoordinates(), r * 4.5)
+                })
+            ];
+        } else {
+            return [
+                new Ol_Style({
+                    fill: pointFill,
+                    stroke: pointStroke,
+                    geometry: new Ol_Geom_Circle(f.getGeometry().getCoordinates(), r * 4)
+                })
+            ];
+        }
+    };
+    const linestringStyle = (f, r) => [
+        new Ol_Style({
+            fill: new Ol_Style_Fill({
+                color: group.colors.fill
+            }),
+            stroke: new Ol_Style_Stroke({
+                color: "rgb(0, 0, 0, 0.4)",
+                width: r < 75 ? 2.75 : 2
+            })
+        }),
+        new Ol_Style({
+            fill: new Ol_Style_Fill({
+                color: group.colors.fill
+            }),
+            stroke: new Ol_Style_Stroke({
+                color: group.colors.stroke,
+                width: r < 75 ? 2 : 1.25
+            })
+        })
+    ];
+
+    const styleFunction = (feature, resolution) => {
+        // console.log(resolution,"?r")
+        let styles = [];
+        if (feature.getGeometry().getType() === appStrings.GEOMETRY_LINE_STRING) {
+            styles = linestringStyle(feature, resolution);
+        } else if (feature.getGeometry().getType() === appStrings.GEOMETRY_POLYGON) {
+            styles = linestringStyle(feature, resolution);
+        } else {
+            styles = pointStyle(feature, resolution);
+        }
+        return styles;
+    };
+    VISTA_STYLES_BY_SECTOR[groupName] = styleFunction;
 });
 
 // const { fill, stroke } = Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).reduce(
@@ -548,6 +619,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             const style = this.getVistaStyle(layer.get("id"));
 
             const vistaLayer = new Ol_Layer_Vector({
+                renderMode: "image",
                 source: layerSource,
                 opacity: layer.get("opacity"),
                 visible: layer.get("isActive"),
@@ -686,19 +758,18 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 color: "rgba(255,255,255,0.4)"
             }),
             stroke: new Ol_Style_Stroke({
-                color: "#3399CC",
-                width: 1.25
+                color: "#40dcff",
+                width: 1.5
             }),
             image: new Ol_Style_Circle({
                 radius: 4,
                 fill: new Ol_Style_Fill({
-                    color: "#3399CC"
+                    color: "#40dcff"
                 })
             })
         });
         this.map.getLayers().forEach(layer => {
             if (!layer.get("_layerId").includes("VISTA")) return;
-
             layer.getSource().forEachFeature(feature => {
                 const featureId = pickedFeature.get("id");
                 if (feature.getProperties().id === featureId) {
