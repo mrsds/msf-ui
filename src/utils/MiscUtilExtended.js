@@ -79,7 +79,7 @@ export default class MiscUtilExtended extends MiscUtil {
             let categoryId = feature.properties.category_id;
             keys.push(
                 Immutable.fromJS({
-                    name: feature.properties.name,
+                    name: feature.properties.name || "Unnamed",
                     id: feature.properties.id,
                     category: feature.properties.category,
                     flyoverCount: feature.properties.num_flights_matching || 0,
