@@ -6,12 +6,12 @@
 
 .tooltip {
     composes: tooltip from "_core/components/Map/MapTooltip.scss";
-    border-radius: 0;
+    border-radius: 2px;
     pointer-events: all;
     margin-bottom: 13px;
     padding: 10px 13px;
     padding-right: 100px;
-    background: #ffffffbd;
+    background: white;
     &:after {
         border-top: 8px solid #ffffffbd;
     }
@@ -31,4 +31,10 @@
 .subtitle {
     color: rgba(0, 0, 0, 0.54);
     font-size: 1.3rem;
+}
+.listItemSecondaryAction {
+    composes: listItemSecondaryAction from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
+    opacity: 1;
+    pointer-events: all;
+    right: 16px;
 }
