@@ -204,8 +204,12 @@ export class FeatureDetailContainer extends Component {
                             this.props.feature
                                 .get("metadata")
                                 .sortBy(x => x.get("name"))
-                                // Omitting metadata fields that begin with "L"
-                                .filter(x => x.get("name").charAt(0) !== "L")
+                                // Omitting metadata fields that begin with "L" and the source list
+                                .filter(
+                                    x =>
+                                        x.get("name").charAt(0) !== "L" &&
+                                        x.get("name") !== "sources"
+                                )
                                 .toJS()
                         )}
                     </CardContent>

@@ -33,9 +33,16 @@ export function setFeatureDetail(category, feature) {
     return dispatch => {
         dispatch({ type: types.FEATURE_DETAIL_PLUME_LIST_LOADING });
         dispatch({ type: types.UPDATE_FEATURE_DETAIL, category, feature });
+
+        const sourceList = getSourceList(category, feature);
+        if (!sourceList) {
+            dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data: [] });
+            return;
+        }
+
         const plumeRequestUrl = appConfig.URLS.plumeListQueryEndpoint.replace(
             "{source_id}",
-            MetadataUtil.getSourceID(feature)
+            sourceList.join(",")
         );
         return MiscUtil.asyncFetch({
             url: plumeRequestUrl,
@@ -65,6 +72,15 @@ export function setFeatureDetail(category, feature) {
             }
         );
     };
+}
+
+function getSourceList(feature, category) {
+    switch (category) {
+        case layerSidebarTypes.CATEGORY_PLUMES:
+            return [MetadataUtil.getSourceID(feature)];
+        case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
+            return MetadataUtil.getSourceList(feature).map(src => src.get("id"));
+    }
 }
 
 export function hideFeatureDetail() {

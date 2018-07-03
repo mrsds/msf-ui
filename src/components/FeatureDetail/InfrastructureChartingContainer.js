@@ -67,13 +67,7 @@ export class InfrastructureChartingContainer extends Component {
     }
 
     getAvailablePlumeSources() {
-        return this.props.plumeList.reduce((acc, feature) => {
-            const sourceId = feature.getIn(["sourceId", "value"]);
-            if (sourceId && !acc.includes(sourceId)) {
-                acc.push(sourceId);
-            }
-            return acc;
-        }, []);
+        return MetadataUtil.getSourceList(this.props.feature).map(src => src.get("id"));
     }
 
     getAvailableFlyovers() {
@@ -504,7 +498,7 @@ export class InfrastructureChartingContainer extends Component {
                             Flyovers of:
                             <strong> {this.props.feature.get("name")}</strong>
                             <Typography variant="caption">
-                                Uncertainty Warning:{" "}
+                                Uncertainty Warning:
                                 <i>Flyovers may not include the entire facility.</i>
                             </Typography>
                         </Typography>
