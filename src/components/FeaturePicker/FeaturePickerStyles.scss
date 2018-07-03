@@ -2,7 +2,9 @@
 .cardContentRoot {
     padding: 0;
 }
-
+.cardRoot {
+    overflow: auto;
+}
 .itemRoot {
     composes: itemRoot from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
     &:hover {
@@ -49,7 +51,7 @@
     z-index: 1;
 }
 
-.featurePicker:after {
+.featurePickerArrowLeft:after {
     width: 0;
     height: 0;
     border-right: 8px solid $color-light;
@@ -59,8 +61,21 @@
     position: absolute;
     bottom: -8px;
     margin-left: -8px;
-    top: 5%;
+    top: 20px;
     left: 0;
+}
+.featurePickerArrowRight:after {
+    width: 0;
+    height: 0;
+    border-left: 8px solid $color-light;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    margin-right: -7px;
+    top: 20px;
+    right: 0;
 }
 .subheader {
     padding-left: 16px;
