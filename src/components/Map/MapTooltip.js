@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import MiscUtil from "_core/utils/MiscUtil";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
@@ -12,8 +11,9 @@ import InfoOutlineIcon from "@material-ui/icons/InfoOutline";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import styles from "components/Map/MapTooltipStyles.scss";
 import * as mapActionsMSF from "actions/mapActions";
-import MetadataUtil from "utils/MetadataUtil";
 import * as layerSidebarActions from "actions/layerSidebarActions";
+import MapUtilExtended from "utils/MapUtilExtended";
+import MetadataUtil from "utils/MetadataUtil";
 
 export class MapTooltip extends Component {
     shouldComponentUpdate(nextProps) {
@@ -38,7 +38,7 @@ export class MapTooltip extends Component {
             ) {
                 title = feature.get("name");
                 subtitle1 = feature.get("flyoverCount") + " flyovers";
-                subtitle2 = feature.get("category");
+                subtitle2 = MetadataUtil.getFacilityTypeName(feature);
             }
         }
 
