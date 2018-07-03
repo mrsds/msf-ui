@@ -20,6 +20,7 @@ import MiscUtil from "_core/utils/MiscUtil";
 import styles from "_core/components/LayerMenu/LayerMenuContainer.scss";
 import stylesExtended from "components/LayerMenu/LayerMenuContainerExtendedStyles.scss";
 import displayStyles from "_core/styles/display.scss";
+import PlumesControlContainer from "components/LayerMenu/PlumesControlContainer";
 
 export class LayerMenuContainer extends Component {
     render() {
@@ -52,13 +53,15 @@ export class LayerMenuContainer extends Component {
         let plumeLayerControl = null;
         let infrastructureLayerControl = null;
         let griddedMethaneLayerControl = null;
+
         if (plumeLayer && griddedMethaneLayer && infrastructureLayer) {
             plumeLayerControl = (
-                <LayerControlContainerExtended
+                <PlumesControlContainer
                     key={plumeLayer.get("id") + "_layer_listing"}
                     layer={plumeLayer}
                     activeNum={activeNum}
                     palette={this.props.palettes.get(plumeLayer.getIn(["palette", "name"]))}
+                    currentZoom={this.props.currentZoom}
                 />
             );
 
@@ -139,7 +142,8 @@ LayerMenuContainer.propTypes = {
     layers: PropTypes.object.isRequired,
     groups: PropTypes.object.isRequired,
     distractionFreeMode: PropTypes.bool.isRequired,
-    palettes: PropTypes.object.isRequired
+    palettes: PropTypes.object.isRequired,
+    mapState: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -148,7 +152,8 @@ function mapStateToProps(state) {
         layers: state.map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA]),
         groups: state.map.get("groups"),
         palettes: state.map.get("palettes"),
-        distractionFreeMode: state.view.get("distractionFreeMode")
+        distractionFreeMode: state.view.get("distractionFreeMode"),
+        currentZoom: state.map.get("currentZoom")
     };
 }
 

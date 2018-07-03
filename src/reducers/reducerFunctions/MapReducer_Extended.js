@@ -152,7 +152,11 @@ export default class MapReducer_Extended extends MapReducer {
     }
 
     static setMapView(state, action) {
-        const updatedState = this.closeFeaturePicker(state, action);
+        const currentZoom = state
+            .getIn(["maps", "openlayers"])
+            .map.getView()
+            .getZoom();
+        const updatedState = this.closeFeaturePicker(state, action).set("currentZoom", currentZoom);
         return MapReducer.setMapView(updatedState, action);
     }
 
