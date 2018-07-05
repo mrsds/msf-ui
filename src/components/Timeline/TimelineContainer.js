@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import moment from "moment";
@@ -20,7 +19,6 @@ import MiscUtil from "_core/utils/MiscUtil";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import MetadataUtil from "utils/MetadataUtil";
 import styles from "components/Timeline/TimelineContainerStyles.scss";
-import displayStyles from "_core/styles/display.scss";
 
 let util = require("vis/lib/util");
 let TimeStep = require("vis/lib/timeline/TimeStep");
@@ -275,6 +273,16 @@ export class TimelineContainerStyles extends Component {
                 this.focusOnItem(firstItem.id);
             }
         }
+
+        // Focus on active plume
+        if (this.props.activeFeature.get("category") === layerSidebarTypes.CATEGORY_PLUMES) {
+            const activeItem = this.items.get({ filter: x => x.selected })[0];
+            if (activeItem) {
+                this.bringItemIntoView(activeItem.id);
+            }
+        }
+
+        // Check for resize
         if (prevProps.layerSidebarCollapsed !== this.props.layerSidebarCollapsed) {
             this.resizeTimeline();
         }
@@ -431,6 +439,9 @@ export class TimelineContainerStyles extends Component {
             }
             acc = acc.update(dateBin, bin => {
                 bin.plumes.push(x);
+                if (this.isActiveFeature(x)) {
+                    bin.selected = true;
+                }
                 return bin;
             });
             return acc;
@@ -509,15 +520,24 @@ export class TimelineContainerStyles extends Component {
     handleItemSelect(props) {
         // Clear old
         let item = this.items.get(props.items[0]);
-        // Only operate on single plume data points
-        if (item.plumes.length === 1) {
-            this.props.mapActionsMSF.toggleFeatureLabel(
-                layerSidebarTypes.CATEGORY_PLUMES,
-                item.plumes[0]
-            );
-            this.items.update({ id: props.items[0], selected: true });
-            this.timeline.setSelection(props.items[0]);
-        }
+
+        // Select first plume
+        this.props.mapActionsMSF.toggleFeatureLabel(
+            layerSidebarTypes.CATEGORY_PLUMES,
+            item.plumes[0]
+        );
+        this.items.update({ id: props.items[0], selected: true });
+        this.timeline.setSelection(props.items[0]);
+
+        // // Only operate on single plume data points
+        // if (item.plumes.length === 1) {
+        //     this.props.mapActionsMSF.toggleFeatureLabel(
+        //         layerSidebarTypes.CATEGORY_PLUMES,
+        //         item.plumes[0]
+        //     );
+        //     this.items.update({ id: props.items[0], selected: true });
+        //     this.timeline.setSelection(props.items[0]);
+        // }
     }
 
     getItemSnappingFunc() {
