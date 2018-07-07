@@ -21,6 +21,7 @@ import styles from "_core/components/LayerMenu/LayerMenuContainer.scss";
 import stylesExtended from "components/LayerMenu/LayerMenuContainerExtendedStyles.scss";
 import displayStyles from "_core/styles/display.scss";
 import PlumesControlContainer from "components/LayerMenu/PlumesControlContainer";
+import { ButtonBase } from "@material-ui/core";
 
 export class LayerMenuContainer extends Component {
     render() {
@@ -88,33 +89,30 @@ export class LayerMenuContainer extends Component {
         return (
             <div className={layerMenuClasses}>
                 <Paper elevation={1}>
-                    <div className={styles.layerHeaderRow}>
-                        <div className={styles.layerHeader}>
-                            <Typography variant="subheading" color="inherit">
-                                Map Layers
-                            </Typography>
-                        </div>
-                        <div className="text-right">
-                            <Tooltip
-                                title={
-                                    this.props.layerMenuOpen
-                                        ? "Close layer menu"
-                                        : "Open layer menu"
-                                }
-                                placement="bottom"
-                            >
-                                <IconButtonSmall
-                                    className={collapseIconClasses}
+                    <Tooltip
+                        title={this.props.layerMenuOpen ? "Close layer menu" : "Open layer menu"}
+                        placement="left"
+                    >
+                        <div
+                            className={stylesExtended.layerHeaderRow}
+                            onClick={evt => {
+                                evt.stopPropagation();
+                                this.props.setLayerMenuOpen(!this.props.layerMenuOpen);
+                            }}
+                        >
+                            <ButtonBase>
+                                <div className={stylesExtended.layerHeader}>
+                                    <Typography variant="subheading" color="inherit">
+                                        Map Layers
+                                    </Typography>
+                                </div>
+                                <KeyboardArrowDownIcon
                                     color="default"
-                                    onClick={() =>
-                                        this.props.setLayerMenuOpen(!this.props.layerMenuOpen)
-                                    }
-                                >
-                                    <KeyboardArrowDownIcon />
-                                </IconButtonSmall>
-                            </Tooltip>
+                                    className={collapseIconClasses}
+                                />
+                            </ButtonBase>
                         </div>
-                    </div>
+                    </Tooltip>
                     <Collapse
                         className={stylesExtended.collapseElement}
                         in={this.props.layerMenuOpen}
