@@ -9,6 +9,7 @@ import "vis/dist/vis-timeline-graph2d.min.css";
 import { ResolutionStep } from "_core/components/Timeline";
 import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
+import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import * as mapActions from "_core/actions/mapActions";
 import * as mapActionsMSF from "actions/mapActions";
@@ -837,9 +838,11 @@ export class TimelineContainerStyles extends Component {
                         className={styles.timelineJumperLeft}
                         ref={ref => (this.jumperLeft = ref)}
                     >
-                        <Button color="inherit">
-                            <KeyboardArrowLeftIcon />
-                        </Button>
+                        <Tooltip title="Previous Plume" placement="right">
+                            <Button color="inherit">
+                                <KeyboardArrowLeftIcon />
+                            </Button>
+                        </Tooltip>
                     </div>
                     <div className={styles.container}>
                         <div
@@ -852,9 +855,11 @@ export class TimelineContainerStyles extends Component {
                         className={styles.timelineJumperRight}
                         ref={ref => (this.jumperRight = ref)}
                     >
-                        <Button color="inherit">
-                            <KeyboardArrowRightIcon />
-                        </Button>
+                        <Tooltip title="Next Plume" placement="left">
+                            <Button color="inherit">
+                                <KeyboardArrowRightIcon />
+                            </Button>
+                        </Tooltip>
                     </div>
                     <div className={styles.resolutionStepWrapper}>
                         <ResolutionStep />
