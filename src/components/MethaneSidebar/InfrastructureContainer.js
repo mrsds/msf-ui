@@ -177,6 +177,7 @@ export class InfrastructureContainer extends Component {
                             className={isItemPrimary ? layerSidebarStyles.buttonContrast : ""}
                             key={feature.get("id") + "_my_location_button"}
                             onClick={() => this.props.centerMapOnFeature(feature, "VISTA")}
+                            disabled={!this.props.activeDetailFeature.get("feature").isEmpty()}
                         >
                             Zoom To
                         </Button>

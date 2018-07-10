@@ -157,7 +157,11 @@ export class PlumesContainer extends Component {
                     >
                         <Button
                             className={isItemPrimary ? layerSidebarStyles.buttonContrast : ""}
-                            disabled={!lat || !long}
+                            disabled={
+                                !lat ||
+                                !long ||
+                                !this.props.activeDetailFeature.get("feature").isEmpty()
+                            }
                             key={feature.get("id") + "_my_location_icon"}
                             onClick={centerMapAction}
                         >
