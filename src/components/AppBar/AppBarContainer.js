@@ -23,9 +23,9 @@ const AppBarContainer = props => {
                 <AppBar elevation={0} position="static">
                     <Toolbar classes={{ root: styles.toolbarRoot }}>
                         <div className={styles.toolbarLeft}>
-                            <span className={styles.appLogo}>
+                            {/* <span className={styles.appLogo}>
                                 <AppLogo />
-                            </span>
+                            </span> */}
                             <Typography variant="title" color="inherit" className={styles.title}>
                                 Methane Source Finder
                             </Typography>
