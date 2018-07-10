@@ -572,7 +572,10 @@ export function setActivePickerFeature(category, feature) {
 }
 
 function revealAllPlumes(mapState) {
-    mapState.get("maps").map(map => map.setActivePlumes([]));
+    mapState.get("maps").map(map => {
+        map.setActivePlumes([]);
+        map.togglePlumeIcons();
+    });
 }
 
 function revealAllInfrastructure(mapState) {
