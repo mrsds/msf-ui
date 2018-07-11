@@ -17,21 +17,12 @@ import MiscUtil from "_core/utils/MiscUtil";
 import styles from "components/FeatureDetail/FeatureDetailContainerStyles.scss";
 import PlumeChartingContainer from "components/FeatureDetail/PlumeChartingContainer";
 import InfrastructureChartingContainer from "components/FeatureDetail/InfrastructureChartingContainer";
+import { IconButtonSmaller } from "components/Reusables";
+import InfoIcon from "@material-ui/icons/Info";
 import appConfig from "constants/appConfig";
+import Tooltip from "@material-ui/core/Tooltip";
 
 export class FeatureDetailContainer extends Component {
-    // getCategory() {
-    //     try {
-    //         console.dir(this.props.feature.get("metadata").toJS());
-    //         return this.props.feature
-    //             .get("metadata")
-    //             .find(val => val.get("name").toLowerCase() === "category")
-    //             .get("value");
-    //     } catch (e) {
-    //         return "(no category)";
-    //     }
-    // }
-
     truncateField(str, limit) {
         const stripped = str.replace(/(\s*$)/, "");
         return stripped.substring(0, limit - 3) + "...";
@@ -53,8 +44,31 @@ export class FeatureDetailContainer extends Component {
         );
     }
 
+    makePopoverField(field) {
+        const unit = field.unit ? `(${field.unit})` : null;
+        return (
+            <div key={field.name}>
+                <label>
+                    {field.name} {unit}
+                    <Tooltip title={field.popoverText} placement="right">
+                        <IconButtonSmaller
+                            onClick={evt => this.openPopover(evt, field.name)}
+                            className={styles.smallIcon}
+                        >
+                            <InfoIcon />
+                        </IconButtonSmaller>
+                    </Tooltip>
+                </label>
+                <span>{field.value}</span>
+            </div>
+        );
+    }
+
     makeInfoFields(fieldInfo) {
         const fields = fieldInfo.map(field => {
+            if (field.name.toLowerCase() === "api") return this.makeAPILink(field);
+            if (field.popoverText) return this.makePopoverField(field);
+
             const unit = field.unit ? `(${field.unit})` : null;
             const value = field.value;
             if (field.subtitle) {
@@ -68,8 +82,6 @@ export class FeatureDetailContainer extends Component {
                     </div>
                 );
             }
-
-            if (field.name.toLowerCase() === "api") return this.makeAPILink(field);
 
             return (
                 <div key={field.name}>
@@ -277,12 +289,18 @@ export class FeatureDetailContainer extends Component {
             { name: "Candidate ID", value: MetadataUtil.getCandidateID(this.props.feature, null) },
             { name: "Location", value: lat && long ? `${lat}°N, ${long}°W` : "(No Location)" },
             { name: "Plume ID", value: MetadataUtil.getPlumeID(this.props.feature, null) },
-            { name: "IME", unit: "kg", value: MetadataUtil.getIME(this.props.feature, "20", null) },
+            {
+                name: "IME",
+                unit: "kg",
+                value: MetadataUtil.getIME(this.props.feature, "20", null),
+                popoverText: "Integrated Methane Enhancement (kilograms)"
+            },
             { name: "Source ID", value: MetadataUtil.getSourceID(this.props.feature, null) },
             {
                 name: "Fetch",
                 unit: "m",
-                value: MetadataUtil.getFetch(this.props.feature, "20", null)
+                value: MetadataUtil.getFetch(this.props.feature, "20", null),
+                popoverText: "Fetch distance (meters)"
             }
         ];
 
