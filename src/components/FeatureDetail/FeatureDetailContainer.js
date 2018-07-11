@@ -312,7 +312,7 @@ export class FeatureDetailContainer extends Component {
                 </Card>
                 <div className={styles.imageCardsContainer}>
                     <Grid container spacing={16}>
-                        <Grid item xs>
+                        <Grid item xs className={styles.gridTile}>
                             <Card className={styles.cardRoot}>
                                 <CardContent className={styles.noPadding}>
                                     <Typography variant="headline" component="h2">
@@ -324,7 +324,7 @@ export class FeatureDetailContainer extends Component {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item xs>
+                        <Grid item xs className={styles.gridTile}>
                             <Card className={styles.cardRoot}>
                                 <CardContent className={styles.noPadding}>
                                     <Typography variant="headline" component="h2">

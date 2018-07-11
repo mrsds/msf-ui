@@ -59,6 +59,10 @@
         padding: 10px;
         padding-bottom: 20px;
     }
+    .gridTile {
+        flex: 0 0 50%;
+        min-width: 440px;
+    }
     .imageCardsContainer {
         display: flex;
         .noPadding {
