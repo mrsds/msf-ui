@@ -3,6 +3,7 @@
 }
 .dateSelector {
     margin: 5px;
+    margin-top: 0;
     // height: 20px;
     // display: inline-block;
     // height: 26px;
@@ -23,4 +24,18 @@
 .popperArrow {
     composes: popperArrow from "_core/components/LayerMenu/LayerControlContainer.scss";
     top: 43px !important;
+}
+
+.incrementButton {
+    font-size: 10px;
+    width: 20px;
+    height: 20px;
+    span {
+        height: 10px;
+        width: 10px;
+    }
+}
+
+.incrementLabel {
+    vertical-align: middle;
 }

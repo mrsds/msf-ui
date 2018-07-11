@@ -204,6 +204,12 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                                     updateDate={date =>
                                         this.props.mapActionsExtended.updateGriddedDate(date)
                                     }
+                                    incrementDate={(period, goBack) =>
+                                        this.props.mapActionsExtended.incrementGriddedDate(
+                                            period,
+                                            goBack
+                                        )
+                                    }
                                     onClose={() => this.toggleDatePickerVisible()}
                                     griddedSettings={this.props.griddedSettings}
                                 />

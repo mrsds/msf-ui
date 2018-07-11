@@ -476,6 +476,10 @@ export function updateGriddedDate(date) {
     return { type: typesMSF.UPDATE_GRIDDED_DATE, date };
 }
 
+export function incrementGriddedDate(period, goBack) {
+    return { type: typesMSF.INCREMENT_GRIDDED_DATE, period, goBack };
+}
+
 export function getAvailableGriddedDates() {
     return dispatch => {
         dispatch(setGriddedDateAvailabilityLoadingAsync(true, false));

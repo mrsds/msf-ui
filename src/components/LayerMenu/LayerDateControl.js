@@ -15,8 +15,21 @@ import moment from "moment";
 import { Arrow } from "react-popper";
 import { LayerControlLabel } from "_core/components/LayerMenu";
 import styles from "components/LayerMenu/LayerDateControlStyles.scss";
+import Icon from "@material-ui/core/Icon";
+import IconButton from "@material-ui/core/IconButton";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 export class LayerDateControl extends Component {
+    incrementActive(period, goBack) {
+        const currentDate = moment(this.props.griddedSettings.get("currentDate"));
+        const availableDates = this.props.griddedSettings.get("availableDates");
+
+        return goBack
+            ? currentDate.isSame(availableDates[0], period)
+            : currentDate.isSame(availableDates[availableDates.length - 1], period);
+    }
+
     updateDatePart(event, period) {
         let value = event.target.value;
         const newDate = moment(this.props.griddedSettings.get("currentDate"));
@@ -76,7 +89,25 @@ export class LayerDateControl extends Component {
                     <LayerControlLabel>Gridded Methane Date</LayerControlLabel>
                     <FormGroup row>
                         <FormControl className={yearClass}>
-                            <InputLabel htmlFor="year-select">Year</InputLabel>
+                            <InputLabel htmlFor="year-select">
+                                <IconButton
+                                    className={styles.incrementButton}
+                                    disabled={this.incrementActive("year", true)}
+                                >
+                                    <ChevronLeftIcon
+                                        onClick={() => this.props.incrementDate("year", true)}
+                                    />
+                                </IconButton>
+                                <span className={styles.incrementLabel}>Year</span>
+                                <IconButton
+                                    className={styles.incrementButton}
+                                    disabled={this.incrementActive("year")}
+                                >
+                                    <ChevronRightIcon
+                                        onClick={() => this.props.incrementDate("year")}
+                                    />
+                                </IconButton>
+                            </InputLabel>
                             <Select
                                 value={currentDate.year()}
                                 autoWidth={true}
@@ -91,7 +122,25 @@ export class LayerDateControl extends Component {
                             </Select>
                         </FormControl>
                         <FormControl className={monthClass}>
-                            <InputLabel htmlFor="month-select">Month</InputLabel>
+                            <InputLabel htmlFor="month-select">
+                                <IconButton
+                                    className={styles.incrementButton}
+                                    disabled={this.incrementActive("month", true)}
+                                >
+                                    <ChevronLeftIcon
+                                        onClick={() => this.props.incrementDate("month", true)}
+                                    />
+                                </IconButton>
+                                <span className={styles.incrementLabel}>Month</span>
+                                <IconButton
+                                    className={styles.incrementButton}
+                                    disabled={this.incrementActive("month")}
+                                >
+                                    <ChevronRightIcon
+                                        onClick={() => this.props.incrementDate("month")}
+                                    />
+                                </IconButton>
+                            </InputLabel>
                             <Select
                                 value={currentDate.format("MMM")}
                                 autoWidth={true}
@@ -106,7 +155,25 @@ export class LayerDateControl extends Component {
                             </Select>
                         </FormControl>
                         <FormControl className={dayClass}>
-                            <InputLabel htmlFor="day-select">Day</InputLabel>
+                            <InputLabel htmlFor="day-select">
+                                <IconButton
+                                    className={styles.incrementButton}
+                                    disabled={this.incrementActive("day", true)}
+                                >
+                                    <ChevronLeftIcon
+                                        onClick={() => this.props.incrementDate("day", true)}
+                                    />
+                                </IconButton>
+                                <span className={styles.incrementLabel}>Day</span>
+                                <IconButton
+                                    className={styles.incrementButton}
+                                    disabled={this.incrementActive("day")}
+                                >
+                                    <ChevronRightIcon
+                                        onClick={() => this.props.incrementDate("day")}
+                                    />
+                                </IconButton>
+                            </InputLabel>
                             <Select
                                 value={currentDate.date()}
                                 autoWidth={true}
@@ -138,6 +205,7 @@ export class LayerDateControl extends Component {
 LayerDateControl.propTypes = {
     griddedSettings: PropTypes.object,
     updateDate: PropTypes.func,
+    incrementDate: PropTypes.func,
     onClose: PropTypes.func
 };
 
