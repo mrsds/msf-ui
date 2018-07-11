@@ -37,6 +37,22 @@ export class FeatureDetailContainer extends Component {
         return stripped.substring(0, limit - 3) + "...";
     }
 
+    makeAPILink(field) {
+        return (
+            <div key={field.name}>
+                <label>{field.name}</label>
+                <a
+                    href={`https://secure.conservation.ca.gov/WellSearch/Details?api=${
+                        field.value
+                    }`}
+                    target="_blank"
+                >
+                    {field.value}
+                </a>
+            </div>
+        );
+    }
+
     makeInfoFields(fieldInfo) {
         const fields = fieldInfo.map(field => {
             const unit = field.unit ? `(${field.unit})` : null;
@@ -52,6 +68,9 @@ export class FeatureDetailContainer extends Component {
                     </div>
                 );
             }
+
+            if (field.name.toLowerCase() === "api") return this.makeAPILink(field);
+
             return (
                 <div key={field.name}>
                     <label>
@@ -136,6 +155,7 @@ export class FeatureDetailContainer extends Component {
         const long = MetadataUtil.getLong(this.props.feature, null);
         const address = MetadataUtil.getAddress(this.props.feature, null);
         const sector = MetadataUtil.getFacilityTypeName(this.props.feature, "(no sector name)");
+
         let googleMapsUri = "";
         let googleMapsStaticImgUrl = "./styles/resources/img/fake_info_img.png";
         if (lat && long) {
