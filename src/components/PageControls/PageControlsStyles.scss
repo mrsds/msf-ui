@@ -5,7 +5,9 @@
     width: 100%;
     position: relative;
     padding: 5px 5px;
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .buttons {
     display: inline-block;
@@ -13,4 +15,18 @@
 .label {
     display: inline-block;
     margin-right: 14px;
+}
+
+.leftSide {
+    font-style: italic;
+    padding-left: 10px;
+    a,
+    a:visited {
+        color: $color-secondary;
+        margin-left: 5px;
+    }
+}
+
+.rightSide {
+    margin-left: auto;
 }

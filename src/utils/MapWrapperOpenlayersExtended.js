@@ -42,6 +42,14 @@ const INVISIBLE_VISTA_STYLE = new Ol_Style({
 
 const VISTA_STYLES_BY_SECTOR = {};
 
+const AVIRIS_ICON_STYLE = new Ol_Style({
+    image: new Ol_Style_Icon({
+        opacity: 1,
+        src: "img/PlumeIcon.png",
+        scale: 0.6
+    })
+});
+
 const pointVISTAStyleFnCreator = (fill, stroke) => {
     return (f, r) => {
         if (r < 100) {
@@ -414,13 +422,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                     source: new Ol_Source_Vector({
                         features: json.map(json => this.createAvirisIconFeature(json))
                     }),
-                    style: new Ol_Style({
-                        image: new Ol_Style_Icon({
-                            opacity: 1,
-                            src: "img/PlumeIcon.png",
-                            scale: 0.6
-                        })
-                    }),
+                    style: AVIRIS_ICON_STYLE,
                     minResolution: 38.2185141425881
                 });
                 avirisIconLayer.set("_layerId", "icons");
@@ -587,6 +589,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 extent: appConfig.DEFAULT_MAP_EXTENT,
                 style
             });
+            vistaLayer.set("_layerId", layer.get("id"));
             vistaLayer.set("_layerGroup", "VISTA");
             vistaLayer.set("_layerOrder", 1);
             return vistaLayer;
@@ -653,10 +656,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             .getArray()
             .find(l => l.get("_layerId") === "AVIRIS");
 
-        let avirisImageLayerGroup = avirisLayerGroup
-            .getLayers()
-            .getArray()
-            .find(l => l.get("_layerId") === "AVIRIS_IMAGE_LAYER_GROUP");
+        let avirisImageLayerGroup = this.getAvirisImageLayerGroup();
 
         return avirisImageLayerGroup
             .getLayers()
@@ -883,15 +883,9 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             return;
         }
 
-        const avirisImageLayerGroup = avirisLayerGroup
-            .getLayers()
-            .getArray()
-            .find(l => l.get("_layerId") === "AVIRIS_IMAGE_LAYER_GROUP");
+        const avirisImageLayerGroup = this.getAvirisImageLayerGroup();
 
-        const avirisIconLayerGroup = avirisLayerGroup
-            .getLayers()
-            .getArray()
-            .find(l => l.get("_layerId") === "icons");
+        const avirisIconLayerGroup = this.getAvirisIconLayerGroup();
 
         avirisImageLayerGroup
             .getLayers()
@@ -922,6 +916,13 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             .setOpacity(iconsOff ? 0 : 1);
     }
 
+    getVistaLayers() {
+        return this.map
+            .getLayers()
+            .getArray()
+            .filter(layer => layer.get("_layerGroup") === "VISTA");
+    }
+
     setActiveInfrastructure(activeFeatures, hideAll) {
         const activeInfrastructureIds = activeFeatures
             .filter(feature => feature && feature.get("id"))
@@ -932,10 +933,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             return acc;
         }, []);
 
-        const vistaLayers = this.map
-            .getLayers()
-            .getArray()
-            .filter(layer => layer.get("_layerGroup") === "VISTA");
+        const vistaLayers = this.getVistaLayers();
 
         vistaLayers.forEach(layer => {
             const layerId = layer.get("_layerId");
@@ -1019,5 +1017,84 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         vistaLayer.setVisible(true);
         this.addLayer(vistaLayer);
         this.map.updateSize();
+    }
+
+    getAvirisLayerGroup() {
+        return this.map
+            .getLayers()
+            .getArray()
+            .find(l => l.get("_layerId") === "AVIRIS");
+    }
+
+    getAvirisImageLayerGroup() {
+        const avirisLayerGroup = this.getAvirisLayerGroup();
+
+        if (!avirisLayerGroup) {
+            return null;
+        }
+
+        return avirisLayerGroup
+            .getLayers()
+            .getArray()
+            .find(l => l.get("_layerId") === "AVIRIS_IMAGE_LAYER_GROUP");
+    }
+
+    getAvirisIconLayerGroup() {
+        const avirisLayerGroup = this.getAvirisLayerGroup();
+
+        if (!avirisLayerGroup) {
+            return null;
+        }
+        return avirisLayerGroup
+            .getLayers()
+            .getArray()
+            .find(l => l.get("_layerId") === "icons");
+    }
+
+    setVisiblePlumes(layerSidebarState) {
+        const activePlumeIds = layerSidebarState
+            .getIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES, "searchResults"])
+            .map(f => f.get("id"));
+        const avirisImageLayerGroup = this.getAvirisImageLayerGroup();
+        const avirisIconLayerGroup = this.getAvirisIconLayerGroup();
+
+        if (!avirisImageLayerGroup || !avirisIconLayerGroup) return; // Bail if this layer isn't switched on
+
+        avirisImageLayerGroup.getLayers().forEach(layer => {
+            const opacity = activePlumeIds.includes(layer.get("_featureId")) ? 1 : 0;
+            layer.setOpacity(opacity);
+        });
+
+        avirisIconLayerGroup
+            .getSource()
+            .getFeatures()
+            .forEach(feature => {
+                feature.setStyle(
+                    activePlumeIds.includes(feature.get("_featureId"))
+                        ? AVIRIS_ICON_STYLE
+                        : INVISIBLE_VISTA_STYLE
+                );
+            });
+    }
+
+    setVisibleInfrastructure(layerSidebarState) {
+        const activeInfrastructureIds = layerSidebarState
+            .getIn(["searchState", layerSidebarTypes.CATEGORY_INFRASTRUCTURE, "searchResults"])
+            .map(f => f.get("id"));
+
+        const vistaLayers = this.getVistaLayers();
+        vistaLayers.forEach(layer =>
+            layer
+                .getSource()
+                .getFeatures()
+                .forEach(feature => {
+                    feature.setStyle(
+                        this.getVistaStyle(
+                            layer.get("_layerId"),
+                            activeInfrastructureIds.includes(feature.getProperties().id)
+                        )
+                    );
+                })
+        );
     }
 }

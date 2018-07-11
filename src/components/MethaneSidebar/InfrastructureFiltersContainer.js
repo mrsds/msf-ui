@@ -43,13 +43,13 @@ export class PlumeFiltersContainer extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        return (
-            (!nextProps.filters.equals(this.props.filters) ||
-                !nextProps.activeInfrastructureSubCategories.equals(
-                    this.props.activeInfrastructureSubCategories
-                )) &&
-            !!this.popperProps.find(v => v)
-        );
+        return this.props.filters
+            .filter((_, k) => k.toLowerCase().startsWith("infrastructure"))
+            .some(
+                (v, k) =>
+                    v.getIn(["selectedValue", "value"]) !==
+                    nextProps.filters.getIn([k, "selectedValue", "value"])
+            );
     }
 
     setPopperActive(key, active) {

@@ -140,15 +140,21 @@ function setGroupLayerActive(layer, active) {
 }
 
 export function setPlumeFilter(key, selectedValue) {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch({ type: types.SET_PLUME_FILTER, key, selectedValue });
         dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
+        getState()
+            .map.getIn(["maps", "openlayers"])
+            .setVisiblePlumes(getState().layerSidebar);
     };
 }
 
 export function setInfrastructureFilter(key, selectedValue) {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch({ type: types.SET_INFRASTRUCTURE_FILTER, key, selectedValue });
         dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+        getState()
+            .map.getIn(["maps", "openlayers"])
+            .setVisibleInfrastructure(getState().layerSidebar);
     };
 }

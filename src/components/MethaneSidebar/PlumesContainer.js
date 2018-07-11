@@ -50,6 +50,16 @@ export class PlumesContainer extends Component {
     //         }
     //     }
     // }
+
+    clearAllFilters() {
+        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_ID, {
+            value: "",
+            label: ""
+        });
+        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_IME, null);
+        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN, null);
+    }
+
     isActiveFeature(feature) {
         return (
             this.props.activeFeature.get("category") === layerSidebarTypes.CATEGORY_PLUMES &&
@@ -245,6 +255,8 @@ export class PlumesContainer extends Component {
                 currentPageIndex={this.props.searchState.get("pageIndex")}
                 onPageBackward={() => this.props.pageBackward(layerSidebarTypes.CATEGORY_PLUMES)}
                 onPageForward={() => this.props.pageForward(layerSidebarTypes.CATEGORY_PLUMES)}
+                totalResults={this.props.availableFeatures.size}
+                clearFilterFunc={() => this.clearAllFilters()}
             />
         );
     }
@@ -285,14 +297,20 @@ PlumesContainer.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     centerMapOnFeature: PropTypes.func.isRequired,
     toggleFeatureLabel: PropTypes.func.isRequired,
-    setHoverPlume: PropTypes.func.isRequired
+    setHoverPlume: PropTypes.func.isRequired,
+    availableFeatures: PropTypes.object,
+    setPlumeFilter: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
     return {
         activeFeature: state.map.get("activeFeature"),
         activeDetailFeature: state.featureDetail,
-        searchState: state.layerSidebar.getIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES])
+        searchState: state.layerSidebar.getIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES]),
+        availableFeatures: state.layerSidebar.getIn([
+            "availableFeatures",
+            layerSidebarTypes.CATEGORY_PLUMES
+        ])
     };
 }
 
@@ -304,7 +322,8 @@ function mapDispatchToProps(dispatch) {
         hideFeatureDetail: bindActionCreators(layerSidebarActions.hideFeatureDetail, dispatch),
         centerMapOnFeature: bindActionCreators(mapActionsMSF.centerMapOnFeature, dispatch),
         toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch),
-        setHoverPlume: bindActionCreators(mapActionsMSF.setHoverPlume, dispatch)
+        setHoverPlume: bindActionCreators(mapActionsMSF.setHoverPlume, dispatch),
+        setPlumeFilter: bindActionCreators(layerSidebarActions.setPlumeFilter, dispatch)
     };
 }
 

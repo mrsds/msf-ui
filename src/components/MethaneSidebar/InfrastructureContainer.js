@@ -49,6 +49,13 @@ export class InfrastructureContainer extends Component {
     //         </svg>
     //     );
     // }
+    clearTextSearch() {
+        this.props.setInfrastructureFilter(layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME, {
+            value: "",
+            label: ""
+        });
+        // this.props.toggleInfrastructureCategoryFilters(false);
+    }
 
     getCircleIcon(group, color) {
         return <div className="category-circle" style={{ background: color }} />;
@@ -263,6 +270,8 @@ export class InfrastructureContainer extends Component {
                 onPageForward={() =>
                     this.props.pageForward(layerSidebarTypes.CATEGORY_INFRASTRUCTURE)
                 }
+                totalResults={this.props.availableFeatures.size}
+                clearFilterFunc={() => this.clearTextSearch()}
             />
         );
     }
@@ -299,7 +308,10 @@ InfrastructureContainer.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     centerMapOnPoint: PropTypes.func.isRequired,
     centerMapOnFeature: PropTypes.func.isRequired,
-    toggleFeatureLabel: PropTypes.func.isRequired
+    toggleFeatureLabel: PropTypes.func.isRequired,
+    availableFeatures: PropTypes.object,
+    setInfrastructureFilter: PropTypes.func.isRequired,
+    toggleInfrastructureCategoryFilters: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -308,6 +320,10 @@ function mapStateToProps(state) {
         activeDetailFeature: state.featureDetail,
         searchState: state.layerSidebar.getIn([
             "searchState",
+            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+        ]),
+        availableFeatures: state.layerSidebar.getIn([
+            "availableFeatures",
             layerSidebarTypes.CATEGORY_INFRASTRUCTURE
         ])
     };
@@ -321,7 +337,15 @@ function mapDispatchToProps(dispatch) {
         hideFeatureDetail: bindActionCreators(layerSidebarActions.hideFeatureDetail, dispatch),
         centerMapOnPoint: bindActionCreators(mapActionsMSF.centerMapOnPoint, dispatch),
         centerMapOnFeature: bindActionCreators(mapActionsMSF.centerMapOnFeature, dispatch),
-        toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch)
+        toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch),
+        setInfrastructureFilter: bindActionCreators(
+            layerSidebarActions.setInfrastructureFilter,
+            dispatch
+        ),
+        toggleInfrastructureCategoryFilters: bindActionCreators(
+            layerSidebarActions.toggleInfrastructureCategoryFilters,
+            dispatch
+        )
     };
 }
 
