@@ -107,7 +107,7 @@ export class LayerMenuContainer extends Component {
                                     </Typography>
                                 </div>
                                 <KeyboardArrowDownIcon
-                                    color="default"
+                                    color="inherit"
                                     className={collapseIconClasses}
                                 />
                             </ButtonBase>
