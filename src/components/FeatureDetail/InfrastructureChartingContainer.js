@@ -72,7 +72,7 @@ export class InfrastructureChartingContainer extends Component {
 
     getAvailableFlyovers() {
         return this.props.plumeList.reduce((acc, feature) => {
-            const count = feature.get("flyoverCount");
+            const count = feature.get("num_flights_matching");
             if (count && !acc.includes(count)) {
                 acc.push(count);
             }

@@ -168,7 +168,7 @@ export class InfrastructureContainer extends Component {
                             variant="caption"
                             noWrap
                         >
-                            {feature.get("flyoverCount") + " flyovers"}
+                            {feature.get("num_flights_matching") + " flyovers"}
                         </Typography>
                         <Typography
                             color={isItemPrimary ? "inherit" : "default"}

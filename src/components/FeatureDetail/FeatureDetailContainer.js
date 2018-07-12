@@ -200,7 +200,7 @@ export class FeatureDetailContainer extends Component {
                     "(no state)"}`,
                 unit: null
             },
-            { name: "Number of Flyovers", value: this.props.feature.get("flyoverCount") }
+            { name: "Number of Flyovers", value: this.props.feature.get("num_flights_matching") }
         ];
 
         let featureTitle = name;

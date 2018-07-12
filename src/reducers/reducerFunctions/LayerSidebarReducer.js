@@ -247,7 +247,7 @@ export default class LayerSidebarReducer {
             let sortByName = (a, b) => (a.get("name") < b.get("name") ? -1 : 1);
             let sortBySubcategory = (a, b) => (a.get("category") < b.get("category") ? -1 : 1);
             let sortByFlyoverCount = (a, b) =>
-                a.get("flyoverCount") > b.get("flyoverCount") ? -1 : 1;
+                a.get("num_flights_matching") > b.get("num_flights_matching") ? -1 : 1;
             switch (sortOption) {
                 case layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME:
                     return sortByName;

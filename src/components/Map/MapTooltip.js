@@ -34,7 +34,7 @@ export class MapTooltip extends Component {
                 layerSidebarTypes.CATEGORY_INFRASTRUCTURE
             ) {
                 title = feature.get("name");
-                subtitle1 = feature.get("flyoverCount") + " flyovers";
+                subtitle1 = feature.get("num_flights_matching") + " flyovers";
                 subtitle2 = MetadataUtil.getFacilityTypeName(feature);
             }
         }
