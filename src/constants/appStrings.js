@@ -23,3 +23,6 @@ export const ALERTS = {
         severity: 3
     }
 };
+
+export const VISTA_LAYER_UPDATED = "VISTA_LAYER_UPDATED";
+export const UPDATING_VISTA_LAYER = "UPDATING_VISTA_LAYER";

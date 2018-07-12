@@ -574,14 +574,33 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
     createVistaLayer(layer, fromCache = true) {
         try {
             const style = this.getVistaStyle(layer.get("id"));
+            const layerLoadedEvent = new Event("layerLoaded");
 
             const layerSource = new Ol_Source_Vector({
                 format: new Ol_Format_GeoJSON(),
                 strategy: Ol_Loading_Strategy.bbox,
-                url: (extent, projection) => {
-                    return MapUtilExtended.buildVistaFeatureQueryStringForCategory(
+                // url: (extent, projection) => {
+                //     return MapUtilExtended.buildVistaFeatureQueryStringForCategory(
+                //         extent,
+                //         layer.get("id")
+                //     );
+                // }
+                loader: function(extent, resolution, projection) {
+                    layerSource.dispatchEvent("loadingFeatures");
+                    const url = MapUtilExtended.buildVistaFeatureQueryStringForCategory(
                         extent,
                         layer.get("id")
+                    );
+                    fetch(url).then(res =>
+                        res.json().then(data => {
+                            layerSource.addFeatures(
+                                layerSource.getFormat().readFeatures(data, {
+                                    dataProjection: "EPSG:4326",
+                                    featureProjection: projection
+                                })
+                            );
+                            layerSource.dispatchEvent("featuresLoaded");
+                        })
                     );
                 }
             });
@@ -1101,5 +1120,28 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                     );
                 })
         );
+    }
+
+    getVisibleVistaFeatures() {
+        const extent = this.map.getView().calculateExtent(this.map.getSize());
+        return this.getVistaLayers().reduce(
+            (acc, layer) => acc.concat(layer.getSource().getFeaturesInExtent(extent)),
+            []
+        );
+    }
+
+    addVistaLayerHandler(evt, callback) {
+        switch (evt) {
+            case appStringsMSF.VISTA_LAYER_UPDATED:
+                this.getVistaLayers().forEach(layer =>
+                    layer.getSource().once("featuresLoaded", callback)
+                );
+                break;
+            case appStringsMSF.UPDATING_VISTA_LAYER:
+                this.getVistaLayers().forEach(layer =>
+                    layer.getSource().on("loadingFeatures", callback)
+                );
+                break;
+        }
     }
 }

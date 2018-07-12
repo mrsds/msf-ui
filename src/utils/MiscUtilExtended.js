@@ -74,24 +74,6 @@ export default class MiscUtilExtended extends MiscUtil {
         }, []);
     }
 
-    static vistaFeatureProcessor(featureList) {
-        return featureList.features.reduce((keys, feature) => {
-            let categoryId = feature.properties.category_id;
-            keys.push(
-                Immutable.fromJS({
-                    name: feature.properties.name || "Unnamed",
-                    id: feature.properties.id,
-                    category: feature.properties.category,
-                    flyoverCount: feature.properties.num_flights_matching || 0,
-                    plumeCount: feature.properties.num_plumes_matching || 0,
-                    categoryId: categoryId,
-                    metadata: feature.properties.metadata
-                })
-            );
-            return keys;
-        }, []);
-    }
-
     static increaseColorSaturation(colorStr, satFactor) {
         const colorAry = colorStr.match(/rgb\((\d*),\s*(\d*),\s*(\d*)\)/).slice(1);
         const hsv = this.rgbToHsv(colorAry);

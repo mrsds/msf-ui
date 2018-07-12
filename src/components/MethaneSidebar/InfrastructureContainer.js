@@ -148,10 +148,10 @@ export class InfrastructureContainer extends Component {
                     <div
                         className={iconContainerClasses}
                         style={{
-                            background: this.getColorByCategoryId(feature.get("categoryId"))
+                            background: this.getColorByCategoryId(feature.get("category_id"))
                         }}
                     >
-                        {this.getIconByCategoryId(feature.get("categoryId"))}
+                        {this.getIconByCategoryId(feature.get("category_id"))}
                     </div>
                     <div className={layerSidebarStyles.listItemTextContainer}>
                         <Typography

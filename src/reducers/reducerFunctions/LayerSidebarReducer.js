@@ -18,7 +18,9 @@ export default class LayerSidebarReducer {
                     Immutable.fromJS(
                         !action.featureList
                             ? []
-                            : MiscUtilExtended.vistaFeatureProcessor(action.featureList)
+                            : action.featureList.map(feature =>
+                                  Immutable.fromJS(feature.getProperties())
+                              )
                     )
                 );
             case layerSidebarTypes.CATEGORY_PLUMES:

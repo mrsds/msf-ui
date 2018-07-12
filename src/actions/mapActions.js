@@ -41,13 +41,29 @@ export function resizeMap() {
     return { type: typesMSF.RESIZE_MAP };
 }
 
+export function updateVistaFeatureList() {
+    return (dispatch, getState) => {
+        const map = getState().map.getIn(["maps", "openlayers"]);
+        const vistaFeatures = map.getVisibleVistaFeatures();
+
+        dispatch(updateAvailableFeatures(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, vistaFeatures));
+        dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+    };
+}
+
 export function updateFeatureList_Map(category) {
     return (dispatch, getState) => {
         const mapState = getState().map;
         const layerSidebarState = getState().layerSidebar;
+
+        const map = getState().map.getIn(["maps", "openlayers"]);
         const extent = mapState.getIn(["view", "extent"]);
 
-        updateInfrastructure(dispatch, mapState, layerSidebarState, extent);
+        const vistaFeatures = map.getVisibleVistaFeatures();
+        dispatch(updateAvailableFeatures(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, vistaFeatures));
+        dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+
+        // updateInfrastructure(dispatch, mapState, layerSidebarState, extent);
         updatePlumes(dispatch, mapState, layerSidebarState, extent, category);
     };
 }

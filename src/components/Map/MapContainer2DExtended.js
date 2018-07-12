@@ -5,9 +5,60 @@ import { bindActionCreators } from "redux";
 import * as mapActions from "_core/actions/mapActions";
 import * as mapActionsMSF from "actions/mapActions";
 import * as appStrings from "_core/constants/appStrings";
+import * as appStringsMSF from "constants/appStrings";
 import { MapContainer2D as CoreMapContainer2D } from "_core/components/Map/MapContainer2D";
 
 export class MapContainer2D extends CoreMapContainer2D {
+    initializeMapListeners() {
+        let map = this.props.maps.get(appStrings.MAP_LIB_2D);
+        if (typeof map !== "undefined") {
+            // mouse event listeners
+            map.addEventListener(appStrings.EVENT_MOVE_END, () => this.handleMapMoveEnd(map));
+            map.addEventListener(appStrings.EVENT_MOUSE_HOVER, pixel =>
+                this.handlePixelHover(map, pixel)
+            );
+            map.addEventListener(appStrings.EVENT_MOUSE_CLICK, clickEvt =>
+                this.handlePixelClick(map, clickEvt)
+            );
+
+            // draw handlers
+            map.addDrawHandler(
+                appStrings.GEOMETRY_CIRCLE,
+                geometry => this.handleDrawEnd(geometry),
+                appStrings.INTERACTION_DRAW
+            );
+            map.addDrawHandler(
+                appStrings.GEOMETRY_LINE_STRING,
+                geometry => this.handleDrawEnd(geometry),
+                appStrings.INTERACTION_DRAW
+            );
+            map.addDrawHandler(
+                appStrings.GEOMETRY_POLYGON,
+                geometry => this.handleDrawEnd(geometry),
+                appStrings.INTERACTION_DRAW
+            );
+
+            // measurement listeners
+            map.addDrawHandler(
+                appStrings.GEOMETRY_LINE_STRING,
+                geometry => this.handleMeasureEnd(geometry, appStrings.MEASURE_DISTANCE),
+                appStrings.INTERACTION_MEASURE
+            );
+            map.addDrawHandler(
+                appStrings.GEOMETRY_POLYGON,
+                geometry => this.handleMeasureEnd(geometry, appStrings.MEASURE_AREA),
+                appStrings.INTERACTION_MEASURE
+            );
+
+            map.addVistaLayerHandler(
+                appStringsMSF.VISTA_LAYER_UPDATED,
+                this.props.mapActionsMSF.updateVistaFeatureList
+            );
+        } else {
+            console.error("Cannot initialize event listeners: 2D MAP NOT AVAILABLE");
+        }
+    }
+
     handleMapMoveEnd(map) {
         // Only fire move event if this map is active
         // and target inactive map
