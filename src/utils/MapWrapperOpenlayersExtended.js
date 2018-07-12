@@ -24,10 +24,14 @@ import Ol_Map from "ol/map";
 import Ol_Control from "ol/control";
 import Ol_Scaleline from "ol/control/scaleline";
 import Ol_Format_GeoJSON from "ol/format/geojson";
+import Ol_Loading_Strategy from "ol/loadingstrategy";
 import MapWrapperOpenlayers from "_core/utils/MapWrapperOpenlayers";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import appConfig from "constants/appConfig";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import MapUtilExtended from "utils/MapUtilExtended";
+import MiscUtil from "_core/utils/MiscUtil";
+import Immutable from "immutable";
 
 const JSZip = require("jszip");
 const INVISIBLE_VISTA_STYLE = new Ol_Style({
@@ -569,17 +573,18 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
 
     createVistaLayer(layer, fromCache = true) {
         try {
-            let layerSource = this.createLayerSource(
-                layer.set("handleAs", appStrings.LAYER_VECTOR_GEOJSON),
-                {
-                    url: layer.get("url")
-                }
-            );
-            if (layer.get("clusterVector")) {
-                layerSource = new Ol_Source_Cluster({ source: layerSource });
-            }
-
             const style = this.getVistaStyle(layer.get("id"));
+
+            const layerSource = new Ol_Source_Vector({
+                format: new Ol_Format_GeoJSON(),
+                strategy: Ol_Loading_Strategy.bbox,
+                url: (extent, projection) => {
+                    return MapUtilExtended.buildVistaFeatureQueryStringForCategory(
+                        extent,
+                        layer.get("id")
+                    );
+                }
+            });
 
             const vistaLayer = new Ol_Layer_Vector({
                 renderMode: "image",
