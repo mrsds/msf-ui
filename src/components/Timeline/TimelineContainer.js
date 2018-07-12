@@ -452,7 +452,7 @@ export class TimelineContainerStyles extends Component {
         items = items.map(x => {
             let avg =
                 x.plumes
-                    .map(p => MetadataUtil.getPlumeIME(p))
+                    .map(p => MetadataUtil.getPlumeIME(p) || "0.0")
                     .reduce((acc, i) => (acc += parseFloat(i)), 0) / x.plumes.length;
             x.plumeStatistics.avg.value = MiscUtilExtended.roundTo(avg, 1);
             return x;
