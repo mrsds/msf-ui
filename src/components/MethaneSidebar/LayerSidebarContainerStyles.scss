@@ -38,7 +38,7 @@
 }
 
 .layerSidebar {
-    z-index: 2;
+    z-index: 3;
     margin-top: $app-bar-height;
     height: calc(100% - #{$app-bar-height});
     background: white;
