@@ -112,7 +112,7 @@ export class PlumesContainer extends Component {
         const datetime = feature.get("datetime");
         const dateString = MiscUtilExtended.formatPlumeDatetime(datetime);
         // const plumeThumbnail = feature.get("rgbqlctr_url");
-        const plumeThumbnail = feature.get("thumbnail");
+        const plumeThumbnail = feature.get("rgbqlctr_url_thumb");
 
         const listItemSecondaryActionClasses = MiscUtil.generateStringFromSet({
             [layerSidebarStyles.selectedItemSecondary]: isItemPrimary,

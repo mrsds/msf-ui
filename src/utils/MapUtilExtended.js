@@ -75,4 +75,14 @@ export default class MapUtilExtended extends MapUtil {
             .replace("{latMin}", latMin)
             .replace("{lonMin}", lonMin);
     }
+
+    static buildAvirisFeatureQueryStringNew(extent) {
+        const min = Ol_Proj.transform([extent[0], extent[1]], "EPSG:3857", "EPSG:4326");
+        const max = Ol_Proj.transform([extent[2], extent[3]], "EPSG:3857", "EPSG:4326");
+        return appConfig.URLS.avirisEndpoint
+            .replace("{latMax}", max[1])
+            .replace("{lonMax}", max[0])
+            .replace("{latMin}", min[1])
+            .replace("{lonMin}", min[0]);
+    }
 }

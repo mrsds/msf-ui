@@ -50,9 +50,24 @@ export class MapContainer2D extends CoreMapContainer2D {
                 appStrings.INTERACTION_MEASURE
             );
 
+            map.addVistaLayerHandler(appStringsMSF.VISTA_LAYER_UPDATED, _ => {
+                this.props.mapActionsMSF.updateVistaFeatureList();
+                this.props.mapActionsMSF.vistaLayersLoaded();
+            });
+
             map.addVistaLayerHandler(
-                appStringsMSF.VISTA_LAYER_UPDATED,
-                this.props.mapActionsMSF.updateVistaFeatureList
+                appStringsMSF.UPDATING_VISTA_LAYER,
+                this.props.mapActionsMSF.updatingVistaLayer
+            );
+
+            map.addAvirisLayerHandler(appStringsMSF.AVIRIS_LAYER_UPDATED, _ => {
+                this.props.mapActionsMSF.updateAvirisFeatureList();
+                this.props.mapActionsMSF.avirisLayerLoaded();
+            });
+
+            map.addAvirisLayerHandler(
+                appStringsMSF.UPDATING_AVIRIS_LAYER,
+                this.props.mapActionsMSF.updatingAvirisLayer
             );
         } else {
             console.error("Cannot initialize event listeners: 2D MAP NOT AVAILABLE");

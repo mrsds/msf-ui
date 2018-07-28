@@ -41,13 +41,42 @@ export function resizeMap() {
     return { type: typesMSF.RESIZE_MAP };
 }
 
+export function updatingVistaLayer() {
+    return availableFeatureListLoading(layerSidebarTypes.CATEGORY_INFRASTRUCTURE);
+}
+
 export function updateVistaFeatureList() {
     return (dispatch, getState) => {
         const map = getState().map.getIn(["maps", "openlayers"]);
         const vistaFeatures = map.getVisibleVistaFeatures();
-
         dispatch(updateAvailableFeatures(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, vistaFeatures));
         dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+    };
+}
+
+export function updatingAvirisLayer() {
+    return availableFeatureListLoading(layerSidebarTypes.CATEGORY_PLUMES);
+}
+
+export function updateAvirisFeatureList() {
+    return (dispatch, getState) => {
+        const map = getState().map.getIn(["maps", "openlayers"]);
+        const avirisFeatures = map.getVisibleAvirisFeatures();
+        dispatch(updateAvailableFeatures(layerSidebarTypes.CATEGORY_PLUMES, avirisFeatures));
+    };
+}
+
+export function avirisLayerLoaded() {
+    return dispatch => {
+        dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_PLUMES));
+        return updateFeatureList_Map(layerSidebarTypes.CATEGORY_PLUMES);
+    };
+}
+
+export function vistaLayersLoaded() {
+    return dispatch => {
+        dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+        return updateFeatureList_Map(layerSidebarTypes.CATEGORY_INFRASTRUCTURE);
     };
 }
 
@@ -59,104 +88,42 @@ export function updateFeatureList_Map(category) {
         const map = getState().map.getIn(["maps", "openlayers"]);
         const extent = mapState.getIn(["view", "extent"]);
 
+        loadWells(dispatch, mapState, layerSidebarState);
+
         const vistaFeatures = map.getVisibleVistaFeatures();
         dispatch(updateAvailableFeatures(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, vistaFeatures));
-        dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
 
-        // updateInfrastructure(dispatch, mapState, layerSidebarState, extent);
-        updatePlumes(dispatch, mapState, layerSidebarState, extent, category);
+        const avirisFeatures = map.getVisibleAvirisFeatures();
+        dispatch(updateAvailableFeatures(layerSidebarTypes.CATEGORY_PLUMES, avirisFeatures));
     };
 }
 
-function updatePlumes(dispatch, mapState, layerSidebarState, extent, category) {
-    // Routine for getting AVIRIS (plume) features
-    const plumeLayerVisible = mapState
-        .getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA, "AVIRIS"])
-        .get("isActive");
-    if (!category || category === layerSidebarTypes.CATEGORY_PLUMES) {
-        dispatch(availableFeatureListLoading(layerSidebarTypes.CATEGORY_PLUMES));
+function loadWells(dispatch, mapState, layerSidebarState) {
+    const fieldsActive = layerSidebarState
+        .get("activeInfrastructureSubCategories")
+        .some((_, cat) => cat === layerSidebarTypes.VISTA_2017_OILGAS_FIELDS);
 
-        if (!plumeLayerVisible) {
-            dispatch(updateAvailableFeatures(category, null));
-            dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_PLUMES));
-        } else {
-            requestAvailableFeatures(
-                layerSidebarTypes.CATEGORY_PLUMES,
-                MapUtilExtended.buildAvirisFeatureQueryString(extent),
-                dispatch
-            );
-        }
-    }
-}
-
-function updateInfrastructure(dispatch, mapState, layerSidebarState, extent) {
-    const infrastructureLayerActive = mapState
-        .get("groups")
-        .find(group => group.get("id") === "VISTA")
-        .get("isActive");
-
-    // If VISTA isn't active or there are no sub-categories selected, clear out the features list.
-    if (
-        !infrastructureLayerActive ||
-        layerSidebarState.get("activeInfrastructureSubCategories").every(val => !val)
-    ) {
-        dispatch(updateAvailableFeatures(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, null));
-        dispatch(updateAvailableOilWells(null));
-        dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
-        return;
-    }
-
-    requestAvailableFeatures(
-        layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-        MapUtilExtended.buildVistaFeatureQueryString(
-            extent,
-            layerSidebarState.get("activeInfrastructureSubCategories")
-        ),
-        dispatch
-    );
-
-    // If wells are active, handle those separately.
-    const wellsSelected = layerSidebarState.getIn([
-        "activeInfrastructureSubCategories",
-        layerSidebarTypes.VISTA_2017_OILGAS_FIELDS
-    ]);
-
-    console.log(
-        mapState
-            .getIn(["maps", "openlayers"])
-            .map.getView()
-            .getZoom()
-    );
-    const wellsVisible =
-        mapState
-            .getIn(["maps", "openlayers"])
-            .map.getView()
-            .getZoom() >= appConfig.OIL_WELLS_MIN_ZOOM;
-
-    if (wellsSelected && wellsVisible) {
-        getWells(dispatch, mapState);
-    } else {
-        dispatch(updateAvailableOilWells(null));
-        dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
-    }
-}
-
-function getActiveInfrastructureSubCategories(layerSidebarState, mapState) {
-    let activeSubCategories = layerSidebarState.get("activeInfrastructureSubCategories");
-    const wellsActive = activeSubCategories.some(
-        (_, cat) => cat === layerSidebarTypes.VISTA_2017_OILGAS_WELLS
-    );
     const wellsVisible =
         mapState
             .getIn(["maps", "openlayers"])
             .map.getView()
             .getZoom() > appConfig.OIL_WELLS_MIN_ZOOM;
-    if (wellsActive && !wellsVisible) {
-        activeSubCategories = activeSubCategories.filter(
-            (_, cat) => cat !== layerSidebarTypes.VISTA_2017_OILGAS_WELLS
-        );
-    }
-    return activeSubCategories;
+
+    dispatch(
+        mapActions.setLayerActive(
+            layerSidebarTypes.VISTA_2017_OILGAS_WELLS,
+            fieldsActive && wellsVisible
+        )
+    );
+
+    const map = mapState.getIn(["maps", "openlayers"]);
+
+    map.addVistaLayerHandler(appStringsMSF.VISTA_LAYER_UPDATED, _ => {
+        dispatch(updateVistaFeatureList());
+        dispatch(vistaLayersLoaded());
+    });
+
+    map.addVistaLayerHandler(appStringsMSF.UPDATING_VISTA_LAYER, updatingVistaLayer);
 }
 
 function availableLayerListLoading() {
@@ -177,77 +144,6 @@ function updateAvailableFeatures(category, featureList) {
         category,
         featureList
     };
-}
-
-function requestAvailableFeatures(category, queryUrl, dispatch) {
-    return MiscUtil.asyncFetch({
-        url: queryUrl,
-        handleAs: "json"
-    }).then(
-        data => {
-            dispatch(updateAvailableFeatures(category, data));
-            dispatch(availableFeatureListLoaded(category));
-        },
-        err => {
-            console.warn("Error getting available layer list for current view bbox:", err);
-            dispatch(availableFeatureListLoaded(category));
-            dispatch(
-                alertActions.addAlert({
-                    title: appStringsMSF.ALERTS.LAYER_AVAILABILITY_LIST_LOAD_FAILED.title,
-                    body: appStringsMSF.ALERTS.LAYER_AVAILABILITY_LIST_LOAD_FAILED,
-                    severity: appStringsMSF.ALERTS.LAYER_AVAILABILITY_LIST_LOAD_FAILED.severity,
-                    time: new Date()
-                })
-            );
-        }
-    );
-}
-
-function getWells(dispatch, mapState) {
-    return MiscUtil.asyncFetch({
-        url: MapUtilExtended.buildVistaFeatureQueryString(
-            mapState.getIn(["view", "extent"]),
-            Immutable.fromJS({ [layerSidebarTypes.VISTA_2017_OILGAS_WELLS]: true })
-        ),
-        handleAs: appStrings.FILE_TYPE_TEXT
-    }).then(
-        data => {
-            dispatch(updateAvailableOilWells(data));
-            dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
-        },
-        err => {
-            console.warn("Error getting oil well features for current view bbox:", err);
-            dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
-            dispatch(
-                alertActions.addAlert({
-                    title: appStringsMSF.ALERTS.LAYER_AVAILABILITY_LIST_LOAD_FAILED.title,
-                    body: appStringsMSF.ALERTS.LAYER_AVAILABILITY_LIST_LOAD_FAILED,
-                    severity: appStringsMSF.ALERTS.LAYER_AVAILABILITY_LIST_LOAD_FAILED.severity,
-                    time: new Date()
-                })
-            );
-        }
-    );
-}
-
-function updateAvailableOilWells(data) {
-    return {
-        type: typesMSF.UPDATE_OIL_WELLS,
-        data
-    };
-}
-
-function getQueryString(category, extent, layerSidebarState, mapState) {
-    switch (category) {
-        case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
-            return MapUtilExtended.buildVistaFeatureQueryString(
-                extent,
-                layerSidebarState,
-                mapState
-            );
-        case layerSidebarTypes.CATEGORY_PLUMES:
-            return MapUtilExtended.buildAvirisFeatureQueryString(extent);
-    }
 }
 
 export function centerMapOnPoint(coords) {
@@ -349,20 +245,6 @@ export function pixelClick(clickEvt) {
 
         updateHighlightedPlumes(getState);
         return { type: types.PIXEL_CLICK, clickEvt };
-
-        // const category = getState().layerSidebar.get("activeFeatureCategory");
-        // const selectedFeatureId = getPixelFeatureId(clickEvt, getState().map, category);
-        // const selectedFeature = getFeatureById(
-        //     getState().layerSidebar,
-        //     category,
-        //     selectedFeatureId
-        // );
-        // dispatch(clearFeatureLabels());
-        // if (selectedFeature) {
-        //     dispatch(updateFeatureLabel(category, selectedFeature));
-        // }
-        // updateHighlightedPlumes(getState);
-        // return { type: types.PIXEL_CLICK, clickEvt };
     };
 }
 
@@ -387,64 +269,23 @@ function getVistaFeaturesAtPixel(clickEvt, mapState, layerSidebarState) {
 }
 
 function getAvirisFeaturesAtPixel(clickEvt, mapState, layerSidebarState) {
-    const featureIds = [];
-    // Get aviris images
-    mapState.forEachLayerAtPixel(clickEvt.pixel, layer => {
-        if (layer.get("_featureType") === "plume") featureIds.push(layer.get("_featureId"));
-    });
-    // Get aviris icons
-    mapState.forEachFeatureAtPixel(clickEvt.pixel, feature => {
-        if (feature.get("_featureType") === "icon") {
-            const featureId = feature.get("_featureId");
-            // Only add if we haven't gotten the id from the image by chance
-            if (featureIds.indexOf(featureId) === -1) {
-                featureIds.push(featureId);
+    const features = [];
+    mapState.forEachFeatureAtPixel(
+        clickEvt.pixel,
+        feature => {
+            const featureInfo = layerSidebarState
+                .getIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES, "searchResults"])
+                .find(f => f.get("id") === feature.get("id"));
+            if (featureInfo) features.push(featureInfo);
+        },
+        {
+            hitTolerance: 3,
+            layerFilter: function(l) {
+                return l.get("_layerId") === "AVIRIS";
             }
         }
-    });
-    return featureIds.map(id =>
-        layerSidebarState
-            .getIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES, "searchResults"])
-            .find(f => f.get("id") === id)
     );
-}
-
-function getPixelFeatureId(clickEvt, mapState, category) {
-    if (mapState.getIn(["view", "in3DMode"])) {
-        return;
-    }
-
-    let featureId;
-    switch (category) {
-        case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
-            featureId = mapState
-                .getIn(["maps", "openlayers"])
-                .map.forEachFeatureAtPixel(clickEvt.pixel, feature => {
-                    return feature.getProperties().id;
-                });
-            break;
-
-        case layerSidebarTypes.CATEGORY_PLUMES:
-            // First check to see if user has clicked an icon
-            featureId = mapState
-                .getIn(["maps", "openlayers"])
-                .map.forEachFeatureAtPixel(clickEvt.pixel, feature => {
-                    if (feature.get("_featureType") === "icon") return feature.get("_featureId");
-                });
-
-            // If no icon has been clicked, check to see if a plume has been clicked instead
-            featureId =
-                featureId ||
-                mapState
-                    .getIn(["maps", "openlayers"])
-                    .map.forEachLayerAtPixel(clickEvt.pixel, layer => {
-                        if (layer.get("_featureType") === "plume") {
-                            return layer.get("_featureId");
-                        }
-                    });
-            break;
-    }
-    return featureId;
+    return features;
 }
 
 function updateFeatureLabel(category, feature) {
@@ -594,7 +435,6 @@ export function setActivePickerFeature(category, feature) {
 function revealAllPlumes(mapState) {
     mapState.get("maps").map(map => {
         map.setActivePlumes([]);
-        map.togglePlumeIcons();
     });
 }
 

@@ -51,19 +51,6 @@ export default class MapReducer_Extended extends MapReducer {
     }
 
     static toggleFeatureLabel(state, action) {
-        // const previousFeature = state.getIn(["activeFeature", "feature"]);
-        // const previousCategory = state.getIn(["activeFeature", "category"]);
-        // const toggleOn = !previousFeature || previousFeature.get("id") !== action.feature.get("id");
-
-        // Turn off old feature label if there was a previously selected one
-        // if (previousFeature) {
-        //     state
-        //         .get("maps")
-        //         .map(map =>
-        //             map.setFeatureLabel(previousCategory, previousFeature, () => {}, false)
-        //         );
-        // }
-        // if (toggleOn) {
         state.get("maps").map(map => {
             map.setFeatureLabel(action.category, action.feature);
         });
@@ -174,7 +161,6 @@ export default class MapReducer_Extended extends MapReducer {
     }
 
     static setActivePickerFeature(state, action) {
-        state.get("maps").map(map => map.togglePlumeIcons(action.feature));
         state.get("maps").map(map => {
             map.soloFeature(action.feature, action.category);
         });

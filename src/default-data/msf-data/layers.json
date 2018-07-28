@@ -157,6 +157,18 @@
             "updateParameters": { "time": false }
         },
         {
+            "id": "VISTA_2017_OILGAS_WELLS",
+            "title": "Vista 2017 - Oil and Gas Wells",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": false,
+            "visibleInGroup": false,
+            "url": "http://100.64.114.187:9090/vista?category=0&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false }
+        },
+        {
             "id": "AVIRIS",
             "title": "Methane Plume Observations",
             "type": "data",

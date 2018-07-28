@@ -17,6 +17,7 @@ import Ol_Source_XYZ from "ol/source/xyz";
 import Ol_Layer_Group from "ol/layer/group";
 import Ol_Feature from "ol/feature";
 import Ol_Geom_Point from "ol/geom/point";
+import Ol_Geom_Polygon from "ol/geom/polygon";
 import Ol_View from "ol/view";
 import Ol_Proj from "ol/proj";
 import Ol_Interaction from "ol/interaction";
@@ -25,6 +26,7 @@ import Ol_Control from "ol/control";
 import Ol_Scaleline from "ol/control/scaleline";
 import Ol_Format_GeoJSON from "ol/format/geojson";
 import Ol_Loading_Strategy from "ol/loadingstrategy";
+import Ol_Size from "ol/size";
 import MapWrapperOpenlayers from "_core/utils/MapWrapperOpenlayers";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import appConfig from "constants/appConfig";
@@ -51,6 +53,16 @@ const AVIRIS_ICON_STYLE = new Ol_Style({
         opacity: 1,
         src: "img/PlumeIcon.png",
         scale: 0.6
+    })
+});
+
+const INVISIBLE_AVIRIS_STYLE = new Ol_Style({
+    fill: new Ol_Style_Fill({
+        color: [0, 0, 0, 0]
+    }),
+    stroke: new Ol_Style_Stroke({
+        color: [0, 0, 0, 0],
+        width: 0
     })
 });
 
@@ -349,44 +361,10 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         griddedFluxLayer.setSource(newSource);
     }
 
-    createAvirisLayer(layerJson) {
-        // Create plume raster layer
-        let plume_url = layerJson.plume_url;
-        let shape = layerJson.shape;
-        let extent = [shape[0][0], shape[1][1], shape[2][0], shape[0][1]];
-        let transformedExtent = Ol_Proj.transformExtent(
-            extent.map(val => parseFloat(val)),
-            appStrings.PROJECTIONS.latlon.code,
-            this.map
-                .getView()
-                .getProjection()
-                .getCode()
-        );
-
-        let staticPlumeImage = new Ol_Source_StaticImage({
-            url: plume_url,
-            imageExtent: transformedExtent,
-            projection: this.map
-                .getView()
-                .getProjection()
-                .getCode(),
-            crossOrigin: "anonymous"
-        });
-
-        let plumeLayer = new Ol_Layer_Image({
-            source: staticPlumeImage
-        });
-        plumeLayer.set("_featureId", layerJson.id);
-        plumeLayer.set("_featureExtent", transformedExtent.map(val => parseFloat(val)));
-        plumeLayer.set("_featureType", "plume");
-
-        return plumeLayer;
-    }
-
-    createAvirisIconFeature(layerJson) {
-        const shape = layerJson.shape;
+    createAvirisFeature(layer, image, projection) {
+        const shape = layer.shape;
         const extent = [shape[0][0], shape[1][1], shape[2][0], shape[0][1]];
-        let transformedExtent = Ol_Proj.transformExtent(
+        const transformedExtent = Ol_Proj.transformExtent(
             extent.map(val => parseFloat(val)),
             appStrings.PROJECTIONS.latlon.code,
             this.map
@@ -395,64 +373,123 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 .getCode()
         );
 
-        const iconFeature = new Ol_Feature({
-            geometry: new Ol_Geom_Point(Ol_Extent.getCenter(transformedExtent))
+        const imageFeature = new Ol_Feature({
+            geometry: new Ol_Geom_Polygon.fromExtent(extent),
+            pointGeometry: new Ol_Geom_Point(Ol_Extent.getCenter(transformedExtent)),
+            name: layer.name
+        });
+        imageFeature.setGeometryName("pointGeometry");
+
+        Object.keys(layer).forEach(key => {
+            if (!imageFeature.get(key)) {
+                imageFeature.set(key, layer[key]);
+            }
         });
 
-        // iconFeature.setStyle(this.getAvirisIconStyle());
-        iconFeature.set("_featureId", layerJson.id);
-        iconFeature.set("_featureType", "icon");
-        iconFeature.set("_featureActive", false);
+        const ime = layer.metadata.find(x => x.name === "IME20 (kg)");
+        imageFeature.set("ime", ime ? parseFloat(ime.value) : 0);
+        imageFeature.set("datetime", layer.data_date_dt);
+        const sourceId = layer.metadata.find(x => x.name === "Source id");
+        imageFeature.set("sourceId", sourceId ? parseFloat(sourceId.value) : null);
+        imageFeature.set(
+            "metadata",
+            layer.metadata.concat([
+                {
+                    name: "latitude",
+                    value: layer.location[0]
+                },
+                {
+                    name: "longitude",
+                    value: layer.location[1]
+                }
+            ])
+        );
 
-        return iconFeature;
+        imageFeature.setId(layer.id);
+        imageFeature.set("_opacity", 1);
+        imageFeature.set("_layerGroup", "AVIRIS");
+
+        const baseRes = (transformedExtent[2] - transformedExtent[0]) / image.width;
+        const iconStyle = new Ol_Style({
+            image: new Ol_Style_Icon({
+                anchor: [image.height / 2, (image.width / 2) | 0],
+                opacity: 1,
+                img: image,
+                imgSize: [image.width, image.height],
+                anchorXUnits: "pixels",
+                anchorYUnits: "pixels"
+            })
+        });
+
+        imageFeature.setStyle((feature, resolution) => {
+            if (feature.get("_opacity") === 0) return INVISIBLE_AVIRIS_STYLE;
+            if (resolution < 76.43702828517625) {
+                iconStyle.getImage().setScale(baseRes / resolution);
+                return iconStyle;
+            }
+            return AVIRIS_ICON_STYLE;
+        });
+
+        return imageFeature;
     }
 
     createAvirisLayers(layer, options) {
-        const extent = [-180, -90, 180, 90];
-        const url = appConfig.URLS.avirisEndpoint
-            .replace("{latMax}", extent[3])
-            .replace("{lonMax}", extent[2])
-            .replace("{latMin}", extent[1])
-            .replace("{lonMin}", extent[0]);
-
-        fetch(url)
-            .then(response => {
-                return response.json();
-            })
-            .then(json => {
-                // Create an icon layer for each AVIRIS feature
-                const avirisIconLayer = new Ol_Layer_Vector({
-                    extent: appConfig.DEFAULT_MAP_EXTENT,
-                    source: new Ol_Source_Vector({
-                        features: json.map(json => this.createAvirisIconFeature(json))
-                    }),
-                    style: AVIRIS_ICON_STYLE,
-                    minResolution: 38.2185141425881
-                });
-                avirisIconLayer.set("_layerId", "icons");
-
-                // Create layers for each AVIRIS feature and add the layer group (along with the icon layer) to the map
-                let avirisImageryLayerGroup = new Ol_Layer_Group({
-                    maxResolution: 76.43702828517625,
-                    layers: [...json.map(json => this.createAvirisLayer(json))]
-                });
-                avirisImageryLayerGroup.set("_layerId", "AVIRIS_IMAGE_LAYER_GROUP");
-                const avirisLayerGroup = new Ol_Layer_Group({
-                    layers: [avirisImageryLayerGroup, avirisIconLayer],
-                    opacity: layer.get("opacity")
-                });
-                avirisLayerGroup.set("_layerId", "AVIRIS");
-                avirisLayerGroup.set("_layerType", layer.get("type"));
-
-                const layerOrder = layer.get("layerOrder");
-                avirisLayerGroup.set("_layerOrder", layerOrder);
-                this.map
-                    .getLayers()
-                    .insertAt(
-                        this.findTopInsertIndexForLayer(avirisLayerGroup) + layerOrder,
-                        avirisLayerGroup
+        const layerSource = new Ol_Source_Vector({
+            strategy: Ol_Loading_Strategy.bbox,
+            loader: (extent, resolution, projection) => {
+                const url = MapUtilExtended.buildAvirisFeatureQueryStringNew(extent);
+                layerSource.dispatchEvent("loadingFeatures");
+                fetch(url)
+                    .then(res => res.json())
+                    .then(data =>
+                        Promise.all(
+                            data.map(
+                                layer =>
+                                    new Promise(resolve => {
+                                        fetch(layer.plume_url)
+                                            .then(res => {
+                                                if (res.ok) return res.blob();
+                                                throw new Error(
+                                                    `Couldn't load URL: ${layer.plume_url}`
+                                                );
+                                            })
+                                            .then(blob => {
+                                                const image = new Image();
+                                                image.src = window.URL.createObjectURL(blob);
+                                                image.onload = _ => {
+                                                    layerSource.addFeature(
+                                                        this.createAvirisFeature(
+                                                            layer,
+                                                            image,
+                                                            projection
+                                                        )
+                                                    );
+                                                    resolve();
+                                                };
+                                            });
+                                    })
+                            )
+                        ).then(_ => layerSource.dispatchEvent("featuresLoaded"))
                     );
-            });
+            }
+        });
+
+        const avirisLayer = new Ol_Layer_Vector({
+            extent: appConfig.DEFAULT_MAP_EXTENT,
+            source: layerSource,
+            opacity: layer.get("opacity"),
+            visible: layer.get("isActive"),
+            updateWhileAnimating: true,
+            updateWhileInteracting: true,
+            renderMode: "image"
+        });
+
+        avirisLayer.set("_layerId", "AVIRIS");
+        avirisLayer.set("_layerType", layer.get("type"));
+        avirisLayer.set("_layerOrder", layer.get("layerOrder"));
+
+        // this.map.getLayers().insertAt(this.findTopInsertIndexForLayer(avirisLayer), avirisLayer);
+        return avirisLayer;
     }
 
     createKMZLayer(layer, fromCache = false) {
@@ -504,7 +541,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             // check if layer already exists on map, just move to top
             let mapLayer = this.miscUtil.findObjectInArray(mapLayers, "_layerId", layer.get("id"));
             if (mapLayer) {
-                console.log("exists");
                 this.moveLayerToTop(layer);
                 return true;
             }
@@ -533,6 +569,8 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             this.miscUtil
                 .findAllMatchingObjectsInArray(mapLayers, "_layerId", layer.get("id"))
                 .forEach(l => this.removeLayer(l));
+
+            if (layer.get("group") === "VISTA") this.vistaLayers.count--;
 
             // Layer is already not active
             return true;
@@ -567,11 +605,16 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         if (!visible) {
             return INVISIBLE_VISTA_STYLE;
         }
-        // console.log(layerId,"?", VISTA_STYLES_BY_SECTOR, layerSidebarTypes.INFRASTRUCTURE_ID_TO_SECTOR)
         return VISTA_STYLES_BY_SECTOR[layerSidebarTypes.INFRASTRUCTURE_ID_TO_SECTOR[layerId]];
     }
 
     createVistaLayer(layer, fromCache = true) {
+        const isOilWellLayer = layer.get("id") === layerSidebarTypes.VISTA_2017_OILGAS_WELLS;
+        if (!isOilWellLayer) {
+            this.vistaLayers = this.vistaLayers || { count: 0, loaded: 0 };
+            this.vistaLayers.count++;
+        }
+
         try {
             const style = this.getVistaStyle(layer.get("id"));
             const layerLoadedEvent = new Event("layerLoaded");
@@ -579,13 +622,9 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             const layerSource = new Ol_Source_Vector({
                 format: new Ol_Format_GeoJSON(),
                 strategy: Ol_Loading_Strategy.bbox,
-                // url: (extent, projection) => {
-                //     return MapUtilExtended.buildVistaFeatureQueryStringForCategory(
-                //         extent,
-                //         layer.get("id")
-                //     );
-                // }
-                loader: function(extent, resolution, projection) {
+                loader: (extent, resolution, projection) => {
+                    if (!isOilWellLayer && this.vistaLayers.count <= this.vistaLayers.loaded)
+                        this.vistaLayers.loaded = 0;
                     layerSource.dispatchEvent("loadingFeatures");
                     const url = MapUtilExtended.buildVistaFeatureQueryStringForCategory(
                         extent,
@@ -603,7 +642,16 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                                     featureProjection: projection
                                 })
                             );
-                            layerSource.dispatchEvent("featuresLoaded");
+
+                            if (isOilWellLayer) {
+                                layerSource.dispatchEvent("featuresLoaded");
+                                return;
+                            }
+
+                            this.vistaLayers.loaded++;
+                            if (this.vistaLayers.count === this.vistaLayers.loaded) {
+                                layerSource.dispatchEvent("featuresLoaded");
+                            }
                         })
                     );
                 }
@@ -657,20 +705,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             });
         } else if (featureType === "AVIRIS") {
             let featureLayer = this.getAVIRISFeatureLayerById(featureId);
-            // let avirisLayerGroup = this.map
-            //     .getLayers()
-            //     .getArray()
-            //     .find(l => l.get("_layerId") === "AVIRIS");
-
-            // let avirisImageLayerGroup = avirisLayerGroup
-            //     .getLayers()
-            //     .getArray()
-            //     .find(l => l.get("_layerId") === "AVIRIS_IMAGE_LAYER_GROUP");
-
-            // let featureLayer = avirisImageLayerGroup
-            //     .getLayers()
-            //     .getArray()
-            //     .find(layer => layer.get("_featureId") === featureId);
             if (featureLayer) {
                 return this.fitFeature(featureLayer.get("_featureExtent"));
             }
@@ -694,27 +728,18 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
 
     handleAVIRISLabelToggle(pickedFeature, currentMapExtent) {
         let featureId = pickedFeature.get("id");
-        let featureLayer = this.getAVIRISFeatureLayerById(featureId);
-        // const avirisLayerGroup = this.map
-        //     .getLayers()
-        //     .getArray()
-        //     .find(l => l.get("_layerId") === "AVIRIS");
 
-        // const featureId = pickedFeature.get("id");
-        // const featureLayer = avirisLayerGroup
-        //     .getLayers()
-        //     .getArray()
-        //     .find(layer => layer.get("_featureId") === featureId);
-        // const iconFeature = avirisLayerGroup
-        //     .getLayers()
-        //     .getArray()
-        //     .find(layer => layer.get("_layerId") === "icons")
-        //     .getSource()
-        //     .getFeatures()
-        //     .find(f => f.get("_featureId") === featureId);
+        const featureExtent = this.map
+            .getLayers()
+            .getArray()
+            .find(l => l.get("_layerId") === "AVIRIS")
+            .getSource()
+            .getFeatures()
+            .find(f => f.getId() === featureId)
+            .getGeometry()
+            .getExtent();
 
         // Add or remove label
-        const featureExtent = featureLayer.get("_featureExtent");
         const isVisible = Ol_Extent.containsExtent(currentMapExtent, featureExtent);
 
         const centerCoords = Ol_Extent.getCenter(featureExtent);
@@ -730,15 +755,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 overlayType: "AVIRIS"
             }
         );
-        // iconFeature.setStyle(new Ol_Style({ display: "none" }));
-
-        // If toggling off, remove old overlay and restore the reference icon feature
-        // const oldOverlay = this.map
-        //     .getOverlays()
-        //     .getArray()
-        //     .find(overlay => overlay.get("_featureId") === featureId);
-        // this.map.removeOverlay(oldOverlay);
-        // iconFeature.setStyle(this.getAvirisIconStyle());
     }
 
     handleVISTALabelToggle(pickedFeature, currentMapExtent) {
@@ -825,19 +841,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 }
             }
 
-            // // If overlay is AVIRIS we need to reset the style of the icon (SKIP)
-            // if (overlayType === "AVIRIS") {
-            //     let featureSourceLayerId = overlay.getProperties().sourceLayerId;
-            //     let iconFeature = avirisIconLayerFeatures.find(
-            //         f => f.get("_featureId") === overlay.getProperties()._featureId
-            //     );
-            //     if (iconFeature) {
-            //         iconFeature.setStyle(this.getAvirisIconStyle());
-            //     } else {
-            //         console.warn("Unable to find AVIRIS icon for overlay deselect");
-            //     }
-            // }
-
             // Remove overlay if it's AVIRIS or VISTA
             if (overlayType === "AVIRIS" || overlayType === "VISTA") {
                 // this.map.removeOverlay(overlay);
@@ -902,46 +905,17 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             .filter(feature => feature && feature.get("id"))
             .map(feature => feature.get("id"));
 
-        const avirisLayerGroup = this.map
-            .getLayers()
-            .getArray()
-            .find(l => l.get("_layerId") === "AVIRIS");
+        const avirisLayer = this.getAvirisLayer();
 
-        if (!avirisLayerGroup) {
-            return;
-        }
+        avirisLayer.getSource().forEachFeature(feature => {
+            const opacity =
+                !hideAll && (!activeFeatureIds.length || activeFeatureIds.includes(feature.getId()))
+                    ? 1
+                    : 0;
+            feature.set("_opacity", opacity);
+        });
 
-        const avirisImageLayerGroup = this.getAvirisImageLayerGroup();
-
-        const avirisIconLayerGroup = this.getAvirisIconLayerGroup();
-
-        avirisImageLayerGroup
-            .getLayers()
-            .getArray()
-            .forEach(feature => {
-                const opacity =
-                    !hideAll &&
-                    (!activeFeatureIds.length ||
-                        activeFeatureIds.includes(feature.get("_featureId")))
-                        ? 1
-                        : 0;
-                feature.setOpacity(opacity);
-            });
-    }
-
-    togglePlumeIcons(iconsOff) {
-        const avirisLayers = this.map
-            .getLayers()
-            .getArray()
-            .find(l => l.get("_layerId") === "AVIRIS");
-
-        if (!avirisLayers) return;
-
-        avirisLayers
-            .getLayers()
-            .getArray()
-            .find(l => l.get("_layerId") === "icons")
-            .setOpacity(iconsOff ? 0 : 1);
+        avirisLayer.changed();
     }
 
     getVistaLayers() {
@@ -1047,62 +1021,31 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         this.map.updateSize();
     }
 
-    getAvirisLayerGroup() {
+    getAvirisLayer() {
         return this.map
             .getLayers()
             .getArray()
             .find(l => l.get("_layerId") === "AVIRIS");
     }
 
-    getAvirisImageLayerGroup() {
-        const avirisLayerGroup = this.getAvirisLayerGroup();
-
-        if (!avirisLayerGroup) {
-            return null;
-        }
-
-        return avirisLayerGroup
-            .getLayers()
-            .getArray()
-            .find(l => l.get("_layerId") === "AVIRIS_IMAGE_LAYER_GROUP");
-    }
-
-    getAvirisIconLayerGroup() {
-        const avirisLayerGroup = this.getAvirisLayerGroup();
-
-        if (!avirisLayerGroup) {
-            return null;
-        }
-        return avirisLayerGroup
-            .getLayers()
-            .getArray()
-            .find(l => l.get("_layerId") === "icons");
-    }
-
     setVisiblePlumes(layerSidebarState) {
         const activePlumeIds = layerSidebarState
             .getIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES, "searchResults"])
             .map(f => f.get("id"));
-        const avirisImageLayerGroup = this.getAvirisImageLayerGroup();
-        const avirisIconLayerGroup = this.getAvirisIconLayerGroup();
 
-        if (!avirisImageLayerGroup || !avirisIconLayerGroup) return; // Bail if this layer isn't switched on
+        const avirisLayer = this.getAvirisLayer();
 
-        avirisImageLayerGroup.getLayers().forEach(layer => {
-            const opacity = activePlumeIds.includes(layer.get("_featureId")) ? 1 : 0;
-            layer.setOpacity(opacity);
-        });
+        if (!avirisLayer) return; // Bail if this layer isn't switched on
 
-        avirisIconLayerGroup
+        avirisLayer
             .getSource()
             .getFeatures()
-            .forEach(feature => {
-                feature.setStyle(
-                    activePlumeIds.includes(feature.get("_featureId"))
-                        ? AVIRIS_ICON_STYLE
-                        : INVISIBLE_VISTA_STYLE
-                );
+            .forEach(f => {
+                const opacity = activePlumeIds.includes(f.getId()) ? 1 : 0;
+                f.set("_opacity", opacity);
             });
+
+        avirisLayer.changed();
     }
 
     setVisibleInfrastructure(layerSidebarState) {
@@ -1138,13 +1081,35 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         switch (evt) {
             case appStringsMSF.VISTA_LAYER_UPDATED:
                 this.getVistaLayers().forEach(layer =>
-                    layer.getSource().once("featuresLoaded", callback)
+                    layer.getSource().on("featuresLoaded", callback)
                 );
                 break;
             case appStringsMSF.UPDATING_VISTA_LAYER:
                 this.getVistaLayers().forEach(layer =>
                     layer.getSource().on("loadingFeatures", callback)
                 );
+                break;
+        }
+    }
+
+    getVisibleAvirisFeatures() {
+        const extent = this.map.getView().calculateExtent(this.map.getSize());
+        return this.getAvirisLayer()
+            .getSource()
+            .getFeaturesInExtent(extent);
+    }
+
+    addAvirisLayerHandler(evt, callback) {
+        switch (evt) {
+            case appStringsMSF.AVIRIS_LAYER_UPDATED:
+                this.getAvirisLayer()
+                    .getSource()
+                    .on("featuresLoaded", callback);
+                break;
+            case appStringsMSF.UPDATING_AVIRIS_LAYER:
+                this.getAvirisLayer()
+                    .getSource()
+                    .on("loadingFeatures", callback);
                 break;
         }
     }

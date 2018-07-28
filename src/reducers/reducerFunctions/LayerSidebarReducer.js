@@ -11,9 +11,10 @@ export default class LayerSidebarReducer {
     }
 
     static updateAvailableFeatures(state, action) {
+        let newState;
         switch (action.category) {
             case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
-                return state.setIn(
+                newState = state.setIn(
                     ["availableFeatures", layerSidebarTypes.CATEGORY_INFRASTRUCTURE],
                     Immutable.fromJS(
                         !action.featureList
@@ -23,18 +24,21 @@ export default class LayerSidebarReducer {
                               )
                     )
                 );
+                break;
             case layerSidebarTypes.CATEGORY_PLUMES:
-                return state.setIn(
+                newState = state.setIn(
                     ["availableFeatures", layerSidebarTypes.CATEGORY_PLUMES],
                     Immutable.fromJS(
                         !action.featureList
                             ? []
-                            : MiscUtilExtended.processFeatureGeojson(action.featureList)
+                            : action.featureList.map(feature =>
+                                  Immutable.fromJS(feature.getProperties())
+                              )
                     )
                 );
-            default:
-                return state;
+                break;
         }
+        return this.updateSearchResults(newState, action);
     }
 
     static pageForward(state, action) {

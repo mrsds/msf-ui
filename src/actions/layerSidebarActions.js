@@ -98,6 +98,9 @@ function updateFeatureSearchResults(category) {
 export function updateInfrastructureCategoryFilter(layerName, active) {
     return (dispatch, getState) => {
         const layer = getState().map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA, layerName]);
+        if (layer.get("id") === layerSidebarTypes.VISTA_2017_OILGAS_FIELDS)
+            updateOilWells(dispatch, getState, active);
+
         dispatch(setGroupLayerActive(layer, active));
         if (
             getState()
@@ -110,6 +113,20 @@ export function updateInfrastructureCategoryFilter(layerName, active) {
         dispatch(setActiveFeatureCategories(layerName, active));
         dispatch(mapActions.updateFeatureList_Map(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
     };
+}
+
+function updateOilWells(dispatch, getState, active) {
+    const mapState = getState().map;
+    const wellsVisible =
+        mapState
+            .getIn(["maps", "openlayers"])
+            .map.getView()
+            .getZoom() > appConfig.OIL_WELLS_MIN_ZOOM;
+    dispatch(
+        updateInfrastructureCategoryFilter,
+        layerSidebarTypes.VISTA_2017_OILGAS_WELLS,
+        wellsVisible && active
+    );
 }
 
 export function toggleInfrastructureCategoryFilters(active) {
