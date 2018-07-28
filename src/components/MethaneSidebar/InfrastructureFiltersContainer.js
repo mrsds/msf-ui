@@ -43,13 +43,17 @@ export class PlumeFiltersContainer extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        return this.props.filters
+        const filtersChanged = this.props.filters
             .filter((_, k) => k.toLowerCase().startsWith("infrastructure"))
             .some(
                 (v, k) =>
                     v.getIn(["selectedValue", "value"]) !==
                     nextProps.filters.getIn([k, "selectedValue", "value"])
             );
+        const activeSubCatsChanged = this.props.activeInfrastructureSubCategories.some(
+            (v, k) => nextProps.activeInfrastructureSubCategories.get(k) !== v
+        );
+        return filtersChanged || activeSubCatsChanged;
     }
 
     setPopperActive(key, active) {
