@@ -74,7 +74,7 @@ export function setFeatureDetail(category, feature) {
     };
 }
 
-function getSourceList(feature, category) {
+function getSourceList(category, feature) {
     switch (category) {
         case layerSidebarTypes.CATEGORY_PLUMES:
             return [MetadataUtil.getSourceID(feature)];

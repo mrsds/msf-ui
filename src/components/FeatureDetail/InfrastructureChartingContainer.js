@@ -48,7 +48,7 @@ export class InfrastructureChartingContainer extends Component {
         return this.props.plumeList.filter(
             feature =>
                 !this.props.plumeSourceId ||
-                this.props.plumeSourceId === feature.getIn(["sourceId", "value"])
+                this.props.plumeSourceId === MetadataUtil.getSourceID(feature)
         );
     }
 
@@ -490,6 +490,7 @@ export class InfrastructureChartingContainer extends Component {
     }
 
     render() {
+        console.log(this.props.feature.toJS());
         return (
             <Grid item xs>
                 <Card className={featureDetailStyles.cardRoot}>

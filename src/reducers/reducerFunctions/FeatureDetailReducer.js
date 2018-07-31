@@ -33,7 +33,7 @@ export default class FeatureDetailReducer {
 
     static updateFeatureDetailPlumeList(state, action) {
         return state
-            .set("plumeList", MiscUtilExtended.processFeatureGeojson(action.data))
+            .set("plumeList", MiscUtilExtended.processSourceList(action.data))
             .set("plumeListLoading", false);
     }
 

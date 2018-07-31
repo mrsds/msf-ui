@@ -83,6 +83,11 @@ export default class MiscUtilExtended extends MiscUtil {
             .join(",")})`;
     }
 
+    static processSourceList(featureList) {
+        console.log(featureList);
+        return featureList.map(f => Immutable.fromJS(f));
+    }
+
     // Courtesy https://gist.github.com/mjackson/5311256
     static rgbToHsv([r, g, b]) {
         (r /= 255), (g /= 255), (b /= 255);
