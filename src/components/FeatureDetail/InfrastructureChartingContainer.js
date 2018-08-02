@@ -47,8 +47,7 @@ export class InfrastructureChartingContainer extends Component {
     getFilteredPlumeList() {
         return this.props.plumeList.filter(
             feature =>
-                !this.props.plumeSourceId ||
-                this.props.plumeSourceId === MetadataUtil.getSourceID(feature)
+                !this.props.plumeSourceId || this.props.plumeSourceId === feature.get("sourceId")
         );
     }
 
@@ -63,7 +62,12 @@ export class InfrastructureChartingContainer extends Component {
                 feature =>
                     !this.props.plumeFilterEndDate ||
                     moment(feature.get("datetime")).isSameOrBefore(this.props.plumeFilterEndDate)
-            );
+            )
+            .sort((a, b) => {
+                const dateA = moment(a.get("datetime"));
+                const dateB = moment(b.get("datetime"));
+                return dateA.isBefore(dateB) ? -1 : dateA.isAfter(dateB) ? 1 : 0;
+            });
     }
 
     getAvailablePlumeSources() {
@@ -342,30 +346,38 @@ export class InfrastructureChartingContainer extends Component {
         const datetime = feature.get("datetime");
         const dateString = datetime ? moment(datetime).format("M/D/YYYY") : "(No Date)";
         const timeString = datetime ? moment(datetime).format("H:mm") : "";
+        const isFlyover = feature.get("isEmptyFlyover");
         return (
-            <React.Fragment key={feature.get("name")}>
+            <React.Fragment
+                key={isFlyover ? dateString + timeString + "flyover" : feature.get("name")}
+            >
                 <TableRow>
-                    <TableCell padding="dense">Yes</TableCell>
+                    <TableCell padding="dense">{isFlyover ? "No" : "Yes"}</TableCell>
+                    <TableCell padding="dense">{feature.get("sourceId")}</TableCell>
                     <TableCell padding="dense">
-                        {" "}
                         {dateString}
                         <br />
                         {timeString}
                     </TableCell>
                     <TableCell padding="dense">
-                        {MetadataUtil.getPlumeID(feature, "(none)")}
+                        {isFlyover ? "-" : MetadataUtil.getPlumeID(feature, "(none)")}
                     </TableCell>
-                    <TableCell numeric padding="dense">
-                        (none)
+                    <TableCell numeric={!isFlyover} padding="dense">
+                        {isFlyover ? "-" : "(none)"}
                     </TableCell>
-                    <TableCell numeric padding="dense">
-                        {Math.round(MetadataUtil.getFetch(feature, "20", "(none)") * 100) / 100}
+                    <TableCell numeric={!isFlyover} padding="dense">
+                        {isFlyover
+                            ? "-"
+                            : Math.round(MetadataUtil.getFetch(feature, "20", "(none)") * 100) /
+                              100}
                     </TableCell>
-                    <TableCell numeric padding="dense">
-                        (none)
+                    <TableCell numeric={!isFlyover} padding="dense">
+                        {isFlyover ? "-" : "(none)"}
                     </TableCell>
-                    <TableCell numeric padding="dense">
-                        {Math.round(MetadataUtil.getIME(feature, "20", "(none)") * 100) / 100}
+                    <TableCell numeric={!isFlyover} padding="dense">
+                        {isFlyover
+                            ? "-"
+                            : Math.round(MetadataUtil.getIME(feature, "20", "(none)") * 100) / 100}
                     </TableCell>
                 </TableRow>
             </React.Fragment>
@@ -395,6 +407,7 @@ export class InfrastructureChartingContainer extends Component {
                         <TableHead>
                             <TableRow>
                                 <TableCell padding="dense">Plume Detected</TableCell>
+                                <TableCell padding="dense">Source ID</TableCell>
                                 <TableCell padding="dense">Flyover Date</TableCell>
                                 <TableCell padding="dense">Plume ID</TableCell>
                                 <TableCell numeric padding="dense">
@@ -419,45 +432,59 @@ export class InfrastructureChartingContainer extends Component {
     }
 
     makeThumbs() {
+        if (!this.props.plumeList.length) {
+            return <div className={styles.noResults}>No Results</div>;
+        }
         return (
             <div className={styles.thumbGrid}>
                 <GridList cols={2} spacing={20} cellHeight={464}>
-                    {this.getDateFilteredPlumeList().map(feature => {
-                        const datetime = feature.get("datetime");
-                        const dateString = datetime
-                            ? moment(datetime).format("MMMM Do, YYYY, H:mm")
-                            : "(No Date)";
-                        return (
-                            <GridListTile key={feature.get("name")}>
-                                <img src={feature.get("rgbqlctr_url")} alt={feature.get("name")} />
-                                <GridListTileBar
-                                    title={
-                                        <div className={styles.gridTileHeading}>
-                                            <span>{dateString}</span>
-                                            <span>
-                                                {Math.round(feature.get("ime") * 100) / 100} (kg)
-                                            </span>
-                                        </div>
-                                    }
-                                    subtitle={
-                                        <div className={styles.gridTileHeading}>
-                                            <span>{feature.get("name")}</span>
-                                            <span>IME</span>
-                                        </div>
-                                    }
-                                />
-                            </GridListTile>
-                        );
-                    })}
+                    {this.getDateFilteredPlumeList()
+                        .filter(f => !f.get("isEmptyFlyover"))
+                        .map(feature => {
+                            const datetime = feature.get("datetime");
+                            const dateString = datetime
+                                ? moment(datetime).format("MMMM Do, YYYY, H:mm")
+                                : "(No Date)";
+                            return (
+                                <GridListTile key={feature.get("name")}>
+                                    <img
+                                        src={feature.get("rgbqlctr_url")}
+                                        alt={feature.get("name")}
+                                    />
+                                    <GridListTileBar
+                                        title={
+                                            <div className={styles.gridTileHeading}>
+                                                <span>{dateString}</span>
+                                                <span>
+                                                    {Math.round(
+                                                        MetadataUtil.getPlumeIME(feature) * 100
+                                                    ) / 100}
+                                                    (kg)
+                                                </span>
+                                            </div>
+                                        }
+                                        subtitle={
+                                            <div className={styles.gridTileHeading}>
+                                                <span>{feature.get("name")}</span>
+                                                <span>IME</span>
+                                            </div>
+                                        }
+                                    />
+                                </GridListTile>
+                            );
+                        })}
                 </GridList>
             </div>
         );
     }
 
     makeChart() {
+        if (!this.props.plumeList.length) {
+            return <div className={styles.noResults}>No Results</div>;
+        }
         const options = {
             maintainAspectRatio: false,
-            legend: { display: false },
+            legend: { display: true, position: "bottom", labels: { usePointStyle: true } },
             scales: {
                 yAxes: [
                     {
@@ -465,21 +492,52 @@ export class InfrastructureChartingContainer extends Component {
                     }
                 ],
                 xAxes: [{ type: "time", ticks: { autoSkip: true, autoSkipPadding: 2 } }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: (tooltipItem, data) => {
+                        return `IME: ${tooltipItem.yLabel}, Date: ${tooltipItem.xLabel}`;
+                    }
+                }
             }
         };
 
-        const sortedData = this.getDateFilteredPlumeList().sort(
-            (a, b) => moment(a.get("datetime")).toDate() - moment(b.get("datetime")).toDate()
+        const sortedData = this.getDateFilteredPlumeList();
+        const dataGroups = sortedData.reduce(
+            (acc, plume) => {
+                if (plume.get("isEmptyFlyover")) {
+                    acc.flyovers.push(plume);
+                } else {
+                    const sourceId = MetadataUtil.getSourceID(plume);
+                    acc[sourceId] = acc[sourceId] ? acc[sourceId].concat([plume]) : [plume];
+                }
+                return acc;
+            },
+            { flyovers: [] }
         );
+
+        const emptyFlyoverLabel = "Flyover with no plume detected";
+        const colorList = ["#1B6087", "#F44242"];
+        let colorIndex = 0;
+        const datasets = Object.keys(dataGroups)
+            .sort((a, b) => (a === "flyovers" ? 1 : b === "flyovers" ? -1 : 0))
+            .map((key, idx) => {
+                const pointColor = key === "flyovers" ? "#ffffff00" : colorList[colorIndex++];
+                return {
+                    data: dataGroups[key].map(
+                        plume => (key === "flyovers" ? 0 : MetadataUtil.getPlumeIME(plume))
+                    ),
+                    backgroundColor: pointColor,
+                    fill: false,
+                    label: key === "flyovers" ? emptyFlyoverLabel : `Source: ${key}`,
+                    borderColor: key === "flyovers" ? "#404040" : pointColor,
+                    borderWidth: 1
+                };
+            });
+
         const data = {
             labels: sortedData.map(feature => moment(feature.get("datetime")).toDate()),
-            datasets: [
-                {
-                    data: sortedData.map(feature => feature.get("ime")),
-                    borderColor: "#4285F4",
-                    fill: false
-                }
-            ]
+            datasets
         };
 
         return (

@@ -83,9 +83,30 @@ export default class MiscUtilExtended extends MiscUtil {
             .join(",")})`;
     }
 
+    static makeEmptyFlyover(flyover) {
+        return Immutable.fromJS({
+            isEmptyFlyover: true,
+            datetime: flyover.data_date_dt,
+            sourceId: flyover.sourceId
+        });
+    }
+
+    static processFlyoverPlumes(flyover) {
+        return flyover.plumes.map(plume =>
+            Immutable.fromJS(plume)
+                .set("datetime", plume.data_date_dt)
+                .set("sourceId", flyover.sourceId)
+        );
+    }
+
     static processSourceList(featureList) {
-        console.log(featureList);
-        return featureList.map(f => Immutable.fromJS(f));
+        return featureList.reduce((acc, flyover) => {
+            const entry =
+                flyover.plumes.length === 0
+                    ? [this.makeEmptyFlyover(flyover)]
+                    : this.processFlyoverPlumes(flyover);
+            return acc.concat(entry);
+        }, []);
     }
 
     // Courtesy https://gist.github.com/mjackson/5311256

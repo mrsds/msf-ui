@@ -35,30 +35,46 @@ export function setFeatureDetail(category, feature) {
         dispatch({ type: types.UPDATE_FEATURE_DETAIL, category, feature });
 
         const sourceList = getSourceList(category, feature);
-        if (!sourceList) {
+        if (!sourceList.size) {
             dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data: [] });
             return;
         }
 
-        const plumeRequestUrl = appConfig.URLS.plumeListQueryEndpoint.replace(
-            "{source_id}",
-            sourceList.join(",")
+        const sourceRequests = sourceList.map(
+            src =>
+                new Promise((resolve, reject) =>
+                    fetch(appConfig.URLS.plumeListQueryEndpoint.replace("{source_id}", src))
+                        .then(res => res.json())
+                        .then(data => resolve({ src, data }))
+                        .catch(err => {
+                            console.warn(
+                                `Error getting available layer list for feature: ${feature.get(
+                                    "name"
+                                )}`,
+                                err
+                            );
+                            reject();
+                        })
+                )
         );
-        return MiscUtil.asyncFetch({
-            url: plumeRequestUrl,
-            handleAs: "json"
-        }).then(
-            data => {
+
+        Promise.all(sourceRequests)
+            .then(responses => {
                 dispatch({
                     type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST,
-                    data
+                    data: responses
+                        .filter(res => res.data.length)
+                        .map(res =>
+                            res.data.map(feature => {
+                                feature.sourceId = res.src;
+                                return feature;
+                            })
+                        )
+                        .reduce((acc, item) => acc.concat(item), [])
                 });
-            },
-            err => {
-                console.warn(
-                    `Error getting available layer list for feature: ${feature.get("name")}`,
-                    err
-                );
+            })
+            .catch(err => {
+                console.log(err);
                 dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data: [] });
                 dispatch(
                     alertActions.addAlert({
@@ -69,15 +85,14 @@ export function setFeatureDetail(category, feature) {
                         time: new Date()
                     })
                 );
-            }
-        );
+            });
     };
 }
 
 function getSourceList(category, feature) {
     switch (category) {
         case layerSidebarTypes.CATEGORY_PLUMES:
-            return [MetadataUtil.getSourceID(feature)];
+            return Immutable.fromJS([feature.get("source_id")]);
         case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
             return MetadataUtil.getSourceList(feature).map(src => src.get("id"));
     }

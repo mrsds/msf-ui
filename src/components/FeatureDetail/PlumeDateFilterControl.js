@@ -37,7 +37,7 @@ export class PlumeDateFilterControl extends Component {
 
     render() {
         const currentDate = this.props.currentDate;
-        const duration = moment.duration(this.props.earliestDate.diff(this.props.latestDate));
+        const duration = moment.duration(this.props.latestDate.diff(this.props.earliestDate));
 
         const yearList = [];
         for (let i = 0; i <= duration.years(); i++) {

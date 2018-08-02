@@ -16,6 +16,9 @@
     margin-top: 20px;
 }
 
+.chartLegend {
+}
+
 .manager {
     width: 100%;
     display: flex;
@@ -97,4 +100,17 @@
 }
 .thumbGrid {
     margin-top: 12px;
+}
+
+.noResults {
+    width: 100%;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 10px;
+    border: solid 1px $color-background;
+    border-left: none;
+    border-right: none;
+    font-size: 1.3rem;
+    font-weight: 400;
 }
