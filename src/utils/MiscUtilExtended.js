@@ -87,7 +87,8 @@ export default class MiscUtilExtended extends MiscUtil {
         return Immutable.fromJS({
             isEmptyFlyover: true,
             datetime: flyover.data_date_dt,
-            sourceId: flyover.sourceId
+            sourceId: flyover.sourceId,
+            flyoverId: flyover.name
         });
     }
 
@@ -96,6 +97,7 @@ export default class MiscUtilExtended extends MiscUtil {
             Immutable.fromJS(plume)
                 .set("datetime", plume.data_date_dt)
                 .set("sourceId", flyover.sourceId)
+                .set("flyoverId", flyover.name)
         );
     }
 

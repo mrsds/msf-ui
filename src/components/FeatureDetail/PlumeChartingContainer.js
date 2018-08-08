@@ -116,7 +116,12 @@ export class PlumeChartingContainer extends Component {
         const isFlyover = feature.get("isEmptyFlyover");
         return (
             <React.Fragment
-                key={isFlyover ? dateString + timeString + "flyover" : feature.get("name")}
+                key={
+                    (isFlyover ? dateString + timeString + "flyover" : feature.get("name")) +
+                    Math.random()
+                        .toString(36)
+                        .substring(7)
+                }
             >
                 <TableRow>
                     <TableCell padding="dense">{isFlyover ? "No" : "Yes"}</TableCell>
@@ -293,9 +298,12 @@ export class PlumeChartingContainer extends Component {
             .map((key, idx) => {
                 const pointColor = key === "flyovers" ? "#ffffff00" : colorList[colorIndex++];
                 return {
-                    data: dataGroups[key].map(
-                        plume => (key === "flyovers" ? 0 : MetadataUtil.getPlumeIME(plume))
-                    ),
+                    data: dataGroups[key].map(plume => {
+                        return {
+                            x: plume.get("datetime"),
+                            y: key === "flyovers" ? 0 : MetadataUtil.getPlumeIME(plume)
+                        };
+                    }),
                     backgroundColor: pointColor,
                     fill: false,
                     label: key === "flyovers" ? emptyFlyoverLabel : `Source: ${key}`,
@@ -305,7 +313,6 @@ export class PlumeChartingContainer extends Component {
             });
 
         const data = {
-            labels: sortedData.map(feature => moment(feature.get("datetime")).toDate()),
             datasets
         };
 

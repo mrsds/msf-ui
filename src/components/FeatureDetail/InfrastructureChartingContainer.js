@@ -45,10 +45,21 @@ export class InfrastructureChartingContainer extends Component {
     }
 
     getFilteredPlumeList() {
-        return this.props.plumeList.filter(
-            feature =>
-                !this.props.plumeSourceId || this.props.plumeSourceId === feature.get("sourceId")
-        );
+        return this.props.plumeList
+            .filter(
+                feature =>
+                    !this.props.plumeSourceId ||
+                    this.props.plumeSourceId === feature.get("sourceId")
+            )
+            .filter(
+                feature =>
+                    !this.props.flyoverId || this.props.flyoverId === feature.get("flyoverId")
+            )
+            .sort((a, b) => {
+                const dateA = moment(a.get("datetime"));
+                const dateB = moment(b.get("datetime"));
+                return dateA.isBefore(dateB) ? -1 : dateA.isAfter(dateB) ? 1 : 0;
+            });
     }
 
     getDateFilteredPlumeList() {
@@ -62,12 +73,7 @@ export class InfrastructureChartingContainer extends Component {
                 feature =>
                     !this.props.plumeFilterEndDate ||
                     moment(feature.get("datetime")).isSameOrBefore(this.props.plumeFilterEndDate)
-            )
-            .sort((a, b) => {
-                const dateA = moment(a.get("datetime"));
-                const dateB = moment(b.get("datetime"));
-                return dateA.isBefore(dateB) ? -1 : dateA.isAfter(dateB) ? 1 : 0;
-            });
+            );
     }
 
     getAvailablePlumeSources() {
@@ -76,10 +82,7 @@ export class InfrastructureChartingContainer extends Component {
 
     getAvailableFlyovers() {
         return this.props.plumeList.reduce((acc, feature) => {
-            const count = feature.get("num_flights_matching");
-            if (count && !acc.includes(count)) {
-                acc.push(count);
-            }
+            if (!acc.includes(feature.get("flyoverId"))) acc.push(feature.get("flyoverId"));
             return acc;
         }, []);
     }
@@ -349,7 +352,12 @@ export class InfrastructureChartingContainer extends Component {
         const isFlyover = feature.get("isEmptyFlyover");
         return (
             <React.Fragment
-                key={isFlyover ? dateString + timeString + "flyover" : feature.get("name")}
+                key={
+                    (isFlyover ? dateString + timeString + "flyover" : feature.get("name")) +
+                    Math.random()
+                        .toString(36)
+                        .substring(7)
+                }
             >
                 <TableRow>
                     <TableCell padding="dense">{isFlyover ? "No" : "Yes"}</TableCell>
