@@ -157,6 +157,7 @@
     "url": "https://github.jpl.nasa.gov/MethaneSourceFinder/msf-ui"
   },
   "devDependencies": {
+    "chartjs-plugin-error-bars": "1.0.5",
     "fuse.js": "3.2.1",
     "jszip": "3.1.4"
   }

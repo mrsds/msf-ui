@@ -19,6 +19,10 @@ import * as MSFTypes from "constants/MSFTypes";
 import Divider from "@material-ui/core/Divider";
 import DataFilterContainer from "components/MSFAnalytics/DataFilterContainer";
 import EmissionsSummaryInfoContainer from "components/MSFAnalytics/EmissionsSummaryInfoContainer";
+import PlumeDetectionStatisticsContainer from "components/MSFAnalytics/PlumeDetectionStatisticsContainer";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
 
 export class MSFAnalyticsContainer extends Component {
     makeAnalyticsModeListItems() {
@@ -60,12 +64,36 @@ export class MSFAnalyticsContainer extends Component {
         switch (this.props.analyticsMode) {
             case MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO:
                 return <EmissionsSummaryInfoContainer />;
+            case MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS:
+                return <PlumeDetectionStatisticsContainer />;
             default:
                 return (
-                    <div>
-                        “There are moments, Jeeves, when one asks oneself, 'Do trousers matter?'"
-                        "The mood will pass, sir.” <i>― P.G. Wodehouse, The Code of the Woosters</i>
-                    </div>
+                    <Card className={styles.contentCard}>
+                        <CardContent>
+                            <Typography variant="headline" component="h2">
+                                The Suggestiveness Of One Stray Hair In An Otherwise Perfect
+                                Coiffure
+                            </Typography>
+                            <div style={{ whiteSpace: "normal" }}>
+                                He's got a car bomb. He puts the key in the ignition and turns it --
+                                the car blows up. He gets out. He opens the hood and makes a cursory
+                                inspection. He closes the hood and gets back in. He turns the key in
+                                the ignition. The car blows up. He gets out and slams the door shut
+                                disgustedly. He kicks the tire. He takes off his jacket and shimmies
+                                under the chassis. He pokes around. He slides back out and wipes the
+                                grease off his shirt. He puts his jacket back on. He gets in. He
+                                turns the key in the ignition. The car blows up, sending debris into
+                                the air and shattering windows for blocks. He gets out and says,
+                                Damn it! He calls a tow truck. He gives them his AAA membership
+                                number. They tow the car to an Exxon station. The mechanic gets in
+                                and turns the key in the ignition. The car explodes, demolishing the
+                                gas pumps, the red-and-blue Exxon logo high atop its pole bursting
+                                like a balloon on a string. The mechanic steps out. You got a car
+                                bomb, he says. The man rolls his eyes. I know that, he says. <br />
+                                <br />- Mark Leyner, <i>My Cousin, My Gasteroenterologist</i>
+                            </div>
+                        </CardContent>
+                    </Card>
                 );
         }
     }
@@ -79,7 +107,7 @@ export class MSFAnalyticsContainer extends Component {
         return (
             <React.Fragment>
                 <Paper elevation={2} square={true} className={containerClasses}>
-                    <AppBar elevation={3} position="static" style={{ height: "100%" }}>
+                    <AppBar elevation={3} position="static" className={styles.appBar}>
                         <div className={styles.headerBar}>
                             <InsertChartIcon>insert_chart</InsertChartIcon>
                             <Typography

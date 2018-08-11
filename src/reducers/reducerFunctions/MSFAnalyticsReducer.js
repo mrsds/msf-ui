@@ -13,7 +13,7 @@ export default class MSFAnalyticsReducer {
             .setIn(
                 ["filterOptions", "selectedSubsector"],
                 action.sector !== state.getIn(["filterOptions", "selectedSector"])
-                    ? "All"
+                    ? null
                     : state.getIn(["filterOptions", "selectedSector"])
             );
     }
@@ -24,5 +24,21 @@ export default class MSFAnalyticsReducer {
 
     static changeFilterUnits(state, action) {
         return state.setIn(["filterOptions", "selectedUnits"], action.units);
+    }
+
+    static updateAnalyticsSummaryData(state, action) {
+        return state.set("summaryData", action.data);
+    }
+
+    static analyticsSummaryDataLoading(state, action) {
+        return state.set("summaryDataIsLoading", action.isLoading);
+    }
+
+    static updateAnalyticsDetectionStats(state, action) {
+        return state.set("detectionStats", action.data);
+    }
+
+    static analyticsDetectionStatsLoading(state, action) {
+        return state.set("detectionStatsAreLoading", action.isLoading);
     }
 }

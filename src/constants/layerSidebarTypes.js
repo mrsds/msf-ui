@@ -92,11 +92,41 @@ export const INFRASTRUCTURE_FACILITY_TYPE_TO_NAME = {
     [VISTA_2017_CEC_PIPELINES]: "CEC Pipelines",
     [VISTA_2017_OILGAS_FIELDS]: "Oil and Natural Gas Fields"
 };
+
+export const KEVIN_INFRASTRUCTURE_FACILITY_TYPE_TO_NAME = {
+    [VISTA_2017_OILGAS_WELLS]: "Oil and Gas Wells",
+    [VISTA_2017_LIVESTOCK_DAIRIES]: "Dairies",
+    [VISTA_2017_ANAEROBIC_LAGOONS]: "Anaerobic Lagoons",
+    [VISTA_2017_CNG_FUELING_STATIONS]: "CNG Fueling Stations",
+    [VISTA_2017_LNG_FUELING_STATIONS]: "LNG Fueling Stations",
+    [VISTA_2017_NAT_GAS_STORE_FIELDS]: "Natural Gas Storage Fields",
+    [VISTA_2017_NAT_GAS_PROC_PLANT]: "NG Processing Plants",
+    [VISTA_2017_PETRO_REFINE]: "Petroleum Refineries",
+    [VISTA_2017_WASTEWTR_TREAT_PLNT]: "Wastewater Treatment Plants",
+    [VISTA_2017_POWER_PLANT]: "Power Plants",
+    [VISTA_2017_LANDFILL]: "Landfills",
+    [VISTA_2017_SOCAB_BOUND]: "SOCAB Bound",
+    [VISTA_2017_CEC_PIPELINES]: "CEC Pipelines",
+    [VISTA_2017_OILGAS_FIELDS]: "Oil and Natural Gas Fields"
+};
+
+export const INFRASTRUCTURE_NAME_TO_TYPE = Object.keys(INFRASTRUCTURE_FACILITY_TYPE_TO_NAME).reduce(
+    (acc, key) => {
+        acc[INFRASTRUCTURE_FACILITY_TYPE_TO_NAME[key].toLowerCase()] = key;
+        return acc;
+    },
+    {}
+);
+
 export const SECTORS = {
     AGRICULTURE: "agriculture",
     ENERGY: "energy",
     WASTE: "waste"
 };
+export const SECTOR_NAME_TO_SECTOR = Object.keys(SECTORS).reduce((acc, key) => {
+    acc[SECTORS[key]] = key;
+    return acc;
+}, {});
 
 let agricultureCategories = [VISTA_2017_LIVESTOCK_DAIRIES, VISTA_2017_ANAEROBIC_LAGOONS];
 let energyCategories = [

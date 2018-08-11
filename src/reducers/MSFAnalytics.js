@@ -18,6 +18,14 @@ export default function MSFAnalytics(
             return opt_reducer.changeFilterSubsector(state, action);
         case actionTypesMSF.CHANGE_ANALYTICS_FILTER_SELECTED_UNITS:
             return opt_reducer.changeFilterUnits(state, action);
+        case actionTypesMSF.UPDATE_ANALYTICS_SUMMMARY_DATA:
+            return opt_reducer.updateAnalyticsSummaryData(state, action);
+        case actionTypesMSF.ANALYTICS_SUMMARY_DATA_LOADING:
+            return opt_reducer.analyticsSummaryDataLoading(state, action);
+        case actionTypesMSF.UPDATE_ANALYTICS_DETECTION_STATS:
+            return opt_reducer.updateAnalyticsDetectionStats(state, action);
+        case actionTypesMSF.ANALYTICS_DETECTION_STATS_LOADING:
+            return opt_reducer.analyticsDetectionStatsLoading(state, action);
         default:
             return state;
     }

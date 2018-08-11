@@ -5,8 +5,13 @@ export const MSFAnalyticsState = Immutable.fromJS({
     analyticsMode: MSFTypes.ANALYTICS_MODE_DATA_COLLECTION_STATS,
     filterOptions: {
         selectedArea: "Los Angeles",
-        selectedSector: "All",
-        selectedSubsector: "All",
+        selectedSector: null,
+        selectedSubsector: null,
         selectedUnits: "kg"
-    }
+    },
+    summaryDataIsLoading: false,
+    summaryData: null,
+    filteredSummaryData: null,
+    detectionStatsAreLoading: false,
+    detectionStats: null
 });

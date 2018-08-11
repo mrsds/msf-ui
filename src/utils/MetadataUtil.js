@@ -126,6 +126,6 @@ export default class MetadataUtil {
     }
 
     static getSourceList(feature) {
-        return this.getValueForField("sources", this.getMetadata(feature));
+        return this.getValueForField("sources", this.getMetadata(feature)) || [];
     }
 }
