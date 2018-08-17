@@ -118,6 +118,7 @@ export class PlumesContainer extends Component {
             [layerSidebarStyles.selectedItemSecondary]: isItemPrimary,
             [layerSidebarStyles.listItemSecondaryAction]: true
         });
+
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem

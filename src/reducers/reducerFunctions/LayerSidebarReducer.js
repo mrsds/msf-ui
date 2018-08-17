@@ -145,7 +145,7 @@ export default class LayerSidebarReducer {
         searchResults = featureList.filter(
             x =>
                 x
-                    .get("name")
+                    .get("plume_id")
                     .toLowerCase()
                     .indexOf(plumeID) !== -1
         );

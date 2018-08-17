@@ -22,6 +22,7 @@ const APP_CONFIG = Immutable.fromJS({
     URLS: {
         vistaEndpoint:
             "http://100.64.114.187:9090/vista?maxLat={latMax}&maxLon={lonMax}&minLat={latMin}&minLon={lonMin}&category={category}",
+        vistaDetailEndpoint: "http://100.64.114.187:9090/vista?vistaId={vista_id}",
         avirisEndpoint:
             "http://100.64.114.187:9090/aviris/plumes?maxObjects=10000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}",
         layerConfig: [

@@ -53,11 +53,12 @@ export class InfrastructureChartingContainer extends Component {
             )
             .filter(
                 feature =>
-                    !this.props.flyoverId || this.props.flyoverId === feature.get("flyoverId")
+                    !this.props.flyoverId ||
+                    this.props.flyoverId === feature.get("flightline_id").toString()
             )
             .sort((a, b) => {
-                const dateA = moment(a.get("datetime"));
-                const dateB = moment(b.get("datetime"));
+                const dateA = moment(a.get("plume_date") || a.get("flightline_date"));
+                const dateB = moment(b.get("plume_date") || b.get("flightline_date"));
                 return dateA.isBefore(dateB) ? -1 : dateA.isAfter(dateB) ? 1 : 0;
             });
     }
@@ -67,22 +68,30 @@ export class InfrastructureChartingContainer extends Component {
             .filter(
                 feature =>
                     !this.props.plumeFilterStartDate ||
-                    moment(feature.get("datetime")).isSameOrAfter(this.props.plumeFilterStartDate)
+                    moment(
+                        feature.get("plume_date") || feature.get("flightline_date")
+                    ).isSameOrAfter(this.props.plumeFilterStartDate)
             )
             .filter(
                 feature =>
                     !this.props.plumeFilterEndDate ||
-                    moment(feature.get("datetime")).isSameOrBefore(this.props.plumeFilterEndDate)
+                    moment(
+                        feature.get("plume_date") || feature.get("flightline_date")
+                    ).isSameOrBefore(this.props.plumeFilterEndDate)
             );
     }
 
     getAvailablePlumeSources() {
-        return MetadataUtil.getSourceList(this.props.feature).map(src => src.get("id"));
+        return this.props.plumeList.reduce((acc, feature) => {
+            if (!acc.includes(feature.get("sourceId"))) acc.push(feature.get("sourceId"));
+            return acc;
+        }, []);
     }
 
     getAvailableFlyovers() {
         return this.props.plumeList.reduce((acc, feature) => {
-            if (!acc.includes(feature.get("flyoverId"))) acc.push(feature.get("flyoverId"));
+            const id = feature.get("flightline_id").toString();
+            if (!acc.includes(id)) acc.push(id);
             return acc;
         }, []);
     }
@@ -346,10 +355,10 @@ export class InfrastructureChartingContainer extends Component {
     }
 
     makePlumeListItem(feature) {
-        const datetime = feature.get("datetime");
+        const datetime = feature.get("plume_date") || feature.get("flightline_date");
         const dateString = datetime ? moment(datetime).format("M/D/YYYY") : "(No Date)";
         const timeString = datetime ? moment(datetime).format("H:mm") : "";
-        const isFlyover = feature.get("isEmptyFlyover");
+        const isFlyover = !feature.get("candidate_id");
         return (
             <React.Fragment
                 key={
@@ -368,24 +377,19 @@ export class InfrastructureChartingContainer extends Component {
                         {timeString}
                     </TableCell>
                     <TableCell padding="dense">
-                        {isFlyover ? "-" : MetadataUtil.getPlumeID(feature, "(none)")}
+                        {isFlyover ? "-" : feature.get("aviris_plume_id")}
                     </TableCell>
                     <TableCell numeric={!isFlyover} padding="dense">
                         {isFlyover ? "-" : "(none)"}
                     </TableCell>
                     <TableCell numeric={!isFlyover} padding="dense">
-                        {isFlyover
-                            ? "-"
-                            : Math.round(MetadataUtil.getFetch(feature, "20", "(none)") * 100) /
-                              100}
+                        {isFlyover ? "-" : Math.round(feature.get("fetch20")) / 100}
                     </TableCell>
                     <TableCell numeric={!isFlyover} padding="dense">
                         {isFlyover ? "-" : "(none)"}
                     </TableCell>
                     <TableCell numeric={!isFlyover} padding="dense">
-                        {isFlyover
-                            ? "-"
-                            : Math.round(MetadataUtil.getIME(feature, "20", "(none)") * 100) / 100}
+                        {isFlyover ? "-" : Math.round(feature.get("ime20") * 100) / 100}
                     </TableCell>
                 </TableRow>
             </React.Fragment>
@@ -447,14 +451,22 @@ export class InfrastructureChartingContainer extends Component {
             <div className={styles.thumbGrid}>
                 <GridList cols={2} spacing={20} cellHeight={464}>
                     {this.getDateFilteredPlumeList()
-                        .filter(f => !f.get("isEmptyFlyover"))
+                        .filter(feature => feature.get("candidate_id"))
                         .map(feature => {
-                            const datetime = feature.get("datetime");
+                            const datetime =
+                                feature.get("plume_date") || feature.get("flightline_date");
                             const dateString = datetime
                                 ? moment(datetime).format("MMMM Do, YYYY, H:mm")
                                 : "(No Date)";
                             return (
-                                <GridListTile key={feature.get("name")}>
+                                <GridListTile
+                                    key={
+                                        feature.get("name") +
+                                        Math.random()
+                                            .toString(36)
+                                            .substring(7)
+                                    }
+                                >
                                     <img
                                         src={feature.get("rgbqlctr_url")}
                                         alt={feature.get("name")}
@@ -463,12 +475,8 @@ export class InfrastructureChartingContainer extends Component {
                                         title={
                                             <div className={styles.gridTileHeading}>
                                                 <span>{dateString}</span>
-                                                <span>
-                                                    {Math.round(
-                                                        MetadataUtil.getPlumeIME(feature) * 100
-                                                    ) / 100}
-                                                    (kg)
-                                                </span>
+                                                <span>{`${Math.round(feature.get("ime20") * 100) /
+                                                    100} (kg)`}</span>
                                             </div>
                                         }
                                         subtitle={
@@ -513,10 +521,10 @@ export class InfrastructureChartingContainer extends Component {
         const sortedData = this.getDateFilteredPlumeList();
         const dataGroups = sortedData.reduce(
             (acc, plume) => {
-                if (plume.get("isEmptyFlyover")) {
+                if (!plume.get("candidate_id")) {
                     acc.flyovers.push(plume);
                 } else {
-                    const sourceId = MetadataUtil.getSourceID(plume);
+                    const sourceId = plume.get("sourceId");
                     acc[sourceId] = acc[sourceId] ? acc[sourceId].concat([plume]) : [plume];
                 }
                 return acc;
@@ -532,9 +540,12 @@ export class InfrastructureChartingContainer extends Component {
             .map((key, idx) => {
                 const pointColor = key === "flyovers" ? "#ffffff00" : colorList[colorIndex++];
                 return {
-                    data: dataGroups[key].map(
-                        plume => (key === "flyovers" ? 0 : MetadataUtil.getPlumeIME(plume))
-                    ),
+                    data: dataGroups[key].map(plume => {
+                        return {
+                            x: plume.get("plume_date") || plume.get("flightline_date"),
+                            y: key === "flyovers" ? 0 : Math.round(plume.get("ime20") * 100) / 100
+                        };
+                    }),
                     backgroundColor: pointColor,
                     fill: false,
                     label: key === "flyovers" ? emptyFlyoverLabel : `Source: ${key}`,
@@ -544,7 +555,6 @@ export class InfrastructureChartingContainer extends Component {
             });
 
         const data = {
-            labels: sortedData.map(feature => moment(feature.get("datetime")).toDate()),
             datasets
         };
 
@@ -556,7 +566,6 @@ export class InfrastructureChartingContainer extends Component {
     }
 
     render() {
-        console.log(this.props.feature.toJS());
         return (
             <Grid item xs>
                 <Card className={featureDetailStyles.cardRoot}>

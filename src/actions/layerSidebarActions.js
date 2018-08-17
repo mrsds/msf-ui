@@ -31,21 +31,28 @@ export function setLayerSidebarCollapsed(collapsed) {
 
 export function setFeatureDetail(category, feature) {
     return dispatch => {
+        // Fetch metadata from backend if this is an VISTA feature
+        if (category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE) {
+            dispatch({ type: types.VISTA_METADATA_LOADING });
+            getVistaMetadata(feature, dispatch);
+        }
+
         dispatch({ type: types.FEATURE_DETAIL_PLUME_LIST_LOADING });
         dispatch({ type: types.UPDATE_FEATURE_DETAIL, category, feature });
 
         const sourceList = getSourceList(category, feature);
-        if (!sourceList.size) {
+        if (!sourceList.length) {
             dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data: [] });
             return;
         }
-
         const sourceRequests = sourceList.map(
             src =>
                 new Promise((resolve, reject) =>
                     fetch(appConfig.URLS.plumeListQueryEndpoint.replace("{source_id}", src))
                         .then(res => res.json())
-                        .then(data => resolve({ src, data }))
+                        .then(data => {
+                            resolve({ src, data });
+                        })
                         .catch(err => {
                             console.warn(
                                 `Error getting available layer list for feature: ${feature.get(
@@ -74,7 +81,6 @@ export function setFeatureDetail(category, feature) {
                 });
             })
             .catch(err => {
-                console.log(err);
                 dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data: [] });
                 dispatch(
                     alertActions.addAlert({
@@ -89,12 +95,30 @@ export function setFeatureDetail(category, feature) {
     };
 }
 
+function getVistaMetadata(feature, dispatch) {
+    fetch(appConfig.URLS.vistaDetailEndpoint.replace("{vista_id}", feature.get("id")))
+        .then(res => res.json())
+        .then(json =>
+            dispatch({
+                type: types.UPDATE_VISTA_METADATA,
+                data: json.features[0].properties.metadata
+            })
+        );
+}
+
 function getSourceList(category, feature) {
     switch (category) {
         case layerSidebarTypes.CATEGORY_PLUMES:
-            return Immutable.fromJS([feature.get("source_id")]);
+            return [feature.get("sourceId")];
         case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
-            return MetadataUtil.getSourceList(feature).map(src => src.get("id"));
+            return feature
+                .get("sources")
+                .map(src => src.get("id"))
+                .toArray()
+                .reduce((acc, src) => {
+                    if (!acc.includes(src)) acc.push(src);
+                    return acc;
+                }, []);
     }
 }
 

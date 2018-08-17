@@ -29,6 +29,10 @@ export default function layerSidebar(
             return opt_reducer.updateFeatureDetailPlumeList(state, action);
         case actionTypesMSF.SET_PLUME_FILTER_DATE:
             return opt_reducer.updatePlumeFilterDate(state, action);
+        case actionTypesMSF.VISTA_METADATA_LOADING:
+            return opt_reducer.vistaMetadataLoading(state, action);
+        case actionTypesMSF.UPDATE_VISTA_METADATA:
+            return opt_reducer.updateVistaMetadata(state, action);
         default:
             return state;
     }

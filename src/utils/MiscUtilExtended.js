@@ -102,13 +102,7 @@ export default class MiscUtilExtended extends MiscUtil {
     }
 
     static processSourceList(featureList) {
-        return featureList.reduce((acc, flyover) => {
-            const entry =
-                flyover.plumes.length === 0
-                    ? [this.makeEmptyFlyover(flyover)]
-                    : this.processFlyoverPlumes(flyover);
-            return acc.concat(entry);
-        }, []);
+        return Immutable.fromJS(featureList);
     }
 
     // Courtesy https://gist.github.com/mjackson/5311256

@@ -386,26 +386,15 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             }
         });
 
-        const ime = layer.metadata.find(x => x.name === "IME20 (kg)");
-        imageFeature.set("ime", ime ? parseFloat(ime.value) : 0);
+        imageFeature.set("ime", layer.ime_20);
         imageFeature.set("datetime", layer.data_date_dt);
-        const sourceId = layer.metadata.find(x => x.name === "Source id");
-        imageFeature.set("sourceId", sourceId ? parseFloat(sourceId.value) : null);
-        imageFeature.set(
-            "metadata",
-            layer.metadata.concat([
-                {
-                    name: "latitude",
-                    value: layer.location[0]
-                },
-                {
-                    name: "longitude",
-                    value: layer.location[1]
-                }
-            ])
-        );
-
+        imageFeature.set("sourceId", layer.source_id);
+        imageFeature.set("location", layer.location);
         imageFeature.setId(layer.id);
+        imageFeature.set("name", layer.candidate_id);
+        imageFeature.set("ime", layer.ime_20);
+        imageFeature.set("fetch", layer.fetch20);
+        imageFeature.set("plumeId", layer.plume_id);
         imageFeature.set("_opacity", 1);
         imageFeature.set("_layerGroup", "AVIRIS");
 

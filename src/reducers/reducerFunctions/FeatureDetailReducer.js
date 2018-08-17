@@ -33,7 +33,7 @@ export default class FeatureDetailReducer {
 
     static updateFeatureDetailPlumeList(state, action) {
         return state
-            .set("plumeList", MiscUtilExtended.processSourceList(action.data))
+            .set("plumeList", action.data.map(d => Immutable.fromJS(d)))
             .set("plumeListLoading", false);
     }
 
@@ -46,5 +46,15 @@ export default class FeatureDetailReducer {
             action.isStart ? "plumeFilterStartDate" : "plumeFilterEndDate",
             action.date
         );
+    }
+
+    static vistaMetadataLoading(state, action) {
+        return state.set("vistaMetadataLoading", true);
+    }
+
+    static updateVistaMetadata(state, action) {
+        return state
+            .set("vistaMetadata", Immutable.fromJS(action.data))
+            .set("vistaMetadataLoading", false);
     }
 }
