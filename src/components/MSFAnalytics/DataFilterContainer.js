@@ -40,6 +40,11 @@ export class DataFilterContainer extends Component {
         });
     }
 
+    componentDidMount() {
+        this.props.fetchAreaSearchOptionsList();
+        this.props.fetchSectorOptionsList();
+    }
+
     setPopperActive(key, active) {
         this.popperProps = this.popperProps.map((v, k) => (k === key ? active : false));
         this.forceUpdate();
@@ -51,26 +56,38 @@ export class DataFilterContainer extends Component {
     }
 
     getAreaList() {
-        return ["Los Angeles", "San Luis Obispo"];
+        return this.props.areaSearchOptionsList
+            ? this.props.areaSearchOptionsList
+                  .map(opt => opt.get("name"))
+                  .filter(opt => opt)
+                  .toArray()
+            : [];
     }
 
     getSectors() {
-        return Object.keys(layerSidebarTypes.SECTORS).map(key =>
-            key.toLowerCase().replace(/^\w/, char => char.toUpperCase())
-        );
+        return this.props.sectorOptionsList
+            ? this.props.sectorOptionsList.reduce((acc, item) => {
+                  const sectorName = item.get("sector_level_1");
+                  if (!acc.includes(sectorName)) acc.push(sectorName);
+                  return acc;
+              }, [])
+            : [];
     }
 
     getSubsectors() {
-        return Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS)
-            .filter(
-                key => !this.props.selectedSector || key === this.props.selectedSector.toLowerCase()
-            )
-            .reduce(
-                (acc, key) =>
-                    acc.concat(layerSidebarTypes.INFRASTRUCTURE_GROUPS[key].categoryNames),
-
-                []
-            );
+        return this.props.sectorOptionsList
+            ? this.props.sectorOptionsList
+                  .filter(
+                      item =>
+                          !this.props.selectedSector ||
+                          item.get("sector_level_1") === this.props.selectedSector
+                  )
+                  .reduce((acc, item) => {
+                      const sectorName = item.get("sector_level_2");
+                      if (!acc.includes(sectorName)) acc.push(sectorName);
+                      return acc;
+                  }, [])
+            : [];
     }
 
     getChartUnits() {
@@ -102,6 +119,7 @@ export class DataFilterContainer extends Component {
                     }}
                     eventsEnabled={active}
                     className={!active ? displayStyles.noPointer : styles.pointer}
+                    style={{ zIndex: 1 }}
                 >
                     <Grow style={{ transformOrigin: "left top" }} in={active}>
                         <div>
@@ -209,7 +227,28 @@ export class DataFilterContainer extends Component {
         const unitPickerActive = this.popperProps.get("units");
         const startDatePickerActive = this.popperProps.get("startDate");
         const endDatePickerActive = this.popperProps.get("endDate");
-
+        const sectorPicker =
+            this.props.analyticsMode === MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO
+                ? this.makeDropdown(
+                      "Sector",
+                      this.props.selectedSector,
+                      this.getSectors,
+                      this.props.changeSector,
+                      "sector",
+                      sectorPickerActive
+                  )
+                : null;
+        const subSectorPicker =
+            this.props.analyticsMode === MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO
+                ? this.makeDropdown(
+                      "Subsector",
+                      this.props.selectedSubsector,
+                      this.getSubsectors,
+                      this.props.changeSubsector,
+                      "subsector",
+                      subsectorPickerActive
+                  )
+                : null;
         return (
             <Card className={styles.cardRoot}>
                 <CardContent>
@@ -232,31 +271,9 @@ export class DataFilterContainer extends Component {
                                 "area",
                                 areaPickerActive
                             )}
-                            {this.makeDropdown(
-                                "Sector",
-                                this.props.selectedSector,
-                                this.getSectors,
-                                this.props.changeSector,
-                                "sector",
-                                sectorPickerActive
-                            )}
-                            {this.makeDropdown(
-                                "Subsector",
-                                this.props.selectedSubsector,
-                                this.getSubsectors,
-                                this.props.changeSubsector,
-                                "subsector",
-                                subsectorPickerActive
-                            )}
+                            {sectorPicker}
+                            {subSectorPicker}
                         </ClickAwayListener>
-                        {this.makeDropdown(
-                            "Units",
-                            this.props.selectedUnits,
-                            this.getChartUnits,
-                            this.props.changeUnits,
-                            "units",
-                            unitPickerActive
-                        )}
                     </Manager>
                 </CardContent>
             </Card>
@@ -264,7 +281,33 @@ export class DataFilterContainer extends Component {
     }
 }
 
+// {this.makeDropdown(
+//     "Sector",
+//     this.props.selectedSector,
+//     this.getSectors,
+//     this.props.changeSector,
+//     "sector",
+//     sectorPickerActive
+// )}
+// {this.makeDropdown(
+//     "Subsector",
+//     this.props.selectedSubsector,
+//     this.getSubsectors,
+//     this.props.changeSubsector,
+//     "subsector",
+//     subsectorPickerActive
+// )}
+// {this.makeDropdown(
+//     "Units",
+//     this.props.selectedUnits,
+//     this.getChartUnits,
+//     this.props.changeUnits,
+//     "units",
+//     unitPickerActive
+// )}
+
 DataFilterContainer.propTypes = {
+    analyticsMode: PropTypes.string,
     selectedArea: PropTypes.string,
     selectedSector: PropTypes.string,
     selectedSubsector: PropTypes.string,
@@ -272,15 +315,22 @@ DataFilterContainer.propTypes = {
     changeSelectedArea: PropTypes.func.isRequired,
     changeSector: PropTypes.func.isRequired,
     changeSubsector: PropTypes.func.isRequired,
-    changeUnits: PropTypes.func.isRequired
+    changeUnits: PropTypes.func.isRequired,
+    areaSearchOptionsList: PropTypes.object,
+    sectorOptionsList: PropTypes.object,
+    fetchAreaSearchOptionsList: PropTypes.func.isRequired,
+    fetchSectorOptionsList: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
     return {
+        analyticsMode: state.MSFAnalytics.get("analyticsMode"),
         selectedArea: state.MSFAnalytics.getIn(["filterOptions", "selectedArea"]),
         selectedSector: state.MSFAnalytics.getIn(["filterOptions", "selectedSector"]),
         selectedSubsector: state.MSFAnalytics.getIn(["filterOptions", "selectedSubsector"]),
-        selectedUnits: state.MSFAnalytics.getIn(["filterOptions", "selectedUnits"])
+        selectedUnits: state.MSFAnalytics.getIn(["filterOptions", "selectedUnits"]),
+        areaSearchOptionsList: state.MSFAnalytics.get("areaSearchOptionsList"),
+        sectorOptionsList: state.MSFAnalytics.get("sectorOptionsList")
     };
 }
 
@@ -292,7 +342,15 @@ function mapDispatchToProps(dispatch) {
         ),
         changeSector: bindActionCreators(MSFAnalyticsActions.changeFilterSector, dispatch),
         changeSubsector: bindActionCreators(MSFAnalyticsActions.changeFilterSubsector, dispatch),
-        changeUnits: bindActionCreators(MSFAnalyticsActions.changeFilterUnits, dispatch)
+        changeUnits: bindActionCreators(MSFAnalyticsActions.changeFilterUnits, dispatch),
+        fetchAreaSearchOptionsList: bindActionCreators(
+            MSFAnalyticsActions.fetchAreaSearchOptionsList,
+            dispatch
+        ),
+        fetchSectorOptionsList: bindActionCreators(
+            MSFAnalyticsActions.fetchSectorOptionsList,
+            dispatch
+        )
     };
 }
 

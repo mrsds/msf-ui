@@ -4,7 +4,7 @@ import * as MSFTypes from "constants/MSFTypes";
 export const MSFAnalyticsState = Immutable.fromJS({
     analyticsMode: MSFTypes.ANALYTICS_MODE_DATA_COLLECTION_STATS,
     filterOptions: {
-        selectedArea: "Los Angeles",
+        selectedArea: null,
         selectedSector: null,
         selectedSubsector: null,
         selectedUnits: "kg"
@@ -13,5 +13,9 @@ export const MSFAnalyticsState = Immutable.fromJS({
     summaryData: null,
     filteredSummaryData: null,
     detectionStatsAreLoading: false,
-    detectionStats: null
+    detectionStats: null,
+    areaSearchOptionsLoading: false,
+    areaSearchOptionsList: null,
+    sectorOptionsListLoading: false,
+    sectorOptionsList: null
 });

@@ -128,6 +128,16 @@ export const SECTOR_NAME_TO_SECTOR = Object.keys(SECTORS).reduce((acc, key) => {
     return acc;
 }, {});
 
+export const IPCC_SECTOR_LEVEL_1 = {
+    AGRICULTURE: 3,
+    ENERGY: 1,
+    WASTE: 4
+};
+export const IPCC_SECTOR_LEVEL_1_TO_SECTOR = Object.keys(IPCC_SECTOR_LEVEL_1).reduce((acc, key) => {
+    acc[IPCC_SECTOR_LEVEL_1[key]] = key;
+    return acc;
+}, {});
+
 let agricultureCategories = [VISTA_2017_LIVESTOCK_DAIRIES, VISTA_2017_ANAEROBIC_LAGOONS];
 let energyCategories = [
     VISTA_2017_POWER_PLANT,

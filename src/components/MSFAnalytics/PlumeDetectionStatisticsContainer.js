@@ -18,6 +18,14 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
 export class PlumeDetectionStatisticsContainer extends Component {
+    componentDidMount() {
+        this.props.fetchDetectionStats();
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return true;
+    }
+
     makeLoadingModal() {
         if (this.props.isLoading) {
             return (
@@ -36,11 +44,17 @@ export class PlumeDetectionStatisticsContainer extends Component {
         return [sum, total && (sum / total * 100) | 0];
     }
 
-    makeSectorStats(subSectors, sector) {
+    makeSectorStats(subSectorList, sector) {
+        const subSectors = subSectorList[sector];
         const [facilityCount, _] = this.getFieldSum(subSectors, "facilities");
         const [uniqueFacilityCount, uniqueFacilityPct] = this.getFieldSum(
             subSectors,
             "unique_facilities_flown_over",
+            facilityCount
+        );
+        const [uniqueFacilityWithPlumeCount, uniqueFacilityWithPlumePct] = this.getFieldSum(
+            subSectors,
+            "unique_facilities_with_plume_detections",
             facilityCount
         );
         return {
@@ -48,11 +62,7 @@ export class PlumeDetectionStatisticsContainer extends Component {
             facilities: facilityCount,
             flyovers: this.getFieldSum(subSectors, "facility_flyovers")[0],
             uniqueFlownOver: [uniqueFacilityCount, uniqueFacilityPct],
-            uniqueWithPlumes: this.getFieldSum(
-                subSectors,
-                "unique_facilities_with_plumes",
-                uniqueFacilityCount
-            )
+            uniqueWithPlumes: [uniqueFacilityWithPlumeCount, uniqueFacilityWithPlumePct]
         };
     }
 
@@ -60,36 +70,32 @@ export class PlumeDetectionStatisticsContainer extends Component {
         const facilityCount = subSector.facilities;
         const uniqueFacilityCount = subSector.unique_facilities_flown_over;
         const uniqueFacilityPct = (uniqueFacilityCount / facilityCount * 100) | 0;
+        const uniqueFacilityWithPlumeCount = subSector.unique_facilities_with_plumes;
+        const uniqueFacilityWithPlumePct = (uniqueFacilityWithPlumeCount / facilityCount * 100) | 0;
         return {
-            sector: subSector.sector,
+            sector: subSector.sector_level_2,
             facilities: facilityCount,
             flyovers: subSector.facility_flyovers,
             uniqueFlownOver: [uniqueFacilityCount, uniqueFacilityPct],
-            uniqueWithPlumes: [
-                subSector.unique_facilities_with_plumes,
-                (subSector.unique_facilities_with_plumes / uniqueFacilityCount * 100) | 0
-            ]
+            uniqueWithPlumes: [uniqueFacilityWithPlumeCount, uniqueFacilityWithPlumePct]
         };
     }
 
     makePerSectorStats() {
         if (!this.props.detectionStats) return [];
-        const sectors = this.props.detectionStats
-            .map(subSector => {
-                const subSectorType =
-                    layerSidebarTypes.INFRASTRUCTURE_NAME_TO_TYPE[subSector.sector.toLowerCase()] ||
-                    null;
-                subSector.type = subSectorType;
-                return subSector;
-            })
-            .filter(x => x.type)
-            .reduce((acc, subSector) => {
-                const sector = layerSidebarTypes.INFRASTRUCTURE_ID_TO_SECTOR[subSector.type];
-                acc[sector] = acc[sector] || [];
-                acc[sector].push(subSector);
-                return acc;
-            }, []);
-        return Object.keys(sectors).map(key => this.makeSectorStats(sectors[key], key));
+
+        const sectors = this.props.detectionStats.reduce((acc, subSector) => {
+            const sector =
+                layerSidebarTypes.IPCC_SECTOR_LEVEL_1_TO_SECTOR[
+                    parseInt(subSector.sector_level_1.charAt(0))
+                ];
+            if (!acc[sector]) {
+                acc[sector] = [];
+            }
+            acc[sector].push(subSector);
+            return acc;
+        }, {});
+        return Object.keys(sectors).map(key => this.makeSectorStats(sectors, key));
     }
 
     makePerSubsectorStats() {
@@ -101,19 +107,15 @@ export class PlumeDetectionStatisticsContainer extends Component {
         return this.makePerSectorStats().map(sector => (
             <TableRow key={sector.sector}>
                 <TableCell padding="dense">
-                    {sector.sector.charAt(0).toUpperCase() + sector.sector.substr(1)}
+                    {sector.sector.charAt(0) + sector.sector.toLowerCase().slice(1)}
                 </TableCell>
-                <TableCell pading="dense" numeric>
-                    {sector.facilities}
-                </TableCell>
-                <TableCell pading="dense" numeric>
-                    {sector.flyovers}
-                </TableCell>
-                <TableCell pading="dense" numeric>
+                <TableCell pading="dense">{sector.facilities}</TableCell>
+                <TableCell pading="dense">{sector.flyovers}</TableCell>
+                <TableCell pading="dense">
                     {sector.uniqueFlownOver[0]}
                     <span className={styles.percentage}> ({sector.uniqueFlownOver[1]}%)</span>
                 </TableCell>
-                <TableCell pading="dense" numeric>
+                <TableCell pading="dense">
                     {sector.uniqueWithPlumes[0]}
                     <span className={styles.percentage}> ({sector.uniqueWithPlumes[1]}%)</span>
                 </TableCell>
@@ -124,20 +126,14 @@ export class PlumeDetectionStatisticsContainer extends Component {
     makePerSubsectorTableBody() {
         return this.makePerSubsectorStats().map(sector => (
             <TableRow key={sector.sector}>
-                <TableCell padding="dense">
-                    {sector.sector.charAt(0).toUpperCase() + sector.sector.substr(1)}
-                </TableCell>
-                <TableCell pading="dense" numeric>
-                    {sector.facilities}
-                </TableCell>
-                <TableCell pading="dense" numeric>
-                    {sector.flyovers}
-                </TableCell>
-                <TableCell pading="dense" numeric>
+                <TableCell padding="dense">{sector.sector.replace(/^\d{1}.\s/, "")}</TableCell>
+                <TableCell pading="dense">{sector.facilities}</TableCell>
+                <TableCell pading="dense">{sector.flyovers}</TableCell>
+                <TableCell pading="dense">
                     {sector.uniqueFlownOver[0]}
                     <span className={styles.percentage}> ({sector.uniqueFlownOver[1]}%)</span>
                 </TableCell>
-                <TableCell pading="dense" numeric>
+                <TableCell pading="dense">
                     {sector.uniqueWithPlumes[0]}
                     <span className={styles.percentage}> ({sector.uniqueWithPlumes[1]}%)</span>
                 </TableCell>
@@ -158,16 +154,12 @@ export class PlumeDetectionStatisticsContainer extends Component {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell padding="dense">Sector</TableCell>
-                                        <TableCell padding="dense" numeric>
-                                            Facilities
-                                        </TableCell>
-                                        <TableCell padding="dense" numeric>
-                                            Facility Flyovers
-                                        </TableCell>
-                                        <TableCell padding="dense" numeric>
+                                        <TableCell padding="dense">Facilities</TableCell>
+                                        <TableCell padding="dense">Facility Flyovers</TableCell>
+                                        <TableCell padding="dense">
                                             Unique Facilities<br />Flown Over
                                         </TableCell>
-                                        <TableCell padding="dense" numeric>
+                                        <TableCell padding="dense">
                                             Unique Facilities with<br />> 0 Plume Detections
                                         </TableCell>
                                     </TableRow>
@@ -194,16 +186,12 @@ export class PlumeDetectionStatisticsContainer extends Component {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell padding="dense">Sector</TableCell>
-                                        <TableCell padding="dense" numeric>
-                                            Facilities
-                                        </TableCell>
-                                        <TableCell padding="dense" numeric>
-                                            Facility Flyovers
-                                        </TableCell>
-                                        <TableCell padding="dense" numeric>
+                                        <TableCell padding="dense">Facilities</TableCell>
+                                        <TableCell padding="dense">Facility Flyovers</TableCell>
+                                        <TableCell padding="dense">
                                             Unique Facilities<br />Flown Over
                                         </TableCell>
-                                        <TableCell padding="dense" numeric>
+                                        <TableCell padding="dense">
                                             Unique Facilities with<br />> 0 Plume Detections
                                         </TableCell>
                                     </TableRow>
@@ -218,10 +206,6 @@ export class PlumeDetectionStatisticsContainer extends Component {
     }
 
     render() {
-        // Grab summary data if this is the first time this tab has been viewed.
-        if (!this.props.detectionStats) {
-            this.props.fetchDetectionStats();
-        }
         return (
             <div>
                 {this.makePerSectorSection()}

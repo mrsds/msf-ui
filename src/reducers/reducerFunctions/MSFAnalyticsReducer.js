@@ -1,3 +1,5 @@
+import Immutable from "immutable";
+
 export default class MSFAnalyticsReducer {
     static changeAnalyticsMode(state, action) {
         return state.set("analyticsMode", action.mode);
@@ -27,7 +29,7 @@ export default class MSFAnalyticsReducer {
     }
 
     static updateAnalyticsSummaryData(state, action) {
-        return state.set("summaryData", action.data);
+        return state.set("summaryData", Immutable.fromJS(action.data));
     }
 
     static analyticsSummaryDataLoading(state, action) {
@@ -40,5 +42,21 @@ export default class MSFAnalyticsReducer {
 
     static analyticsDetectionStatsLoading(state, action) {
         return state.set("detectionStatsAreLoading", action.isLoading);
+    }
+
+    static updateAreaSearchList(state, action) {
+        return state.set("areaSearchOptionsList", Immutable.fromJS(action.data));
+    }
+
+    static areaSearchListLoading(state, action) {
+        return state.set("areaSearchOptionsLoading", action.isLoading);
+    }
+
+    static updateSectorOptionsList(state, action) {
+        return state.set("sectorOptionsList", Immutable.fromJS(action.data));
+    }
+
+    static sectorOptionsListLoading(state, action) {
+        return state.set("sectorOptionsLoading", action.isLoading);
     }
 }

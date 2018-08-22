@@ -26,6 +26,14 @@ export default function MSFAnalytics(
             return opt_reducer.updateAnalyticsDetectionStats(state, action);
         case actionTypesMSF.ANALYTICS_DETECTION_STATS_LOADING:
             return opt_reducer.analyticsDetectionStatsLoading(state, action);
+        case actionTypesMSF.UPDATE_AREA_SEARCH_LIST:
+            return opt_reducer.updateAreaSearchList(state, action);
+        case actionTypesMSF.AREA_SEARCH_LIST_LOADING:
+            return opt_reducer.areaSearchListLoading(state, action);
+        case actionTypesMSF.UPDATE_SECTOR_OPTIONS_LIST:
+            return opt_reducer.updateSectorOptionsList(state, action);
+        case actionTypesMSF.SECTOR_OPTIONS_LIST_LOADING:
+            return opt_reducer.sectorOptionsListLoading(state, action);
         default:
             return state;
     }

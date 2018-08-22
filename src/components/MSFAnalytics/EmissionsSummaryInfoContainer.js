@@ -20,6 +20,13 @@ import { Bar as BarChart } from "react-chartjs-2";
 import ErrorBarsPlugin from "chartjs-plugin-error-bars";
 
 export class EmissionsSummaryInfoContainer extends Component {
+    componentDidMount() {
+        this.props.fetchSummaryData();
+    }
+
+    sortSectors(a, b) {
+        return parseInt(a.charAt(0)) - parseInt(b.charAt(0));
+    }
     makeLoadingModal() {
         if (this.props.isLoading) {
             return (
@@ -31,9 +38,8 @@ export class EmissionsSummaryInfoContainer extends Component {
         return <div />;
     }
 
-    makeChart(sectorData, title) {
-        if (!sectorData.data) return <div />;
-
+    makeChart(data, title) {
+        if (!data.length) return;
         const options = {
             scales: {
                 xAxes: [{ scaleLabel: { display: false }, ticks: { display: false } }],
@@ -43,17 +49,13 @@ export class EmissionsSummaryInfoContainer extends Component {
             plugins: { chartJsPluginErrorBars: { color: "#000000" } }
         };
 
-        const sourceData = sectorData.data
+        const sourceData = data
             .map(source => {
                 return {
-                    label: `Source near: ${source.nearestFacility}`,
-                    min: source.imeList.length ? Math.min(...source.imeList) : null,
-                    max: source.imeList.length ? Math.max(...source.imeList) : null,
-                    avg: source.imeList.length
-                        ? source.imeList.reduce((acc, ime) => {
-                              return acc + ime;
-                          }, 0) / source.imeList.length
-                        : 0
+                    label: `Source near: ${source.get("nearest_facility")}`,
+                    min: source.get("min_ime5_1500ppmm_150m"),
+                    max: source.get("max_ime5_1500ppmm_150m"),
+                    avg: source.get("avg_ime5_1500ppmm_150m")
                 };
             })
             .sort((a, b) => b.avg - a.avg);
@@ -69,7 +71,7 @@ export class EmissionsSummaryInfoContainer extends Component {
         };
 
         return (
-            <Card className={styles.contentCard} key={sectorData.cat}>
+            <Card className={styles.contentCard} key={title}>
                 <CardContent>
                     <Typography variant="headline" component="h2">
                         {title}
@@ -84,101 +86,73 @@ export class EmissionsSummaryInfoContainer extends Component {
         );
     }
 
-    makeSingleSubsector(selectedSubsector) {
+    makeTopLevelSummaryChart() {
+        const dataBySector = this.props.summaryData.reduce((acc, source) => {
+            const sectorL1Name = source.get("sector_level_1");
+            if (!acc[sectorL1Name]) acc[sectorL1Name] = [];
+            acc[sectorL1Name].push(source);
+            return acc;
+        }, {});
+
+        return (
+            <React.Fragment>
+                {this.makeChart(this.props.summaryData.toArray(), "All")}
+                {Object.keys(dataBySector)
+                    .sort(this.sortSectors)
+                    .map(key => this.makeChart(dataBySector[key], key))}
+            </React.Fragment>
+        );
+    }
+
+    makeSectorSummaryChart(sector) {
+        const sectorData = this.props.summaryData
+            .filter(source => source.get("sector_level_1") === sector)
+            .toArray();
+        const subSectors = sectorData.reduce((acc, source) => {
+            const sectorL2Name = source.get("sector_level_2");
+            if (!acc[sectorL2Name]) acc[sectorL2Name] = [];
+            acc[sectorL2Name].push(source);
+            return acc;
+        }, {});
+
+        return (
+            <React.Fragment>
+                {this.makeChart(sectorData, sector)}
+                {Object.keys(subSectors)
+                    .sort(this.sortSectors)
+                    .map(key => this.makeChart(subSectors[key], key))}
+            </React.Fragment>
+        );
+    }
+
+    makeCharts() {
+        if (!this.props.summaryData || !this.props.summaryData.size)
+            return <div>No sources found</div>;
+
+        const selectedSector = this.props.filterOptions.get("selectedSector");
+        const selectedSubsector = this.props.filterOptions.get("selectedSubsector");
+
+        if (!selectedSector) {
+            return this.makeTopLevelSummaryChart();
+        }
+
+        if (!selectedSubsector) {
+            return this.makeSectorSummaryChart(selectedSector);
+        }
+
         return (
             <React.Fragment>
                 {this.makeChart(
-                    this.props.summaryData.find(
-                        data =>
-                            data.cat ===
-                            layerSidebarTypes.INFRASTRUCTURE_NAME_TO_TYPE[
-                                selectedSubsector.toLowerCase()
-                            ]
-                    ),
+                    this.props.summaryData
+                        .filter(source => source.get("sector_level_2") === selectedSubsector)
+                        .toArray(),
                     selectedSubsector
                 )}
             </React.Fragment>
         );
     }
 
-    makeSector(selectedSector) {
-        const subsectorsInSector =
-            layerSidebarTypes.INFRASTRUCTURE_GROUPS[selectedSector.toLowerCase()].categories;
-        return (
-            <React.Fragment>
-                {this.makeChart(
-                    {
-                        data: this.props.summaryData.reduce(
-                            (acc, subcat) => acc.concat(subcat.data),
-                            []
-                        )
-                    },
-                    `All ${selectedSector}`
-                )}
-                {this.props.summaryData
-                    .filter(data => subsectorsInSector.includes(data.cat))
-                    .map(subcat =>
-                        this.makeChart(
-                            subcat,
-                            layerSidebarTypes.INFRASTRUCTURE_FACILITY_TYPE_TO_NAME[subcat.cat]
-                        )
-                    )}
-            </React.Fragment>
-        );
-    }
-
-    makeAllSectors() {
-        return (
-            <React.Fragment>
-                {this.makeChart(
-                    {
-                        data: this.props.summaryData.reduce(
-                            (acc, subcat) => acc.concat(subcat.data),
-                            []
-                        )
-                    },
-                    "All"
-                )}
-                {Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).map(key =>
-                    this.makeChart(
-                        {
-                            data: this.props.summaryData
-                                .filter(subcat =>
-                                    layerSidebarTypes.INFRASTRUCTURE_GROUPS[
-                                        key
-                                    ].categories.includes(subcat.cat)
-                                )
-                                .reduce((acc, subcat) => acc.concat(subcat.data), [])
-                        },
-                        key.charAt(0).toUpperCase() + key.substr(1)
-                    )
-                )}
-            </React.Fragment>
-        );
-    }
-
-    makeCharts() {
-        if (!this.props.summaryData) return <div />;
-
-        const selectedSubsector = this.props.filterOptions.get("selectedSubsector");
-        if (selectedSubsector) {
-            return this.makeSingleSubsector(selectedSubsector);
-        }
-
-        const selectedSector = this.props.filterOptions.get("selectedSector");
-        if (selectedSector) {
-            return this.makeSector(selectedSector);
-        }
-
-        return this.makeAllSectors();
-    }
-
     render() {
-        // Grab summary data if this is the first time this tab has been viewed.
-        if (!this.props.summaryData && !this.props.isLoading) {
-            this.props.fetchSummaryData();
-        }
-
         return (
             <div>
                 {this.makeLoadingModal()}
@@ -189,7 +163,7 @@ export class EmissionsSummaryInfoContainer extends Component {
 }
 
 EmissionsSummaryInfoContainer.propTypes = {
-    summaryData: PropTypes.array,
+    summaryData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     fetchSummaryData: PropTypes.func.isRequired,
     filterOptions: PropTypes.object.isRequired
