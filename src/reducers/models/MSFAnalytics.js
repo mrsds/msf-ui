@@ -1,5 +1,6 @@
 import Immutable from "immutable";
 import * as MSFTypes from "constants/MSFTypes";
+import moment from "moment";
 
 export const MSFAnalyticsState = Immutable.fromJS({
     analyticsMode: MSFTypes.ANALYTICS_MODE_DATA_COLLECTION_STATS,
@@ -7,11 +8,15 @@ export const MSFAnalyticsState = Immutable.fromJS({
         selectedArea: null,
         selectedSector: null,
         selectedSubsector: null,
-        selectedUnits: "kg"
+        selectedUnits: "kg",
+        startDate: moment("2000-01-01"),
+        endDate: moment(Date.now())
     },
     summaryDataIsLoading: false,
     summaryData: null,
     filteredSummaryData: null,
+    emissionsChartsData: null,
+    emissionsChartsDataIsLoading: false,
     detectionStatsAreLoading: false,
     detectionStats: null,
     areaSearchOptionsLoading: false,

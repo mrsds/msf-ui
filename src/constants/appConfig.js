@@ -43,8 +43,11 @@ const APP_CONFIG = Immutable.fromJS({
         plumeDownloadEndpoint: "http://100.64.114.187:8666/get_plume?id={source_id}",
         detectionStatsEndpoint: "http://100.64.114.187:9090/detectionBySector?county={county}",
         areaSearchOptionsListEndpoint: "http://100.64.114.187:9090/list/counties",
-        plumeSourceEndpoint: "http://100.64.114.187:9090/methanePlumeSources?county={county}",
-        sectorOptionsListEndpoint: "http://100.64.114.187:9090/list/sectors"
+        plumeSourceEndpoint:
+            "http://100.64.114.187:9090/methanePlumeSources?county={county}&sector_level_1={sector_level_1}&sector_level_2={sector_level_2}",
+        sectorOptionsListEndpoint: "http://100.64.114.187:9090/list/sectors",
+        plumeSourceSummaryEndpoint:
+            "http://100.64.114.187:9090/methanePlumeSourcesSummary?county={county}&sector_level_1={sector_level_1}&sector_level_2={sector_level_2}"
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
     PLUME_START_DATE: new Date(2000, 0, 1),

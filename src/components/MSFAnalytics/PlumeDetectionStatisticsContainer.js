@@ -70,7 +70,7 @@ export class PlumeDetectionStatisticsContainer extends Component {
         const facilityCount = subSector.facilities;
         const uniqueFacilityCount = subSector.unique_facilities_flown_over;
         const uniqueFacilityPct = (uniqueFacilityCount / facilityCount * 100) | 0;
-        const uniqueFacilityWithPlumeCount = subSector.unique_facilities_with_plumes;
+        const uniqueFacilityWithPlumeCount = subSector.unique_facilities_with_plume_detections;
         const uniqueFacilityWithPlumePct = (uniqueFacilityWithPlumeCount / facilityCount * 100) | 0;
         return {
             sector: subSector.sector_level_2,

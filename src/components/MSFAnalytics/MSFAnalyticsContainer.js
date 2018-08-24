@@ -18,6 +18,7 @@ import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
 import * as MSFTypes from "constants/MSFTypes";
 import Divider from "@material-ui/core/Divider";
 import DataFilterContainer from "components/MSFAnalytics/DataFilterContainer";
+import EmissionsChartsContainer from "components/MSFAnalytics/EmissionsChartsContainer";
 import EmissionsSummaryInfoContainer from "components/MSFAnalytics/EmissionsSummaryInfoContainer";
 import PlumeDetectionStatisticsContainer from "components/MSFAnalytics/PlumeDetectionStatisticsContainer";
 import Card from "@material-ui/core/Card";
@@ -62,6 +63,8 @@ export class MSFAnalyticsContainer extends Component {
 
     getAnalyticsContent() {
         switch (this.props.analyticsMode) {
+            case MSFTypes.ANALYTICS_MODE_EMISSIONS_CHARTS:
+                return <EmissionsChartsContainer />;
             case MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO:
                 return <EmissionsSummaryInfoContainer />;
             case MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS:

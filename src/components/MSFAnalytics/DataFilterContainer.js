@@ -26,6 +26,8 @@ import Paper from "@material-ui/core/Paper";
 import Radio from "@material-ui/core/Radio";
 import Immutable from "immutable";
 import { ClickAwayListener } from "_core/components/Reusables";
+import moment from "moment";
+import PlumeDateFilterControl from "components/FeatureDetail/PlumeDateFilterControl";
 
 export class DataFilterContainer extends Component {
     constructor(props) {
@@ -206,12 +208,15 @@ export class DataFilterContainer extends Component {
                 >
                     <Grow style={{ transformOrigin: "left top" }} in={active}>
                         <div>
-                            <ChartDateFilterControl
+                            <PlumeDateFilterControl
                                 currentDate={activeDate}
                                 earliestDate={earliestDate}
                                 latestDate={latestDate}
                                 updateDateFunction={updateFunction}
-                                onClose={() => this.setPopperActive(popperId, false)}
+                                onClose={() => {
+                                    this.setPopperActive(popperId, false);
+                                    this.props.updateActiveAnalyticsTab();
+                                }}
                             />
                         </div>
                     </Grow>
@@ -228,7 +233,7 @@ export class DataFilterContainer extends Component {
         const startDatePickerActive = this.popperProps.get("startDate");
         const endDatePickerActive = this.popperProps.get("endDate");
         const sectorPicker =
-            this.props.analyticsMode === MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO
+            this.props.analyticsMode !== MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS
                 ? this.makeDropdown(
                       "Sector",
                       this.props.selectedSector,
@@ -239,7 +244,7 @@ export class DataFilterContainer extends Component {
                   )
                 : null;
         const subSectorPicker =
-            this.props.analyticsMode === MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO
+            this.props.analyticsMode !== MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS
                 ? this.makeDropdown(
                       "Subsector",
                       this.props.selectedSubsector,
@@ -249,6 +254,27 @@ export class DataFilterContainer extends Component {
                       subsectorPickerActive
                   )
                 : null;
+
+        const startDatePicker = this.makeDateSelector(
+            startDatePickerActive,
+            "From: ",
+            "startDate",
+            this.props.startDate || moment("2000-01-01"),
+            moment("2000-01-01"),
+            moment(Date.now()),
+            this.props.changeDate.bind(null, true)
+        );
+
+        const endDatePicker = this.makeDateSelector(
+            endDatePickerActive,
+            "To: ",
+            "endDate",
+            this.props.endDate || moment(Date.now()),
+            this.props.startDate || moment(Date.now()),
+            moment(Date.now()),
+            this.props.changeDate.bind(null, false)
+        );
+
         return (
             <Card className={styles.cardRoot}>
                 <CardContent>
@@ -273,6 +299,8 @@ export class DataFilterContainer extends Component {
                             )}
                             {sectorPicker}
                             {subSectorPicker}
+                            {startDatePicker}
+                            {endDatePicker}
                         </ClickAwayListener>
                     </Manager>
                 </CardContent>
@@ -281,22 +309,6 @@ export class DataFilterContainer extends Component {
     }
 }
 
-// {this.makeDropdown(
-//     "Sector",
-//     this.props.selectedSector,
-//     this.getSectors,
-//     this.props.changeSector,
-//     "sector",
-//     sectorPickerActive
-// )}
-// {this.makeDropdown(
-//     "Subsector",
-//     this.props.selectedSubsector,
-//     this.getSubsectors,
-//     this.props.changeSubsector,
-//     "subsector",
-//     subsectorPickerActive
-// )}
 // {this.makeDropdown(
 //     "Units",
 //     this.props.selectedUnits,
@@ -319,7 +331,11 @@ DataFilterContainer.propTypes = {
     areaSearchOptionsList: PropTypes.object,
     sectorOptionsList: PropTypes.object,
     fetchAreaSearchOptionsList: PropTypes.func.isRequired,
-    fetchSectorOptionsList: PropTypes.func.isRequired
+    fetchSectorOptionsList: PropTypes.func.isRequired,
+    changeDate: PropTypes.func.isRequired,
+    startDate: PropTypes.object,
+    endDate: PropTypes.object,
+    updateActiveAnalyticsTab: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -330,7 +346,9 @@ function mapStateToProps(state) {
         selectedSubsector: state.MSFAnalytics.getIn(["filterOptions", "selectedSubsector"]),
         selectedUnits: state.MSFAnalytics.getIn(["filterOptions", "selectedUnits"]),
         areaSearchOptionsList: state.MSFAnalytics.get("areaSearchOptionsList"),
-        sectorOptionsList: state.MSFAnalytics.get("sectorOptionsList")
+        sectorOptionsList: state.MSFAnalytics.get("sectorOptionsList"),
+        startDate: state.MSFAnalytics.getIn(["filterOptions", "startDate"]),
+        endDate: state.MSFAnalytics.getIn(["filterOptions", "endDate"])
     };
 }
 
@@ -349,6 +367,11 @@ function mapDispatchToProps(dispatch) {
         ),
         fetchSectorOptionsList: bindActionCreators(
             MSFAnalyticsActions.fetchSectorOptionsList,
+            dispatch
+        ),
+        changeDate: bindActionCreators(MSFAnalyticsActions.changeDate, dispatch),
+        updateActiveAnalyticsTab: bindActionCreators(
+            MSFAnalyticsActions.updateActiveAnalyticsTab,
             dispatch
         )
     };

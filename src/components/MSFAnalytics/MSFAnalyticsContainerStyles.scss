@@ -175,3 +175,23 @@
     color: rgba(0, 0, 0, 0.54);
     -webkit-font-smoothing: auto;
 }
+
+.topLevelContent {
+    display: flex;
+    flex-wrap: wrap;
+    div {
+        margin: 10px 0;
+        flex-shrink: 0;
+        flex-basis: 250px;
+        h1 {
+            font-size: 36px;
+        }
+        h2 {
+            margin-bottom: 8px;
+        }
+    }
+}
+
+.contentCardFixed {
+    max-width: 900px;
+}
