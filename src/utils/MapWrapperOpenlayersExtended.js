@@ -184,6 +184,9 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             case appStringsMSF.LAYER_GRIDDED_GEOJSON:
                 mapLayer = this.createGriddedVectorLayer(layer, fromCache);
                 break;
+            case appStringsMSF.LAYER_GROUP_TYPE_VISTA_SOURCE:
+                mapLayer = this.createVistaSourceLayer(layer, fromCache);
+                break;
             default:
                 console.warn(
                     "Error in MapWrapperOpenlayers.createLayer: unknown layer type - ",
@@ -416,7 +419,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 iconStyle.getImage().setScale(baseRes / resolution);
                 return iconStyle;
             }
-            return AVIRIS_ICON_STYLE;
+            return INVISIBLE_AVIRIS_STYLE;
         });
 
         return imageFeature;
@@ -1101,5 +1104,65 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                     .on("loadingFeatures", callback);
                 break;
         }
+    }
+
+    getFeatureByName(featureName, featureType) {
+        let feature;
+        switch (featureType) {
+            case "VISTA":
+                feature = this.getVistaLayers()
+                    .reduce((acc, l) => acc.concat(l.getSource().getFeatures()), [])
+                    .find(f => f.get("name").includes(featureName));
+                break;
+        }
+        return feature;
+    }
+
+    createVistaSourceLayer(layer, fromCache = true) {
+        const layerSource = new Ol_Source_Vector({
+            strategy: Ol_Loading_Strategy.bbox,
+            loader: (extent, resolution, projection) => {
+                const url = MapUtilExtended.buildFeatureQueryString(layer.get("url"), extent);
+                layerSource.dispatchEvent("loadingFeatures");
+                fetch(url)
+                    .then(res => res.json())
+                    .then(data =>
+                        data.forEach(source => {
+                            layerSource.addFeature(this.makeVistaSourceFeature(source));
+                        })
+                    )
+                    .then(_ => layerSource.dispatchEvent("featuresLoaded"));
+            }
+        });
+
+        const sourceLayer = new Ol_Layer_Vector({
+            extent: appConfig.DEFAULT_MAP_EXTENT,
+            source: layerSource,
+            opacity: layer.get("opacity"),
+            visible: layer.get("isActive"),
+            updateWhileAnimating: true,
+            updateWhileInteracting: true,
+            renderMode: "image"
+        });
+
+        sourceLayer.set("_layerId", "VISTA_SOURCES");
+        sourceLayer.set("_layerType", layer.get("type"));
+        sourceLayer.set("_layerOrder", layer.get("layerOrder"));
+        sourceLayer.setStyle(AVIRIS_ICON_STYLE);
+
+        return sourceLayer;
+    }
+
+    makeVistaSourceFeature(source) {
+        const coordinates = Ol_Proj.transform(
+            [source.source_longitude, source.source_latitude],
+            Ol_Proj.get("EPSG:4326"),
+            Ol_Proj.get(appConfig.DEFAULT_PROJECTION.code)
+        );
+        const feature = new Ol_Feature({
+            geometry: new Ol_Geom_Point(coordinates),
+            name: source.name
+        });
+        return feature;
     }
 }

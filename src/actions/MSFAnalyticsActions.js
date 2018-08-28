@@ -8,6 +8,7 @@ import * as MSFTypes from "constants/MSFTypes";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import * as appStringsMSF from "constants/appStrings";
 import * as alertActions from "_core/actions/alertActions";
+import * as mapActions from "actions/mapActions";
 
 export function changeAnalyticsMode(mode) {
     return { type: typesMSF.CHANGE_ANALYTICS_MODE, mode };
@@ -290,5 +291,16 @@ export function updateActiveAnalyticsTab() {
             case MSFTypes.ANALYTICS_MODE_EMISSIONS_CHARTS:
                 return dispatch(fetchEmissionsChartsData());
         }
+    };
+}
+
+export function openMapToInfrastructure(featureName) {
+    return (dispatch, getState) => {
+        const feature = getState()
+            .map.getIn(["maps", "openlayers"])
+            .getFeatureByName(featureName, "VISTA");
+        if (!feature) return { type: types.NO_ACTION };
+        dispatch({ type: typesMSF.CHANGE_APP_MODE, mode: MSFTypes.APP_MODE_MAP });
+        dispatch(mapActions.centerMapOnFeature(feature, "VISTA"));
     };
 }

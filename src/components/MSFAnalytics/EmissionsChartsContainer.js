@@ -85,7 +85,15 @@ export class EmissionsChartsContainer extends Component {
                 ]
             },
             legend: { display: false },
-            plugins: { chartJsPluginErrorBars: { color: "#000000" } }
+            plugins: { chartJsPluginErrorBars: { color: "#000000" } },
+            onClick: (evt, item) => {
+                if (!item.length) return;
+                this.props.openMapToInfrastructure(
+                    sourceData
+                        .find(s => s.label === item[0]._model.label)
+                        .label.replace("Source near: ", "")
+                );
+            }
         };
 
         const dataset = {
@@ -216,7 +224,8 @@ EmissionsChartsContainer.propTypes = {
     emissionsChartsData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     fetchEmissionsChartsData: PropTypes.func.isRequired,
-    filterOptions: PropTypes.object.isRequired
+    filterOptions: PropTypes.object.isRequired,
+    openMapToInfrastructure: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -231,6 +240,10 @@ function mapDispatchToProps(dispatch) {
     return {
         fetchEmissionsChartsData: bindActionCreators(
             MSFAnalyticsActions.fetchEmissionsChartsData,
+            dispatch
+        ),
+        openMapToInfrastructure: bindActionCreators(
+            MSFAnalyticsActions.openMapToInfrastructure,
             dispatch
         )
     };

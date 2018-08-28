@@ -336,6 +336,18 @@
             "thumbnailImage": "img/ASTER_GDEM_Color_Shaded_Relief.jpeg",
             "handleAs": "GIBS_raster",
             "updateParameters": { "time": false }
+        },
+        {
+            "id": "AVIRIS_SOURCES",
+            "title": "AVIRIS Sources",
+            "type": "data",
+            "handleAs": "vista_source",
+            "isDefault": true,
+            "url":
+                "http://100.64.114.187:9090/sources?maxLat={latMax}&minLat={latMin}&maxLon={lonMax}&minLon={lonMin}",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "updateParameters": { "time": false },
+            "layerOrder": 3
         }
     ]
 }

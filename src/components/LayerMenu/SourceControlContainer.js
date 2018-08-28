@@ -30,7 +30,7 @@ import Grow from "@material-ui/core/Grow";
 import stylesExtended from "components/LayerMenu/LayerControlContainerExtendedStyles.scss";
 import MiscUtil from "_core/utils/MiscUtil";
 
-export class PlumesControlContainer extends LayerControlContainerCore {
+export class SourceControlContainer extends LayerControlContainerCore {
     constructor(props) {
         super(props);
         this.isChangingOpacity = false;
@@ -109,22 +109,7 @@ export class PlumesControlContainer extends LayerControlContainerCore {
     }
 
     getColorbar() {
-        // if (this.props.currentZoom < 12) {
-        //     return <img src="img/PlumeIcon.png" className={stylesExtended.icon} />;
-        // }
-        return (
-            <Colorbar
-                palette={this.props.palette}
-                min={parseFloat(this.props.layer.get("min"))}
-                max={parseFloat(this.props.layer.get("max"))}
-                units={this.props.layer.get("units")}
-                displayMin={this.props.layer.getIn(["palette", "min"])}
-                displayMax={this.props.layer.getIn(["palette", "max"])}
-                handleAs={this.props.layer.getIn(["palette", "handleAs"])}
-                url={this.props.layer.getIn(["palette", "url"])}
-                className={colorbarStylesExtended.colorbar}
-            />
-        );
+        return <img src="img/PlumeIcon.png" className={stylesExtended.icon} />;
     }
 
     renderIconRow() {
@@ -216,7 +201,7 @@ export class PlumesControlContainer extends LayerControlContainerCore {
     }
 }
 
-PlumesControlContainer.propTypes = {
+SourceControlContainer.propTypes = {
     mapActions: PropTypes.object.isRequired,
     mapActionsExtended: PropTypes.object.isRequired,
     layer: PropTypes.object.isRequired,
@@ -232,4 +217,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(PlumesControlContainer);
+export default connect(null, mapDispatchToProps)(SourceControlContainer);

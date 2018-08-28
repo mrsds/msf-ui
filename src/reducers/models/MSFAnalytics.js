@@ -3,7 +3,7 @@ import * as MSFTypes from "constants/MSFTypes";
 import moment from "moment";
 
 export const MSFAnalyticsState = Immutable.fromJS({
-    analyticsMode: MSFTypes.ANALYTICS_MODE_DATA_COLLECTION_STATS,
+    analyticsMode: MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS,
     filterOptions: {
         selectedArea: null,
         selectedSector: null,

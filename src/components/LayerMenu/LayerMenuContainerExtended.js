@@ -21,6 +21,7 @@ import styles from "_core/components/LayerMenu/LayerMenuContainer.scss";
 import stylesExtended from "components/LayerMenu/LayerMenuContainerExtendedStyles.scss";
 import displayStyles from "_core/styles/display.scss";
 import PlumesControlContainer from "components/LayerMenu/PlumesControlContainer";
+import SourceControlContainer from "components/LayerMenu/SourceControlContainer";
 import { ButtonBase } from "@material-ui/core";
 
 export class LayerMenuContainer extends Component {
@@ -51,11 +52,23 @@ export class LayerMenuContainer extends Component {
         let plumeLayer = layerList.find(x => x.get("id") === "AVIRIS");
         let griddedMethaneLayer = layerList.find(x => x.get("id") === "GRIDDED_EMISSIONS_V2");
         let infrastructureLayer = this.props.groups.get(0);
+        let sourceLayer = layerList.find(x => x.get("id") === "AVIRIS_SOURCES");
         let plumeLayerControl = null;
         let infrastructureLayerControl = null;
         let griddedMethaneLayerControl = null;
+        let sourceLayerControl = null;
 
-        if (plumeLayer && griddedMethaneLayer && infrastructureLayer) {
+        if (plumeLayer && griddedMethaneLayer && infrastructureLayer && sourceLayer) {
+            sourceLayerControl = (
+                <SourceControlContainer
+                    key={sourceLayer.get("id") + "_layer_listing"}
+                    layer={sourceLayer}
+                    activeNum={activeNum}
+                    palette={this.props.palettes.get(sourceLayer.getIn(["palette", "name"]))}
+                    currentZoom={this.props.currentZoom}
+                />
+            );
+
             plumeLayerControl = (
                 <PlumesControlContainer
                     key={plumeLayer.get("id") + "_layer_listing"}
@@ -122,6 +135,7 @@ export class LayerMenuContainer extends Component {
                             <List disablePadding>
                                 {/* Manually create layers here since it would be too troublesome to get the order correct otherwise
                                 since we have to deal with these layer groups.. */}
+                                {sourceLayerControl}
                                 {plumeLayerControl}
                                 {infrastructureLayerControl}
                                 {griddedMethaneLayerControl}
