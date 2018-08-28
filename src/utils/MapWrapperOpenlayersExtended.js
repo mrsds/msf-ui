@@ -682,40 +682,25 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         let featureId = feature.get("id");
         // Resolve feature from id by featureType
 
-        if (featureType === "VISTA") {
-            // TODO there could be a much more optimal way of accessing
-            // features, could leave some key trail to reconstruct path
-            // to particular features
-            this.map.getLayers().forEach(layer => {
-                if (!layer.get("_layerId").includes("VISTA")) return;
-
-                layer.getSource().forEachFeature(feature => {
-                    if (feature.getProperties().id === featureId) {
-                        return this.fitFeature(feature.getGeometry().getExtent());
-                    }
-                });
-            });
-        } else if (featureType === "AVIRIS") {
-            let featureLayer = this.getAVIRISFeatureLayerById(featureId);
-            if (featureLayer) {
-                return this.fitFeature(featureLayer.get("_featureExtent"));
-            }
+        let zoomFeature;
+        switch (featureType) {
+            case "VISTA":
+                zoomFeature = this.getVistaLayers()
+                    .reduce((acc, l) => acc.concat(l.getSource().getFeatures()), [])
+                    .find(f => f.getProperties().id === featureId);
+                break;
+            case "AVIRIS":
+                zoomFeature = this.getAVIRISFeatureById(featureId);
+                break;
         }
-        return false;
+        return zoomFeature ? this.fitFeature(zoomFeature.getGeometry().getExtent()) : null;
     }
 
-    getAVIRISFeatureLayerById(id) {
-        let avirisLayerGroup = this.map
-            .getLayers()
-            .getArray()
-            .find(l => l.get("_layerId") === "AVIRIS");
-
-        let avirisImageLayerGroup = this.getAvirisImageLayerGroup();
-
-        return avirisImageLayerGroup
-            .getLayers()
-            .getArray()
-            .find(layer => layer.get("_featureId") === id);
+    getAVIRISFeatureById(id) {
+        return this.getAvirisLayer()
+            .getSource()
+            .getFeatures()
+            .find(f => f.getId() === id);
     }
 
     handleAVIRISLabelToggle(pickedFeature, currentMapExtent) {

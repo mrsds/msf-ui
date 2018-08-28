@@ -104,8 +104,8 @@ export class PlumesContainer extends Component {
             }
         };
 
-        const lat = MetadataUtil.getLat(feature, null);
-        const long = MetadataUtil.getLong(feature, null);
+        const lat = feature.getIn(["location", 0]);
+        const long = feature.getIn(["location", 1]);
         const centerMapAction =
             lat && long ? () => this.props.centerMapOnFeature(feature, "AVIRIS") : null;
 

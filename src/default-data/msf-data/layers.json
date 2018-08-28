@@ -211,7 +211,7 @@
             "type": "data",
             "handleAs": "gridded_geojson",
             "isDefault": false,
-            "url": "http://100.64.114.187/data/gridded/v2/Fluxes_20150128.geojson",
+            "url": "http://100.64.114.187:9090/data/gridded/v2/Fluxes_20150128.geojson",
             "thumbnailImage": "img/gridded_methane_v1.png",
             "opacity": 0.3,
             "metadata": {
