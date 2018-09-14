@@ -23,6 +23,10 @@ if (process.env.hasOwnProperty("REACT_APP_BE_PORT")) {
     be_endpoint = process.env.REACT_APP_BE_PORT.toLowerCase();
 }
 
+if (process.env.REACT_APP_LAYER_FILE != undefined) {
+    layer_file = process.env.REACT_APP_LAYER_FILE;
+}
+
 // the config as defined by CMC Core
 const CORE_CONFIG = Immutable.fromJS(coreConfig);
 
