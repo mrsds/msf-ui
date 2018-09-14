@@ -1,4 +1,4 @@
-FROM node:9
+FROM node:10
 WORKDIR /msf
 COPY . /msf
 #COPY entrypoint.sh /usr/local/bin/
@@ -8,4 +8,3 @@ RUN npm install
 RUN yarn install --force
 #ENTRYPOINT ["entrypoint.sh"]
 CMD ["npm", "start"]
-
