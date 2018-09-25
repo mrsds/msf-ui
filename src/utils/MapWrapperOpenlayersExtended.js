@@ -364,7 +364,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         griddedFluxLayer.setSource(newSource);
     }
 
-    createAvirisFeature(layer, image, projection) {
+    createAvirisFeature(layer, projection) {
         const shape = layer.shape;
         const extent = [shape[0][0], shape[1][1], shape[2][0], shape[0][1]];
         const transformedExtent = Ol_Proj.transformExtent(
@@ -401,26 +401,37 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         imageFeature.set("_opacity", 1);
         imageFeature.set("_layerGroup", "AVIRIS");
 
-        const baseRes = (transformedExtent[2] - transformedExtent[0]) / image.width;
-        const iconStyle = new Ol_Style({
-            image: new Ol_Style_Icon({
-                anchor: [image.height / 2, (image.width / 2) | 0],
-                opacity: 1,
-                img: image,
-                imgSize: [image.width, image.height],
-                anchorXUnits: "pixels",
-                anchorYUnits: "pixels"
-            })
-        });
-
-        imageFeature.setStyle((feature, resolution) => {
-            if (feature.get("_opacity") === 0) return INVISIBLE_AVIRIS_STYLE;
-            if (resolution < 76.43702828517625) {
-                iconStyle.getImage().setScale(baseRes / resolution);
-                return iconStyle;
+        // Only load the source plume image when the user zooms in close enough.
+        let image;
+        let baseRes;
+        let iconStyle;
+        function styleFunc(feature, resolution) {
+            if (feature.get("_opacity") === 0 || resolution > 76.43702828517625) {
+                return INVISIBLE_AVIRIS_STYLE;
             }
-            return INVISIBLE_AVIRIS_STYLE;
-        });
+            if (!iconStyle) {
+                image = new Image();
+                image.src = layer.plume_url;
+                image.onload = _ => {
+                    iconStyle = new Ol_Style({
+                        image: new Ol_Style_Icon({
+                            anchor: [image.height / 2, (image.width / 2) | 0],
+                            opacity: 1,
+                            img: image,
+                            imgSize: [image.width, image.height],
+                            anchorXUnits: "pixels",
+                            anchorYUnits: "pixels"
+                        })
+                    });
+                    baseRes = (transformedExtent[2] - transformedExtent[0]) / image.width;
+                    feature.setStyle(styleFunc);
+                };
+                return INVISIBLE_AVIRIS_STYLE;
+            }
+            iconStyle.getImage().setScale(baseRes / resolution);
+            return iconStyle;
+        }
+        imageFeature.setStyle(styleFunc);
 
         return imageFeature;
     }
@@ -433,36 +444,12 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 layerSource.dispatchEvent("loadingFeatures");
                 fetch(url)
                     .then(res => res.json())
-                    .then(data =>
-                        Promise.all(
-                            data.map(
-                                layer =>
-                                    new Promise(resolve => {
-                                        fetch(layer.plume_url)
-                                            .then(res => {
-                                                if (res.ok) return res.blob();
-                                                throw new Error(
-                                                    `Couldn't load URL: ${layer.plume_url}`
-                                                );
-                                            })
-                                            .then(blob => {
-                                                const image = new Image();
-                                                image.src = window.URL.createObjectURL(blob);
-                                                image.onload = _ => {
-                                                    layerSource.addFeature(
-                                                        this.createAvirisFeature(
-                                                            layer,
-                                                            image,
-                                                            projection
-                                                        )
-                                                    );
-                                                    resolve();
-                                                };
-                                            });
-                                    })
-                            )
-                        ).then(_ => layerSource.dispatchEvent("featuresLoaded"))
-                    );
+                    .then(data => {
+                        data.map(layer =>
+                            layerSource.addFeature(this.createAvirisFeature(layer, projection))
+                        );
+                        layerSource.dispatchEvent("featuresLoaded");
+                    });
             }
         });
 
