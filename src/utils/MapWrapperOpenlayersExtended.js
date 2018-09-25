@@ -308,41 +308,29 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
 
     addLayer(mapLayer) {
         try {
-            const layerOrder = mapLayer.get("_layerOrder");
-            let index;
-            if (typeof layerOrder === "undefined") {
-                index = this.findTopInsertIndexForLayer(mapLayer);
-            } else {
-                index = this.findFixedInsertIndexForLayer(mapLayer);
+            const mapLayers = this.map.getLayers();
+            let insertIndex = 0;
+            if (mapLayer.get("_layerType") === appStrings.LAYER_GROUP_TYPE_BASEMAP) {
+                insertIndex = this.findTopInsertIndexForLayer(mapLayer);
             }
-            this.map.getLayers().insertAt(index + layerOrder, mapLayer);
+
+            if (mapLayer.get("_layerType") === appStrings.LAYER_GROUP_TYPE_DATA) {
+                const dataLayerStartIndex = mapLayers
+                    .getArray()
+                    .filter(
+                        layer => layer.get("_layerType") === appStrings.LAYER_GROUP_TYPE_BASEMAP
+                    ).length;
+                const layerOrder = mapLayer.get("_layerOrder") || 0;
+                insertIndex = dataLayerStartIndex + layerOrder;
+            }
+
+            mapLayers.insertAt(insertIndex, mapLayer);
             this.addLayerToCache(mapLayer, appConfig.TILE_LAYER_UPDATE_STRATEGY);
             return true;
         } catch (err) {
             console.warn("Error in MapWrapperOpenlayers.addLayer:", err);
             return false;
         }
-    }
-
-    /* Inserts a layer at a certain index, relative to others. So, if a certain layer has a "layerOrder" of 1,
-    this function finds the position index of the next-highest layer that's active and inserts the layer at
-    an index right below it.*/
-    findFixedInsertIndexForLayer(mapLayer) {
-        const targetOrder = mapLayer.get("_layerOrder");
-        const layerCollection = this.map.getLayers();
-
-        let lastLayerOrder = 100;
-        let lastLayerIndex = 100;
-        for (let i = 0; i < layerCollection.getLength(); i++) {
-            const layer = layerCollection.item(i);
-            if (layer.get("_layerType") !== appStrings.LAYER_GROUP_TYPE_DATA) continue;
-            const layerOrder = layer.get("_layerOrder");
-            if (layerOrder > targetOrder && layerOrder < lastLayerOrder && i < lastLayerIndex) {
-                lastLayerOrder = layerOrder;
-                lastLayerIndex = i;
-            }
-        }
-        return lastLayerIndex - 1;
     }
 
     changeGriddedVectorLayerDate(date) {
@@ -424,15 +412,16 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                         })
                     });
                     baseRes = (transformedExtent[2] - transformedExtent[0]) / image.width;
+                    // Running "setStyle" when the image loads forces the feature to refresh.
                     feature.setStyle(styleFunc);
                 };
+                // Return invisible while we load the image.
                 return INVISIBLE_AVIRIS_STYLE;
             }
             iconStyle.getImage().setScale(baseRes / resolution);
             return iconStyle;
         }
         imageFeature.setStyle(styleFunc);
-
         return imageFeature;
     }
 
