@@ -113,6 +113,12 @@ export class PlumeChartingContainer extends Component {
         }
     }
 
+    makePlumeIdText(feature) {
+        const plume_id = feature.get("aviris_plume_id");
+        if (plume_id === this.props.feature.get("plume_id")) return <strong>{plume_id}</strong>;
+        return plume_id;
+    }
+
     makePlumeListItem(feature) {
         const datetime = feature.get("plume_date") || feature.get("flightline_date");
         const dateString = datetime ? moment(datetime).format("M/D/YYYY") : "(No Date)";
@@ -135,7 +141,7 @@ export class PlumeChartingContainer extends Component {
                         {timeString}
                     </TableCell>
                     <TableCell padding="dense">
-                        {isFlyover ? "-" : feature.get("aviris_plume_id")}
+                        {isFlyover ? "-" : this.makePlumeIdText(feature)}
                     </TableCell>
                     <TableCell numeric={!isFlyover} padding="dense">
                         {isFlyover ? "-" : "(none)"}
