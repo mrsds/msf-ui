@@ -11,6 +11,22 @@ import * as coreConfig from "_core/constants/appConfig";
 import * as appStrings from "_core/constants/appStrings";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
+let be_endpoint = "100.64.114.187";
+let be_port = "9090";
+let layer_file = "layers.json";
+
+if (process.env.REACT_APP_BE_ENDPOINT != undefined) {
+    be_endpoint = process.env.REACT_APP_BE_ENDPOINT.toLowerCase();
+}
+
+if (process.env.hasOwnProperty("REACT_APP_BE_PORT")) {
+    be_endpoint = process.env.REACT_APP_BE_PORT.toLowerCase();
+}
+
+if (process.env.REACT_APP_LAYER_FILE != undefined) {
+    layer_file = process.env.REACT_APP_LAYER_FILE;
+}
+
 // the config as defined by CMC Core
 const CORE_CONFIG = Immutable.fromJS(coreConfig);
 
@@ -21,32 +37,49 @@ const OPS_CONFIG = Immutable.fromJS(window.APPLICATION_CONFIG);
 const APP_CONFIG = Immutable.fromJS({
     URLS: {
         vistaEndpoint:
-            "http://100.64.114.187:9090/vista?maxLat={latMax}&maxLon={lonMax}&minLat={latMin}&minLon={lonMin}&category={category}",
-        vistaDetailEndpoint: "http://100.64.114.187:9090/vista?vistaId={vista_id}",
+            "http://" +
+            be_endpoint +
+            ":" +
+            be_port +
+            "/vista?maxLat={latMax}&maxLon={lonMax}&minLat={latMin}&minLon={lonMin}&category={category}",
+        vistaDetailEndpoint: "http://" + be_endpoint + ":" + be_port + "/vista?vistaId={vista_id}",
         avirisEndpoint:
-            "http://100.64.114.187:9090/aviris/plumes?maxObjects=10000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}",
+            "http://" +
+            be_endpoint +
+            ":" +
+            be_port +
+            "/aviris/plumes?maxObjects=10000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}",
         layerConfig: [
             {
                 url: "default-data/msf-data/capabilities.xml",
                 type: "wmts/xml"
             },
             {
-                url: "default-data/msf-data/layers.json",
+                url: "default-data/msf-data/" + layer_file,
                 type: "json"
             }
         ],
         paletteConfig: "default-data/msf-data/palettes.json",
-        availableGriddedDates: "http://100.64.114.187/data/gridded/gridded_date_list.json",
-        griddedVectorEndpoint: "http://100.64.114.187/data/gridded/v2/Fluxes_{date}.geojson",
+        availableGriddedDates: "http://" + be_endpoint + "/data/gridded/gridded_date_list.json",
+        griddedVectorEndpoint: "http://" + be_endpoint + "/data/gridded/v2/Fluxes_{date}.geojson",
         plumeListQueryEndpoint:
-            "http://100.64.114.187:9090/flyoversOfPlumeSource?source={source_id}",
-        detectionStatsEndpoint: "http://100.64.114.187:9090/detectionBySector?county={county}",
-        areaSearchOptionsListEndpoint: "http://100.64.114.187:9090/list/counties",
+            "http://" + be_endpoint + ":" + be_port + "/flyoversOfPlumeSource?source={source_id}",
+        detectionStatsEndpoint:
+            "http://" + be_endpoint + ":" + be_port + "/detectionBySector?county={county}",
+        areaSearchOptionsListEndpoint: "http://" + be_endpoint + ":" + be_port + "/list/counties",
         plumeSourceEndpoint:
-            "http://100.64.114.187:9090/methanePlumeSources?county={county}&sector_level_1={sector_level_1}&sector_level_2={sector_level_2}",
-        sectorOptionsListEndpoint: "http://100.64.114.187:9090/list/sectors",
+            "http://" +
+            be_endpoint +
+            ":" +
+            be_port +
+            "/methanePlumeSources?county={county}&sector_level_1={sector_level_1}&sector_level_2={sector_level_2}",
+        sectorOptionsListEndpoint: "http://" + be_endpoint + ":" + be_port + "/list/sectors",
         plumeSourceSummaryEndpoint:
-            "http://100.64.114.187:9090/methanePlumeSourcesSummary?county={county}&sector_level_1={sector_level_1}&sector_level_2={sector_level_2}"
+            "http://" +
+            be_endpoint +
+            ":" +
+            be_port +
+            "/methanePlumeSourcesSummary?county={county}&sector_level_1={sector_level_1}&sector_level_2={sector_level_2}"
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
     PLUME_START_DATE: new Date(2000, 0, 1),

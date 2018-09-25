@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+    ui_service:
+        build: ./
+        ports:
+        - "3000:3000"
+        environment:
+        - REACT_APP_BE_ENDPOINT=13.59.145.54
+        - REACT_APP_LAYER_FILE=layers_public.json
+        networks:
+        - msf
+    msf-be_service:
+        build: ../msf-be
+        ports:
+        - "9090:9090"
+        networks:
+        - msf
+        command: ["python", "-m", "msfbe.main", "--address=0.0.0.0"]
+networks:
+    msf:
+        driver: bridge

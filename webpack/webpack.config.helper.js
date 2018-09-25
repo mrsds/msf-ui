@@ -12,6 +12,7 @@ const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const StyleExtHtmlWebpackPlugin = require("style-ext-html-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
 
 const BASE_DIR = path.resolve("./");
 
@@ -127,6 +128,7 @@ module.exports = options => {
             new webpack.LoaderOptionsPlugin({
                 debug: true
             }),
+            new Dotenv({ systemvars: true }),
             new HtmlWebpackPlugin({
                 filename: "index.html",
                 template: path.join(BASE_DIR, "src/index_template.html"),
