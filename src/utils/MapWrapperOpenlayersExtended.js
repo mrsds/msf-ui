@@ -601,9 +601,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                     fetch(url).then(res =>
                         res.json().then(data => {
                             // Add in default name if one does not exist
-                            data.features.map(
-                                x => (!x.properties.name ? (x.properties.name = "Unnamed") : null)
-                            );
+                            data.features = data.features.filter(f => f.geometry);
                             layerSource.addFeatures(
                                 layerSource.getFormat().readFeatures(data, {
                                     dataProjection: "EPSG:4326",
