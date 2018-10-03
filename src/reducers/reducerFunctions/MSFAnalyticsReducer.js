@@ -36,12 +36,12 @@ export default class MSFAnalyticsReducer {
         return state.set("summaryDataIsLoading", action.isLoading);
     }
 
-    static updateEmissionsChartsData(state, action) {
-        return state.set("emissionsChartsData", Immutable.fromJS(action.data));
+    static updateEmissionsSourceData(state, action) {
+        return state.set("emissionsSourceData", Immutable.fromJS(action.data));
     }
 
-    static analyticsEmissionsChartsDataLoading(state, action) {
-        return state.set("emissionsChartsDataIsLoading", action.isLoading);
+    static analyticsEmissionsSourceDataLoading(state, action) {
+        return state.set("emissionsSourceDataIsLoading", action.isLoading);
     }
 
     static updateAnalyticsDetectionStats(state, action) {
@@ -73,5 +73,9 @@ export default class MSFAnalyticsReducer {
             ["filterOptions", action.isStart ? "startDate" : "endDate"],
             action.date
         );
+    }
+
+    static updateSummaryPageSourceIndex(state, action) {
+        return state.set("emissionsSummarySourceStartIndex", action.index);
     }
 }

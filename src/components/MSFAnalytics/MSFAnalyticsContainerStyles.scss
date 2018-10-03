@@ -85,7 +85,7 @@
 }
 
 .contentCard {
-    overflow: visible;
+    overflow: auto;
     margin: 0 auto;
     margin-top: 15px;
     width: 90%;
@@ -181,6 +181,22 @@
     flex-wrap: wrap;
     div {
         margin: 10px 0;
+        flex-shrink: 0;
+        flex-basis: 250px;
+        h1 {
+            font-size: 36px;
+        }
+        h2 {
+            margin-bottom: 8px;
+        }
+    }
+}
+
+.tableContent {
+    display: flex;
+    flex-wrap: wrap;
+    div {
+        margin: 0;
         flex-shrink: 0;
         flex-basis: 250px;
         h1 {

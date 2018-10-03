@@ -146,35 +146,46 @@ function sectorOptionsListLoading(isLoading) {
     return { type: typesMSF.SECTOR_OPTIONS_LIST_LOADING, isLoading };
 }
 
-export function fetchSummaryData() {
+function formatUrlWithSectorsAndDates(base_url, getState) {
+    const startDate = getState().MSFAnalytics.getIn(["filterOptions", "startDate"]);
+    const endDate = getState().MSFAnalytics.getIn(["filterOptions", "endDate"]);
+    let url = base_url
+        .replace("{county}", getState().MSFAnalytics.getIn(["filterOptions", "selectedArea"]) || "")
+        .replace(
+            "{sector_level_1}",
+            getState().MSFAnalytics.getIn(["filterOptions", "selectedSector"]) || ""
+        )
+        .replace(
+            "{sector_level_2}",
+            getState().MSFAnalytics.getIn(["filterOptions", "selectedSubsector"]) || ""
+        );
+    url += startDate ? `&from_date=${startDate.unix()}` : "";
+    url += endDate ? `&to_date=${endDate.unix()}` : "";
+    return url;
+}
+
+function fetchSummaryData(dispatch, getState) {
+    dispatch(summaryDataLoading(true));
+    const summaryUrl = formatUrlWithSectorsAndDates(
+        appConfig.URLS.plumeSourceSummaryEndpoint,
+        getState
+    );
+    fetch(summaryUrl)
+        .then(res => res.json())
+        .then(json => {
+            dispatch(updateSummaryData(json));
+            dispatch(summaryDataLoading(false));
+        })
+        .catch(err => {
+            console.warn(`Error getting emissions summary data.`, err);
+        });
+}
+
+export function updateSummaryPageData() {
     return (dispatch, getState) => {
-        dispatch(summaryDataLoading(true));
-        const startDate = getState().MSFAnalytics.getIn(["filterOptions", "startDate"]);
-        const endDate = getState().MSFAnalytics.getIn(["filterOptions", "endDate"]);
-        let url = appConfig.URLS.plumeSourceSummaryEndpoint
-            .replace(
-                "{county}",
-                getState().MSFAnalytics.getIn(["filterOptions", "selectedArea"]) || ""
-            )
-            .replace(
-                "{sector_level_1}",
-                getState().MSFAnalytics.getIn(["filterOptions", "selectedSector"]) || ""
-            )
-            .replace(
-                "{sector_level_2}",
-                getState().MSFAnalytics.getIn(["filterOptions", "selectedSubsector"]) || ""
-            );
-        url += startDate ? `&from_date=${startDate.unix()}` : "";
-        url += endDate ? `&to_date=${endDate.unix()}` : "";
-        fetch(url)
-            .then(res => res.json())
-            .then(json => {
-                dispatch(updateSummaryData(json));
-                dispatch(summaryDataLoading(false));
-            })
-            .catch(err => {
-                console.warn(`Error getting emissions summary data.`, err);
-            });
+        fetchSummaryData(dispatch, getState);
+        fetchEmissionsSourceData(dispatch, getState);
+        dispatch(resetSummarySourcesPageIndex());
     };
 }
 
@@ -185,36 +196,28 @@ function updateSummaryData(data) {
     return { type: typesMSF.UPDATE_ANALYTICS_SUMMARY_DATA, data };
 }
 
-export function fetchEmissionsChartsData() {
+function resetSummarySourcesPageIndex() {
+    return { type: typesMSF.UPDATE_SUMMARY_PAGE_SOURCE_INDEX, index: 0 };
+}
+
+export function updateEmissionsCharts() {
     return (dispatch, getState) => {
-        dispatch(emissionsChartsDataLoading(true));
-        const startDate = getState().MSFAnalytics.getIn(["filterOptions", "startDate"]);
-        const endDate = getState().MSFAnalytics.getIn(["filterOptions", "endDate"]);
-        let url = appConfig.URLS.plumeSourceEndpoint
-            .replace(
-                "{county}",
-                getState().MSFAnalytics.getIn(["filterOptions", "selectedArea"]) || ""
-            )
-            .replace(
-                "{sector_level_1}",
-                getState().MSFAnalytics.getIn(["filterOptions", "selectedSector"]) || ""
-            )
-            .replace(
-                "{sector_level_2}",
-                getState().MSFAnalytics.getIn(["filterOptions", "selectedSubsector"]) || ""
-            );
-        url += startDate ? `&from_date=${startDate.unix()}` : "";
-        url += endDate ? `&to_date=${endDate.unix()}` : "";
-        fetch(url)
-            .then(res => res.json())
-            .then(json => {
-                dispatch(updateEmissionsChartsData(json));
-                dispatch(emissionsChartsDataLoading(false));
-            })
-            .catch(err => {
-                console.warn(`Error getting emissions charts data.`, err);
-            });
+        fetchEmissionsSourceData(dispatch, getState);
     };
+}
+
+function fetchEmissionsSourceData(dispatch, getState) {
+    dispatch(emissionsSourceDataLoading(true));
+    const url = formatUrlWithSectorsAndDates(appConfig.URLS.plumeSourceEndpoint, getState);
+    fetch(url)
+        .then(res => res.json())
+        .then(json => {
+            dispatch(updateEmissionsSourceData(json));
+            dispatch(emissionsSourceDataLoading(false));
+        })
+        .catch(err => {
+            console.warn(`Error getting emissions charts data.`, err);
+        });
 }
 
 function getSourceList(data) {
@@ -267,12 +270,12 @@ function getSubcategoryList(getState) {
     return { name: subsector, id: layerSidebarTypes.INFRASTRUCTURE_SUBCATEGORIES[subsector] };
 }
 
-function emissionsChartsDataLoading(isLoading) {
-    return { type: typesMSF.ANALYTICS_EMISSIONS_CHARTS_DATA_LOADING, isLoading };
+function emissionsSourceDataLoading(isLoading) {
+    return { type: typesMSF.ANALYTICS_EMISSIONS_SOURCE_DATA_LOADING, isLoading };
 }
 
-function updateEmissionsChartsData(data) {
-    return { type: typesMSF.UPDATE_ANALYTICS_EMISSIONS_CHARTS_DATA, data };
+function updateEmissionsSourceData(data) {
+    return { type: typesMSF.UPDATE_ANALYTICS_EMISSIONS_SOURCE_DATA, data };
 }
 
 export function changeDate(isStart, date) {
@@ -287,9 +290,9 @@ export function updateActiveAnalyticsTab() {
             case MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS:
                 return dispatch(fetchDetectionStats());
             case MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO:
-                return dispatch(fetchSummaryData());
+                return dispatch(updateSummaryPageData());
             case MSFTypes.ANALYTICS_MODE_EMISSIONS_CHARTS:
-                return dispatch(fetchEmissionsChartsData());
+                return dispatch(updateEmissionsCharts());
         }
     };
 }
@@ -303,4 +306,8 @@ export function openMapToInfrastructure(featureName) {
         dispatch({ type: typesMSF.CHANGE_APP_MODE, mode: MSFTypes.APP_MODE_MAP });
         dispatch(mapActions.centerMapOnFeature(feature, "VISTA"));
     };
+}
+
+export function updateSummaryPageSourceIndex(index) {
+    return { type: typesMSF.UPDATE_SUMMARY_PAGE_SOURCE_INDEX, index };
 }

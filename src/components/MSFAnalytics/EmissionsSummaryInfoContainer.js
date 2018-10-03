@@ -17,11 +17,14 @@ import * as MSFTypes from "constants/MSFTypes";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import { Bar as BarChart } from "react-chartjs-2";
-import ErrorBarsPlugin from "chartjs-plugin-error-bars";
+import moment from "moment";
+import PageControls from "components/MSFAnalytics/PageControls";
+
+const SOURCE_RESULTS_PER_PAGE = 25;
 
 export class EmissionsSummaryInfoContainer extends Component {
     componentDidMount() {
-        this.props.fetchSummaryData();
+        this.props.updateSummaryPageData();
     }
 
     sortSectors(a, b) {
@@ -78,11 +81,103 @@ export class EmissionsSummaryInfoContainer extends Component {
         );
     }
 
+    formatBasicL1SourceName(sourceName) {
+        return sourceName.split(/\s/)[1].split(",")[0];
+    }
+
+    formatDateStr(dateStr) {
+        return moment(dateStr).format("M/D/YYYY");
+    }
+
+    makePageControls() {
+        return (
+            <PageControls
+                className={styles.pageControls}
+                resultCount={this.props.sourcesData.size}
+                currentPageIndex={this.props.sourceStartIndex}
+                onPageBackward={this.props.updateSummaryPageSourceIndex}
+                onPageForward={this.props.updateSummaryPageSourceIndex}
+                resultsPerPage={SOURCE_RESULTS_PER_PAGE}
+            />
+        );
+    }
+
+    makeSourcesTableBody() {
+        return this.props.sourcesData
+            .slice(
+                this.props.sourceStartIndex,
+                this.props.sourceStartIndex + SOURCE_RESULTS_PER_PAGE
+            )
+            .map(source => {
+                const sourceId = source.get("source_id");
+                const sectorName = this.formatBasicL1SourceName(source.get("sector_level_1"));
+                const startDateStr = this.formatDateStr(source.get("first_flyover_date"));
+                const endDateStr = this.formatDateStr(source.get("last_flyover_date"));
+                const timespan = `${startDateStr} - ${endDateStr}`;
+                const avgIme = source.get("avg_ime5_1500ppmm_150m")
+                    ? parseFloat(source.get("avg_ime5_1500ppmm_150m")).toFixed(2)
+                    : "";
+                const minIme = source.get("min_ime5_1500ppmm_150m")
+                    ? parseFloat(source.get("min_ime5_1500ppmm_150m")).toFixed(2)
+                    : null;
+                const maxIme = source.get("max_ime5_1500ppmm_150m")
+                    ? parseFloat(source.get("max_ime5_1500ppmm_150m")).toFixed(2)
+                    : null;
+                const imeRange = minIme && maxIme ? `${minIme} - ${maxIme}` : "";
+                return (
+                    <TableRow key={sourceId}>
+                        <TableCell padding="dense">{sourceId}</TableCell>
+                        <TableCell padding="dense">{sectorName}</TableCell>
+                        <TableCell padding="dense">{source.get("plume_count")}</TableCell>
+                        <TableCell padding="dense">{source.get("flyover_count")}</TableCell>
+                        <TableCell padding="dense">{timespan}</TableCell>
+                        <TableCell padding="dense">{avgIme}</TableCell>
+                        <TableCell padding="dense">{imeRange}</TableCell>
+                    </TableRow>
+                );
+            });
+    }
+
+    makeSourcesContent() {
+        if (!this.props.sourcesData) return null;
+        return (
+            <Card className={styles.contentCard}>
+                <CardContent className={styles.tableContent}>
+                    <Typography variant="headline" component="h2">
+                        Methane Plume Sources
+                    </Typography>
+                    <div className={styles.tableWrapper}>
+                        <div className={styles.tableScroll}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell padding="dense">Source ID</TableCell>
+                                        <TableCell padding="dense">Sector</TableCell>
+                                        <TableCell padding="dense">Plumes</TableCell>
+                                        <TableCell padding="dense">Flyovers</TableCell>
+                                        <TableCell padding="dense">
+                                            Plume Observations Timespan
+                                        </TableCell>
+                                        <TableCell padding="dense">Avg Plume IME (kg)</TableCell>
+                                        <TableCell padding="dense">Plume IME Range (kg)</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>{this.makeSourcesTableBody()}</TableBody>
+                            </Table>
+                            {this.makePageControls()}
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+        );
+    }
+
     render() {
         return (
             <React.Fragment>
                 {this.makeLoadingModal()}
                 {this.makeSummaryContent()}
+                {this.makeSourcesContent()}
             </React.Fragment>
         );
     }
@@ -91,21 +186,33 @@ export class EmissionsSummaryInfoContainer extends Component {
 EmissionsSummaryInfoContainer.propTypes = {
     summaryData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
-    fetchSummaryData: PropTypes.func.isRequired,
-    filterOptions: PropTypes.object.isRequired
+    updateSummaryPageData: PropTypes.func.isRequired,
+    filterOptions: PropTypes.object.isRequired,
+    sourcesData: PropTypes.object,
+    sourceStartIndex: PropTypes.number.isRequired,
+    updateSummaryPageSourceIndex: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
     return {
         summaryData: state.MSFAnalytics.get("summaryData"),
         isLoading: state.MSFAnalytics.get("summaryDataIsLoading"),
-        filterOptions: state.MSFAnalytics.get("filterOptions")
+        filterOptions: state.MSFAnalytics.get("filterOptions"),
+        sourcesData: state.MSFAnalytics.get("emissionsSourceData"),
+        sourceStartIndex: state.MSFAnalytics.get("emissionsSummarySourceStartIndex")
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchSummaryData: bindActionCreators(MSFAnalyticsActions.fetchSummaryData, dispatch)
+        updateSummaryPageData: bindActionCreators(
+            MSFAnalyticsActions.updateSummaryPageData,
+            dispatch
+        ),
+        updateSummaryPageSourceIndex: bindActionCreators(
+            MSFAnalyticsActions.updateSummaryPageSourceIndex,
+            dispatch
+        )
     };
 }
 

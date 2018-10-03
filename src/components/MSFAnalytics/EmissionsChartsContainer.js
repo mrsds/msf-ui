@@ -21,7 +21,7 @@ import ErrorBarsPlugin from "chartjs-plugin-error-bars";
 
 export class EmissionsChartsContainer extends Component {
     componentDidMount() {
-        this.props.fetchEmissionsChartsData();
+        this.props.updateEmissionsCharts();
     }
 
     sortSectors(a, b) {
@@ -145,7 +145,7 @@ export class EmissionsChartsContainer extends Component {
     }
 
     makeTopLevelSummaryChart() {
-        const dataBySector = this.props.emissionsChartsData.reduce((acc, source) => {
+        const dataBySector = this.props.emissionsSourceData.reduce((acc, source) => {
             const sectorL1Name = source.get("sector_level_1");
             if (!acc[sectorL1Name]) acc[sectorL1Name] = [];
             acc[sectorL1Name].push(source);
@@ -154,7 +154,7 @@ export class EmissionsChartsContainer extends Component {
 
         return (
             <React.Fragment>
-                {this.makeChart(this.props.emissionsChartsData.toArray(), "All")}
+                {this.makeChart(this.props.emissionsSourceData.toArray(), "All")}
                 {Object.keys(dataBySector)
                     .sort(this.sortSectors)
                     .map(key => this.makeChart(dataBySector[key], key))}
@@ -163,7 +163,7 @@ export class EmissionsChartsContainer extends Component {
     }
 
     makeSectorSummaryChart(sector) {
-        const sectorData = this.props.emissionsChartsData
+        const sectorData = this.props.emissionsSourceData
             .filter(source => source.get("sector_level_1") === sector)
             .toArray();
         const subSectors = sectorData.reduce((acc, source) => {
@@ -184,7 +184,7 @@ export class EmissionsChartsContainer extends Component {
     }
 
     makeCharts() {
-        if (!this.props.emissionsChartsData || !this.props.emissionsChartsData.size)
+        if (!this.props.emissionsSourceData || !this.props.emissionsSourceData.size)
             return <div>No sources found</div>;
 
         const selectedSector = this.props.filterOptions.get("selectedSector");
@@ -201,7 +201,7 @@ export class EmissionsChartsContainer extends Component {
         return (
             <React.Fragment>
                 {this.makeChart(
-                    this.props.emissionsChartsData
+                    this.props.emissionsSourceData
                         .filter(source => source.get("sector_level_2") === selectedSubsector)
                         .toArray(),
                     selectedSubsector
@@ -221,25 +221,25 @@ export class EmissionsChartsContainer extends Component {
 }
 
 EmissionsChartsContainer.propTypes = {
-    emissionsChartsData: PropTypes.object,
+    emissionsSourceData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
-    fetchEmissionsChartsData: PropTypes.func.isRequired,
+    updateEmissionsCharts: PropTypes.func.isRequired,
     filterOptions: PropTypes.object.isRequired,
     openMapToInfrastructure: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
     return {
-        emissionsChartsData: state.MSFAnalytics.get("emissionsChartsData"),
-        isLoading: state.MSFAnalytics.get("emissionsChartsDataIsLoading"),
+        emissionsSourceData: state.MSFAnalytics.get("emissionsSourceData"),
+        isLoading: state.MSFAnalytics.get("emissionsSourceDataIsLoading"),
         filterOptions: state.MSFAnalytics.get("filterOptions")
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchEmissionsChartsData: bindActionCreators(
-            MSFAnalyticsActions.fetchEmissionsChartsData,
+        updateEmissionsCharts: bindActionCreators(
+            MSFAnalyticsActions.updateEmissionsCharts,
             dispatch
         ),
         openMapToInfrastructure: bindActionCreators(

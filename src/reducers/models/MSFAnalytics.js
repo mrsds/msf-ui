@@ -15,12 +15,13 @@ export const MSFAnalyticsState = Immutable.fromJS({
     summaryDataIsLoading: false,
     summaryData: null,
     filteredSummaryData: null,
-    emissionsChartsData: null,
-    emissionsChartsDataIsLoading: false,
+    emissionsSourceData: null,
+    emissionsSourceDataIsLoading: false,
     detectionStatsAreLoading: false,
     detectionStats: null,
     areaSearchOptionsLoading: false,
     areaSearchOptionsList: null,
     sectorOptionsListLoading: false,
-    sectorOptionsList: null
+    sectorOptionsList: null,
+    emissionsSummarySourceStartIndex: 0
 });

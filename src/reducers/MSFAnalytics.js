@@ -22,10 +22,10 @@ export default function MSFAnalytics(
             return opt_reducer.updateAnalyticsSummaryData(state, action);
         case actionTypesMSF.ANALYTICS_SUMMARY_DATA_LOADING:
             return opt_reducer.analyticsSummaryDataLoading(state, action);
-        case actionTypesMSF.UPDATE_ANALYTICS_EMISSIONS_CHARTS_DATA:
-            return opt_reducer.updateEmissionsChartsData(state, action);
-        case actionTypesMSF.ANALYTICS_EMISSIONS_CHARTS_DATA_LOADING:
-            return opt_reducer.analyticsEmissionsChartsDataLoading(state, action);
+        case actionTypesMSF.UPDATE_ANALYTICS_EMISSIONS_SOURCE_DATA:
+            return opt_reducer.updateEmissionsSourceData(state, action);
+        case actionTypesMSF.ANALYTICS_EMISSIONS_SOURCE_DATA_LOADING:
+            return opt_reducer.analyticsEmissionsSourceDataLoading(state, action);
         case actionTypesMSF.UPDATE_ANALYTICS_DETECTION_STATS:
             return opt_reducer.updateAnalyticsDetectionStats(state, action);
         case actionTypesMSF.ANALYTICS_DETECTION_STATS_LOADING:
@@ -40,6 +40,8 @@ export default function MSFAnalytics(
             return opt_reducer.sectorOptionsListLoading(state, action);
         case actionTypesMSF.CHANGE_ANALYTICS_DATE:
             return opt_reducer.changeAnalyticsDate(state, action);
+        case actionTypesMSF.UPDATE_SUMMARY_PAGE_SOURCE_INDEX:
+            return opt_reducer.updateSummaryPageSourceIndex(state, action);
         default:
             return state;
     }
