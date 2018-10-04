@@ -42,6 +42,7 @@ import {
 import { ShareContainer } from "_core/components/Share";
 import { LayerInfoContainer } from "_core/components/LayerInfo";
 import { LoadingContainer } from "_core/components/Loading";
+import { HelpContainer } from "_core/components/Help";
 import { AlertsContainer } from "_core/components/Alerts";
 import { MouseFollowerContainer } from "_core/components/MouseFollower";
 import { AnalyticsContainer } from "_core/components/Analytics";
@@ -61,6 +62,7 @@ import MapTooltip from "components/Map/MapTooltip";
 import FeaturePicker from "components/FeaturePicker/FeaturePicker";
 import * as MSFTypes from "constants/MSFTypes";
 import MSFAnalyticsContainer from "components/MSFAnalytics/MSFAnalyticsContainer";
+import DisclaimerContainer from "components/DisclaimerContainer/DisclaimerContainer";
 
 const theme = createMuiTheme({
     typography: {
@@ -144,6 +146,7 @@ export class AppContainer extends Component {
         return (
             <MuiThemeProvider theme={theme}>
                 <div className={containerClasses}>
+                    <DisclaimerContainer />
                     <AppBarContainer />
                     <div className={mapContainerStyle}>
                         <HelpContainerExtended />
