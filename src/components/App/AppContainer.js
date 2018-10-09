@@ -61,6 +61,7 @@ import MapTooltip from "components/Map/MapTooltip";
 import FeaturePicker from "components/FeaturePicker/FeaturePicker";
 import * as MSFTypes from "constants/MSFTypes";
 import MSFAnalyticsContainer from "components/MSFAnalytics/MSFAnalyticsContainer";
+import DisclaimerContainer from "components/Disclaimer/DisclaimerContainer";
 
 const theme = createMuiTheme({
     typography: {
@@ -145,6 +146,7 @@ export class AppContainer extends Component {
             <MuiThemeProvider theme={theme}>
                 <div className={containerClasses}>
                     <AppBarContainer />
+                    <DisclaimerContainer />
                     <div className={mapContainerStyle}>
                         <HelpContainerExtended />
                         <LayerSidebarContainer />
