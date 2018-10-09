@@ -8,7 +8,7 @@ import Dialog, {
     DialogContentText,
     DialogTitle,
     DialogActions
-} from "material-ui/Dialog";
+} from "@material-ui/core/Dialog";
 
 export class DisclaimerContainer extends Component {
     constructor(props) {
