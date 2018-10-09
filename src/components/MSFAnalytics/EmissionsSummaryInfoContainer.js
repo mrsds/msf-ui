@@ -30,9 +30,8 @@ export class EmissionsSummaryInfoContainer extends Component {
     sortSectors(a, b) {
         return parseInt(a.charAt(0)) - parseInt(b.charAt(0));
     }
-
     makeLoadingModal() {
-        if (this.props.isLoading || this.props.sourcesLoading) {
+        if (this.props.isLoading) {
             return (
                 <div className={styles.loadingModal}>
                     <CircularProgress />
@@ -191,8 +190,7 @@ EmissionsSummaryInfoContainer.propTypes = {
     filterOptions: PropTypes.object.isRequired,
     sourcesData: PropTypes.object,
     sourceStartIndex: PropTypes.number.isRequired,
-    updateSummaryPageSourceIndex: PropTypes.func.isRequired,
-    sourcesLoading: PropTypes.bool.isRequired
+    updateSummaryPageSourceIndex: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -201,8 +199,7 @@ function mapStateToProps(state) {
         isLoading: state.MSFAnalytics.get("summaryDataIsLoading"),
         filterOptions: state.MSFAnalytics.get("filterOptions"),
         sourcesData: state.MSFAnalytics.get("emissionsSourceData"),
-        sourceStartIndex: state.MSFAnalytics.get("emissionsSummarySourceStartIndex"),
-        sourcesLoading: state.MSFAnalytics.get("emissionsSourceDataIsLoading")
+        sourceStartIndex: state.MSFAnalytics.get("emissionsSummarySourceStartIndex")
     };
 }
 
