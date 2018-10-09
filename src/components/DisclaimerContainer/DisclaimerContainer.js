@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import Button from "material-ui/Button";
+import Button from "@material-ui/core/Button";
 import Dialog, {
     DialogContent,
     DialogContentText,
