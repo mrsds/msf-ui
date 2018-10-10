@@ -2,24 +2,30 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import { FormGroup, FormControlLabel } from "material-ui/Form";
-import Checkbox from "material-ui/Checkbox";
-import Switch from "material-ui/Switch";
-import Grid from "material-ui/Grid";
-import GridList, { GridListTile, GridListTileBar } from "material-ui/GridList";
-import Card, { CardActions, CardContent, CardMedia } from "material-ui/Card";
-import Typography from "material-ui/Typography";
-import Table, { TableBody, TableCell, TableHead, TableRow } from "material-ui/Table";
-import Button from "material-ui/Button";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+import Grid from "@material-ui/core/Grid";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import GridListTileBar from "@material-ui/core/GridListTileBar";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import Table from "@material-ui/core/Table";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableBody from "@material-ui/core/TableBody";
+import Button from "@material-ui/core/Button";
 import MetadataUtil from "utils/MetadataUtil";
 import * as MSFTypes from "constants/MSFTypes";
 import * as featureDetailActions from "actions/featureDetailActions";
 import featureDetailStyles from "components/FeatureDetail/FeatureDetailContainerStyles.scss";
 import styles from "components/FeatureDetail/ChartingContainerStyles.scss";
-import { Line as LineChart } from "react-chartjs-2";
+import { Scatter as ScatterChart } from "react-chartjs-2";
 import moment from "moment";
-import { CircularProgress } from "material-ui/Progress";
-import PlumeDateFilterControl from "components/FeatureDetail/PlumeDateFilterControl";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export class PlumeChartingContainer extends Component {
     makeObservationToggle() {
@@ -39,6 +45,18 @@ export class PlumeChartingContainer extends Component {
                 </FormGroup>
             </div>
         );
+    }
+
+    getSortedPlumeList() {
+        return this.props.plumeList
+            .sort((a, b) => {
+                const dateA = moment(a.get("plume_date") || a.get("flightline_date"));
+                const dateB = moment(b.get("plume_date") || b.get("flightline_date"));
+                return dateA.isBefore(dateB) ? -1 : dateA.isAfter(dateB) ? 1 : 0;
+            })
+            .filter(
+                plume => (this.props.plumesWithObservationsOnly ? plume.get("candidate_id") : true)
+            );
     }
 
     getChartButtonColor(mode) {
@@ -95,21 +113,48 @@ export class PlumeChartingContainer extends Component {
         }
     }
 
+    makePlumeIdText(feature) {
+        const plume_id = feature.get("aviris_plume_id");
+        if (plume_id === this.props.feature.get("plume_id")) return <strong>{plume_id}</strong>;
+        return plume_id;
+    }
+
     makePlumeListItem(feature) {
-        const datetime = feature.get("datetime");
-        const dateString = datetime
-            ? moment(datetime).format("MMMM Do, YYYY, H:mm [UTC]")
-            : "(No Date)";
+        const datetime = feature.get("plume_date") || feature.get("flightline_date");
+        const dateString = datetime ? moment(datetime).format("M/D/YYYY") : "(No Date)";
+        const timeString = datetime ? moment(datetime).format("H:mm") : "";
+        const isFlyover = !feature.get("candidate_id");
         return (
-            <React.Fragment key={feature.get("name")}>
+            <React.Fragment
+                key={
+                    (isFlyover ? dateString + timeString + "flyover" : feature.get("name")) +
+                    Math.random()
+                        .toString(36)
+                        .substring(7)
+                }
+            >
                 <TableRow>
-                    <TableCell>Maybe?</TableCell>
-                    <TableCell>{dateString}</TableCell>
-                    <TableCell>{MetadataUtil.getPlumeID(feature, "(none)")}</TableCell>
-                    <TableCell numeric>(none)</TableCell>
-                    <TableCell numeric>{MetadataUtil.getFetch(feature, "20", "(none)")}</TableCell>
-                    <TableCell numeric>(none)</TableCell>
-                    <TableCell numeric>{MetadataUtil.getIME(feature, "20", "(none)")}</TableCell>
+                    <TableCell padding="dense">{isFlyover ? "No" : "Yes"}</TableCell>
+                    <TableCell padding="dense">
+                        {dateString}
+                        <br />
+                        {timeString}
+                    </TableCell>
+                    <TableCell padding="dense">
+                        {isFlyover ? "-" : this.makePlumeIdText(feature)}
+                    </TableCell>
+                    <TableCell numeric={!isFlyover} padding="dense">
+                        {isFlyover ? "-" : "(none)"}
+                    </TableCell>
+                    <TableCell numeric={!isFlyover} padding="dense">
+                        {isFlyover ? "-" : Math.round(feature.get("fetch20")) / 100}
+                    </TableCell>
+                    <TableCell numeric={!isFlyover} padding="dense">
+                        {isFlyover ? "-" : "(none)"}
+                    </TableCell>
+                    <TableCell numeric={!isFlyover} padding="dense">
+                        {isFlyover ? "-" : Math.round(feature.get("ime20") * 100) / 100}
+                    </TableCell>
                 </TableRow>
             </React.Fragment>
         );
@@ -127,23 +172,32 @@ export class PlumeChartingContainer extends Component {
         if (!this.props.plumeList || !this.props.plumeList.length) {
             return emptyTable;
         }
-        return this.props.plumeList.map(feature => this.makePlumeListItem(feature));
+
+        return this.getSortedPlumeList().map(plume => this.makePlumeListItem(plume));
     }
 
     makePlumeList() {
         return (
             <div className={styles.tableWrapper}>
                 <div className={styles.tableScroll}>
-                    <Table>
+                    <Table className={styles.tableContent}>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Plume Detected</TableCell>
-                                <TableCell>Flyover Date</TableCell>
-                                <TableCell>Plume ID</TableCell>
-                                <TableCell numeric>Wind (mph/hr)</TableCell>
-                                <TableCell numeric>Fetch (m)</TableCell>
-                                <TableCell numeric>Flux (kg/hr)</TableCell>
-                                <TableCell numeric>IME (kg)</TableCell>
+                                <TableCell padding="dense">Plume Detected</TableCell>
+                                <TableCell padding="dense">Flyover Date</TableCell>
+                                <TableCell padding="dense">Plume ID</TableCell>
+                                <TableCell numeric padding="dense">
+                                    Wind (mph/hr)
+                                </TableCell>
+                                <TableCell numeric padding="dense">
+                                    Fetch (m)
+                                </TableCell>
+                                <TableCell numeric padding="dense">
+                                    Flux (kg/hr)
+                                </TableCell>
+                                <TableCell numeric padding="dense">
+                                    IME (kg)
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>{this.makePlumeTableBody()}</TableBody>
@@ -154,68 +208,123 @@ export class PlumeChartingContainer extends Component {
     }
 
     makeThumbs() {
+        if (!this.props.plumeList.length) {
+            return <div className={styles.noResults}>No Results</div>;
+        }
         return (
-            <GridList cols={2} spacing={20} cellHeight={464}>
-                {this.props.plumeList.map(feature => {
-                    const datetime = feature.get("datetime");
-                    const dateString = datetime
-                        ? moment(datetime).format("MMMM Do, YYYY, H:mm [UTC]")
-                        : "(No Date)";
-                    return (
-                        <GridListTile key={feature.get("name")}>
-                            <img src={feature.get("rgbqlctr_url")} alt={feature.get("name")} />
-                            <GridListTileBar
-                                title={
-                                    <div className={styles.gridTileHeading}>
-                                        <span>{dateString}</span>
-                                        <span>
-                                            {Math.round(feature.get("ime") * 100) / 100} (kg)
-                                        </span>
-                                    </div>
-                                }
-                                subtitle={
-                                    <div className={styles.gridTileHeading}>
-                                        <span>{feature.get("name")}</span>
-                                        <span>IME</span>
-                                    </div>
-                                }
-                            />
-                        </GridListTile>
-                    );
-                })}
-            </GridList>
+            <div className={styles.thumbGrid}>
+                <GridList cols={2} spacing={20} cellHeight={464}>
+                    {this.getSortedPlumeList()
+                        .filter(feature => feature.get("candidate_id"))
+                        .map(feature => {
+                            const datetime =
+                                feature.get("plume_date") || feature.get("flightline_date");
+                            const dateString = datetime
+                                ? moment(datetime).format("MMMM Do, YYYY, H:mm")
+                                : "(No Date)";
+                            return (
+                                <GridListTile
+                                    key={
+                                        feature.get("name") +
+                                        Math.random()
+                                            .toString(36)
+                                            .substring(7)
+                                    }
+                                >
+                                    <img
+                                        src={feature.get("rgbqlctr_url")}
+                                        alt={feature.get("name")}
+                                    />
+                                    <GridListTileBar
+                                        title={
+                                            <div className={styles.gridTileHeading}>
+                                                <span>{dateString}</span>
+                                                <span>{`${Math.round(feature.get("ime20") * 100) /
+                                                    100} (kg)`}</span>
+                                            </div>
+                                        }
+                                        subtitle={
+                                            <div className={styles.gridTileHeading}>
+                                                <span>{feature.get("name")}</span>
+                                                <span>IME</span>
+                                            </div>
+                                        }
+                                    />
+                                </GridListTile>
+                            );
+                        })}
+                </GridList>
+            </div>
         );
     }
 
     makeChart() {
+        if (!this.props.plumeList.length) {
+            return <div className={styles.noResults}>No Results</div>;
+        }
         const options = {
             maintainAspectRatio: false,
-            legend: { display: false },
+            legend: { display: true, position: "bottom", labels: { usePointStyle: true } },
             scales: {
                 yAxes: [
                     {
                         scaleLabel: { display: true, labelString: "IME (kg)" }
                     }
                 ],
-                xAxes: [{ ticks: { autoSkip: false } }]
+                xAxes: [{ type: "time", ticks: { autoSkip: true, autoSkipPadding: 2 } }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: (tooltipItem, data) => {
+                        return `IME: ${tooltipItem.yLabel}, Date: ${tooltipItem.xLabel}`;
+                    }
+                }
             }
         };
 
-        const data = {
-            labels: this.props.plumeList.map(feature =>
-                moment(feature.get("datetime")).format("MMMM Do, YYYY, H:mm [UTC]")
-            ),
-            datasets: [
-                {
-                    data: this.props.plumeList.map(feature => feature.get("ime")),
-                    borderColor: "#4285F4"
+        const sortedData = this.getSortedPlumeList();
+        const dataGroups = sortedData.reduce(
+            (acc, plume) => {
+                if (!plume.get("candidate_id")) {
+                    acc.flyovers.push(plume);
+                } else {
+                    const sourceId = plume.get("sourceId");
+                    acc[sourceId] = acc[sourceId] ? acc[sourceId].concat([plume]) : [plume];
                 }
-            ]
+                return acc;
+            },
+            { flyovers: [] }
+        );
+
+        const emptyFlyoverLabel = "Flyover with no plume detected";
+        const colorList = ["#1B6087", "#F44242"];
+        let colorIndex = 0;
+        const datasets = Object.keys(dataGroups)
+            .sort((a, b) => (a === "flyovers" ? 1 : b === "flyovers" ? -1 : 0))
+            .map((key, idx) => {
+                const pointColor = key === "flyovers" ? "#ffffff00" : colorList[colorIndex++];
+                return {
+                    data: dataGroups[key].map(plume => {
+                        return {
+                            x: plume.get("plume_date") || plume.get("flightline_date"),
+                            y: key === "flyovers" ? 0 : Math.round(plume.get("ime20") * 100) / 100
+                        };
+                    }),
+                    backgroundColor: pointColor,
+                    fill: false,
+                    label: key === "flyovers" ? emptyFlyoverLabel : `Source: ${key}`,
+                    borderColor: key === "flyovers" ? "#404040" : pointColor,
+                    borderWidth: 1
+                };
+            });
+
+        const data = {
+            datasets
         };
 
         return (
             <div className={styles.chartContainer}>
-                <LineChart data={data} options={options} height={250} />
+                <ScatterChart data={data} options={options} height={250} />
             </div>
         );
     }
@@ -227,7 +336,7 @@ export class PlumeChartingContainer extends Component {
                     <CardContent>
                         <Typography variant="headline" component="h2">
                             Flyovers of Connected Plume Source:
-                            <strong> {this.props.feature.getIn(["sourceId", "value"])}</strong>
+                            <strong> {this.props.feature.get("source_id")}</strong>
                             <Typography variant="caption">
                                 Uncertainty Warning:{" "}
                                 <i>

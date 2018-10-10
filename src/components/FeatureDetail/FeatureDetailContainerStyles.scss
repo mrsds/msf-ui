@@ -1,16 +1,15 @@
 @import "~styles/colors";
 @import "~styles/misc";
-
 .featureDetailContainer {
     user-select: text;
     background: white;
     left: $layer-sidebar-width;
     position: absolute;
-    z-index: 1;
-    height: calc(100% - 45px);
+    z-index: 2;
+    height: calc(100% - #{$app-bar-height});
     width: calc(100% - #{$layer-sidebar-width});
     overflow: auto;
-    top: 45px;
+    top: $app-bar-height;
     background: $color-background;
     &.fullWidth {
         width: 100%;
@@ -23,7 +22,7 @@
         position: fixed;
         z-index: 1;
         left: calc(35px + #{$layer-sidebar-width});
-        top: 52px;
+        top: 54px;
         color: $color-primary !important;
         background: white;
         padding: 0rem 1rem;
@@ -60,6 +59,10 @@
         padding: 10px;
         padding-bottom: 20px;
     }
+    .gridTile {
+        flex: 0 0 50%;
+        min-width: 440px;
+    }
     .imageCardsContainer {
         display: flex;
         .noPadding {
@@ -71,6 +74,7 @@
         }
     }
     .cardRoot {
+        overflow: visible;
         margin-top: 15px;
         h2 {
             margin-bottom: 16px;
@@ -85,6 +89,7 @@
     }
     .infoBox {
         display: flex;
+        align-items: baseline;
         flex-wrap: wrap;
         div {
             display: flex;
@@ -93,7 +98,8 @@
             margin: 5px 0;
             label {
                 height: 100%;
-                display: inline-block;
+                display: flex;
+                align-items: center;
                 min-width: 150px;
                 color: #7f7f7f;
                 &.stacked {
@@ -113,5 +119,20 @@
                 }
             }
         }
+    }
+    .fabContainer {
+        float: right;
+        text-align: center;
+        top: -44px;
+        position: relative;
+    }
+    .fabLabel {
+        display: block;
+        margin-top: 15px;
+        color: white;
+    }
+    .fab {
+        background: white;
+        color: $color-primary;
     }
 }

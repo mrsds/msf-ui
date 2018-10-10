@@ -1,19 +1,35 @@
 @import "~styles/colors";
+@import "~styles/misc";
 
 .layerMenu {
     width: 410px;
-    top: 45px;
+    top: $app-bar-height;
     right: 15px;
     left: initial;
 }
 
 .layerHeaderRow {
     composes: layerHeaderRow from "_core/components/LayerMenu/LayerMenuContainer.scss";
-    background: $color-background;
-    // color: white;
+    button {
+        top: 0;
+        padding: 0.9rem;
+        align-items: start;
+        width: 100%;
+    }
+    padding: 0;
+    svg {
+        position: relative;
+        top: -3px;
+        color: rgba(0, 0, 0, 0.54);
+    }
 }
 .layerMenuContent {
     composes: layerMenuContent from "_core/components/LayerMenu/LayerMenuContainer.scss";
     // overflow: visible;
     // overflow-y: visible;
+}
+.layerHeader {
+    composes: layerHeader from "_core/components/LayerMenu/LayerMenuContainer.scss";
+    display: flex;
+    flex: 1;
 }

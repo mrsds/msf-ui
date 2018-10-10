@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import moment from "moment";
@@ -8,9 +7,10 @@ import Immutable from "immutable";
 import { DataSet, Timeline } from "vis/index-timeline-graph2d";
 import "vis/dist/vis-timeline-graph2d.min.css";
 import { ResolutionStep } from "_core/components/Timeline";
-import KeyboardArrowLeftIcon from "material-ui-icons/KeyboardArrowLeft";
-import KeyboardArrowRightIcon from "material-ui-icons/KeyboardArrowRight";
-import Button from "material-ui/Button";
+import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
+import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
+import Tooltip from "@material-ui/core/Tooltip";
+import Button from "@material-ui/core/Button";
 import * as mapActions from "_core/actions/mapActions";
 import * as mapActionsMSF from "actions/mapActions";
 import * as appStrings from "_core/constants/appStrings";
@@ -20,7 +20,6 @@ import MiscUtil from "_core/utils/MiscUtil";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import MetadataUtil from "utils/MetadataUtil";
 import styles from "components/Timeline/TimelineContainerStyles.scss";
-import displayStyles from "_core/styles/display.scss";
 
 let util = require("vis/lib/util");
 let TimeStep = require("vis/lib/timeline/TimeStep");
@@ -275,6 +274,16 @@ export class TimelineContainerStyles extends Component {
                 this.focusOnItem(firstItem.id);
             }
         }
+
+        // Focus on active plume
+        if (this.props.activeFeature.get("category") === layerSidebarTypes.CATEGORY_PLUMES) {
+            const activeItem = this.items.get({ filter: x => x.selected })[0];
+            if (activeItem) {
+                this.bringItemIntoView(activeItem.id);
+            }
+        }
+
+        // Check for resize
         if (prevProps.layerSidebarCollapsed !== this.props.layerSidebarCollapsed) {
             this.resizeTimeline();
         }
@@ -431,6 +440,9 @@ export class TimelineContainerStyles extends Component {
             }
             acc = acc.update(dateBin, bin => {
                 bin.plumes.push(x);
+                if (this.isActiveFeature(x)) {
+                    bin.selected = true;
+                }
                 return bin;
             });
             return acc;
@@ -440,7 +452,7 @@ export class TimelineContainerStyles extends Component {
         items = items.map(x => {
             let avg =
                 x.plumes
-                    .map(p => MetadataUtil.getPlumeIME(p))
+                    .map(p => MetadataUtil.getPlumeIME(p) || "0.0")
                     .reduce((acc, i) => (acc += parseFloat(i)), 0) / x.plumes.length;
             x.plumeStatistics.avg.value = MiscUtilExtended.roundTo(avg, 1);
             return x;
@@ -509,15 +521,24 @@ export class TimelineContainerStyles extends Component {
     handleItemSelect(props) {
         // Clear old
         let item = this.items.get(props.items[0]);
-        // Only operate on single plume data points
-        if (item.plumes.length === 1) {
-            this.props.mapActionsMSF.toggleFeatureLabel(
-                layerSidebarTypes.CATEGORY_PLUMES,
-                item.plumes[0]
-            );
-            this.items.update({ id: props.items[0], selected: true });
-            this.timeline.setSelection(props.items[0]);
-        }
+
+        // Select first plume
+        this.props.mapActionsMSF.toggleFeatureLabel(
+            layerSidebarTypes.CATEGORY_PLUMES,
+            item.plumes[0]
+        );
+        this.items.update({ id: props.items[0], selected: true });
+        this.timeline.setSelection(props.items[0]);
+
+        // // Only operate on single plume data points
+        // if (item.plumes.length === 1) {
+        //     this.props.mapActionsMSF.toggleFeatureLabel(
+        //         layerSidebarTypes.CATEGORY_PLUMES,
+        //         item.plumes[0]
+        //     );
+        //     this.items.update({ id: props.items[0], selected: true });
+        //     this.timeline.setSelection(props.items[0]);
+        // }
     }
 
     getItemSnappingFunc() {
@@ -817,9 +838,11 @@ export class TimelineContainerStyles extends Component {
                         className={styles.timelineJumperLeft}
                         ref={ref => (this.jumperLeft = ref)}
                     >
-                        <Button color="inherit">
-                            <KeyboardArrowLeftIcon />
-                        </Button>
+                        <Tooltip title="Previous Plume" placement="right">
+                            <Button color="inherit">
+                                <KeyboardArrowLeftIcon />
+                            </Button>
+                        </Tooltip>
                     </div>
                     <div className={styles.container}>
                         <div
@@ -832,9 +855,11 @@ export class TimelineContainerStyles extends Component {
                         className={styles.timelineJumperRight}
                         ref={ref => (this.jumperRight = ref)}
                     >
-                        <Button color="inherit">
-                            <KeyboardArrowRightIcon />
-                        </Button>
+                        <Tooltip title="Next Plume" placement="left">
+                            <Button color="inherit">
+                                <KeyboardArrowRightIcon />
+                            </Button>
+                        </Tooltip>
                     </div>
                     <div className={styles.resolutionStepWrapper}>
                         <ResolutionStep />

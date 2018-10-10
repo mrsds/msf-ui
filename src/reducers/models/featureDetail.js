@@ -11,5 +11,7 @@ export const featureDetailState = Immutable.fromJS({
     plumeSourceId: null,
     flyoverId: null,
     plumeFilterStartDate: null,
-    plumeFilterEndDate: null
+    plumeFilterEndDate: null,
+    vistaMetadataLoading: false,
+    vistaMetadata: null
 });

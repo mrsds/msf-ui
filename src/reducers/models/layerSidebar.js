@@ -7,10 +7,11 @@ export const layerSidebarState = Immutable.fromJS({
     layerSidebarCollapsed: false,
     availableFeatures: {
         [layerSidebarTypes.CATEGORY_INFRASTRUCTURE]: [],
-        [layerSidebarTypes.CATEGORY_PLUMES]: []
+        [layerSidebarTypes.CATEGORY_PLUMES]: [],
+        oilWells: []
     },
     activeInfrastructureSubCategories: {
-        [layerSidebarTypes.VISTA_2017_OILGAS_WELLS]: false,
+        [layerSidebarTypes.VISTA_2017_OILGAS_FIELDS]: false,
         [layerSidebarTypes.VISTA_2017_LIVESTOCK_DAIRIES]: true,
         [layerSidebarTypes.VISTA_2017_ANAEROBIC_LAGOONS]: true,
         [layerSidebarTypes.VISTA_2017_CNG_FUELING_STATIONS]: true,
@@ -21,7 +22,8 @@ export const layerSidebarState = Immutable.fromJS({
         [layerSidebarTypes.VISTA_2017_WASTEWTR_TREAT_PLNT]: true,
         [layerSidebarTypes.VISTA_2017_POWER_PLANT]: true,
         [layerSidebarTypes.VISTA_2017_LANDFILL]: true,
-        [layerSidebarTypes.VISTA_2017_SOCAB_BOUND]: false
+        [layerSidebarTypes.VISTA_2017_SOCAB_BOUND]: false,
+        [layerSidebarTypes.VISTA_2017_CEC_PIPELINES]: true
     },
     searchState: {
         [layerSidebarTypes.CATEGORY_INFRASTRUCTURE]: {

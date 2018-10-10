@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import MiscUtil from "_core/utils/MiscUtil";
-import ArrowDropDownIcon from "material-ui-icons/ArrowDropDown";
-import Chip from "material-ui/Chip";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import Chip from "@material-ui/core/Chip";
 import styles from "components/Reusables/ChipDropdownStyles.scss";
 
 const ChipDropdown = props => {

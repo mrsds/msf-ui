@@ -5,6 +5,7 @@ export const LAYER_AVIRIS = "aviris_plume";
 export const LAYER_VISTA_GEOJSON = "vista_geojson";
 export const LAYER_GRIDDED_GEOJSON = "gridded_geojson";
 export const LAYER_GROUP_TYPE_GROUP = "group";
+export const LAYER_GROUP_TYPE_VISTA_SOURCE = "vista_source";
 
 export const ALERTS = {
     LAYER_AVAILABILITY_LIST_LOAD_FAILED: {
@@ -24,17 +25,7 @@ export const ALERTS = {
     }
 };
 
-export const INFRASTRUCTURE_FACILITY_TYPE_TO_NAME = {
-    [layerSidebarTypes.VISTA_2017_OILGAS_WELLS]: "Oil and Natural Gas Wells",
-    [layerSidebarTypes.VISTA_2017_LIVESTOCK_DAIRIES]: "Dairies",
-    [layerSidebarTypes.VISTA_2017_ANAEROBIC_LAGOONS]: "Anaerobic Lagoons",
-    [layerSidebarTypes.VISTA_2017_CNG_FUELING_STATIONS]: "CNG Fueling Stations",
-    [layerSidebarTypes.VISTA_2017_LNG_FUELING_STATIONS]: "LNG Fueling Stations",
-    [layerSidebarTypes.VISTA_2017_NAT_GAS_STORE_FIELDS]: "Natural Gas Storage Fields",
-    [layerSidebarTypes.VISTA_2017_NAT_GAS_PROC_PLANT]: "Natural Gas Processing Plants",
-    [layerSidebarTypes.VISTA_2017_PETRO_REFINE]: "Petroleum Refineries",
-    [layerSidebarTypes.VISTA_2017_WASTEWTR_TREAT_PLNT]: "Wastewater Treatment Plants",
-    [layerSidebarTypes.VISTA_2017_POWER_PLANT]: "Power Plants",
-    [layerSidebarTypes.VISTA_2017_LANDFILL]: "Landfills",
-    [layerSidebarTypes.VISTA_2017_SOCAB_BOUND]: "SOCAB Bound"
-};
+export const VISTA_LAYER_UPDATED = "VISTA_LAYER_UPDATED";
+export const UPDATING_VISTA_LAYER = "UPDATING_VISTA_LAYER";
+export const AVIRIS_LAYER_UPDATED = "AVIRIS_LAYER_UPDATED";
+export const UPDATING_AVIRIS_LAYER = "UPDATING_AVIRIS_LAYER";

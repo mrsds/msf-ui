@@ -3,38 +3,73 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import Button from "material-ui/Button";
+import Button from "@material-ui/core/Button";
 import * as featureDetailActions from "actions/featureDetailActions";
-import Typography from "material-ui/Typography";
-import Grid from "material-ui/Grid";
-import Card, { CardActions, CardContent, CardMedia } from "material-ui/Card";
+import Typography from "@material-ui/core/Typography";
+import FileDownloadIcon from "@material-ui/icons/FileDownload";
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
 import MetadataUtil from "utils/MetadataUtil";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import MiscUtil from "_core/utils/MiscUtil";
 import styles from "components/FeatureDetail/FeatureDetailContainerStyles.scss";
 import PlumeChartingContainer from "components/FeatureDetail/PlumeChartingContainer";
 import InfrastructureChartingContainer from "components/FeatureDetail/InfrastructureChartingContainer";
+import { IconButtonSmaller } from "components/Reusables";
+import InfoIcon from "@material-ui/icons/Info";
+import appConfig from "constants/appConfig";
+import Tooltip from "@material-ui/core/Tooltip";
+import Immutable from "immutable";
 
 export class FeatureDetailContainer extends Component {
-    // getCategory() {
-    //     try {
-    //         console.dir(this.props.feature.get("metadata").toJS());
-    //         return this.props.feature
-    //             .get("metadata")
-    //             .find(val => val.get("name").toLowerCase() === "category")
-    //             .get("value");
-    //     } catch (e) {
-    //         return "(no category)";
-    //     }
-    // }
-
     truncateField(str, limit) {
         const stripped = str.replace(/(\s*$)/, "");
         return stripped.substring(0, limit - 3) + "...";
     }
 
+    makeAPILink(field) {
+        return (
+            <div key={field.name}>
+                <label>{field.name}</label>
+                <a
+                    href={`https://secure.conservation.ca.gov/WellSearch/Details?api=${
+                        field.value
+                    }`}
+                    target="_blank"
+                >
+                    {field.value}
+                </a>
+            </div>
+        );
+    }
+
+    makePopoverField(field) {
+        const unit = field.unit ? `(${field.unit})` : null;
+        return (
+            <div key={field.name}>
+                <label>
+                    {field.name} {unit}
+                    <Tooltip title={field.popoverText} placement="right">
+                        <IconButtonSmaller
+                            onClick={evt => this.openPopover(evt, field.name)}
+                            className={styles.smallIcon}
+                        >
+                            <InfoIcon />
+                        </IconButtonSmaller>
+                    </Tooltip>
+                </label>
+                <span>{field.value}</span>
+            </div>
+        );
+    }
+
     makeInfoFields(fieldInfo) {
         const fields = fieldInfo.map(field => {
+            if (field.name.toLowerCase() === "api") return this.makeAPILink(field);
+            if (field.popoverText) return this.makePopoverField(field);
+
             const unit = field.unit ? `(${field.unit})` : null;
             const value = field.value;
             if (field.subtitle) {
@@ -48,6 +83,7 @@ export class FeatureDetailContainer extends Component {
                     </div>
                 );
             }
+
             return (
                 <div key={field.name}>
                     <label>
@@ -60,7 +96,15 @@ export class FeatureDetailContainer extends Component {
         return <div className={styles.infoBox}>{fields}</div>;
     }
 
-    renderFeatureDetailContainer(headerImageUrl, title, subtitle, featureBody) {
+    renderFeatureDetailContainer(
+        headerImageUrl,
+        title,
+        subtitle,
+        downloadLabel,
+        downloadFnc,
+        enableDownloads,
+        featureBody
+    ) {
         let featureDetailContainerClasses = MiscUtil.generateStringFromSet({
             [styles.featureDetailContainer]: true,
             [styles.fullWidth]: this.props.layerSidebarCollapsed
@@ -69,6 +113,23 @@ export class FeatureDetailContainer extends Component {
             [styles.maxWidth]: true,
             [styles.featureDetailBody]: true
         });
+        let downloadFAB = <div />;
+        if (enableDownloads) {
+            downloadFAB = (
+                <div className={styles.fabContainer}>
+                    <Button
+                        className={styles.fab}
+                        color="inherit"
+                        onClick={() => downloadFnc(this.props.feature)}
+                        target="_blank"
+                        variant="fab"
+                    >
+                        <FileDownloadIcon />
+                    </Button>
+                    <span className={styles.fabLabel}>{downloadLabel}</span>
+                </div>
+            );
+        }
         return (
             <div className={featureDetailContainerClasses}>
                 <Button
@@ -84,6 +145,7 @@ export class FeatureDetailContainer extends Component {
                 />
                 <div className={styles.header}>
                     <div className={styles.maxWidth}>
+                        {downloadFAB}
                         <h2 className={styles.headerTitle}>{title}</h2>
                         <p className={styles.headerSubtitle}>{subtitle}</p>
                     </div>
@@ -95,17 +157,19 @@ export class FeatureDetailContainer extends Component {
 
     makeInfrastructureDetail() {
         if (!this.props.feature.size) return null;
+        const metadata = this.props.vistaMetadata || Immutable.fromJS({});
 
         // Get all the properties we'll be using later on using metadata searches
         const name = this.props.feature.get("name");
         const category = this.props.feature.get("category");
-        const city = MetadataUtil.getCity(this.props.feature, null);
-        const county = MetadataUtil.getCounty(this.props.feature, null);
-        const state = MetadataUtil.getState(this.props.feature, null);
-        const lat = MetadataUtil.getLat(this.props.feature, null);
-        const long = MetadataUtil.getLong(this.props.feature, null);
-        const address = MetadataUtil.getAddress(this.props.feature, null);
-        const sector = MetadataUtil.getFacilityTypeName(this.props.feature, "(no sector name)");
+        const city = metadata.get("LCity");
+        const county = metadata.get("County");
+        const state = metadata.get("STATE") || metadata.get("LState");
+        const lat = metadata.get("LATITUDE") || metadata.get("LLat");
+        const long = metadata.get("LONGITUDE") || metadata.get("LLong");
+        const address = metadata.get("ADDRESS") || metadata.get("Location");
+        const sector = metadata.get("TYPE") || metadata.get("LSector") || "(no sector name)";
+
         let googleMapsUri = "";
         let googleMapsStaticImgUrl = "./styles/resources/img/fake_info_img.png";
         if (lat && long) {
@@ -115,18 +179,17 @@ export class FeatureDetailContainer extends Component {
             googleMapsUri = `http://maps.google.com/maps?t=k&q=loc:${address}`;
             googleMapsStaticImgUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${address}&maptype=satellite&zoom=14&scale=2&size=800x175&key=AIzaSyCATObvFelK2TV949tuLWCIwRC4eFTnne4`;
         }
-        const areaSqMi = MetadataUtil.getAreaSqMi(this.props.feature, "(no area)");
 
         // Bin together the various field:value pairs
         const facilityOverviewFields = [
-            { name: "Site", value: MetadataUtil.getSiteName(this.props.feature, "(no site name)") },
+            { name: "Site", value: metadata.get("LSiteName") || "(no site name)" },
             {
                 name: "Facility Type",
                 value: sector
             },
             {
                 name: "Operator",
-                value: MetadataUtil.getOperatorName(this.props.feature, "(no operator name)")
+                value: metadata.get("OPERATOR") || metadata.get("LOperator") || "(no operator name)"
             },
             {
                 name: "Location",
@@ -138,7 +201,7 @@ export class FeatureDetailContainer extends Component {
                     "(no state)"}`,
                 unit: null
             },
-            { name: "Number of Flyovers", value: this.props.feature.get("flyoverCount") }
+            { name: "Number of Flyovers", value: this.props.feature.get("num_flights_matching") }
         ];
 
         let featureTitle = name;
@@ -159,6 +222,7 @@ export class FeatureDetailContainer extends Component {
                             href={googleMapsUri}
                             target="_blank"
                             disabled={!googleMapsUri}
+                            variant="outlined"
                         >
                             View In Google Maps
                         </Button>
@@ -170,12 +234,14 @@ export class FeatureDetailContainer extends Component {
                             VISTA Facility Metadata
                         </Typography>
                         {this.makeInfoFields(
-                            this.props.feature
-                                .get("metadata")
-                                .sortBy(x => x.get("name"))
-                                // Omitting metadata fields that begin with "L"
-                                .filter(x => x.get("name").charAt(0) !== "L")
-                                .toJS()
+                            Object.keys(
+                                metadata
+                                    .sortBy((v, k) => k)
+                                    .filter((v, k) => k.charAt(0) !== "L" && k !== "sources")
+                                    .toJS()
+                            ).map(key => {
+                                return { name: key, value: metadata.get(key) };
+                            })
                         )}
                     </CardContent>
                 </Card>
@@ -186,6 +252,9 @@ export class FeatureDetailContainer extends Component {
             featureHeaderImage,
             featureTitle,
             featureSubtitle,
+            null,
+            "Download Flyover Data",
+            false,
             featureBody
         );
     }
@@ -193,39 +262,38 @@ export class FeatureDetailContainer extends Component {
     makePlumeDetail() {
         if (!this.props.feature.size) return null;
 
-        // Get all the properties we'll be using later on using metadata searches
-        const name = this.props.feature.get("name");
-        const category = this.props.feature.get("category");
-        const city = MetadataUtil.getCity(this.props.feature, null);
-        const county = MetadataUtil.getCounty(this.props.feature, null);
-        const state = MetadataUtil.getState(this.props.feature, null);
-        const lat = MetadataUtil.getLat(this.props.feature, null);
-        const long = MetadataUtil.getLong(this.props.feature, null);
+        const feature = this.props.feature;
+        const location = feature.get("location");
 
-        const googleMapsUri =
-            lat && long ? `http://maps.google.com/maps?t=k&q=loc:${lat},${long}` : null;
-        let googleMapsStaticImgUrl = "./styles/resources/img/fake_info_img.png";
-        if (lat && long) {
-            googleMapsStaticImgUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${long}&maptype=satellite&zoom=14&scale=2&size=800x175&key=AIzaSyCATObvFelK2TV949tuLWCIwRC4eFTnne4`;
-        }
+        const googleMapsUri = `http://maps.google.com/maps?t=k&q=loc:${location.get(
+            0
+        )},${location.get(1)}`;
+        const googleMapsStaticImgUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${location.get(
+            0
+        )},${location.get(
+            1
+        )}&maptype=satellite&zoom=14&scale=2&size=800x175&key=AIzaSyCATObvFelK2TV949tuLWCIwRC4eFTnne4`;
 
-        const areaSqMi = MetadataUtil.getAreaSqMi(this.props.feature, null);
         const datetime = this.props.feature.get("datetime");
-        const dateString = datetime
-            ? moment(datetime).format("MMMM Do, YYYY, H:mm [UTC]")
-            : "(No Date)";
+        const dateString = datetime ? moment(datetime).format("MMMM Do, YYYY, H:mm") : "(No Date)";
 
         // Bin together the various field:value pairs
         const plumeDataFields = [
-            { name: "Candidate ID", value: MetadataUtil.getCandidateID(this.props.feature, null) },
-            { name: "Location", value: lat && long ? `${lat}°N, ${long}°W` : "(No Location)" },
-            { name: "Plume ID", value: MetadataUtil.getPlumeID(this.props.feature, null) },
-            { name: "IME", unit: "kg", value: MetadataUtil.getIME(this.props.feature, "20", null) },
-            { name: "Source ID", value: MetadataUtil.getSourceID(this.props.feature, null) },
+            { name: "Candidate ID", value: feature.get("name") },
+            { name: "Location", value: `${location.get(0)}°N, ${location.get(1)}°W` },
+            { name: "Plume ID", value: feature.get("plumeId") },
+            {
+                name: "IME",
+                unit: "kg",
+                value: feature.get("ime"),
+                popoverText: "Integrated Methane Enhancement (kilograms)"
+            },
+            { name: "Source ID", value: feature.get("sourceId") },
             {
                 name: "Fetch",
                 unit: "m",
-                value: MetadataUtil.getFetch(this.props.feature, "20", null)
+                value: feature.get("fetch"),
+                popoverText: "Fetch distance (meters)"
             }
         ];
 
@@ -247,6 +315,7 @@ export class FeatureDetailContainer extends Component {
                             href={googleMapsUri}
                             target="_blank"
                             disabled={!googleMapsUri}
+                            variant="outlined"
                         >
                             View In Google Maps
                         </Button>
@@ -254,7 +323,7 @@ export class FeatureDetailContainer extends Component {
                 </Card>
                 <div className={styles.imageCardsContainer}>
                     <Grid container spacing={16}>
-                        <Grid item xs>
+                        <Grid item xs className={styles.gridTile}>
                             <Card className={styles.cardRoot}>
                                 <CardContent className={styles.noPadding}>
                                     <Typography variant="headline" component="h2">
@@ -266,7 +335,7 @@ export class FeatureDetailContainer extends Component {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item xs>
+                        <Grid item xs className={styles.gridTile}>
                             <Card className={styles.cardRoot}>
                                 <CardContent className={styles.noPadding}>
                                     <Typography variant="headline" component="h2">
@@ -287,6 +356,9 @@ export class FeatureDetailContainer extends Component {
             featureHeaderImage,
             featureTitle,
             featureSubtitle,
+            "Download Plume Data",
+            this.props.downloadPlumeData,
+            true,
             featureBody
         );
     }
@@ -308,14 +380,17 @@ FeatureDetailContainer.propTypes = {
     category: PropTypes.string,
     layerSidebarCollapsed: PropTypes.bool.isRequired,
     feature: PropTypes.object,
-    hideFeatureDetailContainer: PropTypes.func.isRequired
+    hideFeatureDetailContainer: PropTypes.func.isRequired,
+    downloadPlumeData: PropTypes.func.isRequired,
+    vistaMetadata: PropTypes.object
 };
 
 function mapStateToProps(state) {
     return {
         category: state.featureDetail.get("category"),
         layerSidebarCollapsed: state.layerSidebar.get("layerSidebarCollapsed"),
-        feature: state.featureDetail.get("feature")
+        feature: state.featureDetail.get("feature"),
+        vistaMetadata: state.featureDetail.get("vistaMetadata")
     };
 }
 
@@ -324,7 +399,8 @@ function mapDispatchToProps(dispatch) {
         hideFeatureDetailContainer: bindActionCreators(
             featureDetailActions.hideFeatureDetailContainer,
             dispatch
-        )
+        ),
+        downloadPlumeData: bindActionCreators(featureDetailActions.downloadPlumeData, dispatch)
     };
 }
 

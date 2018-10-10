@@ -9,6 +9,8 @@ export default function view_Extended(
     opt_reducer = ViewReducer_Extended
 ) {
     switch (action.type) {
+        case actionTypesMSF.CHANGE_APP_MODE:
+            return opt_reducer.changeAppMode(state, action);
         // case actionTypesMSF.UPDATE_FEATURE_DETAIL:
         //     return opt_reducer.hideMapControlContainer(state, action);
         // case actionTypesMSF.HIDE_FEATURE_DETAIL:

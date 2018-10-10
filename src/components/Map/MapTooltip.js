@@ -2,19 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Typography from "material-ui/Typography";
-import IconButton from "material-ui/IconButton";
-import MiscUtil from "_core/utils/MiscUtil";
-import { ListItemSecondaryAction } from "material-ui/List";
+import Typography from "@material-ui/core/Typography";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import MiscUtilExtended from "utils/MiscUtilExtended";
-import MyLocationIcon from "material-ui-icons/MyLocation";
-import InfoOutlineIcon from "material-ui-icons/InfoOutline";
-// import Divider from "material-ui/Divider";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import styles from "components/Map/MapTooltipStyles.scss";
 import * as mapActionsMSF from "actions/mapActions";
-import MetadataUtil from "utils/MetadataUtil";
 import * as layerSidebarActions from "actions/layerSidebarActions";
+import MetadataUtil from "utils/MetadataUtil";
+import Button from "@material-ui/core/Button";
 
 export class MapTooltip extends Component {
     shouldComponentUpdate(nextProps) {
@@ -38,8 +34,8 @@ export class MapTooltip extends Component {
                 layerSidebarTypes.CATEGORY_INFRASTRUCTURE
             ) {
                 title = feature.get("name");
-                subtitle1 = feature.get("flyoverCount") + " flyovers";
-                subtitle2 = feature.get("category");
+                subtitle1 = feature.get("num_flights_matching") + " flyovers";
+                subtitle2 = MetadataUtil.getFacilityTypeName(feature);
             }
         }
 
@@ -77,25 +73,23 @@ export class MapTooltip extends Component {
                         {subtitle2}
                     </Typography>
                 </div>
-                <ListItemSecondaryAction>
-                    <span ref={ref => (this.zoomToRef = ref)}>
-                        <IconButton>
-                            {this.props.activeFeature.get("feature") ? (
-                                <MyLocationIcon />
-                            ) : (
-                                <span />
-                            )}
-                        </IconButton>
-                    </span>
-
+                <ListItemSecondaryAction className={styles.listItemSecondaryAction}>
                     <span ref={ref => (this.detailsRef = ref)}>
-                        <IconButton>
-                            {this.props.activeFeature.get("feature") ? (
-                                <InfoOutlineIcon />
-                            ) : (
-                                <span />
-                            )}
-                        </IconButton>
+                        <Button
+                            color="default"
+                            key={feature ? feature.get("id") + "popup_details" : ""}
+                        >
+                            Details
+                        </Button>
+                    </span>
+                    <span ref={ref => (this.zoomToRef = ref)}>
+                        <Button
+                            color="default"
+                            style={{ margin: 0 }}
+                            key={feature ? feature.get("id") + "popup_zoom_to" : ""}
+                        >
+                            Zoom To
+                        </Button>
                     </span>
                 </ListItemSecondaryAction>
             </div>

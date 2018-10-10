@@ -2,35 +2,35 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import List, {
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    ListItemSecondaryAction
-} from "material-ui/List";
-import Typography from "material-ui/Typography";
-import ListSubheader from "material-ui/List/ListSubheader";
-import Checkbox from "material-ui/Checkbox";
-import Divider from "material-ui/Divider";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import Typography from "@material-ui/core/Typography";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import Checkbox from "@material-ui/core/Checkbox";
+import Divider from "@material-ui/core/Divider";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import Button from "material-ui/Button";
-import IconButton from "material-ui/IconButton";
-import { CircularProgress } from "material-ui/Progress";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import DomainIcon from "mdi-material-ui/Domain";
 import LeafIcon from "mdi-material-ui/Leaf";
 import FlashIcon from "mdi-material-ui/Flash";
 import DeleteIcon from "mdi-material-ui/Delete";
-import MyLocationIcon from "material-ui-icons/MyLocation";
-import InfoOutlineIcon from "material-ui-icons/InfoOutline";
-import InfoIcon from "material-ui-icons/Info";
-import Search from "material-ui-icons/Search";
-import Clear from "material-ui-icons/Clear";
-import Select from "material-ui/Select";
-import { FormControl } from "material-ui/Form";
-import Input, { InputLabel } from "material-ui/Input";
-import { MenuItem } from "material-ui/Menu";
-import Paper from "material-ui/Paper";
+import MyLocationIcon from "@material-ui/icons/MyLocation";
+import InfoOutlineIcon from "@material-ui/icons/InfoOutline";
+import InfoIcon from "@material-ui/icons/Info";
+import Search from "@material-ui/icons/Search";
+import Clear from "@material-ui/icons/Clear";
+import Select from "@material-ui/core/Select";
+import FormControl from "@material-ui/core/FormControl";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import MetadataUtil from "utils/MetadataUtil";
 import * as mapActionsMSF from "actions/mapActions";
@@ -49,6 +49,13 @@ export class InfrastructureContainer extends Component {
     //         </svg>
     //     );
     // }
+    clearTextSearch() {
+        this.props.setInfrastructureFilter(layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME, {
+            value: "",
+            label: ""
+        });
+        // this.props.toggleInfrastructureCategoryFilters(false);
+    }
 
     getCircleIcon(group, color) {
         return <div className="category-circle" style={{ background: color }} />;
@@ -141,10 +148,10 @@ export class InfrastructureContainer extends Component {
                     <div
                         className={iconContainerClasses}
                         style={{
-                            background: this.getColorByCategoryId(feature.get("categoryId"))
+                            background: this.getColorByCategoryId(feature.get("category_id"))
                         }}
                     >
-                        {this.getIconByCategoryId(feature.get("categoryId"))}
+                        {this.getIconByCategoryId(feature.get("category_id"))}
                     </div>
                     <div className={layerSidebarStyles.listItemTextContainer}>
                         <Typography
@@ -161,7 +168,7 @@ export class InfrastructureContainer extends Component {
                             variant="caption"
                             noWrap
                         >
-                            {feature.get("flyoverCount") + " flyovers"}
+                            {(feature.get("num_flights_matching") || "0") + " flyovers"}
                         </Typography>
                         <Typography
                             color={isItemPrimary ? "inherit" : "default"}
@@ -177,6 +184,7 @@ export class InfrastructureContainer extends Component {
                             className={isItemPrimary ? layerSidebarStyles.buttonContrast : ""}
                             key={feature.get("id") + "_my_location_button"}
                             onClick={() => this.props.centerMapOnFeature(feature, "VISTA")}
+                            disabled={!this.props.activeDetailFeature.get("feature").isEmpty()}
                         >
                             Zoom To
                         </Button>
@@ -262,6 +270,8 @@ export class InfrastructureContainer extends Component {
                 onPageForward={() =>
                     this.props.pageForward(layerSidebarTypes.CATEGORY_INFRASTRUCTURE)
                 }
+                totalResults={this.props.availableFeatures.size}
+                clearFilterFunc={() => this.clearTextSearch()}
             />
         );
     }
@@ -298,7 +308,10 @@ InfrastructureContainer.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     centerMapOnPoint: PropTypes.func.isRequired,
     centerMapOnFeature: PropTypes.func.isRequired,
-    toggleFeatureLabel: PropTypes.func.isRequired
+    toggleFeatureLabel: PropTypes.func.isRequired,
+    availableFeatures: PropTypes.object,
+    setInfrastructureFilter: PropTypes.func.isRequired,
+    toggleInfrastructureCategoryFilters: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -307,6 +320,10 @@ function mapStateToProps(state) {
         activeDetailFeature: state.featureDetail,
         searchState: state.layerSidebar.getIn([
             "searchState",
+            layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+        ]),
+        availableFeatures: state.layerSidebar.getIn([
+            "availableFeatures",
             layerSidebarTypes.CATEGORY_INFRASTRUCTURE
         ])
     };
@@ -320,7 +337,15 @@ function mapDispatchToProps(dispatch) {
         hideFeatureDetail: bindActionCreators(layerSidebarActions.hideFeatureDetail, dispatch),
         centerMapOnPoint: bindActionCreators(mapActionsMSF.centerMapOnPoint, dispatch),
         centerMapOnFeature: bindActionCreators(mapActionsMSF.centerMapOnFeature, dispatch),
-        toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch)
+        toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch),
+        setInfrastructureFilter: bindActionCreators(
+            layerSidebarActions.setInfrastructureFilter,
+            dispatch
+        ),
+        toggleInfrastructureCategoryFilters: bindActionCreators(
+            layerSidebarActions.toggleInfrastructureCategoryFilters,
+            dispatch
+        )
     };
 }
 

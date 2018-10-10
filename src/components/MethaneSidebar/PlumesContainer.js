@@ -3,23 +3,25 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ReactDOM from "react-dom";
-import List, { ListItem, ListItemSecondaryAction } from "material-ui/List";
-import Divider from "material-ui/Divider";
-import Typography from "material-ui/Typography";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import IconButton from "material-ui/IconButton";
-import { CircularProgress } from "material-ui/Progress";
+import IconButton from "@material-ui/core/IconButton";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import CloudOffOutlineIcon from "mdi-material-ui/CloudOffOutline";
-import InfoOutlineIcon from "material-ui-icons/InfoOutline";
-import InfoIcon from "material-ui-icons/Info";
-import MyLocationIcon from "material-ui-icons/MyLocation";
-import Select from "material-ui/Select";
-import { FormControl } from "material-ui/Form";
-import Input, { InputLabel } from "material-ui/Input";
-import Button from "material-ui/Button";
-import { MenuItem } from "material-ui/Menu";
-import Paper from "material-ui/Paper";
+import InfoOutlineIcon from "@material-ui/icons/InfoOutline";
+import InfoIcon from "@material-ui/icons/Info";
+import MyLocationIcon from "@material-ui/icons/MyLocation";
+import Select from "@material-ui/core/Select";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import Button from "@material-ui/core/Button";
+import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import MetadataUtil from "utils/MetadataUtil";
 import appConfig from "constants/appConfig";
@@ -48,6 +50,16 @@ export class PlumesContainer extends Component {
     //         }
     //     }
     // }
+
+    clearAllFilters() {
+        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_ID, {
+            value: "",
+            label: ""
+        });
+        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_IME, null);
+        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN, null);
+    }
+
     isActiveFeature(feature) {
         return (
             this.props.activeFeature.get("category") === layerSidebarTypes.CATEGORY_PLUMES &&
@@ -92,20 +104,21 @@ export class PlumesContainer extends Component {
             }
         };
 
-        const lat = MetadataUtil.getLat(feature, null);
-        const long = MetadataUtil.getLong(feature, null);
+        const lat = feature.getIn(["location", 0]);
+        const long = feature.getIn(["location", 1]);
         const centerMapAction =
             lat && long ? () => this.props.centerMapOnFeature(feature, "AVIRIS") : null;
 
         const datetime = feature.get("datetime");
         const dateString = MiscUtilExtended.formatPlumeDatetime(datetime);
         // const plumeThumbnail = feature.get("rgbqlctr_url");
-        const plumeThumbnail = feature.get("thumbnail");
+        const plumeThumbnail = feature.get("rgbqlctr_url_thumb");
 
         const listItemSecondaryActionClasses = MiscUtil.generateStringFromSet({
             [layerSidebarStyles.selectedItemSecondary]: isItemPrimary,
             [layerSidebarStyles.listItemSecondaryAction]: true
         });
+
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem
@@ -145,7 +158,7 @@ export class PlumesContainer extends Component {
                             variant="caption"
                             noWrap
                         >
-                            {feature.get("name")}
+                            {`${feature.get("plume_id")} / ${feature.get("candidate_id")}`}
                         </Typography>
                     </div>
                     <ListItemSecondaryAction
@@ -155,7 +168,11 @@ export class PlumesContainer extends Component {
                     >
                         <Button
                             className={isItemPrimary ? layerSidebarStyles.buttonContrast : ""}
-                            disabled={!lat || !long}
+                            disabled={
+                                !lat ||
+                                !long ||
+                                !this.props.activeDetailFeature.get("feature").isEmpty()
+                            }
                             key={feature.get("id") + "_my_location_icon"}
                             onClick={centerMapAction}
                         >
@@ -239,6 +256,8 @@ export class PlumesContainer extends Component {
                 currentPageIndex={this.props.searchState.get("pageIndex")}
                 onPageBackward={() => this.props.pageBackward(layerSidebarTypes.CATEGORY_PLUMES)}
                 onPageForward={() => this.props.pageForward(layerSidebarTypes.CATEGORY_PLUMES)}
+                totalResults={this.props.availableFeatures.size}
+                clearFilterFunc={() => this.clearAllFilters()}
             />
         );
     }
@@ -279,14 +298,20 @@ PlumesContainer.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     centerMapOnFeature: PropTypes.func.isRequired,
     toggleFeatureLabel: PropTypes.func.isRequired,
-    setHoverPlume: PropTypes.func.isRequired
+    setHoverPlume: PropTypes.func.isRequired,
+    availableFeatures: PropTypes.object,
+    setPlumeFilter: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
     return {
         activeFeature: state.map.get("activeFeature"),
         activeDetailFeature: state.featureDetail,
-        searchState: state.layerSidebar.getIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES])
+        searchState: state.layerSidebar.getIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES]),
+        availableFeatures: state.layerSidebar.getIn([
+            "availableFeatures",
+            layerSidebarTypes.CATEGORY_PLUMES
+        ])
     };
 }
 
@@ -298,7 +323,8 @@ function mapDispatchToProps(dispatch) {
         hideFeatureDetail: bindActionCreators(layerSidebarActions.hideFeatureDetail, dispatch),
         centerMapOnFeature: bindActionCreators(mapActionsMSF.centerMapOnFeature, dispatch),
         toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch),
-        setHoverPlume: bindActionCreators(mapActionsMSF.setHoverPlume, dispatch)
+        setHoverPlume: bindActionCreators(mapActionsMSF.setHoverPlume, dispatch),
+        setPlumeFilter: bindActionCreators(layerSidebarActions.setPlumeFilter, dispatch)
     };
 }
 

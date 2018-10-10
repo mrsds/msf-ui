@@ -4,34 +4,32 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import List, {
-    ListItem,
-    ListSubheader,
-    ListItemSecondaryAction,
-    ListItemIcon,
-    ListItemText
-} from "material-ui/List";
-import Checkbox from "material-ui/Checkbox";
-import Switch from "material-ui/Switch";
-import Popover from "material-ui/Popover";
-import Paper from "material-ui/Paper";
-import Search from "material-ui-icons/Search";
-import Sort from "material-ui-icons/SortByAlpha";
-import Check from "material-ui-icons/Check";
-import Clear from "material-ui-icons/Clear";
-import Grow from "material-ui/transitions/Grow";
-import ClickAwayListener from "material-ui/utils/ClickAwayListener";
-import AppBar from "material-ui/AppBar";
-import Typography from "material-ui/Typography";
-import Toolbar from "material-ui/Toolbar";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Checkbox from "@material-ui/core/Checkbox";
+import Switch from "@material-ui/core/Switch";
+import Popover from "@material-ui/core/Popover";
+import Paper from "@material-ui/core/Paper";
+import Search from "@material-ui/icons/Search";
+import Sort from "@material-ui/icons/SortByAlpha";
+import Check from "@material-ui/icons/Check";
+import Clear from "@material-ui/icons/Clear";
+import Grow from "@material-ui/core/Grow";
+import AppBar from "@material-ui/core/AppBar";
+import Typography from "@material-ui/core/Typography";
+import Toolbar from "@material-ui/core/Toolbar";
 import DomainIcon from "mdi-material-ui/Domain";
-import CloseIcon from "material-ui-icons/Close";
+import CloseIcon from "@material-ui/icons/Close";
 import { Manager, Target, Popper } from "react-popper";
 import ChipDropdown from "components/Reusables/ChipDropdown";
 import SearchInput from "components/Reusables/SearchInput";
 import styles from "components/MethaneSidebar/FiltersContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
-import { IconButtonSmall } from "_core/components/Reusables";
+import { IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
 import MapUtilExtended from "utils/MapUtilExtended";
 import Immutable from "immutable";
 
@@ -45,13 +43,17 @@ export class PlumeFiltersContainer extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        return (
-            (!nextProps.filters.equals(this.props.filters) ||
-                !nextProps.activeInfrastructureSubCategories.equals(
-                    this.props.activeInfrastructureSubCategories
-                )) &&
-            !!this.popperProps.find(v => v)
+        const filtersChanged = this.props.filters
+            .filter((_, k) => k.toLowerCase().startsWith("infrastructure"))
+            .some(
+                (v, k) =>
+                    v.getIn(["selectedValue", "value"]) !==
+                    nextProps.filters.getIn([k, "selectedValue", "value"])
+            );
+        const activeSubCatsChanged = this.props.activeInfrastructureSubCategories.some(
+            (v, k) => nextProps.activeInfrastructureSubCategories.get(k) !== v
         );
+        return filtersChanged || activeSubCatsChanged;
     }
 
     setPopperActive(key, active) {
@@ -261,38 +263,44 @@ export class PlumeFiltersContainer extends Component {
                                                 >
                                                     {layerSidebarTypes.INFRASTRUCTURE_GROUPS[
                                                         group
-                                                    ].categories.map(category => {
-                                                        const categoryName = MapUtilExtended.getInfrastructureCategoryHumanName(
-                                                            category
-                                                        );
-                                                        const checked =
-                                                            this.props.activeInfrastructureSubCategories.get(
+                                                    ].categories
+                                                        .filter(
+                                                            category =>
+                                                                category !==
+                                                                layerSidebarTypes.VISTA_2017_OILGAS_WELLS
+                                                        )
+                                                        .map(category => {
+                                                            const categoryName = MapUtilExtended.getInfrastructureCategoryHumanName(
                                                                 category
-                                                            ) || false;
-                                                        return (
-                                                            <ListItem
-                                                                key={category}
-                                                                dense
-                                                                button
-                                                                onClick={() =>
-                                                                    this.props.updateInfrastructureCategoryFilter(
-                                                                        category,
-                                                                        !checked
-                                                                    )
-                                                                }
-                                                            >
-                                                                <Checkbox
-                                                                    className={styles.checkbox}
-                                                                    checked={checked}
-                                                                    tabIndex={-1}
-                                                                    disableRipple
-                                                                />
-                                                                <ListItemText
-                                                                    primary={categoryName}
-                                                                />
-                                                            </ListItem>
-                                                        );
-                                                    })}
+                                                            );
+                                                            const checked =
+                                                                this.props.activeInfrastructureSubCategories.get(
+                                                                    category
+                                                                ) || false;
+                                                            return (
+                                                                <ListItem
+                                                                    key={category}
+                                                                    dense
+                                                                    button
+                                                                    onClick={() =>
+                                                                        this.props.updateInfrastructureCategoryFilter(
+                                                                            category,
+                                                                            !checked
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <Checkbox
+                                                                        className={styles.checkbox}
+                                                                        checked={checked}
+                                                                        tabIndex={-1}
+                                                                        disableRipple
+                                                                    />
+                                                                    <ListItemText
+                                                                        primary={categoryName}
+                                                                    />
+                                                                </ListItem>
+                                                            );
+                                                        })}
                                                 </List>
                                             ))}
                                         </div>
@@ -358,7 +366,9 @@ export class PlumeFiltersContainer extends Component {
                                                             infrastructureSortBySelectedValue ? (
                                                                 <Check />
                                                             ) : (
-                                                                <span />
+                                                                <span
+                                                                    className={styles.blankIcon}
+                                                                />
                                                             )}
                                                         </ListItemIcon>
                                                         <ListItemText primary={x.get("label")} />

@@ -1,6 +1,5 @@
 @import "~styles/colors";
 @import "~styles/misc";
-
 .manager {
     width: 100%;
     display: flex;
@@ -10,11 +9,13 @@
     margin-top: 10px;
     pointer-events: none;
 }
+
 .popoverAppBar {
     position: relative;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
 }
+
 .popoverHeader {
     background: $color-secondary;
     min-height: 0;
@@ -24,11 +25,13 @@
     padding: 0px 6px 0px 16px;
     min-width: 220px;
 }
+
 .popoverTitle {
     -webkit-font-smoothing: antialiased;
     font-weight: 500;
     flex: 1;
 }
+
 .formControl {
     overflow: auto;
     max-height: 270px;
@@ -36,35 +39,43 @@
     display: block;
     list-style: none;
 }
+
 .formControlLabel {
     margin-left: 0;
     display: block;
     cursor: pointer;
 }
+
 .radioLabel {
     display: inline;
 }
+
 .checkbox {
     width: 24px;
     height: inherit;
 }
+
 .subheader {
     height: 34px;
     line-height: 4.4rem;
     text-transform: capitalize;
 }
+
 .chip {
     margin-right: 5px;
     pointer-events: all;
 }
+
 .chipLeftIcon {
     width: 16px;
     height: 16px;
     margin-right: 4px;
 }
+
 .popoverPaper {
     margin-top: 3px;
 }
+
 .sorter {
     height: 32px;
     cursor: pointer;
@@ -82,11 +93,13 @@
         color: rgba(0, 0, 0, 0.84);
     }
 }
+
 .sorterContainer {
     display: flex;
     flex-grow: 1;
     justify-content: flex-end;
 }
+
 .sorterHeader {
     padding-left: 16px;
     padding-right: 16px;
@@ -98,6 +111,13 @@
         float: right;
     }
 }
+
 .pointer {
     pointer-events: all;
+}
+
+.blankIcon {
+    width: 1em;
+    height: 1em;
+    font-size: 24px;
 }

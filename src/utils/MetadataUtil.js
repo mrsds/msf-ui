@@ -15,7 +15,6 @@ export default class MetadataUtil {
     }
 
     static tryFields(fields, metadata) {
-        // console.log(metadata.toJS());
         return fields.reduce((res, field) => {
             return res ? res : this.getValueForField(field, metadata);
         }, null);
@@ -92,7 +91,7 @@ export default class MetadataUtil {
     }
 
     static getSourceID(feature, errTxt = null) {
-        const fields = ["Source id"];
+        const fields = ["Source id", "source_identifier_s"];
         return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
     }
 
@@ -124,5 +123,9 @@ export default class MetadataUtil {
     static getFetch(feature, num = 20, errTxt = null) {
         const fields = [`Fetch${num} (m)`];
         return this.tryFields(fields, this.getMetadata(feature)) || errTxt;
+    }
+
+    static getSourceList(feature) {
+        return this.getValueForField("sources", this.getMetadata(feature)) || [];
     }
 }

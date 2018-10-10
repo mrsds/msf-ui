@@ -25,8 +25,8 @@ export default function layerSidebar(
             return opt_reducer.updateActiveSubcategories(state, action);
         case actionTypesMSF.UPDATE_FEATURE_SEARCH_RESULTS:
             return opt_reducer.updateSearchResults(state, action);
-        case actionTypesMSF.AVAILABLE_LAYER_LIST_LOADED:
-            return opt_reducer.updateSearchResults(state, action);
+        // case actionTypesMSF.AVAILABLE_LAYER_LIST_LOADED:
+        //     return opt_reducer.updateSearchResults(state, action);
         case actionTypesMSF.SET_PLUME_FILTER:
             return opt_reducer.setPlumeFilter(state, action);
         case actionTypesMSF.SET_INFRASTRUCTURE_FILTER:
@@ -35,6 +35,8 @@ export default function layerSidebar(
             return opt_reducer.selectFeatureInSidebar(state, action);
         case actionTypesMSF.CLEAR_FEATURE_LABELS:
             return opt_reducer.clearFeatureLabels(state, action);
+        case actionTypesMSF.UPDATE_OIL_WELLS:
+            return opt_reducer.updateOilWells(state, action);
         default:
             return state;
     }

@@ -2,26 +2,20 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import MiscUtil from "_core/utils/MiscUtil";
 import styles from "components/FeaturePicker/FeaturePickerStyles.scss";
-import { Popover, PopoverAnimationVertical } from "material-ui/Popover";
-import { Menu, MenuItem } from "material-ui/Menu";
-import Card, { CardActions, CardContent, CardMedia } from "material-ui/Card";
-import List, {
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    ListItemSecondaryAction
-} from "material-ui/List";
-import Typography from "material-ui/Typography";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import Typography from "@material-ui/core/Typography";
 import MetadataUtil from "utils/MetadataUtil";
 import MiscUtilExtended from "utils/MiscUtilExtended";
-import Divider from "material-ui/Divider";
-import Subheader from "material-ui/List/ListSubheader";
+import Divider from "@material-ui/core/Divider";
+import Subheader from "@material-ui/core/ListSubheader";
 import * as mapActionsMSF from "actions/mapActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import IconButton from "material-ui/IconButton";
-import InfoOutlineIcon from "material-ui-icons/InfoOutline";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 
 export class FeaturePicker extends Component {
@@ -72,18 +66,20 @@ export class FeaturePicker extends Component {
                         >
                             {MetadataUtil.getFacilityTypeName(feature)}
                         </Typography>
-                    </div>{" "}
-                    <ListItemSecondaryAction>
-                        <IconButton>
-                            <InfoOutlineIcon
-                                onClick={() =>
-                                    this.props.setFeatureDetail(
-                                        layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-                                        feature
-                                    )
-                                }
-                            />
-                        </IconButton>
+                    </div>
+                    <ListItemSecondaryAction className={styles.listItemSecondaryAction}>
+                        <Button
+                            color="default"
+                            key={feature.get("id") + "popup_info_icon"}
+                            onClick={() =>
+                                this.props.setFeatureDetail(
+                                    layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+                                    feature
+                                )
+                            }
+                        >
+                            Details
+                        </Button>
                     </ListItemSecondaryAction>
                 </ListItem>
             </React.Fragment>
@@ -92,10 +88,11 @@ export class FeaturePicker extends Component {
 
     makeInfrastructureItems() {
         if (!this.props.infrastructure.size) return null;
-        return this.props.infrastructure.map(this.makeInfrastructureItem.bind(this));
+        return this.props.infrastructure.map(x => this.makeInfrastructureItem(x));
     }
 
     makePlumeItem(feature) {
+        if (!feature) return "";
         const isActive =
             this.props.activeFeature && feature.get("id") === this.props.activeFeature.get("id");
         const listItemRootClassnames = MiscUtilExtended.generateStringFromSet({
@@ -142,19 +139,19 @@ export class FeaturePicker extends Component {
                             {feature.get("name")}
                         </Typography>
                     </div>
-                    <ListItemSecondaryAction>
-                        <span>
-                            <IconButton>
-                                <InfoOutlineIcon
-                                    onClick={() =>
-                                        this.props.setFeatureDetail(
-                                            layerSidebarTypes.CATEGORY_PLUMES,
-                                            feature
-                                        )
-                                    }
-                                />
-                            </IconButton>
-                        </span>
+                    <ListItemSecondaryAction className={styles.listItemSecondaryAction}>
+                        <Button
+                            color="default"
+                            key={feature.get("id") + "popup_info_icon"}
+                            onClick={() =>
+                                this.props.setFeatureDetail(
+                                    layerSidebarTypes.CATEGORY_PLUMES,
+                                    feature
+                                )
+                            }
+                        >
+                            Details
+                        </Button>
                     </ListItemSecondaryAction>
                 </ListItem>
             </React.Fragment>
@@ -163,7 +160,7 @@ export class FeaturePicker extends Component {
 
     makePlumeItems() {
         if (!this.props.plumes.size) return null;
-        return this.props.plumes.map(this.makePlumeItem.bind(this));
+        return this.props.plumes.map(x => this.makePlumeItem(x));
     }
 
     getPickerStyle() {
@@ -171,32 +168,91 @@ export class FeaturePicker extends Component {
             this.props.plumes.size + this.props.infrastructure.size <= 1 ||
             (this.props.featureDetailActiveFeature && this.props.featureDetailActiveFeature.size)
         ) {
-            return { display: "none" };
+            return {
+                pickerStyle: {
+                    display: "none"
+                },
+                pickerClass: ""
+            };
         }
-        const topPos = this.props.clickEvt.pixel[1] + "px";
-        const leftPos = this.props.clickEvt.pixel[0] + 470 + "px";
+        const topPos = this.props.clickEvt.pixel[1] + 18 + "px";
+        if (
+            this.props.clickEvt.pixel[0] + 325 + (!this.props.layerSidebarCollapsed ? 520 : 70) >
+            window.innerWidth
+        ) {
+            const rightPos =
+                window.innerWidth -
+                this.props.clickEvt.pixel[0] -
+                (!this.props.layerSidebarCollapsed ? 430 : -20) +
+                "px";
+            return {
+                pickerStyle: {
+                    position: "absolute",
+                    top: topPos,
+                    right: rightPos
+                },
+                pickerClass: styles.featurePickerArrowRight
+            };
+        } else {
+            const leftPos =
+                this.props.clickEvt.pixel[0] +
+                (!this.props.layerSidebarCollapsed ? 470 : 20) +
+                "px";
+            return {
+                pickerStyle: {
+                    position: "absolute",
+                    top: topPos,
+                    left: leftPos
+                },
+                pickerClass: styles.featurePickerArrowLeft
+            };
+        }
+    }
+
+    getCardStyle() {
+        if (
+            this.props.plumes.size + this.props.infrastructure.size <= 1 ||
+            (this.props.featureDetailActiveFeature && this.props.featureDetailActiveFeature.size)
+        ) {
+            return {};
+        }
+        const topPos = this.props.clickEvt.pixel[1];
+        const maxHeight = window.innerHeight - topPos - 40 + "px";
         return {
-            position: "absolute",
-            top: topPos,
-            left: leftPos
+            maxHeight
         };
     }
 
     render() {
         if (!this.props.plumes && !this.props.infrastructure) return null;
+        const { pickerStyle, pickerClass } = this.getPickerStyle();
+        const rootClasses = MiscUtilExtended.generateStringFromSet({
+            [pickerClass]: true,
+            [styles.featurePicker]: true
+        });
         return (
-            <div className={styles.featurePicker} style={this.getPickerStyle()}>
-                <Card>
-                    <CardContent>
+            <div className={rootClasses} style={pickerStyle}>
+                <Card className={styles.cardRoot} style={this.getCardStyle()}>
+                    <CardContent className={styles.cardContentRoot}>
                         <List dense={true} className={styles.featureItemList}>
-                            <Subheader hidden={!this.props.infrastructure.size}>
+                            <Subheader
+                                disableSticky
+                                className={styles.subheader}
+                                hidden={!this.props.infrastructure.size}
+                            >
                                 Infrastructure
                             </Subheader>
                             {this.makeInfrastructureItems()}
                             <Divider
                                 hidden={!this.props.plumes.size || !this.props.infrastructure.size}
                             />
-                            <Subheader hidden={!this.props.plumes.size}>Plumes</Subheader>
+                            <Subheader
+                                disableSticky
+                                className={styles.subheader}
+                                hidden={!this.props.plumes.size}
+                            >
+                                Plumes
+                            </Subheader>
                             {this.makePlumeItems()}
                         </List>
                     </CardContent>
@@ -215,6 +271,7 @@ FeaturePicker.propTypes = {
     setActivePickerFeature: PropTypes.func.isRequired,
     toggleFeatureLabel: PropTypes.func.isRequired,
     setFeatureDetail: PropTypes.func.isRequired,
+    layerSidebarCollapsed: PropTypes.bool.isRequired,
     featureDetailActiveFeature: PropTypes.object
 };
 
@@ -224,6 +281,7 @@ function mapStateToProps(state) {
         infrastructure: state.map.getIn(["featurePicker", "infrastructure"]),
         plumes: state.map.getIn(["featurePicker", "plumes"]),
         activeFeature: state.map.getIn(["featurePicker", "activeFeature"]),
+        layerSidebarCollapsed: state.layerSidebar.get("layerSidebarCollapsed"),
         featureDetailActiveFeature: state.featureDetail.get("feature")
     };
 }

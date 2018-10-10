@@ -2,36 +2,35 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import { FormGroup, FormControlLabel } from "material-ui/Form";
-import Checkbox from "material-ui/Checkbox";
-import Switch from "material-ui/Switch";
-import Grid from "material-ui/Grid";
-import GridList, { GridListTile, GridListTileBar } from "material-ui/GridList";
-import Card, { CardActions, CardContent, CardMedia } from "material-ui/Card";
-import Typography from "material-ui/Typography";
-import Table, { TableBody, TableCell, TableHead, TableRow } from "material-ui/Table";
-import Button from "material-ui/Button";
+import Grid from "@material-ui/core/Grid";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import GridListTileBar from "@material-ui/core/GridListTileBar";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import Table from "@material-ui/core/Table";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableBody from "@material-ui/core/TableBody";
+import Button from "@material-ui/core/Button";
 import MetadataUtil from "utils/MetadataUtil";
 import * as MSFTypes from "constants/MSFTypes";
 import * as featureDetailActions from "actions/featureDetailActions";
 import featureDetailStyles from "components/FeatureDetail/FeatureDetailContainerStyles.scss";
 import styles from "components/FeatureDetail/ChartingContainerStyles.scss";
-import TextField from "material-ui/TextField";
-import { Line as LineChart } from "react-chartjs-2";
+import { Scatter as ScatterChart } from "react-chartjs-2";
 import Immutable from "immutable";
-import ClickAwayListener from "material-ui/utils/ClickAwayListener";
 import { Manager, Target, Popper } from "react-popper";
 import ChipDropdown from "components/Reusables/ChipDropdown";
 import displayStyles from "_core/styles/display.scss";
-import Grow from "material-ui/transitions/Grow";
-import Paper from "material-ui/Paper";
-import AppBar from "material-ui/AppBar";
-import Toolbar from "material-ui/Toolbar";
-import { IconButtonSmall } from "_core/components/Reusables";
-import CloseIcon from "material-ui-icons/Close";
-import Radio from "material-ui/Radio";
+import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
+import { ClickAwayListener } from "_core/components/Reusables";
+import Radio from "@material-ui/core/Radio";
 import moment from "moment";
-import { CircularProgress } from "material-ui/Progress";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import PlumeDateFilterControl from "components/FeatureDetail/PlumeDateFilterControl";
 
 export class InfrastructureChartingContainer extends Component {
@@ -46,11 +45,22 @@ export class InfrastructureChartingContainer extends Component {
     }
 
     getFilteredPlumeList() {
-        return this.props.plumeList.filter(
-            feature =>
-                !this.props.plumeSourceId ||
-                this.props.plumeSourceId === feature.getIn(["sourceId", "value"])
-        );
+        return this.props.plumeList
+            .filter(
+                feature =>
+                    !this.props.plumeSourceId ||
+                    this.props.plumeSourceId === feature.get("sourceId")
+            )
+            .filter(
+                feature =>
+                    !this.props.flyoverId ||
+                    this.props.flyoverId === feature.get("flightline_id").toString()
+            )
+            .sort((a, b) => {
+                const dateA = moment(a.get("plume_date") || a.get("flightline_date"));
+                const dateB = moment(b.get("plume_date") || b.get("flightline_date"));
+                return dateA.isBefore(dateB) ? -1 : dateA.isAfter(dateB) ? 1 : 0;
+            });
     }
 
     getDateFilteredPlumeList() {
@@ -58,31 +68,30 @@ export class InfrastructureChartingContainer extends Component {
             .filter(
                 feature =>
                     !this.props.plumeFilterStartDate ||
-                    moment(feature.get("datetime")).isSameOrAfter(this.props.plumeFilterStartDate)
+                    moment(
+                        feature.get("plume_date") || feature.get("flightline_date")
+                    ).isSameOrAfter(this.props.plumeFilterStartDate)
             )
             .filter(
                 feature =>
                     !this.props.plumeFilterEndDate ||
-                    moment(feature.get("datetime")).isSameOrBefore(this.props.plumeFilterEndDate)
+                    moment(
+                        feature.get("plume_date") || feature.get("flightline_date")
+                    ).isSameOrBefore(this.props.plumeFilterEndDate)
             );
     }
 
     getAvailablePlumeSources() {
         return this.props.plumeList.reduce((acc, feature) => {
-            const sourceId = feature.getIn(["sourceId", "value"]);
-            if (sourceId && !acc.includes(sourceId)) {
-                acc.push(sourceId);
-            }
+            if (!acc.includes(feature.get("sourceId"))) acc.push(feature.get("sourceId"));
             return acc;
         }, []);
     }
 
     getAvailableFlyovers() {
         return this.props.plumeList.reduce((acc, feature) => {
-            const count = feature.get("flyoverCount");
-            if (count && !acc.includes(count)) {
-                acc.push(count);
-            }
+            const id = feature.get("flightline_id").toString();
+            if (!acc.includes(id)) acc.push(id);
             return acc;
         }, []);
     }
@@ -278,7 +287,6 @@ export class InfrastructureChartingContainer extends Component {
 
         return (
             <React.Fragment>
-                {" "}
                 <Manager className={styles.manager}>
                     <ClickAwayListener
                         onClickAway={() => {
@@ -347,20 +355,42 @@ export class InfrastructureChartingContainer extends Component {
     }
 
     makePlumeListItem(feature) {
-        const datetime = feature.get("datetime");
-        const dateString = datetime
-            ? moment(datetime).format("MMMM Do, YYYY, H:mm [UTC]")
-            : "(No Date)";
+        const datetime = feature.get("plume_date") || feature.get("flightline_date");
+        const dateString = datetime ? moment(datetime).format("M/D/YYYY") : "(No Date)";
+        const timeString = datetime ? moment(datetime).format("H:mm") : "";
+        const isFlyover = !feature.get("candidate_id");
         return (
-            <React.Fragment key={feature.get("name")}>
+            <React.Fragment
+                key={
+                    (isFlyover ? dateString + timeString + "flyover" : feature.get("name")) +
+                    Math.random()
+                        .toString(36)
+                        .substring(7)
+                }
+            >
                 <TableRow>
-                    <TableCell>Maybe?</TableCell>
-                    <TableCell>{dateString}</TableCell>
-                    <TableCell>{MetadataUtil.getPlumeID(feature, "(none)")}</TableCell>
-                    <TableCell numeric>(none)</TableCell>
-                    <TableCell numeric>{MetadataUtil.getFetch(feature, "20", "(none)")}</TableCell>
-                    <TableCell numeric>(none)</TableCell>
-                    <TableCell numeric>{MetadataUtil.getIME(feature, "20", "(none)")}</TableCell>
+                    <TableCell padding="dense">{isFlyover ? "No" : "Yes"}</TableCell>
+                    <TableCell padding="dense">{feature.get("sourceId")}</TableCell>
+                    <TableCell padding="dense">
+                        {dateString}
+                        <br />
+                        {timeString}
+                    </TableCell>
+                    <TableCell padding="dense">
+                        {isFlyover ? "-" : feature.get("aviris_plume_id")}
+                    </TableCell>
+                    <TableCell numeric={!isFlyover} padding="dense">
+                        {isFlyover ? "-" : "(none)"}
+                    </TableCell>
+                    <TableCell numeric={!isFlyover} padding="dense">
+                        {isFlyover ? "-" : Math.round(feature.get("fetch20")) / 100}
+                    </TableCell>
+                    <TableCell numeric={!isFlyover} padding="dense">
+                        {isFlyover ? "-" : "(none)"}
+                    </TableCell>
+                    <TableCell numeric={!isFlyover} padding="dense">
+                        {isFlyover ? "-" : Math.round(feature.get("ime20") * 100) / 100}
+                    </TableCell>
                 </TableRow>
             </React.Fragment>
         );
@@ -388,13 +418,22 @@ export class InfrastructureChartingContainer extends Component {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Plume Detected</TableCell>
-                                <TableCell>Flyover Date</TableCell>
-                                <TableCell>Plume ID</TableCell>
-                                <TableCell numeric>Wind (mph/hr)</TableCell>
-                                <TableCell numeric>Fetch (m)</TableCell>
-                                <TableCell numeric>Flux (kg/hr)</TableCell>
-                                <TableCell numeric>IME (kg)</TableCell>
+                                <TableCell padding="dense">Plume Detected</TableCell>
+                                <TableCell padding="dense">Source ID</TableCell>
+                                <TableCell padding="dense">Flyover Date</TableCell>
+                                <TableCell padding="dense">Plume ID</TableCell>
+                                <TableCell numeric padding="dense">
+                                    Wind (mph/hr)
+                                </TableCell>
+                                <TableCell numeric padding="dense">
+                                    Fetch (m)
+                                </TableCell>
+                                <TableCell numeric padding="dense">
+                                    Flux (kg/hr)
+                                </TableCell>
+                                <TableCell numeric padding="dense">
+                                    IME (kg)
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>{this.makePlumeTableBody()}</TableBody>
@@ -405,70 +444,123 @@ export class InfrastructureChartingContainer extends Component {
     }
 
     makeThumbs() {
+        if (!this.props.plumeList.length) {
+            return <div className={styles.noResults}>No Results</div>;
+        }
         return (
             <div className={styles.thumbGrid}>
                 <GridList cols={2} spacing={20} cellHeight={464}>
-                    {this.getDateFilteredPlumeList().map(feature => {
-                        const datetime = feature.get("datetime");
-                        const dateString = datetime
-                            ? moment(datetime).format("MMMM Do, YYYY, H:mm [UTC]")
-                            : "(No Date)";
-                        return (
-                            <GridListTile key={feature.get("name")}>
-                                <img src={feature.get("rgbqlctr_url")} alt={feature.get("name")} />
-                                <GridListTileBar
-                                    title={
-                                        <div className={styles.gridTileHeading}>
-                                            <span>{dateString}</span>
-                                            <span>
-                                                {Math.round(feature.get("ime") * 100) / 100} (kg)
-                                            </span>
-                                        </div>
+                    {this.getDateFilteredPlumeList()
+                        .filter(feature => feature.get("candidate_id"))
+                        .map(feature => {
+                            const datetime =
+                                feature.get("plume_date") || feature.get("flightline_date");
+                            const dateString = datetime
+                                ? moment(datetime).format("MMMM Do, YYYY, H:mm")
+                                : "(No Date)";
+                            return (
+                                <GridListTile
+                                    key={
+                                        feature.get("name") +
+                                        Math.random()
+                                            .toString(36)
+                                            .substring(7)
                                     }
-                                    subtitle={
-                                        <div className={styles.gridTileHeading}>
-                                            <span>{feature.get("name")}</span>
-                                            <span>IME</span>
-                                        </div>
-                                    }
-                                />
-                            </GridListTile>
-                        );
-                    })}
+                                >
+                                    <img
+                                        src={feature.get("rgbqlctr_url")}
+                                        alt={feature.get("name")}
+                                    />
+                                    <GridListTileBar
+                                        title={
+                                            <div className={styles.gridTileHeading}>
+                                                <span>{dateString}</span>
+                                                <span>{`${Math.round(feature.get("ime20") * 100) /
+                                                    100} (kg)`}</span>
+                                            </div>
+                                        }
+                                        subtitle={
+                                            <div className={styles.gridTileHeading}>
+                                                <span>{feature.get("name")}</span>
+                                                <span>IME</span>
+                                            </div>
+                                        }
+                                    />
+                                </GridListTile>
+                            );
+                        })}
                 </GridList>
             </div>
         );
     }
 
     makeChart() {
+        if (!this.props.plumeList.length) {
+            return <div className={styles.noResults}>No Results</div>;
+        }
         const options = {
             maintainAspectRatio: false,
-            legend: { display: false },
+            legend: { display: true, position: "bottom", labels: { usePointStyle: true } },
             scales: {
                 yAxes: [
                     {
                         scaleLabel: { display: true, labelString: "IME (kg)" }
                     }
                 ],
-                xAxes: [{ ticks: { autoSkip: false } }]
+                xAxes: [{ type: "time", ticks: { autoSkip: true, autoSkipPadding: 2 } }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: (tooltipItem, data) => {
+                        return `IME: ${tooltipItem.yLabel}, Date: ${tooltipItem.xLabel}`;
+                    }
+                }
             }
         };
 
-        const data = {
-            labels: this.getDateFilteredPlumeList().map(feature =>
-                moment(feature.get("datetime")).format("MMMM Do, YYYY, H:mm [UTC]")
-            ),
-            datasets: [
-                {
-                    data: this.getDateFilteredPlumeList().map(feature => feature.get("ime")),
-                    borderColor: "#4285F4"
+        const sortedData = this.getDateFilteredPlumeList();
+        const dataGroups = sortedData.reduce(
+            (acc, plume) => {
+                if (!plume.get("candidate_id")) {
+                    acc.flyovers.push(plume);
+                } else {
+                    const sourceId = plume.get("sourceId");
+                    acc[sourceId] = acc[sourceId] ? acc[sourceId].concat([plume]) : [plume];
                 }
-            ]
+                return acc;
+            },
+            { flyovers: [] }
+        );
+
+        const emptyFlyoverLabel = "Flyover with no plume detected";
+        const colorList = ["#1B6087", "#F44242"];
+        let colorIndex = 0;
+        const datasets = Object.keys(dataGroups)
+            .sort((a, b) => (a === "flyovers" ? 1 : b === "flyovers" ? -1 : 0))
+            .map((key, idx) => {
+                const pointColor = key === "flyovers" ? "#ffffff00" : colorList[colorIndex++];
+                return {
+                    data: dataGroups[key].map(plume => {
+                        return {
+                            x: plume.get("plume_date") || plume.get("flightline_date"),
+                            y: key === "flyovers" ? 0 : Math.round(plume.get("ime20") * 100) / 100
+                        };
+                    }),
+                    backgroundColor: pointColor,
+                    fill: false,
+                    label: key === "flyovers" ? emptyFlyoverLabel : `Source: ${key}`,
+                    borderColor: key === "flyovers" ? "#404040" : pointColor,
+                    borderWidth: 1
+                };
+            });
+
+        const data = {
+            datasets
         };
 
         return (
             <div className={styles.chartContainer}>
-                <LineChart data={data} options={options} height={250} />
+                <ScatterChart data={data} options={options} height={250} />
             </div>
         );
     }
@@ -482,7 +574,7 @@ export class InfrastructureChartingContainer extends Component {
                             Flyovers of:
                             <strong> {this.props.feature.get("name")}</strong>
                             <Typography variant="caption">
-                                Uncertainty Warning:{" "}
+                                Uncertainty Warning:
                                 <i>Flyovers may not include the entire facility.</i>
                             </Typography>
                         </Typography>

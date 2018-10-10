@@ -51,19 +51,6 @@ export default class MapReducer_Extended extends MapReducer {
     }
 
     static toggleFeatureLabel(state, action) {
-        // const previousFeature = state.getIn(["activeFeature", "feature"]);
-        // const previousCategory = state.getIn(["activeFeature", "category"]);
-        // const toggleOn = !previousFeature || previousFeature.get("id") !== action.feature.get("id");
-
-        // Turn off old feature label if there was a previously selected one
-        // if (previousFeature) {
-        //     state
-        //         .get("maps")
-        //         .map(map =>
-        //             map.setFeatureLabel(previousCategory, previousFeature, () => {}, false)
-        //         );
-        // }
-        // if (toggleOn) {
         state.get("maps").map(map => {
             map.setFeatureLabel(action.category, action.feature);
         });
@@ -105,6 +92,7 @@ export default class MapReducer_Extended extends MapReducer {
     }
 
     static updateGriddedDate(state, action) {
+        const currentDate = moment(state.getIn(["griddedSettings", "currentDate"]));
         const snap = state.getIn(["griddedSettings", "availableDates"]).reduce((acc, date) => {
             if (acc.snapped) return acc;
             if (date.isSame(action.date)) {
@@ -114,10 +102,41 @@ export default class MapReducer_Extended extends MapReducer {
             }
             return acc;
         }, {});
-        const newDate = snap.snapped || snap.previous;
+
+        const newDate = snap.snapped || snap.previous || currentDate;
+        if (newDate.isSame(currentDate)) return state;
 
         state.get("maps").map(map => map.changeGriddedVectorLayerDate(newDate));
         return state.setIn(["griddedSettings", "currentDate"], newDate);
+    }
+
+    static incrementGriddedDate(state, action) {
+        let newDate = moment(state.getIn(["griddedSettings", "currentDate"]));
+
+        const formattedPeriod = action.period + "s";
+
+        if (formattedPeriod === "years" || formattedPeriod === "months") {
+            if (action.goBack) {
+                newDate.subtract(1, formattedPeriod);
+            } else {
+                newDate.add(1, formattedPeriod);
+            }
+        }
+
+        if (formattedPeriod === "days") {
+            const currentDate = moment(state.getIn(["griddedSettings", "currentDate"]));
+            const availableDates = state.getIn(["griddedSettings", "availableDates"]);
+            const currentDateIndex = availableDates.findIndex(date => date.isSame(currentDate));
+            newDate =
+                (action.goBack && currentDateIndex === 0) ||
+                (!action.goBack && currentDateIndex === availableDates.length - 1)
+                    ? currentDate
+                    : availableDates[action.goBack ? currentDateIndex - 1 : currentDateIndex + 1];
+        }
+
+        if (state.getIn(["griddedSettings", "currentDate"]).isSame(newDate)) return state;
+
+        return this.updateGriddedDate(state, { date: newDate });
     }
 
     static resizeMap(state, action) {
@@ -151,7 +170,11 @@ export default class MapReducer_Extended extends MapReducer {
     }
 
     static setMapView(state, action) {
-        const updatedState = this.closeFeaturePicker(state, action);
+        const currentZoom = state
+            .getIn(["maps", "openlayers"])
+            .map.getView()
+            .getZoom();
+        const updatedState = this.closeFeaturePicker(state, action).set("currentZoom", currentZoom);
         return MapReducer.setMapView(updatedState, action);
     }
 
@@ -208,5 +231,12 @@ export default class MapReducer_Extended extends MapReducer {
         }
 
         return state.set("alerts", alerts);
+    }
+
+    static updateOilWells(state, action) {
+        state.get("maps").map(map => {
+            map.setOilWellLayer(action.data);
+        });
+        return state;
     }
 }

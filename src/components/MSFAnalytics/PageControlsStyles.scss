@@ -1,0 +1,33 @@
+@import "~styles/colors";
+
+.root {
+    // background: $color-background;
+    width: 100%;
+    position: relative;
+    padding: 5px 5px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.buttons {
+    display: inline-block;
+}
+.label {
+    display: inline-block;
+    margin-right: 14px;
+}
+
+.leftSide {
+    font-style: italic;
+    padding-left: 10px;
+    a,
+    a:visited {
+        color: $color-secondary;
+        margin-left: 5px;
+    }
+}
+
+.rightSide {
+    text-align: right;
+    margin-left: auto;
+}

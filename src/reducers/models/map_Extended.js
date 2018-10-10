@@ -31,7 +31,8 @@ export const mapState_Extended = mapState.mergeDeep(
             plumes: [],
             activeFeature: null,
             activeFeatureCategory: null
-        }
+        },
+        currentZoom: null
     })
 );
 

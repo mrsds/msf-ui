@@ -1,18 +1,6 @@
 {
     "layers": [
         {
-            "id": "VISTA_2017_OILGAS_WELLS",
-            "title": "Vista 2017 - Oil & Gas Wells",
-            "type": "data",
-            "handleAs": "vista_geojson",
-            "isDefault": false,
-            "visibleInGroup": false,
-            "url": "http://100.64.114.187:9090/vista?category=0&maxObjects=10000",
-            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
-            "group": "VISTA",
-            "updateParameters": { "time": false }
-        },
-        {
             "id": "VISTA_2017_LIVESTOCK_DAIRIES",
             "title": "Vista 2017 - Livestock Dairies",
             "type": "data",
@@ -22,7 +10,8 @@
             "url": "http://100.64.114.187:9090/vista?category=1&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
-            "updateParameters": { "time": false }
+            "updateParameters": { "time": false },
+            "layerOrder": 1
         },
         {
             "id": "VISTA_2017_ANAEROBIC_LAGOONS",
@@ -34,7 +23,8 @@
             "url": "http://100.64.114.187:9090/vista?category=2&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
-            "updateParameters": { "time": false }
+            "updateParameters": { "time": false },
+            "layerOrder": 2
         },
         {
             "id": "VISTA_2017_CNG_FUELING_STATIONS",
@@ -46,7 +36,8 @@
             "url": "http://100.64.114.187:9090/vista?category=3&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
-            "updateParameters": { "time": false }
+            "updateParameters": { "time": false },
+            "layerOrder": 3
         },
         {
             "id": "VISTA_2017_LNG_FUELING_STATIONS",
@@ -58,7 +49,8 @@
             "url": "http://100.64.114.187:9090/vista?category=4&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
-            "updateParameters": { "time": false }
+            "updateParameters": { "time": false },
+            "layerOrder": 4
         },
         {
             "id": "VISTA_2017_NAT_GAS_STORE_FIELDS",
@@ -70,7 +62,8 @@
             "url": "http://100.64.114.187:9090/vista?category=5&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
-            "updateParameters": { "time": false }
+            "updateParameters": { "time": false },
+            "layerOrder": 5
         },
         {
             "id": "VISTA_2017_NAT_GAS_PROC_PLANT",
@@ -82,7 +75,8 @@
             "url": "http://100.64.114.187:9090/vista?category=6&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
-            "updateParameters": { "time": false }
+            "updateParameters": { "time": false },
+            "layerOrder": 6
         },
         {
             "id": "VISTA_2017_PETRO_REFINE",
@@ -94,7 +88,8 @@
             "url": "http://100.64.114.187:9090/vista?category=8&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
-            "updateParameters": { "time": false }
+            "updateParameters": { "time": false },
+            "layerOrder": 7
         },
         {
             "id": "VISTA_2017_WASTEWTR_TREAT_PLNT",
@@ -106,7 +101,8 @@
             "url": "http://100.64.114.187:9090/vista?category=9&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
-            "updateParameters": { "time": false }
+            "updateParameters": { "time": false },
+            "layerOrder": 8
         },
         {
             "id": "VISTA_2017_POWER_PLANT",
@@ -118,7 +114,8 @@
             "url": "http://100.64.114.187:9090/vista?category=10&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
-            "updateParameters": { "time": false }
+            "updateParameters": { "time": false },
+            "layerOrder": 9
         },
         {
             "id": "VISTA_2017_LANDFILL",
@@ -130,7 +127,8 @@
             "url": "http://100.64.114.187:9090/vista?category=11&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
-            "updateParameters": { "time": false }
+            "updateParameters": { "time": false },
+            "layerOrder": 10
         },
         {
             "id": "VISTA_2017_SOCAB_BOUND",
@@ -142,9 +140,48 @@
             "url": "http://100.64.114.187:9090/vista?category=13&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
-            "updateParameters": { "time": false }
+            "updateParameters": { "time": false },
+            "layerOrder": 11
         },
-
+        {
+            "id": "VISTA_2017_CEC_PIPELINES",
+            "title": "Vista 2017 - CEC Pipelines",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.187:9090/vista?category=12&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 12
+        },
+        {
+            "id": "VISTA_2017_OILGAS_FIELDS",
+            "title": "Vista 2017 - Oil and Gas Fields",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": false,
+            "visibleInGroup": false,
+            "url": "http://100.64.114.187:9090/vista?category=13&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 13
+        },
+        {
+            "id": "VISTA_2017_OILGAS_WELLS",
+            "title": "Vista 2017 - Oil and Gas Wells",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": false,
+            "visibleInGroup": false,
+            "url": "http://100.64.114.187:9090/vista?category=0&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 14
+        },
         {
             "id": "AVIRIS",
             "title": "Methane Plume Observations",
@@ -159,7 +196,7 @@
             },
             "min": 0,
             "max": 4000,
-            "units": "enhancement (ppm-m)",
+            "units": " enhancement (ppm-m)",
             "metadata": {
                 "url": "default-data/msf-data/layer-metadata/AVIRIS.json",
                 "handleAs": "json"
@@ -168,33 +205,19 @@
             "layerOrder": 2
         },
         {
-            "id": "GRIDDED_EMISSIONS_V1",
-            "title": "Gridded Methane",
-            "type": "data",
-            "handleAs": "vector_kmz",
-            "isDefault": false,
-            "url": "http://100.64.114.187/data/gridded/v1/kmz/vista_emissions.kmz",
-            "thumbnailImage": "img/gridded_methane_v1.png",
-            "opacity": 0.3,
-            "metadata": {
-                "url": "default-data/msf-data/layer-metadata/GRIDDED_EMISSIONS_V1.json",
-                "handleAs": "json"
-            },
-            "updateParameters": { "time": false }
-        },
-        {
             "id": "GRIDDED_EMISSIONS_V2",
             "title": "Gridded Methane Inversion",
             "type": "data",
             "handleAs": "gridded_geojson",
             "isDefault": false,
-            "url": "http://100.64.114.187/data/gridded/v2/Fluxes_20150128.geojson",
+            "url": "http://100.64.114.187:9090/data/gridded/v2/Fluxes_20150128.geojson",
             "thumbnailImage": "img/gridded_methane_v1.png",
             "opacity": 0.3,
             "metadata": {
                 "url": "default-data/msf-data/layer-metadata/GRIDDED_EMISSIONS_V1.json",
                 "handleAs": "json"
             },
+            "units": " kg/hr",
             "updateParameters": { "time": false },
             "palette": {
                 "name": "gridded_methane_inversion",
@@ -312,6 +335,18 @@
             "thumbnailImage": "img/ASTER_GDEM_Color_Shaded_Relief.jpeg",
             "handleAs": "GIBS_raster",
             "updateParameters": { "time": false }
+        },
+        {
+            "id": "AVIRIS_SOURCES",
+            "title": "AVIRIS Sources",
+            "type": "data",
+            "handleAs": "vista_source",
+            "isDefault": true,
+            "url":
+                "http://100.64.114.187:9090/sources?maxLat={latMax}&minLat={latMin}&maxLon={lonMax}&minLon={lonMin}",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "updateParameters": { "time": false },
+            "layerOrder": 15
         }
     ]
 }

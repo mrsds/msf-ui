@@ -32,6 +32,8 @@ export default function map_Extended(
             return opt_reducer.updateAvailableGriddedDates(state, action);
         case actionTypesMSF.UPDATE_GRIDDED_DATE:
             return opt_reducer.updateGriddedDate(state, action);
+        case actionTypesMSF.INCREMENT_GRIDDED_DATE:
+            return opt_reducer.incrementGriddedDate(state, action);
         case actionTypesMSF.RESIZE_MAP:
             return opt_reducer.resizeMap(state, action);
         case actionTypesMSF.UPDATE_FEATURE_PICKER:
@@ -42,6 +44,8 @@ export default function map_Extended(
             return opt_reducer.setMapView(state, action);
         case actionTypes.SET_LAYER_ACTIVE:
             return opt_reducer.setLayerActive(state, action);
+        case actionTypesMSF.UPDATE_OIL_WELLS:
+            return opt_reducer.updateOilWells(state, action);
         default:
             return map.call(this, state, action, opt_reducer);
     }

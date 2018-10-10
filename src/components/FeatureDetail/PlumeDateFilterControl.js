@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { MenuItem } from "material-ui/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
-import Button from "material-ui/Button";
-import { FormGroup, FormControl, FormHelperText } from "material-ui/Form";
-import Input, { InputLabel } from "material-ui/Input";
-import Select from "material-ui/Select";
-import Paper from "material-ui/Paper";
+import Button from "@material-ui/core/Button";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import Paper from "@material-ui/core/Paper";
 import MiscUtil from "_core/utils/MiscUtil";
 import moment from "moment";
 import { Arrow } from "react-popper";
@@ -34,7 +37,7 @@ export class PlumeDateFilterControl extends Component {
 
     render() {
         const currentDate = this.props.currentDate;
-        const duration = moment.duration(this.props.earliestDate.diff(this.props.latestDate));
+        const duration = moment.duration(this.props.latestDate.diff(this.props.earliestDate));
 
         const yearList = [];
         for (let i = 0; i <= duration.years(); i++) {

@@ -19,6 +19,7 @@ import webWorker from "_core/reducers/webWorker";
 import layerSidebar from "reducers/layerSidebar";
 import featureDetail from "reducers/featureDetail";
 import view_Extended from "reducers/view_Extended";
+import MSFAnalytics from "reducers/MSFAnalytics";
 
 const rootReducer = combineReducers({
     view: view_Extended,
@@ -33,7 +34,8 @@ const rootReducer = combineReducers({
     alerts,
     layerSidebar,
     featureDetail,
-    webWorker
+    webWorker,
+    MSFAnalytics
 });
 
 export default rootReducer;

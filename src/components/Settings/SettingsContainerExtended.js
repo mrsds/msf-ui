@@ -3,14 +3,19 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import ListSubheader from "material-ui/List/ListSubheader";
-import List, { ListItem, ListItemIcon, ListItemText } from "material-ui/List";
-import Checkbox from "material-ui/Checkbox";
-import { MenuItem } from "material-ui/Menu";
-import { FormControl, FormHelperText } from "material-ui/Form";
-import Input, { InputLabel } from "material-ui/Input";
-import Select from "material-ui/Select";
-import SettingsBackupRestoreIcon from "material-ui-icons/SettingsBackupRestore";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Checkbox from "@material-ui/core/Checkbox";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore";
 import appConfig from "constants/appConfig";
 import * as appStrings from "_core/constants/appStrings";
 import * as appActions from "_core/actions/appActions";
@@ -33,26 +38,6 @@ export class SettingsContainerExtended extends Component {
                 closeFunc={() => this.props.appActions.setSettingsOpen(false)}
             >
                 <List>
-                    <ListSubheader disableSticky>Map Display</ListSubheader>
-                    <ListItem>
-                        <FormControl fullWidth>
-                            <InputLabel htmlFor="scale-units-select">Scale Units</InputLabel>
-                            <Select
-                                value={this.props.mapSettings.get("selectedScaleUnits")}
-                                onChange={event =>
-                                    this.props.mapActions.setScaleUnits(event.target.value)
-                                }
-                                input={<Input name="Scale Units" id="scale-units-select" />}
-                            >
-                                {appConfig.SCALE_OPTIONS.map(x => (
-                                    <MenuItem key={x.value} value={x.value}>
-                                        {x.label}
-                                        <small style={{ marginLeft: "7px" }}>{x.abbrev}</small>
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </ListItem>
                     <ListSubheader disableSticky>Application Configuration</ListSubheader>
                     <ListItem
                         button

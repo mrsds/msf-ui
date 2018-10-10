@@ -8,6 +8,7 @@ import appConfig from "constants/appConfig";
 import MiscUtil from "_core/utils/MiscUtil";
 import * as alertActions from "_core/actions/alertActions";
 import Immutable from "immutable";
+import MetadataUtil from "utils/MetadataUtil";
 
 export function pageForward(category) {
     return { type: types.FEATURE_SIDEBAR_PAGE_FORWARD, category };
@@ -30,23 +31,56 @@ export function setLayerSidebarCollapsed(collapsed) {
 
 export function setFeatureDetail(category, feature) {
     return dispatch => {
+        // Fetch metadata from backend if this is an VISTA feature
+        if (category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE) {
+            dispatch({ type: types.VISTA_METADATA_LOADING });
+            getVistaMetadata(feature, dispatch);
+        }
+
         dispatch({ type: types.FEATURE_DETAIL_PLUME_LIST_LOADING });
         dispatch({ type: types.UPDATE_FEATURE_DETAIL, category, feature });
-        return MiscUtil.asyncFetch({
-            url: appConfig.URLS.plumeListQueryEndpoint,
-            handleAs: "json"
-        }).then(
-            data => {
+
+        const sourceList = getSourceList(category, feature);
+        if (!sourceList.length) {
+            dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data: [] });
+            return;
+        }
+        const sourceRequests = sourceList.map(
+            src =>
+                new Promise((resolve, reject) =>
+                    fetch(appConfig.URLS.plumeListQueryEndpoint.replace("{source_id}", src))
+                        .then(res => res.json())
+                        .then(data => {
+                            resolve({ src, data });
+                        })
+                        .catch(err => {
+                            console.warn(
+                                `Error getting available layer list for feature: ${feature.get(
+                                    "name"
+                                )}`,
+                                err
+                            );
+                            reject();
+                        })
+                )
+        );
+
+        Promise.all(sourceRequests)
+            .then(responses => {
                 dispatch({
                     type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST,
-                    data
+                    data: responses
+                        .filter(res => res.data.length)
+                        .map(res =>
+                            res.data.map(feature => {
+                                feature.sourceId = res.src;
+                                return feature;
+                            })
+                        )
+                        .reduce((acc, item) => acc.concat(item), [])
                 });
-            },
-            err => {
-                console.warn(
-                    `Error getting available layer list for feature: ${feature.get("name")}`,
-                    err
-                );
+            })
+            .catch(err => {
                 dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data: [] });
                 dispatch(
                     alertActions.addAlert({
@@ -57,9 +91,35 @@ export function setFeatureDetail(category, feature) {
                         time: new Date()
                     })
                 );
-            }
-        );
+            });
     };
+}
+
+function getVistaMetadata(feature, dispatch) {
+    fetch(appConfig.URLS.vistaDetailEndpoint.replace("{vista_id}", feature.get("id")))
+        .then(res => res.json())
+        .then(json =>
+            dispatch({
+                type: types.UPDATE_VISTA_METADATA,
+                data: json.features[0].properties.metadata
+            })
+        );
+}
+
+function getSourceList(category, feature) {
+    switch (category) {
+        case layerSidebarTypes.CATEGORY_PLUMES:
+            return [feature.get("sourceId")];
+        case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
+            return feature
+                .get("sources")
+                .map(src => src.get("id"))
+                .toArray()
+                .reduce((acc, src) => {
+                    if (!acc.includes(src)) acc.push(src);
+                    return acc;
+                }, []);
+    }
 }
 
 export function hideFeatureDetail() {
@@ -77,6 +137,9 @@ function updateFeatureSearchResults(category) {
 export function updateInfrastructureCategoryFilter(layerName, active) {
     return (dispatch, getState) => {
         const layer = getState().map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA, layerName]);
+        if (layer.get("id") === layerSidebarTypes.VISTA_2017_OILGAS_FIELDS)
+            updateOilWells(dispatch, getState, active);
+
         dispatch(setGroupLayerActive(layer, active));
         if (
             getState()
@@ -89,6 +152,20 @@ export function updateInfrastructureCategoryFilter(layerName, active) {
         dispatch(setActiveFeatureCategories(layerName, active));
         dispatch(mapActions.updateFeatureList_Map(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
     };
+}
+
+function updateOilWells(dispatch, getState, active) {
+    const mapState = getState().map;
+    const wellsVisible =
+        mapState
+            .getIn(["maps", "openlayers"])
+            .map.getView()
+            .getZoom() > appConfig.OIL_WELLS_MIN_ZOOM;
+    dispatch(
+        updateInfrastructureCategoryFilter,
+        layerSidebarTypes.VISTA_2017_OILGAS_WELLS,
+        wellsVisible && active
+    );
 }
 
 export function toggleInfrastructureCategoryFilters(active) {
@@ -119,15 +196,21 @@ function setGroupLayerActive(layer, active) {
 }
 
 export function setPlumeFilter(key, selectedValue) {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch({ type: types.SET_PLUME_FILTER, key, selectedValue });
         dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
+        getState()
+            .map.getIn(["maps", "openlayers"])
+            .setVisiblePlumes(getState().layerSidebar);
     };
 }
 
 export function setInfrastructureFilter(key, selectedValue) {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch({ type: types.SET_INFRASTRUCTURE_FILTER, key, selectedValue });
         dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+        getState()
+            .map.getIn(["maps", "openlayers"])
+            .setVisibleInfrastructure(getState().layerSidebar);
     };
 }
