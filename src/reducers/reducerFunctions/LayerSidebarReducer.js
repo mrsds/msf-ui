@@ -222,9 +222,11 @@ export default class LayerSidebarReducer {
             "filters"
         ]);
         let searchResults = Immutable.Map();
-        const featureList = state
-            .getIn(["availableFeatures", layerSidebarTypes.CATEGORY_INFRASTRUCTURE], [])
-            .concat(state.getIn(["availableFeatures", "oilWells"], []));
+
+        const featureList = state.getIn(
+            ["availableFeatures", layerSidebarTypes.CATEGORY_INFRASTRUCTURE],
+            []
+        );
 
         // Extract search filters
         const infrastructureName = filters.getIn([
@@ -289,7 +291,8 @@ export default class LayerSidebarReducer {
                 layerSidebarTypes.CATEGORY_PLUMES,
                 "filters",
                 action.key,
-                "selectedValue"
+                "selectedValue",
+                "value"
             ],
             Immutable.fromJS(action.selectedValue)
         );
@@ -302,7 +305,8 @@ export default class LayerSidebarReducer {
                 layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
                 "filters",
                 action.key,
-                "selectedValue"
+                "selectedValue",
+                "value"
             ],
             Immutable.fromJS(action.selectedValue)
         );

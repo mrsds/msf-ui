@@ -63,6 +63,12 @@ export class PlumeFiltersContainer extends Component {
         this.forceUpdate();
     }
 
+    handleSearchInput(valueStr) {
+        this.props.setPlumeTextFilter(valueStr);
+        clearTimeout(this.searchInputTimeout);
+        this.searchInputTimeout = setTimeout(_ => this.props.applyPlumeTextFilter(), 350);
+    }
+
     render() {
         let flightCampaignFilter = this.props.filters.get(
             layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN
@@ -92,21 +98,13 @@ export class PlumeFiltersContainer extends Component {
                     placeholder="Filter by Plume ID"
                     value={plumeIDFilterSelectedValue}
                     disabled={false}
-                    onUpdate={valueStr =>
-                        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_ID, {
-                            value: valueStr,
-                            label: ""
-                        })
-                    }
+                    onUpdate={valueStr => this.handleSearchInput(valueStr)}
                     validate={valueStr => true}
                     primaryDataTip="Filter by Plume ID"
                     primaryDataPlace="top"
                     actionIcon={<Clear />}
                     onActionIconClick={() => {
-                        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_ID, {
-                            value: "",
-                            label: ""
-                        });
+                        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_ID, "");
                         this.forceUpdate();
                     }}
                 />
@@ -229,128 +227,6 @@ export class PlumeFiltersContainer extends Component {
                                 </div>
                             </Grow>
                         </Popper>
-                        <Target>
-                            <ChipDropdown
-                                className={styles.chip}
-                                onClick={() =>
-                                    this.setPopperActive(
-                                        "flightCampaigns",
-                                        !flightCampaignsPopoverActive
-                                    )
-                                }
-                                onDelete={() => {
-                                    this.setPopperActive("flightCampaigns", false);
-                                    this.props.setPlumeFilter(
-                                        layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN,
-                                        null
-                                    );
-                                }}
-                                label="Flight Campaigns"
-                                value={
-                                    flightCampaignFilterValueLabel ? (
-                                        <React.Fragment>
-                                            <AirplanemodeActiveIcon
-                                                className={styles.chipLeftIcon}
-                                            />
-                                            {flightCampaignFilterValueLabel}
-                                        </React.Fragment>
-                                    ) : null
-                                }
-                                active={flightCampaignsPopoverActive}
-                            />
-                        </Target>
-                        <Popper
-                            placement="bottom-start"
-                            modifiers={{
-                                computeStyle: {
-                                    gpuAcceleration: false
-                                }
-                            }}
-                            eventsEnabled={flightCampaignsPopoverActive}
-                            className={
-                                !flightCampaignsPopoverActive
-                                    ? displayStyles.noPointer
-                                    : styles.pointer
-                            }
-                        >
-                            <Grow
-                                style={{ transformOrigin: "left top" }}
-                                in={flightCampaignsPopoverActive}
-                            >
-                                <div>
-                                    <Paper elevation={8} className={styles.popoverPaper}>
-                                        <AppBar elevation={0} className={styles.popoverAppBar}>
-                                            <Toolbar className={styles.popoverHeader}>
-                                                <Typography
-                                                    variant="body1"
-                                                    color="inherit"
-                                                    className={styles.popoverTitle}
-                                                >
-                                                    Flight Campaigns
-                                                </Typography>
-                                                <IconButtonSmall
-                                                    color="inherit"
-                                                    onClick={() =>
-                                                        this.setPopperActive(
-                                                            "flightCampaigns",
-                                                            false
-                                                        )
-                                                    }
-                                                >
-                                                    <CloseIcon />
-                                                </IconButtonSmall>
-                                            </Toolbar>
-                                        </AppBar>
-                                        <div className={styles.formControl}>
-                                            {/* TODO break out this whole thing into separate flight campaign component */}
-                                            <div
-                                                onClick={() => {
-                                                    this.props.setPlumeFilter(
-                                                        layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN,
-                                                        null
-                                                    );
-                                                }}
-                                                key={"flightCampaignNoValue"}
-                                                className={styles.formControlLabel}
-                                            >
-                                                <Radio
-                                                    value={""}
-                                                    checked={
-                                                        flightCampaignFilterSelectedValue === null
-                                                    }
-                                                />
-                                                <Typography className={styles.radioLabel}>
-                                                    All Flight Campaigns
-                                                </Typography>
-                                            </div>
-                                            {flightCampaignFilter.get("selectableValues").map(x => (
-                                                <div
-                                                    onClick={() => {
-                                                        this.props.setPlumeFilter(
-                                                            layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN,
-                                                            x
-                                                        );
-                                                    }}
-                                                    key={x.get("value")}
-                                                    className={styles.formControlLabel}
-                                                >
-                                                    <Radio
-                                                        value={x.get("value")}
-                                                        checked={
-                                                            x.get("value") ===
-                                                            flightCampaignFilterSelectedValue
-                                                        }
-                                                    />
-                                                    <Typography className={styles.radioLabel}>
-                                                        {x.get("label")}
-                                                    </Typography>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </Paper>
-                                </div>
-                            </Grow>
-                        </Popper>
                         <Target className={styles.sorterContainer}>
                             <div
                                 className={styles.sorter}
@@ -422,7 +298,9 @@ export class PlumeFiltersContainer extends Component {
 
 PlumeFiltersContainer.propTypes = {
     filters: PropTypes.object.isRequired,
-    setPlumeFilter: PropTypes.func.isRequired
+    setPlumeFilter: PropTypes.func.isRequired,
+    setPlumeTextFilter: PropTypes.func.isRequired,
+    applyPlumeTextFilter: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -437,7 +315,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setPlumeFilter: bindActionCreators(layerSidebarActions.setPlumeFilter, dispatch)
+        setPlumeFilter: bindActionCreators(layerSidebarActions.setPlumeFilter, dispatch),
+        setPlumeTextFilter: bindActionCreators(layerSidebarActions.setPlumeTextFilter, dispatch),
+        applyPlumeTextFilter: bindActionCreators(layerSidebarActions.applyPlumeTextFilter, dispatch)
     };
 }
 

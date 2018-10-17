@@ -205,6 +205,40 @@ export function setPlumeFilter(key, selectedValue) {
     };
 }
 
+export function setPlumeTextFilter(selectedValue) {
+    return {
+        type: types.SET_PLUME_FILTER,
+        key: layerSidebarTypes.PLUME_FILTER_PLUME_ID,
+        selectedValue
+    };
+}
+
+export function applyPlumeTextFilter() {
+    return (dispatch, getState) => {
+        dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
+        getState()
+            .map.getIn(["maps", "openlayers"])
+            .setVisiblePlumes(getState().layerSidebar);
+    };
+}
+
+export function setInfraTextFilter(selectedValue) {
+    return {
+        type: types.SET_INFRASTRUCTURE_FILTER,
+        key: layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME,
+        selectedValue
+    };
+}
+
+export function applyInfraTextFilter() {
+    return (dispatch, getState) => {
+        dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
+        getState()
+            .map.getIn(["maps", "openlayers"])
+            .setVisibleInfrastructure(getState().layerSidebar);
+    };
+}
+
 export function setInfrastructureFilter(key, selectedValue) {
     return (dispatch, getState) => {
         dispatch({ type: types.SET_INFRASTRUCTURE_FILTER, key, selectedValue });

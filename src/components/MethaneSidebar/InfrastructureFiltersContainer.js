@@ -66,6 +66,12 @@ export class PlumeFiltersContainer extends Component {
         this.forceUpdate();
     }
 
+    handleSearchInput(valueStr) {
+        this.props.setInfraTextFilter(valueStr);
+        clearTimeout(this.searchInputTimeout);
+        this.searchInputTimeout = setTimeout(_ => this.props.applyInfraTextFilter(), 350);
+    }
+
     render() {
         let infrastructureNameFilter = this.props.filters.get(
             layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME
@@ -108,15 +114,7 @@ export class PlumeFiltersContainer extends Component {
                     placeholder="Filter by Infrastructure Name"
                     value={infrastructureNameFilterSelectedValue}
                     disabled={false}
-                    onUpdate={valueStr =>
-                        this.props.setInfrastructureFilter(
-                            layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME,
-                            {
-                                value: valueStr,
-                                label: ""
-                            }
-                        )
-                    }
+                    onUpdate={valueStr => this.handleSearchInput(valueStr)}
                     validate={valueStr => true}
                     primaryDataTip="Filter by Infrastructure Name"
                     primaryDataPlace="top"
@@ -124,10 +122,7 @@ export class PlumeFiltersContainer extends Component {
                     onActionIconClick={() => {
                         this.props.setInfrastructureFilter(
                             layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME,
-                            {
-                                value: "",
-                                label: ""
-                            }
+                            ""
                         );
                         this.forceUpdate();
                     }}
@@ -391,7 +386,9 @@ PlumeFiltersContainer.propTypes = {
     setInfrastructureFilter: PropTypes.func.isRequired,
     updateInfrastructureCategoryFilter: PropTypes.func.isRequired,
     toggleInfrastructureCategoryFilters: PropTypes.func.isRequired,
-    activeInfrastructureSubCategories: PropTypes.object.isRequired
+    activeInfrastructureSubCategories: PropTypes.object.isRequired,
+    setInfraTextFilter: PropTypes.func.isRequired,
+    applyInfraTextFilter: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -420,7 +417,9 @@ function mapDispatchToProps(dispatch) {
         updateInfrastructureCategoryFilter: bindActionCreators(
             layerSidebarActions.updateInfrastructureCategoryFilter,
             dispatch
-        )
+        ),
+        setInfraTextFilter: bindActionCreators(layerSidebarActions.setInfraTextFilter, dispatch),
+        applyInfraTextFilter: bindActionCreators(layerSidebarActions.applyInfraTextFilter, dispatch)
     };
 }
 

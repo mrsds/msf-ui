@@ -42,13 +42,6 @@ import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerS
 import MiscUtil from "_core/utils/MiscUtil";
 
 export class InfrastructureContainer extends Component {
-    // getFactoryIcon() {
-    //     return (
-    //         <svg viewBox="0 0 12 12">
-    //             <path d="M1.2 9.6L1.2 10.8 3.6 10.8 3.6 9.6 1.2 9.6ZM1.2 7.2L1.2 8.4 7.2 8.4 7.2 7.2 1.2 7.2ZM4.8 9.6L4.8 10.8 7.2 10.8 7.2 9.6 4.8 9.6ZM8.4 7.2L8.4 8.4 10.8 8.4 10.8 7.2 8.4 7.2ZM8.4 9.6L8.4 10.8 10.8 10.8 10.8 9.6 8.4 9.6ZM0 12L0 3.6 3 6 3 3.6 6 6 6 3.6 9 6 9.6 0 11.4 0 12 6 12 12 0 12Z" />
-    //         </svg>
-    //     );
-    // }
     clearTextSearch() {
         this.props.setInfrastructureFilter(layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME, {
             value: "",
