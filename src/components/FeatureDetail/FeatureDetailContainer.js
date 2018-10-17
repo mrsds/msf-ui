@@ -22,6 +22,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import appConfig from "constants/appConfig";
 import Tooltip from "@material-ui/core/Tooltip";
 import Immutable from "immutable";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export class FeatureDetailContainer extends Component {
     truncateField(str, limit) {
@@ -205,9 +206,19 @@ export class FeatureDetailContainer extends Component {
         ];
 
         let featureTitle = name;
-        let featureSubtitle = `${sector} · ${city}, ${state}`;
-        let featureHeaderImage = googleMapsStaticImgUrl;
-        let featureBody = (
+        let featureSubtitle = this.props.vistaMetadataLoading
+            ? ""
+            : `${sector} · ${city}, ${state}`;
+        let featureHeaderImage = this.props.vistaMetadataLoading ? "" : googleMapsStaticImgUrl;
+        let featureBody = this.props.vistaMetadataLoading ? (
+            <Card className={styles.cardRoot}>
+                <CardContent>
+                    <div className={styles.loadingModal}>
+                        <CircularProgress />
+                    </div>
+                </CardContent>
+            </Card>
+        ) : (
             <div>
                 <Card className={styles.cardRoot}>
                     <CardContent>
@@ -384,7 +395,8 @@ FeatureDetailContainer.propTypes = {
     feature: PropTypes.object,
     hideFeatureDetailContainer: PropTypes.func.isRequired,
     downloadPlumeData: PropTypes.func.isRequired,
-    vistaMetadata: PropTypes.object
+    vistaMetadata: PropTypes.object,
+    vistaMetadataLoading: PropTypes.bool
 };
 
 function mapStateToProps(state) {
@@ -392,7 +404,8 @@ function mapStateToProps(state) {
         category: state.featureDetail.get("category"),
         layerSidebarCollapsed: state.layerSidebar.get("layerSidebarCollapsed"),
         feature: state.featureDetail.get("feature"),
-        vistaMetadata: state.featureDetail.get("vistaMetadata")
+        vistaMetadata: state.featureDetail.get("vistaMetadata"),
+        vistaMetadataLoading: state.featureDetail.get("vistaMetadataLoading")
     };
 }
 
