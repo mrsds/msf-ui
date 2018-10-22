@@ -14,19 +14,6 @@
             "layerOrder": 1
         },
         {
-            "id": "VISTA_2017_ANAEROBIC_LAGOONS",
-            "title": "Vista 2017 - Anaerobic Lagoons",
-            "type": "data",
-            "handleAs": "vista_geojson",
-            "isDefault": true,
-            "visibleInGroup": true,
-            "url": "http://100.64.114.187:9090/vista?category=2&maxObjects=10000",
-            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
-            "group": "VISTA",
-            "updateParameters": { "time": false },
-            "layerOrder": 2
-        },
-        {
             "id": "VISTA_2017_CNG_FUELING_STATIONS",
             "title": "Vista 2017 - CNG Fueling Stations",
             "type": "data",

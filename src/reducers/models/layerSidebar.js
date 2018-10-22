@@ -13,7 +13,7 @@ export const layerSidebarState = Immutable.fromJS({
     activeInfrastructureSubCategories: {
         [layerSidebarTypes.VISTA_2017_OILGAS_FIELDS]: false,
         [layerSidebarTypes.VISTA_2017_LIVESTOCK_DAIRIES]: true,
-        [layerSidebarTypes.VISTA_2017_ANAEROBIC_LAGOONS]: true,
+        // [layerSidebarTypes.VISTA_2017_ANAEROBIC_LAGOONS]: true,
         [layerSidebarTypes.VISTA_2017_CNG_FUELING_STATIONS]: true,
         [layerSidebarTypes.VISTA_2017_LNG_FUELING_STATIONS]: true,
         [layerSidebarTypes.VISTA_2017_NAT_GAS_STORE_FIELDS]: true,
