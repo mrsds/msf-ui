@@ -23,6 +23,7 @@ import appConfig from "constants/appConfig";
 import Tooltip from "@material-ui/core/Tooltip";
 import Immutable from "immutable";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import MiscUtilExtended from "utils/MiscUtilExtended";
 
 export class FeatureDetailContainer extends Component {
     truncateField(str, limit) {
@@ -289,22 +290,39 @@ export class FeatureDetailContainer extends Component {
         const datetime = this.props.feature.get("datetime");
         const dateString = datetime ? moment(datetime).format("MMMM Do, YYYY, H:mm") : "(No Date)";
 
+        const flux = feature.get("flux")
+            ? MiscUtilExtended.roundTo(feature.get("flux"), 2)
+            : "none";
+        const fluxUncertainty = feature.get("flux_uncertainty")
+            ? " ± " + MiscUtilExtended.roundTo(feature.get("flux_uncertainty"), 2)
+            : "";
+
+        const ime = feature.get("ime") ? MiscUtilExtended.roundTo(feature.get("ime"), 2) : "none";
+        const fetch = feature.get("fetch")
+            ? MiscUtilExtended.roundTo(feature.get("fetch"), 2)
+            : "none";
+
         // Bin together the various field:value pairs
         const plumeDataFields = [
             { name: "Candidate ID", value: feature.get("name") },
             { name: "Location", value: `${location.get(0)}°N, ${location.get(1)}°W` },
             { name: "Plume ID", value: feature.get("plumeId") },
             {
+                name: "Flux",
+                value: flux + fluxUncertainty,
+                unit: "kg/hr"
+            },
+            {
                 name: "IME",
                 unit: "kg",
-                value: feature.get("ime"),
+                value: ime,
                 popoverText: "Integrated Methane Enhancement (kilograms)"
             },
             { name: "Source ID", value: feature.get("sourceId") },
             {
                 name: "Fetch",
                 unit: "m",
-                value: feature.get("fetch"),
+                value: fetch,
                 popoverText: "Fetch distance (meters)"
             }
         ];

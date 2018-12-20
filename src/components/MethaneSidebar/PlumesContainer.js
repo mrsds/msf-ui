@@ -119,6 +119,10 @@ export class PlumesContainer extends Component {
             [layerSidebarStyles.listItemSecondaryAction]: true
         });
 
+        const flux = feature.get("flux")
+            ? `${MiscUtilExtended.roundTo(feature.get("flux"), 2)} kg/hr`
+            : "";
+
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem
@@ -150,7 +154,7 @@ export class PlumesContainer extends Component {
                             variant="caption"
                             noWrap
                         >
-                            {MiscUtilExtended.roundTo(feature.get("ime"), 2) + " kg IME"}
+                            {`${feature.get("source_id")} / ${feature.get("candidate_id")}`}
                         </Typography>
                         <Typography
                             color={isItemPrimary ? "inherit" : "default"}
@@ -158,7 +162,7 @@ export class PlumesContainer extends Component {
                             variant="caption"
                             noWrap
                         >
-                            {`${feature.get("source_id")} / ${feature.get("candidate_id")}`}
+                            {flux}
                         </Typography>
                     </div>
                     <ListItemSecondaryAction
