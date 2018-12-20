@@ -129,11 +129,9 @@ export default class LayerSidebarReducer {
             "selectedValue",
             "value"
         ]);
-        const plumeID = filters.getIn([
-            layerSidebarTypes.PLUME_FILTER_PLUME_ID,
-            "selectedValue",
-            "value"
-        ]);
+        const plumeID = filters
+            .getIn([layerSidebarTypes.PLUME_FILTER_PLUME_ID, "selectedValue", "value"])
+            .toLowerCase();
 
         const plumeSortOption = filters.getIn([
             layerSidebarTypes.PLUME_FILTER_SORT_BY,
@@ -145,9 +143,13 @@ export default class LayerSidebarReducer {
         searchResults = featureList.filter(
             x =>
                 x
-                    .get("plume_id")
+                    .get("source_id")
                     .toLowerCase()
-                    .indexOf(plumeID) !== -1
+                    .search(plumeID) !== -1 ||
+                x
+                    .get("candidate_id")
+                    .toLowerCase()
+                    .search(plumeID) !== -1
         );
 
         // Filter by other filters

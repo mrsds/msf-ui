@@ -158,7 +158,7 @@ export class PlumesContainer extends Component {
                             variant="caption"
                             noWrap
                         >
-                            {`${feature.get("plume_id")} / ${feature.get("candidate_id")}`}
+                            {`${feature.get("source_id")} / ${feature.get("candidate_id")}`}
                         </Typography>
                     </div>
                     <ListItemSecondaryAction

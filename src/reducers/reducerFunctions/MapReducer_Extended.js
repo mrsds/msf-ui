@@ -8,6 +8,9 @@ import moment from "moment";
 
 export default class MapReducer_Extended extends MapReducer {
     static updateAvailableLayers(state, action) {
+        if (state.get("pendingZoomFeature")) {
+            const jojo = false;
+        }
         return state;
     }
 
@@ -237,6 +240,15 @@ export default class MapReducer_Extended extends MapReducer {
         state.get("maps").map(map => {
             map.setOilWellLayer(action.data);
         });
+        return state;
+    }
+
+    static setPendingZoom(state, action) {
+        return state.set("pendingZoomFeature", action.feature);
+    }
+
+    static getPendingZoom(state) {
+        // console.log(state.get("pendingZoomFeature"));
         return state;
     }
 }
