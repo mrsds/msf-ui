@@ -32,6 +32,7 @@ import Radio from "@material-ui/core/Radio";
 import moment from "moment";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import PlumeDateFilterControl from "components/FeatureDetail/PlumeDateFilterControl";
+import MiscUtilExtended from "utils/MiscUtilExtended";
 
 export class InfrastructureChartingContainer extends Component {
     constructor(props) {
@@ -359,6 +360,13 @@ export class InfrastructureChartingContainer extends Component {
         const dateString = datetime ? moment(datetime).format("M/D/YYYY") : "(No Date)";
         const timeString = datetime ? moment(datetime).format("H:mm") : "";
         const isFlyover = !feature.get("candidate_id");
+
+        const flux = feature.get("flux") && MiscUtilExtended.roundTo(feature.get("flux"), 2);
+        const fluxUncertainty = feature.get("flux_uncertainty")
+            ? " ± " + MiscUtilExtended.roundTo(feature.get("flux_uncertainty"), 2)
+            : "";
+        const fluxString = flux ? flux + fluxUncertainty : "";
+
         return (
             <React.Fragment
                 key={
@@ -386,7 +394,7 @@ export class InfrastructureChartingContainer extends Component {
                         {isFlyover ? "-" : Math.round(feature.get("fetch20")) / 100}
                     </TableCell>
                     <TableCell numeric={!isFlyover} padding="dense">
-                        {isFlyover ? "-" : "(none)"}
+                        {isFlyover ? "-" : fluxString}
                     </TableCell>
                     <TableCell numeric={!isFlyover} padding="dense">
                         {isFlyover ? "-" : Math.round(feature.get("ime20") * 100) / 100}
@@ -458,6 +466,16 @@ export class InfrastructureChartingContainer extends Component {
                             const dateString = datetime
                                 ? moment(datetime).format("MMMM Do, YYYY, H:mm")
                                 : "(No Date)";
+
+                            const flux =
+                                feature.get("flux") &&
+                                MiscUtilExtended.roundTo(feature.get("flux"), 2);
+                            const fluxUncertainty = feature.get("flux_uncertainty")
+                                ? " ± " +
+                                  MiscUtilExtended.roundTo(feature.get("flux_uncertainty"), 2)
+                                : "";
+                            const fluxString = flux ? flux + fluxUncertainty + " kg/hr" : "";
+
                             return (
                                 <GridListTile
                                     key={
@@ -475,14 +493,12 @@ export class InfrastructureChartingContainer extends Component {
                                         title={
                                             <div className={styles.gridTileHeading}>
                                                 <span>{dateString}</span>
-                                                <span>{`${Math.round(feature.get("ime20") * 100) /
-                                                    100} (kg)`}</span>
+                                                <span>{fluxString}</span>
                                             </div>
                                         }
                                         subtitle={
                                             <div className={styles.gridTileHeading}>
                                                 <span>{feature.get("name")}</span>
-                                                <span>IME</span>
                                             </div>
                                         }
                                     />
@@ -504,7 +520,7 @@ export class InfrastructureChartingContainer extends Component {
             scales: {
                 yAxes: [
                     {
-                        scaleLabel: { display: true, labelString: "IME (kg)" }
+                        scaleLabel: { display: true, labelString: "Flux (kg/hr)" }
                     }
                 ],
                 xAxes: [{ type: "time", ticks: { autoSkip: true, autoSkipPadding: 2 } }]
@@ -512,7 +528,7 @@ export class InfrastructureChartingContainer extends Component {
             tooltips: {
                 callbacks: {
                     label: (tooltipItem, data) => {
-                        return `IME: ${tooltipItem.yLabel}, Date: ${tooltipItem.xLabel}`;
+                        return `Flux: ${tooltipItem.yLabel}, Date: ${tooltipItem.xLabel}`;
                     }
                 }
             }
@@ -543,7 +559,12 @@ export class InfrastructureChartingContainer extends Component {
                     data: dataGroups[key].map(plume => {
                         return {
                             x: plume.get("plume_date") || plume.get("flightline_date"),
-                            y: key === "flyovers" ? 0 : Math.round(plume.get("ime20") * 100) / 100
+                            y:
+                                key === "flyovers"
+                                    ? 0
+                                    : plume.get("flux")
+                                      ? Math.round(plume.get("flux") * 100) / 100
+                                      : 0
                         };
                     }),
                     backgroundColor: pointColor,
