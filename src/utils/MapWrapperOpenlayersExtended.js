@@ -365,7 +365,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         );
 
         const imageFeature = new Ol_Feature({
-            geometry: new Ol_Geom_Polygon.fromExtent(extent),
+            geometry: new Ol_Geom_Polygon.fromExtent(transformedExtent),
             pointGeometry: new Ol_Geom_Point(Ol_Extent.getCenter(transformedExtent)),
             name: layer.name
         });
@@ -667,7 +667,9 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 zoomFeature = this.getAVIRISFeatureById(featureId);
                 break;
         }
-        return zoomFeature ? this.fitFeature(zoomFeature.getGeometry().getExtent()) : null;
+        return zoomFeature
+            ? this.fitFeature(zoomFeature.getProperties().geometry.getExtent())
+            : null;
     }
 
     getAVIRISFeatureById(id) {
