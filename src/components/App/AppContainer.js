@@ -129,6 +129,16 @@ export class AppContainer extends Component {
         });
     }
 
+    componentDidUpdate() {
+        // If we're displaying the map again after having it hidden, poke OpenLayers to redraw the map in case the window has been resized.
+        if (
+            this.props.appMode === MSFTypes.APP_MODE_MAP &&
+            this.previousAppMode !== MSFTypes.APP_MODE_MAP
+        )
+            this.props.resizeMap();
+        this.previousAppMode = this.props.appMode;
+    }
+
     render() {
         let hideMouse = this.props.mapControlsHidden && this.props.distractionFreeMode;
         let containerClasses = MiscUtil.generateStringFromSet({
@@ -188,7 +198,8 @@ AppContainer.propTypes = {
     updateFeatureList_Map: PropTypes.func.isRequired,
     distractionFreeMode: PropTypes.bool.isRequired,
     mapControlsHidden: PropTypes.bool.isRequired,
-    appMode: PropTypes.number.isRequired
+    appMode: PropTypes.number.isRequired,
+    resizeMap: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -211,7 +222,8 @@ function mapDispatchToProps(dispatch) {
         runUrlConfig: bindActionCreators(appActions.runUrlConfig, dispatch),
         initializeMap: bindActionCreators(mapActions.initializeMap, dispatch),
         setMapView: bindActionCreators(mapActions.setMapView, dispatch),
-        updateFeatureList_Map: bindActionCreators(mapActionsMSF.updateFeatureList_Map, dispatch)
+        updateFeatureList_Map: bindActionCreators(mapActionsMSF.updateFeatureList_Map, dispatch),
+        resizeMap: bindActionCreators(mapActionsMSF.resizeMap, dispatch)
     };
 }
 
