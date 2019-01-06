@@ -89,7 +89,7 @@ export const INFRASTRUCTURE_FACILITY_TYPE_TO_NAME = {
     [VISTA_2017_POWER_PLANT]: "Power Plants",
     [VISTA_2017_LANDFILL]: "Landfills",
     [VISTA_2017_SOCAB_BOUND]: "SOCAB Bound",
-    [VISTA_2017_CEC_PIPELINES]: "CEC Pipelines",
+    [VISTA_2017_CEC_PIPELINES]: "Natural Gas Pipelines (CEC)",
     [VISTA_2017_OILGAS_FIELDS]: "Oil and Natural Gas Fields"
 };
 
