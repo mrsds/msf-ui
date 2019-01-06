@@ -47,6 +47,20 @@ export class FeatureDetailContainer extends Component {
         );
     }
 
+    makeSwisNoLink(field) {
+        return (
+            <div key={field.name}>
+                <label>{field.name}</label>
+                <a
+                    href={`https://www2.calrecycle.ca.gov/swfacilities/Directory/${field.value}`}
+                    target="_blank"
+                >
+                    {field.value}
+                </a>
+            </div>
+        );
+    }
+
     makePopoverField(field) {
         const unit = field.unit ? `(${field.unit})` : null;
         return (
@@ -70,6 +84,7 @@ export class FeatureDetailContainer extends Component {
     makeInfoFields(fieldInfo) {
         const fields = fieldInfo.map(field => {
             if (field.name.toLowerCase() === "api") return this.makeAPILink(field);
+            if (field.name.toLowerCase() === "swisno") return this.makeSwisNoLink(field);
             if (field.popoverText) return this.makePopoverField(field);
 
             const unit = field.unit ? `(${field.unit})` : null;
