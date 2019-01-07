@@ -36,7 +36,7 @@ export class PlumeFiltersContainer extends Component {
         super(props);
         this.popperProps = Immutable.fromJS({
             flightCampaigns: false,
-            plumeIME: false,
+            plumeFlux: false,
             plumeID: false,
             source: false,
             sortBy: false
@@ -81,10 +81,11 @@ export class PlumeFiltersContainer extends Component {
         let plumeIDFilter = this.props.filters.get(layerSidebarTypes.PLUME_FILTER_PLUME_ID);
         let plumeIDFilterSelectedValue = plumeIDFilter.getIn(["selectedValue", "value"]);
 
-        let plumeIMEFilter = this.props.filters.get(layerSidebarTypes.PLUME_FILTER_PLUME_IME);
-        let plumeIMEFilterSelectedValue = plumeIMEFilter.getIn(["selectedValue", "value"]) || null;
-        let plumeIMEFilterSelectedValueLabel = plumeIMEFilter.getIn(["selectedValue", "label"]);
-        let plumeIMEPopoverActive = this.popperProps.get("plumeIME");
+        let plumeFluxFilter = this.props.filters.get(layerSidebarTypes.PLUME_FILTER_PLUME_FLUX);
+        let plumeFluxFilterSelectedValue =
+            plumeFluxFilter.getIn(["selectedValue", "value"]) || null;
+        let plumeFluxFilterSelectedValueLabel = plumeFluxFilter.getIn(["selectedValue", "label"]);
+        let plumeFluxPopoverActive = this.popperProps.get("plumeFlux");
 
         let plumeSortByFilter = this.props.filters.get(layerSidebarTypes.PLUME_FILTER_SORT_BY);
         let plumeSortBySelectedValue = plumeSortByFilter.getIn(["selectedValue", "value"]);
@@ -111,7 +112,7 @@ export class PlumeFiltersContainer extends Component {
                 <ClickAwayListener
                     onClickAway={() => {
                         if (
-                            plumeIMEPopoverActive ||
+                            plumeFluxPopoverActive ||
                             flightCampaignsPopoverActive ||
                             plumeSortByPopperActive
                         ) {
@@ -124,22 +125,22 @@ export class PlumeFiltersContainer extends Component {
                             <ChipDropdown
                                 className={styles.chip}
                                 onClick={() =>
-                                    this.setPopperActive("plumeIME", !plumeIMEPopoverActive)
+                                    this.setPopperActive("plumeFlux", !plumeFluxPopoverActive)
                                 }
                                 onDelete={() => {
-                                    this.setPopperActive("plumeIME", false);
+                                    this.setPopperActive("plumeFlux", false);
                                     this.props.setPlumeFilter(
-                                        layerSidebarTypes.PLUME_FILTER_PLUME_IME,
+                                        layerSidebarTypes.PLUME_FILTER_PLUME_FLUX,
                                         null
                                     );
                                 }}
-                                label="Plume IME"
+                                label="Plume Flux"
                                 value={
-                                    plumeIMEFilterSelectedValueLabel
-                                        ? plumeIMEFilterSelectedValueLabel
+                                    plumeFluxFilterSelectedValueLabel
+                                        ? plumeFluxFilterSelectedValueLabel
                                         : null
                                 }
-                                active={plumeIMEPopoverActive}
+                                active={plumeFluxPopoverActive}
                             />
                         </Target>
                         <Popper
@@ -149,14 +150,14 @@ export class PlumeFiltersContainer extends Component {
                                     gpuAcceleration: false
                                 }
                             }}
-                            eventsEnabled={plumeIMEPopoverActive}
+                            eventsEnabled={plumeFluxPopoverActive}
                             className={
-                                !plumeIMEPopoverActive ? displayStyles.noPointer : styles.pointer
+                                !plumeFluxPopoverActive ? displayStyles.noPointer : styles.pointer
                             }
                         >
                             <Grow
                                 style={{ transformOrigin: "left top" }}
-                                in={plumeIMEPopoverActive}
+                                in={plumeFluxPopoverActive}
                             >
                                 <div>
                                     <Paper elevation={8} className={styles.popoverPaper}>
@@ -167,12 +168,12 @@ export class PlumeFiltersContainer extends Component {
                                                     color="inherit"
                                                     className={styles.popoverTitle}
                                                 >
-                                                    Plume Integrated Methane Enhancement
+                                                    Plume Flux
                                                 </Typography>
                                                 <IconButtonSmall
                                                     color="inherit"
                                                     onClick={() =>
-                                                        this.setPopperActive("plumeIME", false)
+                                                        this.setPopperActive("plumeFlux", false)
                                                     }
                                                 >
                                                     <CloseIcon />
@@ -184,26 +185,26 @@ export class PlumeFiltersContainer extends Component {
                                             <div
                                                 onClick={() => {
                                                     this.props.setPlumeFilter(
-                                                        layerSidebarTypes.PLUME_FILTER_PLUME_IME,
+                                                        layerSidebarTypes.PLUME_FILTER_PLUME_FLUX,
                                                         null
                                                     );
                                                 }}
-                                                key={"plumeIMENoValue"}
+                                                key={"plumeFluxNoValue"}
                                                 className={styles.formControlLabel}
                                             >
                                                 <Radio
                                                     value={""}
-                                                    checked={plumeIMEFilterSelectedValue === null}
+                                                    checked={plumeFluxFilterSelectedValue === null}
                                                 />
                                                 <Typography className={styles.radioLabel}>
-                                                    Any Plume IME
+                                                    Any Plume Flux
                                                 </Typography>
                                             </div>
-                                            {plumeIMEFilter.get("selectableValues").map(x => (
+                                            {plumeFluxFilter.get("selectableValues").map(x => (
                                                 <div
                                                     onClick={() => {
                                                         this.props.setPlumeFilter(
-                                                            layerSidebarTypes.PLUME_FILTER_PLUME_IME,
+                                                            layerSidebarTypes.PLUME_FILTER_PLUME_FLUX,
                                                             x
                                                         );
                                                     }}
@@ -214,7 +215,7 @@ export class PlumeFiltersContainer extends Component {
                                                         value={x.get("value").toString()}
                                                         checked={
                                                             x.get("value") ===
-                                                            plumeIMEFilterSelectedValue
+                                                            plumeFluxFilterSelectedValue
                                                         }
                                                     />
                                                     <Typography className={styles.radioLabel}>

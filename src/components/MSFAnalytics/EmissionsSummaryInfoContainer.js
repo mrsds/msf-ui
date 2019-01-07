@@ -61,9 +61,8 @@ export class EmissionsSummaryInfoContainer extends Component {
             { name: "Number of Sources", value: this.props.summaryData.get("number_of_sources") },
             { name: "Number of Plumes", value: this.props.summaryData.get("number_of_plumes") },
             {
-                name: "Average Source IME",
-                value: `${Math.round(this.props.summaryData.get("average_source_ime") * 100) /
-                    100}kg`
+                name: "Average Flux",
+                value: `${Math.round(this.props.summaryData.get("average_flux") * 100) / 100}kg/hr`
             },
             {
                 name: "Average Plume Count Per Source",
@@ -115,16 +114,16 @@ export class EmissionsSummaryInfoContainer extends Component {
                 const startDateStr = this.formatDateStr(source.get("first_flyover_date"));
                 const endDateStr = this.formatDateStr(source.get("last_flyover_date"));
                 const timespan = `${startDateStr} - ${endDateStr}`;
-                const avgIme = source.get("avg_ime5_1500ppmm_150m")
-                    ? parseFloat(source.get("avg_ime5_1500ppmm_150m")).toFixed(2)
+                const avgFlux = source.get("avg_flux")
+                    ? parseFloat(source.get("avg_flux")).toFixed(2)
                     : "";
-                const minIme = source.get("min_ime5_1500ppmm_150m")
-                    ? parseFloat(source.get("min_ime5_1500ppmm_150m")).toFixed(2)
+                const minFlux = source.get("min_flux")
+                    ? parseFloat(source.get("min_flux")).toFixed(2)
                     : null;
-                const maxIme = source.get("max_ime5_1500ppmm_150m")
-                    ? parseFloat(source.get("max_ime5_1500ppmm_150m")).toFixed(2)
+                const maxFlux = source.get("max_flux")
+                    ? parseFloat(source.get("max_flux")).toFixed(2)
                     : null;
-                const imeRange = minIme && maxIme ? `${minIme} - ${maxIme}` : "";
+                const fluxRange = minFlux && maxFlux ? `${minFlux} - ${maxFlux}` : "";
                 return (
                     <TableRow key={sourceId}>
                         <TableCell padding="dense">{sourceId}</TableCell>
@@ -132,8 +131,8 @@ export class EmissionsSummaryInfoContainer extends Component {
                         <TableCell padding="dense">{source.get("plume_count")}</TableCell>
                         <TableCell padding="dense">{source.get("flyover_count")}</TableCell>
                         <TableCell padding="dense">{timespan}</TableCell>
-                        <TableCell padding="dense">{avgIme}</TableCell>
-                        <TableCell padding="dense">{imeRange}</TableCell>
+                        <TableCell padding="dense">{avgFlux}</TableCell>
+                        <TableCell padding="dense">{fluxRange}</TableCell>
                     </TableRow>
                 );
             });
@@ -159,8 +158,10 @@ export class EmissionsSummaryInfoContainer extends Component {
                                         <TableCell padding="dense">
                                             Plume Observations Timespan
                                         </TableCell>
-                                        <TableCell padding="dense">Avg Plume IME (kg)</TableCell>
-                                        <TableCell padding="dense">Plume IME Range (kg)</TableCell>
+                                        <TableCell padding="dense">Avg Flux (kg/hr)</TableCell>
+                                        <TableCell padding="dense">
+                                            Plume Flux Range (kg/hr)
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>{this.makeSourcesTableBody()}</TableBody>

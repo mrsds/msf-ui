@@ -24,6 +24,7 @@ export const SHAPE_TRIANGLE_DOWN = "SHAPE_TRIANGLE_DOWN";
 
 export const PLUME_FILTER_FLIGHT_CAMPAIGN = "Flight Campaigns";
 export const PLUME_FILTER_PLUME_IME = "Plume IME";
+export const PLUME_FILTER_PLUME_FLUX = "Plume Flux";
 export const PLUME_FILTER_PLUME_ID = "Plume ID";
 export const PLUME_FILTER_PLUME_START_DATE = "Plume Start Date";
 export const PLUME_FILTER_PLUME_END_DATE = "Plume End Date";

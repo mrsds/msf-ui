@@ -124,8 +124,8 @@ export default class LayerSidebarReducer {
             "selectedValue",
             "value"
         ]);
-        const plumeIME = filters.getIn([
-            layerSidebarTypes.PLUME_FILTER_PLUME_IME,
+        const plumeFlux = filters.getIn([
+            layerSidebarTypes.PLUME_FILTER_PLUME_FLUX,
             "selectedValue",
             "value"
         ]);
@@ -157,7 +157,7 @@ export default class LayerSidebarReducer {
             return (
                 moment(feature.get("datetime")).isBetween(startDate, endDate, "day", "[]") &&
                 (!flightCampaign || feature.get("flight_campaign") === flightCampaign) &&
-                (!plumeIME || feature.get("ime") >= plumeIME)
+                (!plumeFlux || feature.get("flux") >= plumeFlux)
             );
         });
 
@@ -165,12 +165,12 @@ export default class LayerSidebarReducer {
         let sortFn = sortOption => {
             let sortByDate = (a, b) =>
                 moment(a.get("datetime")).isAfter(moment(b.get("datetime"))) ? -1 : 1;
-            let sortByIME = (a, b) => (a.get("ime") > b.get("ime") ? -1 : 1);
+            let sortByFlux = (a, b) => (a.get("flux") > b.get("flux") ? -1 : 1);
             switch (sortOption) {
                 case layerSidebarTypes.PLUME_FILTER_PLUME_OBSERVATION_DATE:
                     return sortByDate;
-                case layerSidebarTypes.PLUME_FILTER_PLUME_IME:
-                    return sortByIME;
+                case layerSidebarTypes.PLUME_FILTER_PLUME_FLUX:
+                    return sortByFlux;
                 default:
                     return sortByDate;
             }
@@ -195,17 +195,17 @@ export default class LayerSidebarReducer {
             flightCampaignSelectableValues
         );
 
-        let plumeIMESelectableValues = [5, 10, 25, 50, 100, 250, 500, 1000, 1500].map(x => {
+        let plumeFluxSelectableValues = [5, 10, 25, 50, 100, 250, 500, 1000, 1500].map(x => {
             return Immutable.Map({
                 value: x,
-                label: ">" + x + "kg"
+                label: ">" + x + " kg/hr"
             });
         });
 
         // Set filters to new filters
         filters = filters.setIn(
-            [layerSidebarTypes.PLUME_FILTER_PLUME_IME, "selectableValues"],
-            plumeIMESelectableValues
+            [layerSidebarTypes.PLUME_FILTER_PLUME_FLUX, "selectableValues"],
+            plumeFluxSelectableValues
         );
 
         return state

@@ -45,9 +45,9 @@ export class EmissionsChartsContainer extends Component {
             .map(source => {
                 return {
                     label: `Source near: ${source.get("nearest_facility")}`,
-                    min: source.get("min_ime5_1500ppmm_150m", null),
-                    max: source.get("max_ime5_1500ppmm_150m", null),
-                    avg: source.get("avg_ime5_1500ppmm_150m", null)
+                    min: source.get("min_flux", null),
+                    max: source.get("max_flux", null),
+                    avg: source.get("avg_flux", null)
                 };
             })
             .filter(s => s.min !== null && s.max !== null && s.avg !== null)
@@ -59,7 +59,7 @@ export class EmissionsChartsContainer extends Component {
                 yAxes: [
                     {
                         id: "y-axis-0", // Have to use this naming scheme else ErrorBar plugin breaks
-                        scaleLabel: { display: true, labelString: "IME (kg)" },
+                        scaleLabel: { display: true, labelString: "Flux (kg/hr)" },
                         position: "left",
                         type: "linear",
                         ticks: {
@@ -97,7 +97,7 @@ export class EmissionsChartsContainer extends Component {
         };
 
         const dataset = {
-            label: "ime",
+            label: "flux",
             yAxisID: "y-axis-0",
             data: sourceData.map(s => s.avg),
             backgroundColor: "rgba(97, 100, 221, 0.66)",
@@ -107,7 +107,7 @@ export class EmissionsChartsContainer extends Component {
             }, {})
         };
 
-        const totalIme = sourceData.reduce((acc, s) => acc + s.avg, 0);
+        const totalFlux = sourceData.reduce((acc, s) => acc + s.avg, 0);
         const distributionDataset = {
             label: "distribution",
             data: sourceData
@@ -116,7 +116,7 @@ export class EmissionsChartsContainer extends Component {
                     acc.push(val);
                     return acc;
                 }, [])
-                .map(val => val / totalIme * 100),
+                .map(val => val / totalFlux * 100),
             type: "line",
             yAxisID: "y-axis-1",
             fill: false,
