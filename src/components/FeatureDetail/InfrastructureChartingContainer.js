@@ -535,6 +535,7 @@ export class InfrastructureChartingContainer extends Component {
         };
 
         const sortedData = this.getDateFilteredPlumeList();
+
         const dataGroups = sortedData.reduce(
             (acc, plume) => {
                 if (!plume.get("candidate_id")) {
@@ -581,7 +582,7 @@ export class InfrastructureChartingContainer extends Component {
 
         return (
             <div className={styles.chartContainer}>
-                <ScatterChart data={data} options={options} height={250} />
+                <ScatterChart data={data} options={options} height={250} redraw={true} />
             </div>
         );
     }
