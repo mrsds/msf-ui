@@ -667,9 +667,23 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 zoomFeature = this.getAVIRISFeatureById(featureId);
                 break;
         }
-        return zoomFeature
-            ? this.fitFeature(zoomFeature.getProperties().geometry.getExtent())
-            : null;
+
+        if (!zoomFeature) return null;
+
+        const zoomGeom = zoomFeature.getProperties().geometry;
+
+        // For point geometry, we just center the point and bring the map to a default zoom level.
+        if (zoomGeom instanceof Ol_Geom_Point) {
+            this.setCenter(zoomGeom.getExtent());
+            return this.map.getView().animate({
+                resolution: this.map.getView().getResolution(),
+                zoom: appConfig.OIL_WELLS_MIN_ZOOM,
+                duration: 175
+            });
+        }
+
+        // For polygons, fit the map to the extent of the poly.
+        return this.fitFeature(zoomGeom.getExtent());
     }
 
     getAVIRISFeatureById(id) {
