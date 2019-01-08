@@ -25,9 +25,14 @@ export class MapTooltip extends Component {
             if (this.props.activeFeature.get("category") === layerSidebarTypes.CATEGORY_PLUMES) {
                 const datetime = feature.get("datetime");
                 const dateString = MiscUtilExtended.formatPlumeDatetime(datetime);
-                let roundedFlux = MiscUtilExtended.roundTo(feature.get("flux"), 2);
                 title = dateString;
-                subtitle1 = <React.Fragment>{roundedFlux} kg/hr</React.Fragment>;
+                subtitle1 = feature.get("flux") ? (
+                    <React.Fragment>
+                        {MiscUtilExtended.roundTo(feature.get("flux"), 2) + " kg/hr"}
+                    </React.Fragment>
+                ) : (
+                    <br />
+                );
                 subtitle2 = feature.get("name");
             } else if (
                 this.props.activeFeature.get("category") ===
