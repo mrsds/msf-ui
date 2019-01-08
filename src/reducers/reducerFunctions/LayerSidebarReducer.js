@@ -130,7 +130,7 @@ export default class LayerSidebarReducer {
             "value"
         ]);
         const plumeID = filters
-            .getIn([layerSidebarTypes.PLUME_FILTER_PLUME_ID, "selectedValue", "value"])
+            .getIn([layerSidebarTypes.PLUME_FILTER_PLUME_ID, "selectedValue"])
             .toLowerCase();
 
         const plumeSortOption = filters.getIn([
@@ -293,8 +293,7 @@ export default class LayerSidebarReducer {
                 layerSidebarTypes.CATEGORY_PLUMES,
                 "filters",
                 action.key,
-                "selectedValue",
-                "value"
+                "selectedValue"
             ],
             Immutable.fromJS(action.selectedValue)
         );

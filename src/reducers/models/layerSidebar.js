@@ -67,11 +67,7 @@ export const layerSidebarState = Immutable.fromJS({
                     selectableValues: []
                 },
                 [layerSidebarTypes.PLUME_FILTER_PLUME_ID]: {
-                    selectedValue: {
-                        value: "",
-                        label: ""
-                    },
-                    selectableValues: []
+                    selectedValue: ""
                 },
                 [layerSidebarTypes.PLUME_FILTER_PLUME_START_DATE]: {
                     selectedValue: {

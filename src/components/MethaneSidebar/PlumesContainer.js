@@ -52,11 +52,8 @@ export class PlumesContainer extends Component {
     // }
 
     clearAllFilters() {
-        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_ID, {
-            value: "",
-            label: ""
-        });
-        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_IME, null);
+        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_ID, "");
+        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_FLUX, null);
         this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN, null);
     }
 

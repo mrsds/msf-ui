@@ -79,7 +79,7 @@ export class PlumeFiltersContainer extends Component {
         let flightCampaignsPopoverActive = this.popperProps.get("flightCampaigns");
 
         let plumeIDFilter = this.props.filters.get(layerSidebarTypes.PLUME_FILTER_PLUME_ID);
-        let plumeIDFilterSelectedValue = plumeIDFilter.getIn(["selectedValue", "value"]);
+        let plumeIDFilterSelectedValue = plumeIDFilter.get("selectedValue");
 
         let plumeFluxFilter = this.props.filters.get(layerSidebarTypes.PLUME_FILTER_PLUME_FLUX);
         let plumeFluxFilterSelectedValue =
@@ -105,7 +105,7 @@ export class PlumeFiltersContainer extends Component {
                     primaryDataPlace="top"
                     actionIcon={<Clear />}
                     onActionIconClick={() => {
-                        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_ID, "");
+                        this.props.setPlumeTextFilter("");
                         this.forceUpdate();
                     }}
                 />
