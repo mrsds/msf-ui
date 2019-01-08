@@ -25,9 +25,9 @@ export class MapTooltip extends Component {
             if (this.props.activeFeature.get("category") === layerSidebarTypes.CATEGORY_PLUMES) {
                 const datetime = feature.get("datetime");
                 const dateString = MiscUtilExtended.formatPlumeDatetime(datetime);
-                let roundedIME = MiscUtilExtended.roundTo(feature.get("ime"), 2);
+                let roundedFlux = MiscUtilExtended.roundTo(feature.get("flux"), 2);
                 title = dateString;
-                subtitle1 = <React.Fragment>{roundedIME} kg IME</React.Fragment>;
+                subtitle1 = <React.Fragment>{roundedFlux} kg/hr</React.Fragment>;
                 subtitle2 = feature.get("name");
             } else if (
                 this.props.activeFeature.get("category") ===
@@ -74,14 +74,6 @@ export class MapTooltip extends Component {
                     </Typography>
                 </div>
                 <ListItemSecondaryAction className={styles.listItemSecondaryAction}>
-                    <span ref={ref => (this.detailsRef = ref)}>
-                        <Button
-                            color="default"
-                            key={feature ? feature.get("id") + "popup_details" : ""}
-                        >
-                            Details
-                        </Button>
-                    </span>
                     <span ref={ref => (this.zoomToRef = ref)}>
                         <Button
                             color="default"
@@ -89,6 +81,14 @@ export class MapTooltip extends Component {
                             key={feature ? feature.get("id") + "popup_zoom_to" : ""}
                         >
                             Zoom To
+                        </Button>
+                    </span>
+                    <span ref={ref => (this.detailsRef = ref)}>
+                        <Button
+                            color="default"
+                            key={feature ? feature.get("id") + "popup_details" : ""}
+                        >
+                            Details
                         </Button>
                     </span>
                 </ListItemSecondaryAction>
