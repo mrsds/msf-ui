@@ -82,7 +82,6 @@ export class MapTooltip extends Component {
                     <span ref={ref => (this.zoomToRef = ref)}>
                         <Button
                             color="default"
-                            style={{ margin: 0 }}
                             key={feature ? feature.get("id") + "popup_zoom_to" : ""}
                         >
                             Zoom To
@@ -91,6 +90,7 @@ export class MapTooltip extends Component {
                     <span ref={ref => (this.detailsRef = ref)}>
                         <Button
                             color="default"
+                            style={{ margin: 0 }}
                             key={feature ? feature.get("id") + "popup_details" : ""}
                         >
                             Details
