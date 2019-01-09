@@ -155,7 +155,8 @@ LayerMenuContainer.propTypes = {
     groups: PropTypes.object.isRequired,
     distractionFreeMode: PropTypes.bool.isRequired,
     palettes: PropTypes.object.isRequired,
-    mapState: PropTypes.object
+    mapState: PropTypes.object,
+    currentZoom: PropTypes.number
 };
 
 function mapStateToProps(state) {
