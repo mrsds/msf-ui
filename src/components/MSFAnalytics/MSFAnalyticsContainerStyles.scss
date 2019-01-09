@@ -76,6 +76,23 @@
     overflow: scroll;
 }
 
+.analyticsModeButton {
+}
+
+.analyticsModeButtonSelected {
+    background: $color-primary;
+}
+
+.analyticsModeButtonText {
+    color: #757575;
+    font-size: 0.9em;
+}
+
+.analyticsModeButtonTextSelected {
+    color: white;
+    font-size: 0.9em;
+}
+
 .cardRoot {
     overflow: visible;
     margin-top: 15px;

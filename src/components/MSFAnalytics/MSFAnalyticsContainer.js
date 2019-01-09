@@ -39,17 +39,26 @@ export class MSFAnalyticsContainer extends Component {
             }
         ];
         return availableModes.map(mode => {
-            const modeIcon =
-                mode.type === this.props.analyticsMode ? (
-                    <RadioButtonChecked />
-                ) : (
-                    <RadioButtonUnchecked />
-                );
+            const selected = mode.type === this.props.analyticsMode;
             return (
                 <React.Fragment key={mode.type}>
-                    <ListItem dense onClick={() => this.props.changeAnalyticsMode(mode.type)}>
-                        <ListItemIcon>{modeIcon}</ListItemIcon>
-                        <ListItemText primary={mode.title} />
+                    <ListItem
+                        button
+                        onClick={() => this.props.changeAnalyticsMode(mode.type)}
+                        classes={{
+                            root: selected
+                                ? styles.analyticsModeButtonSelected
+                                : styles.analyticsModeButton
+                        }}
+                    >
+                        <ListItemText
+                            primary={mode.title}
+                            classes={{
+                                primary: selected
+                                    ? styles.analyticsModeButtonTextSelected
+                                    : styles.analyticsModeButtonText
+                            }}
+                        />
                     </ListItem>
                     <Divider />
                 </React.Fragment>
