@@ -223,9 +223,8 @@ export default class LayerSidebarReducer {
             layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
             "filters"
         ]);
-        let searchResults = Immutable.Map();
 
-        const featureList = state.getIn(
+        let featureList = state.getIn(
             ["availableFeatures", layerSidebarTypes.CATEGORY_INFRASTRUCTURE],
             []
         );
@@ -233,8 +232,7 @@ export default class LayerSidebarReducer {
         // Extract search filters
         const infrastructureName = filters.getIn([
             layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME,
-            "selectedValue",
-            "value"
+            "selectedValue"
         ]);
 
         const infrastructureSortOption = filters.getIn([
@@ -243,11 +241,9 @@ export default class LayerSidebarReducer {
             "value"
         ]);
 
-        // Filter by infrastructure name via Fuse
-        searchResults = LayerSidebarReducer.getSearchResultsHelper(
-            layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
-            featureList,
-            infrastructureName
+        let searchResults = LayerSidebarReducer.infrastructureSearchHelper(
+            infrastructureName,
+            featureList
         );
 
         // Sort list
@@ -275,6 +271,41 @@ export default class LayerSidebarReducer {
             )
             .setIn(["searchState", layerSidebarTypes.CATEGORY_INFRASTRUCTURE, "filters"], filters)
             .setIn(["searchState", layerSidebarTypes.CATEGORY_INFRASTRUCTURE, "pageIndex"], 0);
+    }
+
+    static infrastructureSearchHelper(searchString, featureList) {
+        // Filter by infrastructure name/id via Fuse (ignore this step if there's no name/id search entry)
+        if (searchString === "") return featureList;
+
+        // First check for any exact matches
+        let exactMatches = featureList.filter(
+            res =>
+                res.get("id") &&
+                res
+                    .get("id")
+                    .toLowerCase()
+                    .trim() === searchString.toLowerCase().trim()
+        );
+
+        exactMatches = exactMatches.size
+            ? exactMatches
+            : featureList.filter(
+                  res =>
+                      res.get("name") &&
+                      res
+                          .get("name")
+                          .toLowerCase()
+                          .trim() === searchString.toLowerCase().trim()
+              );
+
+        if (exactMatches.size) return exactMatches;
+
+        // If no exact matches, hand off to Fuse for a fuzzy search
+        return LayerSidebarReducer.getSearchResultsHelper(
+            layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+            featureList,
+            searchString
+        );
     }
 
     static updateSearchResults(state, action) {
@@ -306,8 +337,7 @@ export default class LayerSidebarReducer {
                 layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
                 "filters",
                 action.key,
-                "selectedValue",
-                "value"
+                "selectedValue"
             ],
             Immutable.fromJS(action.selectedValue)
         );

@@ -43,10 +43,7 @@ import MiscUtil from "_core/utils/MiscUtil";
 
 export class InfrastructureContainer extends Component {
     clearTextSearch() {
-        this.props.setInfrastructureFilter(layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME, {
-            value: "",
-            label: ""
-        });
+        this.props.setInfrastructureFilter(layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME, "");
         // this.props.toggleInfrastructureCategoryFilters(false);
     }
 
@@ -127,8 +124,15 @@ export class InfrastructureContainer extends Component {
             [layerSidebarStyles.selectedItemSecondary]: isItemPrimary,
             [layerSidebarStyles.listItemSecondaryAction]: true
         });
+
+        const listKey =
+            feature.get("id") ||
+            Math.random()
+                .toString(36)
+                .substring(7);
+
         return (
-            <React.Fragment key={feature.get("id")}>
+            <React.Fragment key={listKey}>
                 <ListItem
                     className={listItemRootClassnames}
                     classes={{

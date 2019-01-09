@@ -186,6 +186,7 @@ export class FeatureDetailContainer extends Component {
         const long = metadata.get("LONGITUDE") || metadata.get("LLong");
         const address = metadata.get("ADDRESS") || metadata.get("Location");
         const sector = metadata.get("TYPE") || metadata.get("LSector") || "(no sector name)";
+        const vistaId = this.props.feature.get("id") || "(no Vista ID)";
 
         let googleMapsUri = "";
         let googleMapsStaticImgUrl = "./styles/resources/img/fake_info_img.png";
@@ -218,7 +219,8 @@ export class FeatureDetailContainer extends Component {
                     "(no state)"}`,
                 unit: null
             },
-            { name: "Number of Flyovers", value: this.props.feature.get("num_flights_matching") }
+            { name: "Number of Flyovers", value: this.props.feature.get("num_flights_matching") },
+            { name: "VISTA ID", value: vistaId }
         ];
 
         let featureTitle = name;

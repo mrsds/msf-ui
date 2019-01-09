@@ -105,7 +105,7 @@ export class PlumeFiltersContainer extends Component {
                     primaryDataPlace="top"
                     actionIcon={<Clear />}
                     onActionIconClick={() => {
-                        this.props.setPlumeTextFilter("");
+                        this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_ID, "");
                         this.forceUpdate();
                     }}
                 />

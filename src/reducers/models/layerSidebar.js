@@ -31,10 +31,7 @@ export const layerSidebarState = Immutable.fromJS({
             searchResults: {},
             filters: {
                 [layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME]: {
-                    selectedValue: {
-                        value: "",
-                        label: ""
-                    },
+                    selectedValue: "",
                     selectableValues: []
                 },
                 [layerSidebarTypes.INFRASTRUCTURE_FILTER_SORT_BY]: {

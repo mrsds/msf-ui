@@ -46,9 +46,7 @@ export class PlumeFiltersContainer extends Component {
         const filtersChanged = this.props.filters
             .filter((_, k) => k.toLowerCase().startsWith("infrastructure"))
             .some(
-                (v, k) =>
-                    v.getIn(["selectedValue", "value"]) !==
-                    nextProps.filters.getIn([k, "selectedValue", "value"])
+                (v, k) => v.get("selectedValue") !== nextProps.filters.getIn([k, "selectedValue"])
             );
         const activeSubCatsChanged = this.props.activeInfrastructureSubCategories.some(
             (v, k) => nextProps.activeInfrastructureSubCategories.get(k) !== v
@@ -76,10 +74,7 @@ export class PlumeFiltersContainer extends Component {
         let infrastructureNameFilter = this.props.filters.get(
             layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME
         );
-        let infrastructureNameFilterSelectedValue = infrastructureNameFilter.getIn([
-            "selectedValue",
-            "value"
-        ]);
+        let infrastructureNameFilterSelectedValue = infrastructureNameFilter.get("selectedValue");
 
         let infrastructureSubcategoriesPopoverOpen = this.popperProps.get(
             "infrastructureSubcategories"
@@ -111,12 +106,12 @@ export class PlumeFiltersContainer extends Component {
             <React.Fragment>
                 <SearchInput
                     icon={<Search />}
-                    placeholder="Filter by Infrastructure Name"
+                    placeholder="Filter by Infrastructure Name/ID"
                     value={infrastructureNameFilterSelectedValue}
                     disabled={false}
                     onUpdate={valueStr => this.handleSearchInput(valueStr)}
                     validate={valueStr => true}
-                    primaryDataTip="Filter by Infrastructure Name"
+                    primaryDataTip="Filter by Infrastructure Name/ID"
                     primaryDataPlace="top"
                     actionIcon={<Clear />}
                     onActionIconClick={() => {

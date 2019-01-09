@@ -145,7 +145,7 @@ export const SEARCH_OPTIONS = Immutable.fromJS({
         distance: 100,
         maxPatternLength: 32,
         minMatchCharLength: 1,
-        keys: ["name"]
+        keys: ["id", "name"]
     },
     [layerSidebarTypes.CATEGORY_PLUMES]: {
         shouldSort: true,
