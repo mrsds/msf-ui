@@ -207,7 +207,7 @@
         },
         {
             "id": "GRIDDED_EMISSIONS_V2",
-            "title": "Gridded Methane Inversion",
+            "title": "Methane Emission Map",
             "type": "data",
             "handleAs": "gridded_geojson",
             "isDefault": false,
