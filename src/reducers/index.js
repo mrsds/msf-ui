@@ -7,7 +7,6 @@
 
 import { combineReducers } from "redux";
 import map_Extended from "reducers/map_Extended";
-import settings from "_core/reducers/settings";
 import help from "_core/reducers/help";
 import layerInfo from "_core/reducers/layerInfo";
 import share from "_core/reducers/share";
@@ -20,11 +19,12 @@ import layerSidebar from "reducers/layerSidebar";
 import featureDetail from "reducers/featureDetail";
 import view_Extended from "reducers/view_Extended";
 import MSFAnalytics from "reducers/MSFAnalytics";
+import settings_Extended from "reducers/settings_Extended";
 
 const rootReducer = combineReducers({
     view: view_Extended,
     map: map_Extended,
-    settings,
+    settings: settings_Extended,
     help,
     layerInfo: layerInfo,
     share,

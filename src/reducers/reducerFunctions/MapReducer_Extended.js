@@ -5,6 +5,7 @@ import appConfig from "constants/appConfig";
 import { layerModel_Extended as layerModel } from "reducers/models/map_Extended";
 import { alert } from "_core/reducers/models/alert";
 import moment from "moment";
+import * as MSFTypes from "constants/MSFTypes";
 
 export default class MapReducer_Extended extends MapReducer {
     static updateAvailableLayers(state, action) {

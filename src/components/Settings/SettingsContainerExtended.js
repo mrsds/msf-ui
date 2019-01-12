@@ -19,23 +19,48 @@ import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore"
 import appConfig from "constants/appConfig";
 import * as appStrings from "_core/constants/appStrings";
 import * as appActions from "_core/actions/appActions";
-import * as mapActions from "_core/actions/mapActions";
+import * as mapActions from "actions/mapActions";
 import * as dateSliderActions from "_core/actions/dateSliderActions";
 import * as analyticsActions from "_core/actions/analyticsActions";
 import MiscUtil from "_core/utils/MiscUtil";
 import { ModalMenu } from "_core/components/ModalMenu";
+import Divider from "@material-ui/core/Divider";
+import HomeIcon from "@material-ui/icons/Home";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import Collapse from "@material-ui/core/Collapse";
+import * as MSFTypes from "constants/MSFTypes";
+import styles from "components/Settings/SettingsContainerStyles.scss";
+import * as appActionsExtended from "actions/appActionsExtended";
 
 export class SettingsContainerExtended extends Component {
     shouldComponentUpdate(nextProps) {
-        return nextProps.settingsOpen || nextProps.settingsOpen !== this.props.settingsOpen;
+        return (
+            nextProps.settingsOpen ||
+            nextProps.settingsOpen !== this.props.settingsOpen ||
+            nextProps.homeSelectMenuOpen !== this.props.homeSelectMenuOpen ||
+            nextProps.homeArea !== this.props.homeArea
+        );
+    }
+
+    getHomeSetting() {
+        switch (this.props.homeArea.toJS()) {
+            case MSFTypes.EXTENTS_LOS_ANGELES:
+                return 0;
+            case MSFTypes.EXTENTS_SF_BAY:
+                return 1;
+            default:
+                return 2;
+        }
     }
 
     render() {
+        const homeAreaLocation = this.props.homeArea.get("location");
         return (
             <ModalMenu
                 title="Settings"
                 active={this.props.settingsOpen}
-                closeFunc={() => this.props.appActions.setSettingsOpen(false)}
+                closeFunc={() => this.props.appActionsExtended.setSettingsOpen(false)}
             >
                 <List>
                     <ListSubheader disableSticky>Application Configuration</ListSubheader>
@@ -74,6 +99,84 @@ export class SettingsContainerExtended extends Component {
                             secondary="Restore the application to its default state"
                         />
                     </ListItem>
+                    <Divider />
+                    <ListItem
+                        button
+                        onClick={() =>
+                            this.props.mapActions.toggleHomeSelectMenuOpen(
+                                !this.props.homeSelectMenuOpen
+                            )
+                        }
+                    >
+                        <ListItemIcon style={{ margin: "0 12" }}>
+                            <HomeIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary="Set Home Area"
+                            secondary="Choose the default viewport when the map 'Home' button is clicked."
+                        />
+                        {this.props.homeSelectMenuOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={this.props.homeSelectMenuOpen} timeout="auto" unmountOnExit>
+                        <List>
+                            <ListItem
+                                button
+                                onClick={() =>
+                                    this.props.mapActions.setHomeArea(
+                                        MSFTypes.HOME_AREA_LOS_ANGELES
+                                    )
+                                }
+                                className={
+                                    homeAreaLocation === MSFTypes.HOME_AREA_LOS_ANGELES
+                                        ? styles.homeAreaSelected
+                                        : styles.homeArea
+                                }
+                            >
+                                <ListItemText
+                                    inset
+                                    primary="Los Angeles"
+                                    selected={this.props.homeArea === MSFTypes.EXTENTS_LOS_ANGELES}
+                                />
+                            </ListItem>
+                            <ListItem
+                                button
+                                onClick={() =>
+                                    this.props.mapActions.setHomeArea(MSFTypes.HOME_AREA_SF_BAY)
+                                }
+                                className={
+                                    homeAreaLocation === MSFTypes.HOME_AREA_SF_BAY
+                                        ? styles.homeAreaSelected
+                                        : styles.homeArea
+                                }
+                            >
+                                <ListItemText
+                                    inset
+                                    primary="San Francisco Bay Area"
+                                    selected={this.props.homeArea === MSFTypes.EXTENTS_SF_BAY}
+                                />
+                            </ListItem>
+                            <ListItem
+                                button
+                                onClick={() =>
+                                    this.props.mapActions.setHomeArea(MSFTypes.HOME_AREA_CUSTOM)
+                                }
+                                className={
+                                    homeAreaLocation === MSFTypes.HOME_AREA_CUSTOM
+                                        ? styles.homeAreaSelected
+                                        : styles.homeArea
+                                }
+                            >
+                                <ListItemText
+                                    inset
+                                    primary={`${
+                                        homeAreaLocation === MSFTypes.HOME_AREA_CUSTOM
+                                            ? "Custom (Click to Reset)"
+                                            : "Current Map Area"
+                                    }`}
+                                />
+                            </ListItem>
+                        </List>
+                    </Collapse>
                 </List>
             </ModalMenu>
         );
@@ -88,7 +191,10 @@ SettingsContainerExtended.propTypes = {
     appActions: PropTypes.object.isRequired,
     mapActions: PropTypes.object.isRequired,
     dateSliderActions: PropTypes.object.isRequired,
-    analyticsActions: PropTypes.object.isRequired
+    analyticsActions: PropTypes.object.isRequired,
+    homeSelectMenuOpen: PropTypes.bool.isRequired,
+    homeArea: PropTypes.object.isRequired,
+    appActionsExtended: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -96,7 +202,9 @@ function mapStateToProps(state) {
         settingsOpen: state.settings.get("isOpen"),
         mapSettings: state.map.get("displaySettings"),
         analyticsEnabled: state.analytics.get("isEnabled"),
-        autoUpdateUrlEnabled: state.share.get("autoUpdateUrl")
+        autoUpdateUrlEnabled: state.share.get("autoUpdateUrl"),
+        homeSelectMenuOpen: state.settings.get("homeSelectMenuOpen"),
+        homeArea: state.settings.get("homeArea")
     };
 }
 
@@ -105,7 +213,8 @@ function mapDispatchToProps(dispatch) {
         appActions: bindActionCreators(appActions, dispatch),
         mapActions: bindActionCreators(mapActions, dispatch),
         dateSliderActions: bindActionCreators(dateSliderActions, dispatch),
-        analyticsActions: bindActionCreators(analyticsActions, dispatch)
+        analyticsActions: bindActionCreators(analyticsActions, dispatch),
+        appActionsExtended: bindActionCreators(appActionsExtended, dispatch)
     };
 }
 

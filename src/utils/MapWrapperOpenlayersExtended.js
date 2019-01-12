@@ -1140,4 +1140,19 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         });
         return feature;
     }
+
+    getCurrentExtent() {
+        const coords = this.map.getView().calculateExtent();
+        return Ol_Proj.transform(
+            coords.slice(0, 2),
+            Ol_Proj.get(appConfig.DEFAULT_PROJECTION.code),
+            Ol_Proj.get("EPSG:4326")
+        ).concat(
+            Ol_Proj.transform(
+                coords.slice(2),
+                Ol_Proj.get(appConfig.DEFAULT_PROJECTION.code),
+                Ol_Proj.get("EPSG:4326")
+            )
+        );
+    }
 }

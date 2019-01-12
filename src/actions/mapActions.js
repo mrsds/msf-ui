@@ -11,6 +11,7 @@ import * as featureDetailActions from "actions/featureDetailActions";
 import appConfig from "constants/appConfig";
 import * as asyncActions from "_core/actions/asyncActions";
 import Immutable from "immutable";
+import * as MSFTypes from "constants/MSFTypes";
 
 export function updateFeatureList_Layer(layer, active) {
     return (dispatch, getState) => {
@@ -440,4 +441,43 @@ function revealAllPlumes(mapState) {
 
 function revealAllInfrastructure(mapState) {
     mapState.get("maps").map(map => map.setActiveInfrastructure([]));
+}
+
+export function toggleHomeSelectMenuOpen(open) {
+    return { type: typesMSF.TOGGLE_HOME_SELECT_MENU_OPEN, open };
+}
+
+export function setHomeArea(location) {
+    return (dispatch, getState) => {
+        let extent;
+        switch (location) {
+            case MSFTypes.HOME_AREA_LOS_ANGELES:
+                extent = MSFTypes.EXTENTS_LOS_ANGELES;
+                break;
+            case MSFTypes.HOME_AREA_SF_BAY:
+                extent = MSFTypes.EXTENTS_SF_BAY;
+                break;
+            case MSFTypes.HOME_AREA_CUSTOM:
+                extent = getState()
+                    .map.getIn(["maps", "openlayers"])
+                    .getCurrentExtent();
+                break;
+        }
+        dispatch({ type: typesMSF.SET_HOME_AREA, location, extent });
+    };
+}
+
+export function goToHome() {
+    return (dispatch, getState) => {
+        dispatch(
+            mapActions.setMapView(
+                {
+                    extent: getState()
+                        .settings.getIn(["homeArea", "extent"])
+                        .toJS()
+                },
+                true
+            )
+        );
+    };
 }

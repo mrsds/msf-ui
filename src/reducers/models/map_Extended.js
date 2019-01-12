@@ -2,6 +2,7 @@ import Immutable from "immutable";
 import { mapState, layerModel } from "_core/reducers/models/map";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import moment from "moment";
+import * as typesMSF from "constants/actionTypes";
 
 export const mapState_Extended = mapState.mergeDeep(
     Immutable.fromJS({
