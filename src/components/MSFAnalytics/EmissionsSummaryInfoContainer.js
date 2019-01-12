@@ -61,7 +61,7 @@ export class EmissionsSummaryInfoContainer extends Component {
             { name: "Number of Sources", value: this.props.summaryData.get("number_of_sources") },
             { name: "Number of Plumes", value: this.props.summaryData.get("number_of_plumes") },
             {
-                name: "Average Flux",
+                name: "Average Emissions",
                 value: `${Math.round(this.props.summaryData.get("average_flux") * 100) / 100}kg/hr`
             },
             {
@@ -83,6 +83,13 @@ export class EmissionsSummaryInfoContainer extends Component {
 
     formatBasicL1SourceName(sourceName) {
         return sourceName.split(/\s/)[1].split(",")[0];
+    }
+
+    formatBasicL3SourceName(sourceName) {
+        return sourceName
+            .split(/\s/)
+            .splice(1)
+            .join(" ");
     }
 
     formatDateStr(dateStr) {
@@ -111,28 +118,33 @@ export class EmissionsSummaryInfoContainer extends Component {
             .map(source => {
                 const sourceId = source.get("source_id");
                 const sectorName = this.formatBasicL1SourceName(source.get("sector_level_1"));
+                const ipccSectorName = this.formatBasicL3SourceName(source.get("sector_level_3"));
                 const startDateStr = this.formatDateStr(source.get("first_flyover_date"));
                 const endDateStr = this.formatDateStr(source.get("last_flyover_date"));
                 const timespan = `${startDateStr} - ${endDateStr}`;
-                const avgFlux = source.get("avg_flux")
-                    ? parseFloat(source.get("avg_flux")).toFixed(2)
+                console.log(source.toJS());
+                const avgFlux =
+                    source.get("avg_flux") && parseFloat(source.get("avg_flux")).toFixed(2);
+                const fluxUncertainty = source.get("flux_uncertainty");
+                const fluxString = avgFlux
+                    ? avgFlux + fluxUncertainty ? ` ± ${fluxUncertainty}` : ""
                     : "";
+
                 const minFlux = source.get("min_flux")
                     ? parseFloat(source.get("min_flux")).toFixed(2)
                     : null;
                 const maxFlux = source.get("max_flux")
                     ? parseFloat(source.get("max_flux")).toFixed(2)
                     : null;
-                const fluxRange = minFlux && maxFlux ? `${minFlux} - ${maxFlux}` : "";
                 return (
                     <TableRow key={sourceId}>
                         <TableCell padding="dense">{sourceId}</TableCell>
                         <TableCell padding="dense">{sectorName}</TableCell>
+                        <TableCell padding="dense">{ipccSectorName}</TableCell>
                         <TableCell padding="dense">{source.get("plume_count")}</TableCell>
                         <TableCell padding="dense">{source.get("flyover_count")}</TableCell>
                         <TableCell padding="dense">{timespan}</TableCell>
                         <TableCell padding="dense">{avgFlux}</TableCell>
-                        <TableCell padding="dense">{fluxRange}</TableCell>
                     </TableRow>
                 );
             });
@@ -153,15 +165,13 @@ export class EmissionsSummaryInfoContainer extends Component {
                                     <TableRow>
                                         <TableCell padding="dense">Source ID</TableCell>
                                         <TableCell padding="dense">Sector</TableCell>
+                                        <TableCell padding="dense">IPCC Sector</TableCell>
                                         <TableCell padding="dense">Plumes</TableCell>
                                         <TableCell padding="dense">Flyovers</TableCell>
                                         <TableCell padding="dense">
                                             Plume Observations Timespan
                                         </TableCell>
-                                        <TableCell padding="dense">Avg Flux (kg/hr)</TableCell>
-                                        <TableCell padding="dense">
-                                            Plume Flux Range (kg/hr)
-                                        </TableCell>
+                                        <TableCell padding="dense">Avg Emissions (kg/hr)</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>{this.makeSourcesTableBody()}</TableBody>

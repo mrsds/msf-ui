@@ -59,7 +59,7 @@ export class EmissionsChartsContainer extends Component {
                 yAxes: [
                     {
                         id: "y-axis-0", // Have to use this naming scheme else ErrorBar plugin breaks
-                        scaleLabel: { display: true, labelString: "Flux (kg/hr)" },
+                        scaleLabel: { display: true, labelString: "Emissions (kg/hr)" },
                         position: "left",
                         type: "linear",
                         ticks: {
@@ -97,7 +97,7 @@ export class EmissionsChartsContainer extends Component {
         };
 
         const dataset = {
-            label: "flux",
+            label: "emissions",
             yAxisID: "y-axis-0",
             data: sourceData.map(s => s.avg),
             backgroundColor: "rgba(97, 100, 221, 0.66)",

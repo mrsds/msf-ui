@@ -134,7 +134,7 @@ export class PlumeFiltersContainer extends Component {
                                         null
                                     );
                                 }}
-                                label="Plume Flux"
+                                label="Plume Emissions"
                                 value={
                                     plumeFluxFilterSelectedValueLabel
                                         ? plumeFluxFilterSelectedValueLabel
@@ -168,7 +168,7 @@ export class PlumeFiltersContainer extends Component {
                                                     color="inherit"
                                                     className={styles.popoverTitle}
                                                 >
-                                                    Plume Flux
+                                                    Plume Emissions
                                                 </Typography>
                                                 <IconButtonSmall
                                                     color="inherit"

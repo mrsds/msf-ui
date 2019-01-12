@@ -323,25 +323,12 @@ export class FeatureDetailContainer extends Component {
         const plumeDataFields = [
             { name: "Candidate ID", value: feature.get("name") },
             {
-                name: "Flux",
+                name: "Emissions",
                 value: flux + fluxUncertainty,
                 unit: "kg/hr"
             },
             { name: "Source ID", value: feature.get("sourceId") },
-            {
-                name: "Fetch",
-                unit: "m",
-                value: fetch,
-                popoverText: "Fetch: Length of the plume (meters)"
-            },
-            { name: "Location", value: `${location.get(0)}°N, ${location.get(1)}°W` },
-            {
-                name: "IME",
-                unit: "kg",
-                value: ime,
-                popoverText:
-                    "Integrated Methane Enhancement (IME): Methane excess above background levels, contained in observed plume (kilograms)."
-            }
+            { name: "Location", value: `${location.get(0)}°N, ${location.get(1)}°W` }
         ];
 
         let featureTitle = dateString;

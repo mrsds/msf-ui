@@ -391,13 +391,7 @@ export class InfrastructureChartingContainer extends Component {
                         {isFlyover ? "-" : "(none)"}
                     </TableCell>
                     <TableCell numeric={!isFlyover} padding="dense">
-                        {isFlyover ? "-" : Math.round(feature.get("fetch20")) / 100}
-                    </TableCell>
-                    <TableCell numeric={!isFlyover} padding="dense">
                         {isFlyover ? "-" : fluxString}
-                    </TableCell>
-                    <TableCell numeric={!isFlyover} padding="dense">
-                        {isFlyover ? "-" : Math.round(feature.get("ime20") * 100) / 100}
                     </TableCell>
                 </TableRow>
             </React.Fragment>
@@ -434,13 +428,7 @@ export class InfrastructureChartingContainer extends Component {
                                     Wind (mph/hr)
                                 </TableCell>
                                 <TableCell numeric padding="dense">
-                                    Fetch (m)
-                                </TableCell>
-                                <TableCell numeric padding="dense">
-                                    Flux (kg/hr)
-                                </TableCell>
-                                <TableCell numeric padding="dense">
-                                    IME (kg)
+                                    Emissions (kg/hr)
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -520,7 +508,7 @@ export class InfrastructureChartingContainer extends Component {
             scales: {
                 yAxes: [
                     {
-                        scaleLabel: { display: true, labelString: "Flux (kg/hr)" }
+                        scaleLabel: { display: true, labelString: "Emissions (kg/hr)" }
                     }
                 ],
                 xAxes: [{ type: "time", ticks: { autoSkip: true, autoSkipPadding: 2 } }]
@@ -528,7 +516,7 @@ export class InfrastructureChartingContainer extends Component {
             tooltips: {
                 callbacks: {
                     label: (tooltipItem, data) => {
-                        return `Flux: ${tooltipItem.yLabel}, Date: ${tooltipItem.xLabel}`;
+                        return `Emissions: ${tooltipItem.yLabel}, Date: ${tooltipItem.xLabel}`;
                     }
                 }
             }
