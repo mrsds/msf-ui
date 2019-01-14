@@ -12,7 +12,8 @@ import PlusIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import HomeIcon from "@material-ui/icons/Home";
 import Paper from "@material-ui/core/Paper";
-import * as mapActions from "actions/mapActions";
+import * as mapActions from "_core/actions/mapActions";
+import * as mapActionsExtended from "actions/mapActions";
 import * as appActions from "_core/actions/appActions";
 import * as appStrings from "_core/constants/appStrings";
 import appConfig from "constants/appConfig";
@@ -37,7 +38,7 @@ export class MapControlsContainer extends Component {
                 <Paper elevation={2} className={styles.buttonGroup}>
                     <Tooltip title="Home" placement="right">
                         <MapButton
-                            onClick={this.props.mapActions.goToHome}
+                            onClick={this.props.mapActionsExtended.goToHome}
                             aria-label="Home"
                             className={`${styles.firstButton} ${styles.lineButton}`}
                         >
@@ -86,6 +87,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         mapActions: bindActionCreators(mapActions, dispatch),
+        mapActionsExtended: bindActionCreators(mapActionsExtended, dispatch),
         appActions: bindActionCreators(appActions, dispatch)
     };
 }
