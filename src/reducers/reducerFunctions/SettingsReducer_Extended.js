@@ -12,4 +12,12 @@ export default class SettingsReducer_Extended extends SettingsReducer {
             Immutable.fromJS({ location: action.location, extent: action.extent })
         );
     }
+
+    static showCookieModal(state, action) {
+        return state.set("cookieAcceptModalOpen", action.visible);
+    }
+
+    static setCookieAccept(state, action) {
+        return state.set("acceptCookies", action.accept);
+    }
 }

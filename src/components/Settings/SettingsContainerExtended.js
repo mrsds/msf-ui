@@ -43,17 +43,6 @@ export class SettingsContainerExtended extends Component {
         );
     }
 
-    getHomeSetting() {
-        switch (this.props.homeArea.toJS()) {
-            case MSFTypes.EXTENTS_LOS_ANGELES:
-                return 0;
-            case MSFTypes.EXTENTS_SF_BAY:
-                return 1;
-            default:
-                return 2;
-        }
-    }
-
     render() {
         const homeAreaLocation = this.props.homeArea.get("location");
         return (

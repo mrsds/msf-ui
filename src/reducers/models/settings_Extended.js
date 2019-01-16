@@ -8,6 +8,8 @@ export const settingsState_Extended = settingsState.mergeDeep(
         homeArea: {
             location: MSFTypes.HOME_AREA_LOS_ANGELES,
             extent: MSFTypes.EXTENTS_LOS_ANGELES
-        }
+        },
+        acceptCookies: false,
+        cookieAcceptModalOpen: false
     })
 );

@@ -139,6 +139,7 @@
     "turf-area": "3.0.12",
     "turf-centroid": "3.0.12",
     "turf-line-distance": "3.0.12",
+    "universal-cookie": "3.0.7",
     "url-loader": "0.6.2",
     "uuid": "3.1.0",
     "vis": "4.21.0",

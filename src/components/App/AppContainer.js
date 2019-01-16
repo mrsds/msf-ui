@@ -62,6 +62,8 @@ import FeaturePicker from "components/FeaturePicker/FeaturePicker";
 import * as MSFTypes from "constants/MSFTypes";
 import MSFAnalyticsContainer from "components/MSFAnalytics/MSFAnalyticsContainer";
 import DisclaimerContainer from "components/Disclaimer/DisclaimerContainer";
+import CookieAcceptContainer from "components/CookieAccept/CookieAcceptContainer";
+import Cookies from "universal-cookie";
 
 const theme = createMuiTheme({
     typography: {
@@ -112,7 +114,19 @@ export class AppContainer extends Component {
                     // this.props.initializeMap(appStrings.MAP_LIB_3D, "map3D");
 
                     // set initial view
-                    this.props.setMapView({ extent: appConfig.DEFAULT_BBOX_EXTENT }, true);
+                    this.props.setInitialHomeArea();
+                    // const cookies = new Cookies();
+                    // const extent = cookies.get("nasa_methane_source_finder_home_area")
+                    //     ? cookies.get("nasa_methane_source_finder_home_area").extent
+                    //     : MSFTypes.EXTENTS_LOS_ANGELES;
+                    // const location = cookies.get("nasa_methane_source_finder_home_area")
+                    //     ? cookies.get("nasa_methane_source_finder_home_area").location
+                    //     : MSFTypes.HOME_AREA_LOS_ANGELES;
+
+                    // this.props.setHomeArea(location, extent);
+                    // this.props.setMapView({ extent }, true);
+
+                    this.props.setInitialHomeArea();
 
                     // activate default/url params
                     if (this.urlParams.length === 0) {
@@ -157,6 +171,7 @@ export class AppContainer extends Component {
                 <div className={containerClasses}>
                     <AppBarContainer />
                     <DisclaimerContainer />
+                    <CookieAcceptContainer />
                     <div className={mapContainerStyle}>
                         <HelpContainerExtended />
                         <LayerSidebarContainer />
@@ -199,7 +214,8 @@ AppContainer.propTypes = {
     distractionFreeMode: PropTypes.bool.isRequired,
     mapControlsHidden: PropTypes.bool.isRequired,
     appMode: PropTypes.number.isRequired,
-    resizeMap: PropTypes.func.isRequired
+    resizeMap: PropTypes.func.isRequired,
+    setInitialHomeArea: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -223,7 +239,8 @@ function mapDispatchToProps(dispatch) {
         initializeMap: bindActionCreators(mapActions.initializeMap, dispatch),
         setMapView: bindActionCreators(mapActions.setMapView, dispatch),
         updateFeatureList_Map: bindActionCreators(mapActionsMSF.updateFeatureList_Map, dispatch),
-        resizeMap: bindActionCreators(mapActionsMSF.resizeMap, dispatch)
+        resizeMap: bindActionCreators(mapActionsMSF.resizeMap, dispatch),
+        setInitialHomeArea: bindActionCreators(mapActionsMSF.setInitialHomeArea, dispatch)
     };
 }
 

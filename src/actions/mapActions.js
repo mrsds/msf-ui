@@ -12,6 +12,7 @@ import appConfig from "constants/appConfig";
 import * as asyncActions from "_core/actions/asyncActions";
 import Immutable from "immutable";
 import * as MSFTypes from "constants/MSFTypes";
+import Cookies from "universal-cookie";
 
 export function updateFeatureList_Layer(layer, active) {
     return (dispatch, getState) => {
@@ -444,26 +445,56 @@ function revealAllInfrastructure(mapState) {
 }
 
 export function toggleHomeSelectMenuOpen(open) {
+    if (open && !getCookie()) {
+        return { type: typesMSF.SHOW_COOKIE_MODAL, visible: true };
+    }
     return { type: typesMSF.TOGGLE_HOME_SELECT_MENU_OPEN, open };
 }
 
-export function setHomeArea(location) {
-    return (dispatch, getState) => {
-        let extent;
-        switch (location) {
-            case MSFTypes.HOME_AREA_LOS_ANGELES:
-                extent = MSFTypes.EXTENTS_LOS_ANGELES;
-                break;
-            case MSFTypes.HOME_AREA_SF_BAY:
-                extent = MSFTypes.EXTENTS_SF_BAY;
-                break;
-            case MSFTypes.HOME_AREA_CUSTOM:
-                extent = getState()
-                    .map.getIn(["maps", "openlayers"])
-                    .getCurrentExtent();
-                break;
-        }
+function getCookie() {
+    const cookies = new Cookies();
+    return cookies.get("nasa_methane_source_finder_home_area");
+}
+
+function setCookie(params) {
+    const cookies = new Cookies();
+    return cookies.set("nasa_methane_source_finder_home_area", params);
+}
+
+export function setInitialHomeArea() {
+    return dispatch => {
+        const cookie = getCookie();
+        const location = cookie ? cookie.location : MSFTypes.HOME_AREA_LOS_ANGELES;
+        const extent = cookie ? cookie.extent : MSFTypes.EXTENTS_LOS_ANGELES;
+
         dispatch({ type: typesMSF.SET_HOME_AREA, location, extent });
+        if (cookie) dispatch({ type: typesMSF.SET_COOKIE_ACCEPT, accept: true });
+        dispatch(mapActions.setMapView({ extent }, true));
+    };
+}
+
+export function setHomeArea(location, extent) {
+    return (dispatch, getState) => {
+        if (!extent) {
+            switch (location) {
+                case MSFTypes.HOME_AREA_LOS_ANGELES:
+                    extent = MSFTypes.EXTENTS_LOS_ANGELES;
+                    break;
+                case MSFTypes.HOME_AREA_SF_BAY:
+                    extent = MSFTypes.EXTENTS_SF_BAY;
+                    break;
+                case MSFTypes.HOME_AREA_CUSTOM:
+                    extent = getState()
+                        .map.getIn(["maps", "openlayers"])
+                        .getCurrentExtent();
+                    break;
+            }
+        }
+
+        dispatch({ type: typesMSF.SET_HOME_AREA, location, extent });
+        if (getState().settings.get("acceptCookies")) {
+            setCookie({ location, extent });
+        }
     };
 }
 

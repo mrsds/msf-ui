@@ -13,6 +13,10 @@ export default function settings_Extended(
             return opt_reducer.toggleHomeSelectMenuOpen(state, action);
         case actionTypesMSF.SET_HOME_AREA:
             return opt_reducer.setHomeArea(state, action);
+        case actionTypesMSF.SHOW_COOKIE_MODAL:
+            return opt_reducer.showCookieModal(state, action);
+        case actionTypesMSF.SET_COOKIE_ACCEPT:
+            return opt_reducer.setCookieAccept(state, action);
         default:
             return settings.call(this, state, action, opt_reducer);
     }
