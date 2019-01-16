@@ -220,7 +220,7 @@ export class FeatureDetailContainer extends Component {
                 unit: null
             },
             { name: "Number of Flyovers", value: this.props.feature.get("num_flights_matching") },
-            { name: "VISTA ID", value: vistaId }
+            { name: "Vista ID", value: vistaId }
         ];
 
         let featureTitle = name;
@@ -260,7 +260,7 @@ export class FeatureDetailContainer extends Component {
                 <Card className={styles.cardRoot}>
                     <CardContent>
                         <Typography variant="headline" component="h2">
-                            VISTA Facility Metadata
+                            Vista Facility Metadata
                         </Typography>
                         {this.makeInfoFields(
                             Object.keys(

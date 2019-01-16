@@ -73,6 +73,7 @@ export class MapControlsContainer extends Component {
 MapControlsContainer.propTypes = {
     mapControlsToolsOpen: PropTypes.bool.isRequired,
     mapActions: PropTypes.object.isRequired,
+    mapActionsExtended: PropTypes.object.isRequired,
     appActions: PropTypes.object.isRequired
 };
 
