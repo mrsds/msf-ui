@@ -686,6 +686,19 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         return this.fitFeature(zoomGeom.getExtent());
     }
 
+    zoomToCoords(coords) {
+        return this.map.getView().animate({
+            resolution: this.map.getView().getResolution(),
+            zoom: appConfig.OIL_WELLS_MIN_ZOOM,
+            duration: 175,
+            center: Ol_Proj.transform(
+                [coords[0], coords[1]],
+                Ol_Proj.get("EPSG:4326"),
+                Ol_Proj.get(appConfig.DEFAULT_PROJECTION.code)
+            )
+        });
+    }
+
     getAVIRISFeatureById(id) {
         return this.getAvirisLayer()
             .getSource()

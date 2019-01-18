@@ -44,10 +44,12 @@ export class EmissionsChartsContainer extends Component {
         const sourceData = data
             .map(source => {
                 return {
-                    label: `Source near: ${source.get("nearest_facility")}`,
+                    label: `Source near: ${source.get("vista_name")}`,
                     min: source.get("min_flux", null),
                     max: source.get("max_flux", null),
-                    avg: source.get("avg_flux", null)
+                    avg: source.get("avg_flux", null),
+                    long: source.get("nearest_vista_longitude", null),
+                    lat: source.get("nearest_vista_latitude", null)
                 };
             })
             .filter(s => s.min !== null && s.max !== null && s.avg !== null)
@@ -89,9 +91,7 @@ export class EmissionsChartsContainer extends Component {
             onClick: (evt, item) => {
                 if (!item.length) return;
                 this.props.openMapToInfrastructure(
-                    sourceData
-                        .find(s => s.label === item[0]._model.label)
-                        .label.replace("Source near: ", "")
+                    sourceData.find(s => s.label === item[0]._model.label)
                 );
             }
         };

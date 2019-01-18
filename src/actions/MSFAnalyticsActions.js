@@ -297,14 +297,12 @@ export function updateActiveAnalyticsTab() {
     };
 }
 
-export function openMapToInfrastructure(featureName) {
+export function openMapToInfrastructure(featureInfo) {
     return (dispatch, getState) => {
-        const feature = getState()
-            .map.getIn(["maps", "openlayers"])
-            .getFeatureByName(featureName, "VISTA");
-        if (!feature) return { type: types.NO_ACTION };
         dispatch({ type: typesMSF.CHANGE_APP_MODE, mode: MSFTypes.APP_MODE_MAP });
-        dispatch(mapActions.centerMapOnFeature(feature, "VISTA"));
+        getState()
+            .map.getIn(["maps", "openlayers"])
+            .zoomToCoords([featureInfo.long, featureInfo.lat]);
     };
 }
 
