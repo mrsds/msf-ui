@@ -299,7 +299,12 @@ function updateFeatureLabel(category, feature) {
 }
 
 function clearFeatureLabels() {
-    return { type: typesMSF.CLEAR_FEATURE_LABELS };
+    return (dispatch, getState) => {
+        dispatch({
+            type: typesMSF.CLEAR_FEATURE_LABELS,
+            feature: getState().map.get("activeFeature")
+        });
+    };
 }
 
 function getFeatureById(sidebarState, category, id) {
@@ -490,7 +495,6 @@ export function setHomeArea(location, extent) {
                     break;
             }
         }
-
         dispatch({ type: typesMSF.SET_HOME_AREA, location, extent });
         if (getState().settings.get("acceptCookies")) {
             setCookie({ location, extent });

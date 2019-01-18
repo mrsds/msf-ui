@@ -48,7 +48,7 @@ export default class MapReducer_Extended extends MapReducer {
     }
 
     static clearFeatureLabels(state, action) {
-        state.get("maps").map(map => map.clearFeatureLabels());
+        state.get("maps").map(map => map.clearFeatureLabels(action.feature));
         return state
             .setIn(["activeFeature", "feature"], null)
             .setIn(["activeFeature", "category"], null);

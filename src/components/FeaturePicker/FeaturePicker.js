@@ -165,7 +165,7 @@ export class FeaturePicker extends Component {
 
     getPickerStyle() {
         if (
-            this.props.plumes.size + this.props.infrastructure.size <= 1 ||
+            this.props.plumes.size + this.props.infrastructure.size === 0 ||
             (this.props.featureDetailActiveFeature && this.props.featureDetailActiveFeature.size)
         ) {
             return {

@@ -760,17 +760,17 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
 
                     // If we're adding a label, we change the styling of the feature to be highlighted,
                     // center the map to the feature if it's not entirely in the map, and create/place a tooltip.
-                    this.addFeatureLabel(
-                        featureId,
-                        pickedFeature.get("name"),
-                        pickedFeature.get("category"),
-                        center,
-                        {
-                            sourceLayerId: layer.get("_layerId"),
-                            overlayType: "VISTA",
-                            _featureId: featureId
-                        }
-                    );
+                    // this.addFeatureLabel(
+                    //     featureId,
+                    //     pickedFeature.get("name"),
+                    //     pickedFeature.get("category"),
+                    //     center,
+                    //     {
+                    //         sourceLayerId: layer.get("_layerId"),
+                    //         overlayType: "VISTA",
+                    //         _featureId: featureId
+                    //     }
+                    // );
                     feature.setStyle(styleFunction);
                     return;
                 }
@@ -778,43 +778,23 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         });
     }
 
-    clearFeatureLabels() {
-        // For each feature overlay, remove the overlay and set the style
-        // of the corresponding feature to null
+    clearFeatureLabels(activeFeature) {
         let mapLayers = this.map.getLayers().getArray();
-
-        this.map.getOverlays().forEach(overlay => {
-            // If overlay is VISTA we need to deselect the corresponding feature
-            let overlayType = overlay.getProperties().overlayType;
-            let featureSourceLayerId = overlay.getProperties().sourceLayerId;
-            if (overlayType === "VISTA") {
-                let vistaLayer = this.miscUtil.findObjectInArray(
-                    mapLayers,
-                    "_layerId",
-                    featureSourceLayerId
-                );
-                if (vistaLayer) {
-                    let feature = vistaLayer
-                        .getSource()
-                        .getFeatures()
-                        .find(f => f.get("id") === overlay.getProperties()._featureId);
-                    if (feature) {
-                        feature.setStyle(null);
-                    } else {
-                        console.warn("Unable to find VISTA feature for overlay deselect");
-                    }
+        if (activeFeature.get("category") === layerSidebarTypes.CATEGORY_INFRASTRUCTURE) {
+            const featureId = activeFeature.getIn(["feature", "id"]);
+            this.getVistaLayers().some(layer => {
+                const feature = layer
+                    .getSource()
+                    .getFeatures()
+                    .find(f => f.get("id") === featureId);
+                if (feature) {
+                    feature.setStyle(null);
+                    return true;
                 } else {
-                    console.warn("Unable to find VISTA layer for overlay deselect");
+                    return false;
                 }
-            }
-
-            // Remove overlay if it's AVIRIS or VISTA
-            if (overlayType === "AVIRIS" || overlayType === "VISTA") {
-                // this.map.removeOverlay(overlay);
-                overlay.setVisible(false);
-                overlay.setPosition();
-            }
-        });
+            });
+        }
         return;
     }
 
