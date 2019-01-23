@@ -33,7 +33,7 @@ import { IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
 import MapUtilExtended from "utils/MapUtilExtended";
 import Immutable from "immutable";
 
-export class PlumeFiltersContainer extends Component {
+export class InfrastructureFiltersContainer extends Component {
     constructor(props) {
         super(props);
         this.popperProps = Immutable.fromJS({
@@ -68,6 +68,11 @@ export class PlumeFiltersContainer extends Component {
         this.props.setInfraTextFilter(valueStr);
         clearTimeout(this.searchInputTimeout);
         this.searchInputTimeout = setTimeout(_ => this.props.applyInfraTextFilter(), 350);
+    }
+
+    clearSearchInput() {
+        this.props.setInfraTextFilter("");
+        this.props.applyInfraTextFilter();
     }
 
     render() {
@@ -114,13 +119,7 @@ export class PlumeFiltersContainer extends Component {
                     primaryDataTip="Filter by Infrastructure Name/ID"
                     primaryDataPlace="top"
                     actionIcon={<Clear />}
-                    onActionIconClick={() => {
-                        this.props.setInfrastructureFilter(
-                            layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME,
-                            ""
-                        );
-                        this.forceUpdate();
-                    }}
+                    onActionIconClick={() => this.clearSearchInput()}
                 />
                 <ClickAwayListener
                     onClickAway={() => {
@@ -376,7 +375,7 @@ export class PlumeFiltersContainer extends Component {
     }
 }
 
-PlumeFiltersContainer.propTypes = {
+InfrastructureFiltersContainer.propTypes = {
     filters: PropTypes.object.isRequired,
     setInfrastructureFilter: PropTypes.func.isRequired,
     updateInfrastructureCategoryFilter: PropTypes.func.isRequired,
@@ -418,4 +417,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlumeFiltersContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(InfrastructureFiltersContainer);

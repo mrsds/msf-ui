@@ -106,6 +106,25 @@ function getVistaMetadata(feature, dispatch) {
         );
 }
 
+function vistaGlobalSearch(dispatch) {
+    return (dispatch, getState) => {
+        const searchString = getState().layerSidebar.getIn([
+            "searchState",
+            layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+            "filters",
+            layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME,
+            "selectedValue"
+        ]);
+
+        if (searchString === "")
+            return dispatch({ type: types.UPDATE_INFRA_GLOBAL_RESULTS, data: null });
+
+        fetch(appConfig.URLS.vistaDetailEndpoint.replace("{vista_id}", searchString))
+            .then(res => res.json())
+            .then(json => dispatch({ type: types.UPDATE_INFRA_GLOBAL_RESULTS, data: json }));
+    };
+}
+
 function getSourceList(category, feature) {
     switch (category) {
         case layerSidebarTypes.CATEGORY_PLUMES:
@@ -124,10 +143,6 @@ function getSourceList(category, feature) {
 
 export function hideFeatureDetail() {
     return { type: types.HIDE_FEATURE_DETAIL };
-}
-
-function updateFeatureSearchTextState(category, value) {
-    return { type: types.UPDATE_FEATURE_SEARCH_TEXT, category, value };
 }
 
 function updateFeatureSearchResults(category) {
@@ -236,6 +251,8 @@ export function applyInfraTextFilter() {
         getState()
             .map.getIn(["maps", "openlayers"])
             .setVisibleInfrastructure(getState().layerSidebar);
+        // Trigger global search
+        dispatch(vistaGlobalSearch());
     };
 }
 

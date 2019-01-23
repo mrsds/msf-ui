@@ -78,7 +78,8 @@ export class LayerSidebarContainer extends Component {
         })`;
         let infrastuctureTabLabel = `${this.getNameForCategory(
             layerSidebarTypes.CATEGORY_INFRASTRUCTURE
-        )} (${this.props.numInfrastructureSearchResults})`;
+        )} (${this.props.numInfrastructureSearchResults +
+            this.props.numInfrastructureGlobalSearchResults})`;
 
         let containerClasses = MiscUtil.generateStringFromSet({
             [styles.flexboxParent]: true,
@@ -147,6 +148,7 @@ LayerSidebarContainer.propTypes = {
     activeFeatureCategory: PropTypes.string.isRequired,
     numPlumeSearchResults: PropTypes.number.isRequired,
     numInfrastructureSearchResults: PropTypes.number.isRequired,
+    numInfrastructureGlobalSearchResults: PropTypes.number.isRequired,
     layerSidebarCollapsed: PropTypes.bool.isRequired,
     setLayerSidebarCollapsed: PropTypes.func.isRequired,
     pageForward: PropTypes.func.isRequired,
@@ -169,6 +171,11 @@ function mapStateToProps(state) {
             "searchState",
             layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
             "searchResults"
+        ]).size,
+        numInfrastructureGlobalSearchResults: state.layerSidebar.getIn([
+            "searchState",
+            layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
+            "globalSearchResults"
         ]).size,
         featureLoadingState: state.asynchronous.get("loadingFeatures")
     };

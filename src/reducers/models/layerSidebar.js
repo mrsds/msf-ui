@@ -27,8 +27,8 @@ export const layerSidebarState = Immutable.fromJS({
     },
     searchState: {
         [layerSidebarTypes.CATEGORY_INFRASTRUCTURE]: {
-            searchString: "",
             searchResults: {},
+            globalSearchResults: {},
             filters: {
                 [layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME]: {
                     selectedValue: "",
