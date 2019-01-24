@@ -13,6 +13,8 @@ import * as asyncActions from "_core/actions/asyncActions";
 import Immutable from "immutable";
 import * as MSFTypes from "constants/MSFTypes";
 import Cookies from "universal-cookie";
+import Ol_Extent from "ol/extent";
+import Ol_Proj from "ol/proj";
 
 export function updateFeatureList_Layer(layer, active) {
     return (dispatch, getState) => {
@@ -158,12 +160,19 @@ export function centerMapOnFeature(feature, featureType) {
 
 export function toggleFeatureLabel(category, feature) {
     return (dispatch, getState) => {
-        // dispatch(featureDetailActions.hideFeatureDetailContainer());
-        dispatch(closeFeaturePicker());
-        revealAllPlumes(getState().map);
-        revealAllInfrastructure(getState().map);
-        dispatch(clearFeatureLabels());
-        dispatch(updateFeatureLabel(category, feature));
+        const clickEvt = {};
+        clickEvt.pixel = getState()
+            .map.getIn(["maps", "openlayers"])
+            .map.getPixelFromCoordinate(Ol_Extent.getCenter(feature.get("geometry").getExtent()));
+
+        dispatch({
+            type: typesMSF.UPDATE_FEATURE_PICKER,
+            clickEvt,
+            infrastructure: Immutable.List(
+                category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE ? [feature] : []
+            ),
+            plumes: Immutable.List(category === layerSidebarTypes.CATEGORY_PLUMES ? [feature] : [])
+        });
         updateHighlightedPlumes(getState);
     };
 }
@@ -220,6 +229,7 @@ export function selectFeatureInSidebar(id) {
 }
 
 export function pixelClick(clickEvt) {
+    console.log(clickEvt);
     return (dispatch, getState) => {
         const mapState = getState().map.getIn(["maps", "openlayers"]).map;
         const layerSidebarState = getState().layerSidebar;
@@ -232,19 +242,6 @@ export function pixelClick(clickEvt) {
             infrastructure: Immutable.List(vistaFeatures),
             plumes: Immutable.List(avirisFeatures)
         });
-        const selectedFeature =
-            (!vistaFeatures.length && avirisFeatures.length === 1 && avirisFeatures[0]) ||
-            (!avirisFeatures.length && vistaFeatures.length === 1 && vistaFeatures[0]);
-
-        const category =
-            (avirisFeatures.length && layerSidebarTypes.CATEGORY_PLUMES) ||
-            (vistaFeatures.length && layerSidebarTypes.CATEGORY_INFRASTRUCTURE);
-
-        dispatch(clearFeatureLabels());
-        if (selectedFeature) {
-            dispatch(updateFeatureLabel(category, selectedFeature));
-        }
-
         updateHighlightedPlumes(getState);
         return { type: types.PIXEL_CLICK, clickEvt };
     };
