@@ -259,7 +259,8 @@ export class PlumeFiltersContainer extends Component {
                                     <Paper elevation={8} className={styles.popoverPaper}>
                                         <List>
                                             <div className={styles.sorterHeader}>
-                                                Sort By<Sort />
+                                                Sort By
+                                                <Sort />
                                             </div>
                                             {plumeSortByFilter.get("selectableValues").map(x => (
                                                 <ListItem
