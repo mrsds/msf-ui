@@ -64,12 +64,13 @@ export class LandingPage extends Component {
                         </div>
                     </div>
                     <div className={styles.hero_banner}>
+                        <div className={styles.banner_shader} />
                         <div className={styles.hero_controls}>
                             <Typography className={styles.title} color="textSecondary" gutterBottom>
                                 Methane Source Finder
                             </Typography>
                             <div className={styles.map_button_container}>
-                                <Link to="/map">
+                                <Link to="./map">
                                     <Button
                                         size="small"
                                         variant="raised"

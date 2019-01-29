@@ -5,8 +5,8 @@ import LandingPage from "components/LandingPage/LandingPage";
 
 const App = () => (
     <Switch>
+        <Route path="(.*)map" component={AppContainer} />
         <Route component={LandingPage} />
-        <Route path="/map" component={AppContainer} />
     </Switch>
 );
 
