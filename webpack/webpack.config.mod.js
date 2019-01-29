@@ -18,8 +18,6 @@ module.exports = config => {
         use: ["babel-loader", "eslint-loader"]
     });
     */
-    config.output.publicPath = "/";
-    config.devServer = { historyApiFallback: true };
 
     return config;
 };

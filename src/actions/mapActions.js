@@ -229,7 +229,6 @@ export function selectFeatureInSidebar(id) {
 }
 
 export function pixelClick(clickEvt) {
-    console.log(clickEvt);
     return (dispatch, getState) => {
         const mapState = getState().map.getIn(["maps", "openlayers"]).map;
         const layerSidebarState = getState().layerSidebar;

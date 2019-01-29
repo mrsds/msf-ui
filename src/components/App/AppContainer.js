@@ -188,7 +188,6 @@ export class AppContainer extends Component {
                         <FeatureDetailContainer />
                         <MapControlsContainerExtended />
                         <CoordinateTracker />
-                        <MapTooltip />
                         <FeaturePicker />
                     </div>
                     <div className={analyticsContainerStyle}>
