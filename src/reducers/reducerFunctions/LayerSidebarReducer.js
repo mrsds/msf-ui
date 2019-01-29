@@ -274,7 +274,6 @@ export default class LayerSidebarReducer {
     }
 
     static infrastructureSearchHelper(searchString, featureList) {
-        // Filter by infrastructure name/id via Fuse (ignore this step if there's no name/id search entry)
         if (searchString === "") return featureList;
 
         // First check for any exact matches
@@ -300,11 +299,28 @@ export default class LayerSidebarReducer {
 
         if (exactMatches.size) return exactMatches;
 
-        // If no exact matches, hand off to Fuse for a fuzzy search
-        return LayerSidebarReducer.getSearchResultsHelper(
+        // First get vista ID search results
+        const vistaIdResults = featureList.filter(
+            res =>
+                res
+                    .get("id")
+                    .toLowerCase()
+                    .trim()
+                    .search(searchString.toLowerCase().trim()) !== -1
+        );
+
+        // Then get fuzzy name search results
+        const nameSearchResults = LayerSidebarReducer.getSearchResultsHelper(
             layerSidebarTypes.CATEGORY_INFRASTRUCTURE,
             featureList,
             searchString
+        );
+
+        // Combine the two, omitting dupes from the second list
+        return vistaIdResults.concat(
+            nameSearchResults.filter(
+                res => !vistaIdResults.find(x => x.get("id") === res.get("id"))
+            )
         );
     }
 
