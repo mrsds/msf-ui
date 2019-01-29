@@ -7,3 +7,7 @@ export function setSettingsOpen(open) {
         dispatch(appActions.setSettingsOpen(open));
     };
 }
+
+export function completeLandingPageLoad() {
+    return { type: typesMSF.COMPLETE_LANDING_PAGE_LOAD };
+}

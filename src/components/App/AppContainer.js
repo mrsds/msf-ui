@@ -41,7 +41,7 @@ import {
 } from "_core/components/Map";
 import { ShareContainer } from "_core/components/Share";
 import { LayerInfoContainer } from "_core/components/LayerInfo";
-import { LoadingContainer } from "_core/components/Loading";
+import { LoadingContainerExtended as LoadingContainer } from "components/Loading";
 import { AlertsContainer } from "_core/components/Alerts";
 import { MouseFollowerContainer } from "_core/components/MouseFollower";
 import { AnalyticsContainer } from "_core/components/Analytics";
@@ -61,7 +61,6 @@ import MapTooltip from "components/Map/MapTooltip";
 import FeaturePicker from "components/FeaturePicker/FeaturePicker";
 import * as MSFTypes from "constants/MSFTypes";
 import MSFAnalyticsContainer from "components/MSFAnalytics/MSFAnalyticsContainer";
-import DisclaimerContainer from "components/Disclaimer/DisclaimerContainer";
 import CookieAcceptContainer from "components/CookieAccept/CookieAcceptContainer";
 import Cookies from "universal-cookie";
 
@@ -170,7 +169,6 @@ export class AppContainer extends Component {
             <MuiThemeProvider theme={theme}>
                 <div className={containerClasses}>
                     <AppBarContainer />
-                    <DisclaimerContainer />
                     <CookieAcceptContainer />
                     <div className={mapContainerStyle}>
                         <HelpContainerExtended />

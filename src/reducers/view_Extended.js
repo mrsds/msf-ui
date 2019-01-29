@@ -11,10 +11,8 @@ export default function view_Extended(
     switch (action.type) {
         case actionTypesMSF.CHANGE_APP_MODE:
             return opt_reducer.changeAppMode(state, action);
-        // case actionTypesMSF.UPDATE_FEATURE_DETAIL:
-        //     return opt_reducer.hideMapControlContainer(state, action);
-        // case actionTypesMSF.HIDE_FEATURE_DETAIL:
-        //     return opt_reducer.showMapControlContainer(state, action);
+        case actionTypesMSF.COMPLETE_LANDING_PAGE_LOAD:
+            return opt_reducer.completeLandingPageLoad(state, action);
         default:
             return view.call(this, state, action, opt_reducer);
     }

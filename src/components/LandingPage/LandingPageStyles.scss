@@ -1,0 +1,158 @@
+@import "~styles/colors";
+.container {
+    composes: appContainer from "_core/components/App/AppContainer.scss";
+    background: #222222;
+    overflow: scroll;
+}
+
+.card {
+    margin: 0 auto;
+    align-content: center;
+    padding-top: 30px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1.1em 0 0 2em;
+    clear: both;
+    z-index: 5;
+    position: relative;
+    margin: 0 auto;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -ms-user-select: none;
+    user-select: none;
+    margin-bottom: 15px;
+}
+
+.brand_area {
+    width: 362px;
+    height: 68px;
+    position: relative;
+    background: url(img/logo_nasa_trio_white@2x.png) no-repeat;
+    background-size: 100%;
+    z-index: 300;
+    display: inline-block;
+}
+
+.brand1 {
+    height: 100%;
+    width: 25%;
+    float: left;
+}
+
+.brand2 {
+    float: left;
+    width: 75%;
+    height: 100%;
+}
+
+.nasa_logo {
+    text-indent: -9999px;
+}
+
+.jpl_logo {
+    text-indent: -9999px;
+    width: 100%;
+    float: left;
+    height: 100%;
+}
+
+a.nasa_logo {
+    display: block;
+    height: 100%;
+}
+
+.caltech_logo {
+    display: none;
+}
+
+.jpl_logo {
+    height: 100px;
+}
+
+.print_logo {
+    display: none;
+}
+
+.hero_banner {
+    width: 100%;
+    background: url(img/hero_image.jpg) no-repeat;
+    background-size: 100%;
+    height: 241px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.hero_controls {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.map_button_container {
+    display: flex;
+    justify-content: center;
+}
+
+.map_button {
+    background-color: #ffffff;
+    color: #4b6a8d;
+    &:hover {
+        color: #ffffff;
+    }
+}
+
+.title {
+    color: #ffffff;
+    font-size: 44px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.card_content {
+    display: flex;
+    justify-content: space-around;
+}
+
+.left {
+    width: 60%;
+}
+
+.right {
+    width: 30%;
+
+    .section_body:first-of-type {
+        margin-bottom: 20px;
+    }
+}
+
+.section_title {
+    font-weight: 600;
+}
+
+.section_body {
+    white-space: normal;
+    margin-bottom: 20px;
+}
+
+.footer {
+    width: 100%;
+    color: #ffffff;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    margin-top: 40px;
+    padding-right: 5%;
+    margin-bottom: 20px;
+
+    div {
+        // width: 75px;
+        margin-left: 80%;
+    }
+}

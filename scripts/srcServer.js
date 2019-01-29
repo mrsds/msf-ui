@@ -26,6 +26,7 @@ browserSync({
     server: {
         baseDir: ["dist", "src", "assets"],
         middleware: [
+            historyApiFallback(),
             webpackDevMiddleware(bundler, {
                 // Dev middleware can't access config, so we provide publicPath
                 publicPath: config.output.publicPath,
@@ -45,9 +46,7 @@ browserSync({
             }),
 
             // bundler should be the same as above
-            webpackHotMiddleware(bundler),
-
-            historyApiFallback()
+            webpackHotMiddleware(bundler)
         ]
     },
 

@@ -20,7 +20,7 @@ import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import configureStore from "store/configureStore";
-import AppContainer from "components/App/AppContainer"; // Replace this with your own non-core version src/components/AppContainer/AppContainer.js
+import App from "components/App/App"; // Replace this with your own non-core version src/components/AppContainer/AppContainer.js
 import globalStyles from "styles/globals.scss";
 require("_core/styles/resources/img/apple-touch-icon.png");
 require("_core/styles/resources/img/favicon-32x32.png");
@@ -35,12 +35,18 @@ require("styles/resources/img/layer_thumbnails/gridded_methane_v1.png");
 require("styles/resources/img/layer_thumbnails/AVIRIS.png");
 require("styles/resources/img/map_icons/PlumeIcon.png");
 require("styles/resources/img/map_icons/PlumeIconActive.png");
+require("styles/resources/img/landing_page/logo_nasa_trio_white.png");
+require("styles/resources/img/landing_page/logo_nasa_trio_white@2x.png");
+require("styles/resources/img/landing_page/hero_image.jpg");
+import { BrowserRouter } from "react-router-dom";
 
 const store = configureStore();
 
 render(
     <Provider store={store}>
-        <AppContainer />
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
     </Provider>,
     document.getElementById("app")
 );
