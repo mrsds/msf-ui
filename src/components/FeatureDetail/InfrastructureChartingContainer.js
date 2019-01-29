@@ -385,7 +385,7 @@ export class InfrastructureChartingContainer extends Component {
                         {timeString}
                     </TableCell>
                     <TableCell padding="dense">
-                        {isFlyover ? "-" : feature.get("aviris_plume_id")}
+                        {isFlyover ? "-" : feature.get("candidate_id")}
                     </TableCell>
                     <TableCell numeric={!isFlyover} padding="dense">
                         {isFlyover ? "-" : "(none)"}
@@ -423,7 +423,7 @@ export class InfrastructureChartingContainer extends Component {
                                 <TableCell padding="dense">Plume Detected</TableCell>
                                 <TableCell padding="dense">Source ID</TableCell>
                                 <TableCell padding="dense">Flyover Date</TableCell>
-                                <TableCell padding="dense">Plume ID</TableCell>
+                                <TableCell padding="dense">Candidate ID</TableCell>
                                 <TableCell numeric padding="dense">
                                     Wind (mph/hr)
                                 </TableCell>
