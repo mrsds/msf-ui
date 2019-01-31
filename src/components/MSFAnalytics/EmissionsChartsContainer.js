@@ -43,11 +43,13 @@ export class EmissionsChartsContainer extends Component {
 
         const sourceData = data
             .map(source => {
+                const avg = source.get("avg_flux", null);
+                const uncertainty = source.get("flux_uncertainty", null);
                 return {
                     label: `Source near: ${source.get("vista_name")}`,
-                    min: source.get("min_flux", null),
-                    max: source.get("max_flux", null),
-                    avg: source.get("avg_flux", null),
+                    avg,
+                    min: avg - uncertainty,
+                    max: avg + uncertainty,
                     long: source.get("nearest_vista_longitude", null),
                     lat: source.get("nearest_vista_latitude", null)
                 };
