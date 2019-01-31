@@ -302,6 +302,7 @@ export default class LayerSidebarReducer {
         // First get vista ID search results
         const vistaIdResults = featureList.filter(
             res =>
+                res.get("id") &&
                 res
                     .get("id")
                     .toLowerCase()
