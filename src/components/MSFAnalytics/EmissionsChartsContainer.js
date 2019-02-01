@@ -44,14 +44,15 @@ export class EmissionsChartsContainer extends Component {
         const sourceData = data
             .map(source => {
                 const avg = source.get("avg_flux", null);
-                const uncertainty = source.get("flux_uncertainty", null);
+                const uncertainty = source.get("avg_flux_uncertainty", null);
                 return {
                     label: `Source near: ${source.get("vista_name")}`,
                     avg,
                     min: avg - uncertainty,
                     max: avg + uncertainty,
                     long: source.get("nearest_vista_longitude", null),
-                    lat: source.get("nearest_vista_latitude", null)
+                    lat: source.get("nearest_vista_latitude", null),
+                    uncertainty
                 };
             })
             .filter(s => s.min !== null && s.max !== null && s.avg !== null)
@@ -89,12 +90,32 @@ export class EmissionsChartsContainer extends Component {
                 ]
             },
             legend: { display: false },
-            plugins: { chartJsPluginErrorBars: { color: "#000000" } },
+            plugins: {
+                chartJsPluginErrorBars: {
+                    color: "#000000",
+                    lineWidth: "2px",
+                    width: 10 | "10px" | "60%"
+                }
+            },
             onClick: (evt, item) => {
                 if (!item.length) return;
                 this.props.openMapToInfrastructure(
                     sourceData.find(s => s.label === item[0]._model.label)
                 );
+            },
+            tooltips: {
+                callbacks: {
+                    label: (tooltipItem, data) => {
+                        const uncertainty = sourceData.find(s => s.label === tooltipItem.xLabel)
+                            .uncertainty;
+                        const uncertaintyString = (uncertainty && `± ${uncertainty}`) || "";
+                        const label = `Emissions: ${tooltipItem.yLabel} ${uncertaintyString}`;
+                        return label;
+                    }
+                },
+                backgroundColor: "rgba(0,0,0,1)",
+                titleFontColor: "rgba(255,255,255,1)",
+                bodyFontColor: "rgba(255,255,255,1)"
             }
         };
 
