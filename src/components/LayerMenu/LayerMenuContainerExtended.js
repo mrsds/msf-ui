@@ -23,6 +23,7 @@ import displayStyles from "_core/styles/display.scss";
 import PlumesControlContainer from "components/LayerMenu/PlumesControlContainer";
 import SourceControlContainer from "components/LayerMenu/SourceControlContainer";
 import { ButtonBase } from "@material-ui/core";
+import { LayerControlContainer } from "_core/components/LayerMenu";
 
 export class LayerMenuContainer extends Component {
     render() {
@@ -53,12 +54,20 @@ export class LayerMenuContainer extends Component {
         let griddedMethaneLayer = layerList.find(x => x.get("id") === "GRIDDED_EMISSIONS_V2");
         let infrastructureLayer = this.props.groups.get(0);
         let sourceLayer = layerList.find(x => x.get("id") === "AVIRIS_SOURCES");
+        let flightLinesLayer = layerList.find(x => x.get("id") === "Flight_Lines");
         let plumeLayerControl = null;
         let infrastructureLayerControl = null;
         let griddedMethaneLayerControl = null;
         let sourceLayerControl = null;
+        let flightLinesLayerControl = null;
 
-        if (plumeLayer && griddedMethaneLayer && infrastructureLayer && sourceLayer) {
+        if (
+            plumeLayer &&
+            griddedMethaneLayer &&
+            infrastructureLayer &&
+            sourceLayer &&
+            flightLinesLayer
+        ) {
             sourceLayerControl = (
                 <SourceControlContainer
                     key={sourceLayer.get("id") + "_layer_listing"}
@@ -95,6 +104,15 @@ export class LayerMenuContainer extends Component {
                     palette={this.props.palettes.get(
                         griddedMethaneLayer.getIn(["palette", "name"])
                     )}
+                />
+            );
+
+            flightLinesLayerControl = (
+                <LayerControlContainer
+                    key={flightLinesLayer.get("id") + "_layer_listing"}
+                    layer={flightLinesLayer}
+                    activeNum={activeNum}
+                    palette={this.props.palettes.get(flightLinesLayer.getIn(["palette", "name"]))}
                 />
             );
         }
@@ -138,6 +156,7 @@ export class LayerMenuContainer extends Component {
                                 {sourceLayerControl}
                                 {plumeLayerControl}
                                 {infrastructureLayerControl}
+                                {flightLinesLayerControl}
                                 {griddedMethaneLayerControl}
                             </List>
                         </div>
