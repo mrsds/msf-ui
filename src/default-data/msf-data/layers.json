@@ -329,9 +329,9 @@
         },
         {
             "id": "Flight_Lines",
-            "title": "Flight Lines",
+            "title": "Flight Coverage",
             "type": "data",
-            "handleAs": "vector_kml",
+            "handleAs": "flight_lines",
             "isDefault": false,
             "url": "http://100.64.114.187:9090/flightlines_all.kml",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",

@@ -6,6 +6,7 @@ export const LAYER_VISTA_GEOJSON = "vista_geojson";
 export const LAYER_GRIDDED_GEOJSON = "gridded_geojson";
 export const LAYER_GROUP_TYPE_GROUP = "group";
 export const LAYER_GROUP_TYPE_VISTA_SOURCE = "vista_source";
+export const LAYER_FLIGHT_LINES = "flight_lines";
 
 export const ALERTS = {
     LAYER_AVAILABILITY_LIST_LOAD_FAILED: {

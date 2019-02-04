@@ -25,6 +25,7 @@ import Ol_Map from "ol/map";
 import Ol_Control from "ol/control";
 import Ol_Scaleline from "ol/control/scaleline";
 import Ol_Format_GeoJSON from "ol/format/geojson";
+import Ol_Format_KML from "ol/format/kml";
 import Ol_Loading_Strategy from "ol/loadingstrategy";
 import Ol_Size from "ol/size";
 import MapWrapperOpenlayers from "_core/utils/MapWrapperOpenlayers";
@@ -63,6 +64,16 @@ const INVISIBLE_AVIRIS_STYLE = new Ol_Style({
     stroke: new Ol_Style_Stroke({
         color: [0, 0, 0, 0],
         width: 0
+    })
+});
+
+const FLIGHT_LINES_STYLE = new Ol_Style({
+    fill: new Ol_Style_Fill({
+        color: [255, 255, 255, 0.4]
+    }),
+    stroke: new Ol_Style_Stroke({
+        color: [255, 255, 255, 1]
+        // width: 1.5
     })
 });
 
@@ -186,6 +197,10 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 break;
             case appStringsMSF.LAYER_GROUP_TYPE_VISTA_SOURCE:
                 mapLayer = this.createVistaSourceLayer(layer, fromCache);
+                break;
+            case appStringsMSF.LAYER_FLIGHT_LINES:
+                console.log("ding!");
+                mapLayer = this.createFlightLinesLayer(layer, fromCache);
                 break;
             default:
                 console.warn(
@@ -1147,5 +1162,20 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 Ol_Proj.get("EPSG:4326")
             )
         );
+    }
+
+    createFlightLinesLayer(layer, fromCache) {
+        return new Ol_Layer_Vector({
+            source: new Ol_Source_Vector({
+                url: layer.get("url"),
+                format: new Ol_Format_KML({
+                    extractStyles: false
+                })
+            }),
+            opacity: layer.get("opacity"),
+            visible: layer.get("isActive"),
+            extent: appConfig.DEFAULT_MAP_EXTENT,
+            style: FLIGHT_LINES_STYLE
+        });
     }
 }
