@@ -132,22 +132,20 @@ export class LandingPage extends Component {
                                     color="default"
                                     gutterBottom
                                 >
-                                    TOPIC
+                                    DISCLAIMER
                                 </Typography>
                                 <div className={styles.section_body}>
-                                    Methane Source Finder helps you explore, analyze, and download
-                                    methane data across a range of scales...
+                                This site provides free access to methane data sets and analytics to help advance collective understanding of methane emissions for science and societal benefit.  This is an experimental rather than operational data portal. This means underlying data sets are not continuous and may be updated infrequently or not at all.  We may also make updates to data sets from time to time in response to new findings from ongoing research and feedback from facility operators.  Users are encouraged to cite the relevant scientific literature describing each data set (see “info” icon for each map layer). Metadata including nearest facility names are based on public data records available at the time the map layers were generated and may not be current. This data set includes over 1000 methane point source plumes, many of which have not been validated by follow-up ground observations and hence attribution errors are possible. We appreciate any feedback however requests for new features, bug fixes or additional data collection are subject to available funding. The information presented here is not intended to reflect any positions by the funding agencies.   
                                 </div>
                                 <Typography
                                     className={styles.section_title}
                                     color="default"
                                     gutterBottom
                                 >
-                                    TOPIC 2
+                                Acknowledgements
                                 </Typography>
                                 <div className={styles.section_body}>
-                                    Methane Source Finder helps you explore, analyze, and download
-                                    methane data across a range of scales...
+                                These data sets were funded by NASA’s Earth Science Division, the Carbon Monitoring System (CMS) program and the Advancing Collaborative Connections for Earth System Science (ACCESS) program. Additional funding was provided by the California Air Resources Board, the California Energy Commission and the National Institute of Standards and Technology.
                                 </div>
                             </div>
                         </CardContent>
