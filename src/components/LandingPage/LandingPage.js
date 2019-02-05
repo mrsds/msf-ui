@@ -145,7 +145,7 @@ export class LandingPage extends Component {
                                 ACKNOWLEDGEMENTS
                                 </Typography>
                                 <div className={styles.section_body}>
-                                These data sets were funded by NASA’s Earth Science Division, the Carbon Monitoring System (CMS) program and the Advancing Collaborative Connections for Earth System Science (ACCESS) program. Additional funding was provided by the California Air Resources Board, the California Energy Commission and the National Institute of Standards and Technology.
+                                These data sets were funded by NASA&#8217;s Earth Science Division, the Carbon Monitoring System (CMS) program and the Advancing Collaborative Connections for Earth System Science (ACCESS) program. Additional funding was provided by the California Air Resources Board, the California Energy Commission and the National Institute of Standards and Technology.
                                 </div>
                             </div>
                         </CardContent>
