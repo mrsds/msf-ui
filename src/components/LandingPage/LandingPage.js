@@ -77,7 +77,7 @@ export class LandingPage extends Component {
                                         color="primary"
                                         className={styles.map_button}
                                     >
-                                        Start Application
+                                        Open Map Viewer
                                     </Button>
                                 </Link>
                             </div>
