@@ -69,6 +69,10 @@ export class LandingPage extends Component {
                             <Typography className={styles.title} color="textSecondary" gutterBottom>
                                 Methane Source Finder
                             </Typography>
+                            <div className={styles.section_body}>
+                                    Methane Source Finder is an interactive map that helps you explore
+                                    methane data and related infrastructure in the state of California.
+                                </div>
                             <div className={styles.map_button_container}>
                                 <Link to="./map">
                                     <Button
