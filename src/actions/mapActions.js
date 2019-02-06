@@ -84,50 +84,38 @@ export function vistaLayersLoaded() {
     };
 }
 
-export function updateFeatureList_Map(category) {
+export function updateFeatureList_Map() {
     return (dispatch, getState) => {
-        const mapState = getState().map;
-        const layerSidebarState = getState().layerSidebar;
-
-        const map = getState().map.getIn(["maps", "openlayers"]);
-        const extent = mapState.getIn(["view", "extent"]);
-
-        loadWells(dispatch, mapState, layerSidebarState);
-
-        const vistaFeatures = map.getVisibleVistaFeatures();
-        dispatch(updateAvailableFeatures(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, vistaFeatures));
-
-        const avirisFeatures = map.getVisibleAvirisFeatures();
-        dispatch(updateAvailableFeatures(layerSidebarTypes.CATEGORY_PLUMES, avirisFeatures));
+        dispatch(updateVistaFeatures());
+        dispatch(updateAvirisFeatures());
     };
 }
 
-function loadWells(dispatch, mapState, layerSidebarState) {
-    const fieldsActive = layerSidebarState
-        .get("activeInfrastructureSubCategories")
-        .some((_, cat) => cat === layerSidebarTypes.VISTA_2017_OILGAS_FIELDS);
+export function updateVistaFeatures() {
+    return (dispatch, getState) => {
+        const map = getState().map.getIn(["maps", "openlayers"]);
+        const currentRes = map.map.getView().getResolution();
 
-    const wellsVisible =
-        mapState
-            .getIn(["maps", "openlayers"])
-            .map.getView()
-            .getZoom() > appConfig.OIL_WELLS_MIN_ZOOM;
+        const vistaFeatures = map
+            .getVisibleVistaFeatures()
+            .filter(
+                f =>
+                    currentRes <= appConfig.OIL_WELL_MAX_RESOLUTION ||
+                    f.getProperties().category_id !==
+                        layerSidebarTypes.INFRASTRUCTURE_SUBCATEGORIES[
+                            layerSidebarTypes.VISTA_2017_OILGAS_WELLS
+                        ]
+            );
+        dispatch(updateAvailableFeatures(layerSidebarTypes.CATEGORY_INFRASTRUCTURE, vistaFeatures));
+    };
+}
 
-    dispatch(
-        mapActions.setLayerActive(
-            layerSidebarTypes.VISTA_2017_OILGAS_WELLS,
-            fieldsActive && wellsVisible
-        )
-    );
-
-    const map = mapState.getIn(["maps", "openlayers"]);
-
-    map.addVistaLayerHandler(appStringsMSF.VISTA_LAYER_UPDATED, _ => {
-        dispatch(updateVistaFeatureList());
-        dispatch(vistaLayersLoaded());
-    });
-
-    map.addVistaLayerHandler(appStringsMSF.UPDATING_VISTA_LAYER, updatingVistaLayer);
+export function updateAvirisFeatures() {
+    return (dispatch, getState) => {
+        const map = getState().map.getIn(["maps", "openlayers"]);
+        const avirisFeatures = map.getVisibleAvirisFeatures();
+        dispatch(updateAvailableFeatures(layerSidebarTypes.CATEGORY_PLUMES, avirisFeatures));
+    };
 }
 
 function availableLayerListLoading() {

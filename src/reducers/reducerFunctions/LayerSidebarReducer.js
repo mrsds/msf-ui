@@ -411,15 +411,6 @@ export default class LayerSidebarReducer {
         );
     }
 
-    static updateOilWells(state, action) {
-        return state.setIn(
-            ["availableFeatures", "oilWells"],
-            Immutable.fromJS(
-                action.data ? MiscUtilExtended.vistaFeatureProcessor(JSON.parse(action.data)) : []
-            )
-        );
-    }
-
     static updateInfraGlobalResults(state, action) {
         // Convert metadata to the format that OL stores it in for ease of later use
         const data = !action.data

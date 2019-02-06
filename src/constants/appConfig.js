@@ -72,8 +72,10 @@ const APP_CONFIG = Immutable.fromJS({
             be_endpoint +
             ":" +
             be_port +
-            "/methanePlumeSources?county={county}&sector_level_1={sector_level_1}&sector_level_2={sector_level_2}",
-        sectorOptionsListEndpoint: "http://" + be_endpoint + ":" + be_port + "/list/sectors",
+            "/methanePlumeSources?county={county}&vista_category={vista_category}&sector_level_3={sector_level_3}",
+        ipccSectorOptionsListEndpoint: "http://" + be_endpoint + ":" + be_port + "/list/sectors",
+        vistaCategoryOptionsListEndpoint:
+            "http://" + be_endpoint + ":" + be_port + "/list/categories",
         plumeSourceSummaryEndpoint:
             "http://" +
             be_endpoint +
@@ -128,7 +130,8 @@ const APP_CONFIG = Immutable.fromJS({
             visMajorFormat: "YYYY"
         }
     ],
-    OIL_WELLS_MIN_ZOOM: 15
+    ZOOM_TO_LEVEL: 15,
+    OIL_WELL_MAX_RESOLUTION: 25
 });
 
 // define and export the final config

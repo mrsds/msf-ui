@@ -21,7 +21,9 @@ export const MSFAnalyticsState = Immutable.fromJS({
     detectionStats: null,
     areaSearchOptionsLoading: false,
     areaSearchOptionsList: null,
-    sectorOptionsListLoading: false,
-    sectorOptionsList: null,
+    vistaCategoryOptionsLoading: false,
+    vistaCategoryOptionsList: null,
+    ipccSectorOptionsLoading: false,
+    ipccSectorOptionsList: null,
     emissionsSummarySourceStartIndex: 0
 });

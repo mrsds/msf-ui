@@ -51,7 +51,7 @@ export class MapContainer2D extends CoreMapContainer2D {
             );
 
             map.addVistaLayerHandler(appStringsMSF.VISTA_LAYER_UPDATED, _ => {
-                this.props.mapActionsMSF.updateVistaFeatureList();
+                this.props.mapActionsMSF.updateVistaFeatures();
                 this.props.mapActionsMSF.vistaLayersLoaded();
             });
 
@@ -61,7 +61,7 @@ export class MapContainer2D extends CoreMapContainer2D {
             );
 
             map.addAvirisLayerHandler(appStringsMSF.AVIRIS_LAYER_UPDATED, _ => {
-                this.props.mapActionsMSF.updateAvirisFeatureList();
+                this.props.mapActionsMSF.updateAvirisFeatures();
                 this.props.mapActionsMSF.avirisLayerLoaded();
             });
 

@@ -44,7 +44,8 @@ export class DataFilterContainer extends Component {
 
     componentDidMount() {
         this.props.fetchAreaSearchOptionsList();
-        this.props.fetchSectorOptionsList();
+        this.props.fetchVistaCategoryOptionsList();
+        this.props.fetchIpccSectorOptionsList();
     }
 
     setPopperActive(key, active) {
@@ -66,29 +67,19 @@ export class DataFilterContainer extends Component {
             : [];
     }
 
-    getSectors() {
-        return this.props.sectorOptionsList
-            ? this.props.sectorOptionsList.reduce((acc, item) => {
-                  const sectorName = item.get("sector_level_1");
-                  if (!acc.includes(sectorName)) acc.push(sectorName);
-                  return acc;
-              }, [])
+    getVistaCategories() {
+        return this.props.vistaCategoryOptionsList
+            ? this.props.vistaCategoryOptionsList.map(c => c.get("category"))
             : [];
     }
 
-    getSubsectors() {
-        return this.props.sectorOptionsList
-            ? this.props.sectorOptionsList
-                  .filter(
-                      item =>
-                          !this.props.selectedSector ||
-                          item.get("sector_level_1") === this.props.selectedSector
-                  )
-                  .reduce((acc, item) => {
-                      const sectorName = item.get("sector_level_2");
-                      if (!acc.includes(sectorName)) acc.push(sectorName);
-                      return acc;
-                  }, [])
+    getIpccSectors() {
+        return this.props.ipccSectorOptionsList
+            ? this.props.ipccSectorOptionsList.reduce((acc, item) => {
+                  const sectorName = item.get("sector_level_3");
+                  if (!acc.includes(sectorName)) acc.push(sectorName);
+                  return acc;
+              }, [])
             : [];
     }
 
@@ -156,7 +147,7 @@ export class DataFilterContainer extends Component {
                                                         }
                                                     />
                                                     <Typography className={styles.radioLabel}>
-                                                        {sourceId}
+                                                        {sourceId.replace(/_/g, " ")}
                                                     </Typography>
                                                 </div>
                                             );
@@ -235,9 +226,9 @@ export class DataFilterContainer extends Component {
         const sectorPicker =
             this.props.analyticsMode !== MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS
                 ? this.makeDropdown(
-                      "Sector",
-                      this.props.selectedSector,
-                      this.getSectors,
+                      "Vista Sector",
+                      this.props.selectedSector && this.props.selectedSector.replace(/_/g, " "),
+                      this.getVistaCategories,
                       this.props.changeSector,
                       "sector",
                       sectorPickerActive
@@ -246,9 +237,9 @@ export class DataFilterContainer extends Component {
         const subSectorPicker =
             this.props.analyticsMode !== MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS
                 ? this.makeDropdown(
-                      "Subsector",
+                      "IPCC Sector",
                       this.props.selectedSubsector,
-                      this.getSubsectors,
+                      this.getIpccSectors,
                       this.props.changeSubsector,
                       "subsector",
                       subsectorPickerActive
@@ -309,15 +300,6 @@ export class DataFilterContainer extends Component {
     }
 }
 
-// {this.makeDropdown(
-//     "Units",
-//     this.props.selectedUnits,
-//     this.getChartUnits,
-//     this.props.changeUnits,
-//     "units",
-//     unitPickerActive
-// )}
-
 DataFilterContainer.propTypes = {
     analyticsMode: PropTypes.string,
     selectedArea: PropTypes.string,
@@ -329,13 +311,16 @@ DataFilterContainer.propTypes = {
     changeSubsector: PropTypes.func.isRequired,
     changeUnits: PropTypes.func.isRequired,
     areaSearchOptionsList: PropTypes.object,
-    sectorOptionsList: PropTypes.object,
+    vistaCategoryOptionsList: PropTypes.object,
+    ipccSectorOptionsList: PropTypes.object,
     fetchAreaSearchOptionsList: PropTypes.func.isRequired,
-    fetchSectorOptionsList: PropTypes.func.isRequired,
+    fetchVistaCategoryOptionsList: PropTypes.func.isRequired,
+    fetchIpccSectorOptionsList: PropTypes.func.isRequired,
     changeDate: PropTypes.func.isRequired,
     startDate: PropTypes.object,
     endDate: PropTypes.object,
-    updateActiveAnalyticsTab: PropTypes.func.isRequired
+    updateActiveAnalyticsTab: PropTypes.func.isRequired,
+    emissionsSourceData: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -346,9 +331,11 @@ function mapStateToProps(state) {
         selectedSubsector: state.MSFAnalytics.getIn(["filterOptions", "selectedSubsector"]),
         selectedUnits: state.MSFAnalytics.getIn(["filterOptions", "selectedUnits"]),
         areaSearchOptionsList: state.MSFAnalytics.get("areaSearchOptionsList"),
-        sectorOptionsList: state.MSFAnalytics.get("sectorOptionsList"),
+        vistaCategoryOptionsList: state.MSFAnalytics.get("vistaCategoryOptionsList"),
+        ipccSectorOptionsList: state.MSFAnalytics.get("ipccSectorOptionsList"),
         startDate: state.MSFAnalytics.getIn(["filterOptions", "startDate"]),
-        endDate: state.MSFAnalytics.getIn(["filterOptions", "endDate"])
+        endDate: state.MSFAnalytics.getIn(["filterOptions", "endDate"]),
+        emissionsSourceData: state.MSFAnalytics.get("emissionsSourceData")
     };
 }
 
@@ -365,8 +352,12 @@ function mapDispatchToProps(dispatch) {
             MSFAnalyticsActions.fetchAreaSearchOptionsList,
             dispatch
         ),
-        fetchSectorOptionsList: bindActionCreators(
-            MSFAnalyticsActions.fetchSectorOptionsList,
+        fetchVistaCategoryOptionsList: bindActionCreators(
+            MSFAnalyticsActions.fetchVistaCategoryOptionsList,
+            dispatch
+        ),
+        fetchIpccSectorOptionsList: bindActionCreators(
+            MSFAnalyticsActions.fetchIpccSectorOptionsList,
             dispatch
         ),
         changeDate: bindActionCreators(MSFAnalyticsActions.changeDate, dispatch),

@@ -34,15 +34,6 @@ export function changeFilterSector(sector) {
 
 export function changeFilterSubsector(subsector) {
     return (dispatch, getState) => {
-        if (subsector) {
-            dispatch({
-                type: typesMSF.CHANGE_ANALYTICS_FILTER_SELECTED_SECTOR,
-                sector: getState()
-                    .MSFAnalytics.get("sectorOptionsList")
-                    .find(sector => sector.get("sector_level_2") === subsector)
-                    .get("sector_level_1")
-            });
-        }
         dispatch({ type: typesMSF.CHANGE_ANALYTICS_FILTER_SELECTED_SUBSECTOR, subsector });
         dispatch(updateActiveAnalyticsTab(getState));
     };
@@ -125,25 +116,46 @@ function areaSearchListOptionsLoading(isLoading) {
     return { type: typesMSF.AREA_SEARCH_LIST_LOADING, isLoading };
 }
 
-export function fetchSectorOptionsList() {
+export function fetchVistaCategoryOptionsList() {
     return dispatch => {
-        dispatch(sectorOptionsListLoading(true));
-        fetch(appConfig.URLS.sectorOptionsListEndpoint)
+        dispatch(vistaCategoryOptionsListLoading(true));
+        fetch(appConfig.URLS.vistaCategoryOptionsListEndpoint)
             .then(res => res.json())
             .then(json => {
-                dispatch(updateSectorOptionsList(json));
-                dispatch(sectorOptionsListLoading(false));
+                dispatch(updateVistaCategoryOptionsList(json));
+                dispatch(vistaCategoryOptionsListLoading(false));
             })
             .catch(err => console.warn(`Error getting available sectors list.`, err));
     };
 }
 
-function updateSectorOptionsList(data) {
-    return { type: typesMSF.UPDATE_SECTOR_OPTIONS_LIST, data };
+function updateVistaCategoryOptionsList(data) {
+    return { type: typesMSF.UPDATE_VISTA_CATEGORY_OPTIONS_LIST, data };
 }
 
-function sectorOptionsListLoading(isLoading) {
-    return { type: typesMSF.SECTOR_OPTIONS_LIST_LOADING, isLoading };
+function vistaCategoryOptionsListLoading(isLoading) {
+    return { type: typesMSF.VISTA_CATEGORY_OPTIONS_LIST_LOADING, isLoading };
+}
+
+export function fetchIpccSectorOptionsList() {
+    return dispatch => {
+        dispatch(ipccSectorOptionsListLoading(true));
+        fetch(appConfig.URLS.ipccSectorOptionsListEndpoint)
+            .then(res => res.json())
+            .then(json => {
+                dispatch(updateIpccSectorOptionsList(json));
+                dispatch(ipccSectorOptionsListLoading(false));
+            })
+            .catch(err => console.warn(`Error getting available sectors list.`, err));
+    };
+}
+
+function ipccSectorOptionsListLoading(isLoading) {
+    return { type: typesMSF.IPCC_SECTOR_OPTIONS_LIST_LOADING, isLoading };
+}
+
+function updateIpccSectorOptionsList(data) {
+    return { type: typesMSF.UPDATE_IPCC_SECTOR_OPTIONS_LIST, data };
 }
 
 function formatUrlWithSectorsAndDates(base_url, getState) {
@@ -152,11 +164,11 @@ function formatUrlWithSectorsAndDates(base_url, getState) {
     let url = base_url
         .replace("{county}", getState().MSFAnalytics.getIn(["filterOptions", "selectedArea"]) || "")
         .replace(
-            "{sector_level_1}",
+            "{vista_category}",
             getState().MSFAnalytics.getIn(["filterOptions", "selectedSector"]) || ""
         )
         .replace(
-            "{sector_level_2}",
+            "{sector_level_3}",
             getState().MSFAnalytics.getIn(["filterOptions", "selectedSubsector"]) || ""
         );
     url += startDate ? `&from_date=${startDate.unix()}` : "";

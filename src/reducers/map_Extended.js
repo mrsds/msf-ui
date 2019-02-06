@@ -44,8 +44,6 @@ export default function map_Extended(
             return opt_reducer.setMapView(state, action);
         case actionTypes.SET_LAYER_ACTIVE:
             return opt_reducer.setLayerActive(state, action);
-        case actionTypesMSF.UPDATE_OIL_WELLS:
-            return opt_reducer.updateOilWells(state, action);
         default:
             return map.call(this, state, action, opt_reducer);
     }

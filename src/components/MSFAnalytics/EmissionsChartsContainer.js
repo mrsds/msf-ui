@@ -169,7 +169,7 @@ export class EmissionsChartsContainer extends Component {
 
     makeTopLevelSummaryChart() {
         const dataBySector = this.props.emissionsSourceData.reduce((acc, source) => {
-            const sectorL1Name = source.get("sector_level_1");
+            const sectorL1Name = source.get("vista_category");
             if (!acc[sectorL1Name]) acc[sectorL1Name] = [];
             acc[sectorL1Name].push(source);
             return acc;
@@ -187,48 +187,30 @@ export class EmissionsChartsContainer extends Component {
 
     makeSectorSummaryChart(sector) {
         const sectorData = this.props.emissionsSourceData
-            .filter(source => source.get("sector_level_1") === sector)
+            .filter(source => source.get("vista_category") === sector)
             .toArray();
-        const subSectors = sectorData.reduce((acc, source) => {
-            const sectorL2Name = source.get("sector_level_2");
-            if (!acc[sectorL2Name]) acc[sectorL2Name] = [];
-            acc[sectorL2Name].push(source);
-            return acc;
-        }, {});
 
-        return (
-            <React.Fragment>
-                {this.makeChart(sectorData, sector)}
-                {Object.keys(subSectors)
-                    .sort(this.sortSectors)
-                    .map(key => this.makeChart(subSectors[key], key))}
-            </React.Fragment>
-        );
+        return <React.Fragment>{this.makeChart(sectorData, sector)}</React.Fragment>;
     }
 
     makeCharts() {
         if (!this.props.emissionsSourceData || !this.props.emissionsSourceData.size)
-            return <div>No sources found</div>;
+            return <div className={styles.noResults}>No sources found</div>;
 
-        const selectedSector = this.props.filterOptions.get("selectedSector");
-        const selectedSubsector = this.props.filterOptions.get("selectedSubsector");
+        const vistaCategory = this.props.filterOptions.get("vistaCategoryOptionsList");
+        const ipccSector = this.props.filterOptions.get("selectedSubsector");
 
-        if (!selectedSector) {
+        if (!vistaCategory && !ipccSector) {
             return this.makeTopLevelSummaryChart();
         }
 
-        if (!selectedSubsector) {
-            return this.makeSectorSummaryChart(selectedSector);
-        }
-
+        const vistaLabel = vistaCategory && `Vista Sector: ${vistaCategory.replace(/_/g, " ")}`;
+        const ipccLabel = ipccSector && `IPCC Sector: ${ipccSector}`;
+        const chartLabel = `${vistaLabel || ""}${ipccLabel && vistaLabel ? " & " : ""}${ipccLabel ||
+            ""}`;
         return (
             <React.Fragment>
-                {this.makeChart(
-                    this.props.emissionsSourceData
-                        .filter(source => source.get("sector_level_2") === selectedSubsector)
-                        .toArray(),
-                    selectedSubsector
-                )}
+                {this.makeChart(this.props.emissionsSourceData.toArray(), chartLabel)}
             </React.Fragment>
         );
     }

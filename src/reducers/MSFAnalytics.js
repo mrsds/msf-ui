@@ -34,10 +34,14 @@ export default function MSFAnalytics(
             return opt_reducer.updateAreaSearchList(state, action);
         case actionTypesMSF.AREA_SEARCH_LIST_LOADING:
             return opt_reducer.areaSearchListLoading(state, action);
-        case actionTypesMSF.UPDATE_SECTOR_OPTIONS_LIST:
-            return opt_reducer.updateSectorOptionsList(state, action);
-        case actionTypesMSF.SECTOR_OPTIONS_LIST_LOADING:
-            return opt_reducer.sectorOptionsListLoading(state, action);
+        case actionTypesMSF.UPDATE_VISTA_CATEGORY_OPTIONS_LIST:
+            return opt_reducer.updateVistaCategoryOptionsList(state, action);
+        case actionTypesMSF.VISTA_CATEGORY_OPTIONS_LIST_LOADING:
+            return opt_reducer.vistaCategoryOptionsListLoading(state, action);
+        case actionTypesMSF.UPDATE_IPCC_SECTOR_OPTIONS_LIST:
+            return opt_reducer.updateIpccSectorOptionsList(state, action);
+        case actionTypesMSF.IPCC_SECTOR_OPTIONS_LIST_LOADING:
+            return opt_reducer.ipccSectorOptionsListLoading(state, action);
         case actionTypesMSF.CHANGE_ANALYTICS_DATE:
             return opt_reducer.changeAnalyticsDate(state, action);
         case actionTypesMSF.UPDATE_SUMMARY_PAGE_SOURCE_INDEX:

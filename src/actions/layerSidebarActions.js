@@ -151,36 +151,45 @@ function updateFeatureSearchResults(category) {
 
 export function updateInfrastructureCategoryFilter(layerName, active) {
     return (dispatch, getState) => {
+        const map = getState().map.getIn(["maps", "openlayers"]);
+        const initialFeaturesLength = map.getVisibleVistaFeatures().length;
         const layer = getState().map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA, layerName]);
+
+        const layersToAdd = [layer];
         if (layer.get("id") === layerSidebarTypes.VISTA_2017_OILGAS_FIELDS)
-            updateOilWells(dispatch, getState, active);
+            layersToAdd.push(
+                getState().map.getIn([
+                    "layers",
+                    appStrings.LAYER_GROUP_TYPE_DATA,
+                    layerSidebarTypes.VISTA_2017_OILGAS_WELLS
+                ])
+            );
 
-        dispatch(setGroupLayerActive(layer, active));
-        if (
-            getState()
-                .map.get("groups")
-                .find(group => group.get("id") === layer.get("group"))
-                .get("isActive")
-        ) {
-            dispatch(coreMapActions.setLayerActive(layer.get("id"), active));
-        }
+        layersToAdd.forEach(layer => {
+            dispatch(setGroupLayerActive(layer, active));
+            if (
+                getState()
+                    .map.get("groups")
+                    .find(group => group.get("id") === layer.get("group"))
+                    .get("isActive")
+            ) {
+                dispatch(coreMapActions.setLayerActive(layer.get("id"), active));
+            }
+        });
+
         dispatch(setActiveFeatureCategories(layerName, active));
-        dispatch(mapActions.updateFeatureList_Map(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
-    };
-}
 
-function updateOilWells(dispatch, getState, active) {
-    const mapState = getState().map;
-    const wellsVisible =
-        mapState
-            .getIn(["maps", "openlayers"])
-            .map.getView()
-            .getZoom() > appConfig.OIL_WELLS_MIN_ZOOM;
-    dispatch(
-        updateInfrastructureCategoryFilter,
-        layerSidebarTypes.VISTA_2017_OILGAS_WELLS,
-        wellsVisible && active
-    );
+        // This is kind of grody, but there's no other good way I can find to know exactly when the
+        // Oil Wells layer has been made visible and its data available to the sidebar.
+        let counter = 0;
+        let checkForUpdatedList = setInterval(_ => {
+            const featuresLength = map.getVisibleVistaFeatures().length;
+            counter++;
+            if (counter <= 8 && featuresLength === initialFeaturesLength) return;
+            dispatch(mapActions.updateVistaFeatures());
+            clearInterval(checkForUpdatedList);
+        }, 250);
+    };
 }
 
 export function toggleInfrastructureCategoryFilters(active) {

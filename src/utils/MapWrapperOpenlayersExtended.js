@@ -592,23 +592,19 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
     }
 
     createVistaLayer(layer, fromCache = true) {
+        this.vistaLayers = this.vistaLayers || { count: 0, loaded: 0 };
+
         const isOilWellLayer = layer.get("id") === layerSidebarTypes.VISTA_2017_OILGAS_WELLS;
-        if (!isOilWellLayer) {
-            this.vistaLayers = this.vistaLayers || { count: 0, loaded: 0 };
-            this.vistaLayers.count++;
-        }
+        if (!isOilWellLayer) this.vistaLayers.count++;
 
         try {
             const style = this.getVistaStyle(layer.get("id"));
-            const layerLoadedEvent = new Event("layerLoaded");
 
             const layerSource = new Ol_Source_Vector({
                 format: new Ol_Format_GeoJSON(),
                 strategy: Ol_Loading_Strategy.bbox,
                 loader: (extent, resolution, projection) => {
-                    if (!isOilWellLayer && this.vistaLayers.count <= this.vistaLayers.loaded)
-                        this.vistaLayers.loaded = 0;
-                    layerSource.dispatchEvent("loadingFeatures");
+                    if (!isOilWellLayer) layerSource.dispatchEvent("loadingFeatures");
                     const url = MapUtilExtended.buildVistaFeatureQueryStringForCategory(
                         extent,
                         layer.get("id")
@@ -624,13 +620,11 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                                 })
                             );
 
-                            if (isOilWellLayer) {
-                                layerSource.dispatchEvent("featuresLoaded");
-                                return;
-                            }
-
                             this.vistaLayers.loaded++;
-                            if (this.vistaLayers.count === this.vistaLayers.loaded) {
+                            if (
+                                isOilWellLayer ||
+                                this.vistaLayers.count <= this.vistaLayers.loaded
+                            ) {
                                 layerSource.dispatchEvent("featuresLoaded");
                             }
                         })
@@ -638,17 +632,21 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 }
             });
 
+            const maxResolution = isOilWellLayer ? appConfig.OIL_WELL_MAX_RESOLUTION : undefined;
+
             const vistaLayer = new Ol_Layer_Vector({
                 renderMode: "image",
                 source: layerSource,
                 opacity: layer.get("opacity"),
                 visible: layer.get("isActive"),
                 extent: appConfig.DEFAULT_MAP_EXTENT,
-                style
+                style,
+                maxResolution
             });
             vistaLayer.set("_layerId", layer.get("id"));
             vistaLayer.set("_layerGroup", "VISTA");
             vistaLayer.set("_layerOrder", 1);
+
             return vistaLayer;
         } catch (err) {
             console.warn("Error in MapWrapperOpenlayers.createVectorLayer:", err);
@@ -692,7 +690,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             this.setCenter(zoomGeom.getExtent());
             return this.map.getView().animate({
                 resolution: this.map.getView().getResolution(),
-                zoom: appConfig.OIL_WELLS_MIN_ZOOM,
+                zoom: appConfig.ZOOM_TO_LEVEL,
                 duration: 175
             });
         }
@@ -704,7 +702,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
     zoomToCoords(coords) {
         return this.map.getView().animate({
             resolution: this.map.getView().getResolution(),
-            zoom: appConfig.OIL_WELLS_MIN_ZOOM,
+            zoom: appConfig.ZOOM_TO_LEVEL,
             duration: 175,
             center: Ol_Proj.transform(
                 [coords[0], coords[1]],
@@ -882,6 +880,8 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
 
         const avirisLayer = this.getAvirisLayer();
 
+        if (!avirisLayer) return null;
+
         avirisLayer.getSource().forEachFeature(feature => {
             const opacity =
                 !hideAll && (!activeFeatureIds.length || activeFeatureIds.includes(feature.getId()))
@@ -961,41 +961,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         this.setActiveInfrastructure(infrastructure, plumes.length);
     }
 
-    setOilWellLayer(data) {
-        const oldOilWellLayer = this.map
-            .getLayers()
-            .getArray()
-            .find(layer => layer.get("_layerId") === "VISTA_OIL_WELLS");
-        if (oldOilWellLayer) this.removeLayer(oldOilWellLayer);
-
-        if (!data) return;
-
-        // HACK ALERT -- for some reason Ol_Source_Vector doesn't read from JSON strings, only URLs.
-        const blob = new Blob([data], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const format = new Ol_Format_GeoJSON();
-        const vistaLayerSource = new Ol_Source_Vector({
-            url,
-            format
-        });
-
-        const vistaLayer = new Ol_Layer_Vector({
-            source: vistaLayerSource,
-            visible: true,
-            extent: this.map.getView().calculateExtent(),
-            style: this.getVistaStyle(layerSidebarTypes.VISTA_2017_OILGAS_WELLS)
-        });
-
-        vistaLayer.set("_layerGroup", "VISTA");
-        vistaLayer.set("_layerOrder", 1);
-        vistaLayer.set("_layerId", "VISTA_OIL_WELLS");
-        vistaLayer.set("_layerType", appStrings.LAYER_GROUP_TYPE_DATA);
-
-        vistaLayer.setVisible(true);
-        this.addLayer(vistaLayer);
-        this.map.updateSize();
-    }
-
     getAvirisLayer() {
         return this.map
             .getLayers()
@@ -1055,9 +1020,9 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
     addVistaLayerHandler(evt, callback) {
         switch (evt) {
             case appStringsMSF.VISTA_LAYER_UPDATED:
-                this.getVistaLayers().forEach(layer =>
-                    layer.getSource().on("featuresLoaded", callback)
-                );
+                this.getVistaLayers().forEach(layer => {
+                    layer.getSource().on("featuresLoaded", callback);
+                });
                 break;
             case appStringsMSF.UPDATING_VISTA_LAYER:
                 this.getVistaLayers().forEach(layer =>
@@ -1069,22 +1034,27 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
 
     getVisibleAvirisFeatures() {
         const extent = this.map.getView().calculateExtent(this.map.getSize());
-        return this.getAvirisLayer()
-            .getSource()
-            .getFeaturesInExtent(extent);
+        return (
+            this.getAvirisLayer() &&
+            this.getAvirisLayer()
+                .getSource()
+                .getFeaturesInExtent(extent)
+        );
     }
 
     addAvirisLayerHandler(evt, callback) {
         switch (evt) {
             case appStringsMSF.AVIRIS_LAYER_UPDATED:
-                this.getAvirisLayer()
-                    .getSource()
-                    .on("featuresLoaded", callback);
+                if (this.getAvirisLayer())
+                    this.getAvirisLayer()
+                        .getSource()
+                        .on("featuresLoaded", callback);
                 break;
             case appStringsMSF.UPDATING_AVIRIS_LAYER:
-                this.getAvirisLayer()
-                    .getSource()
-                    .on("loadingFeatures", callback);
+                if (this.getAvirisLayer())
+                    this.getAvirisLayer()
+                        .getSource()
+                        .on("loadingFeatures", callback);
                 break;
         }
     }

@@ -10,14 +10,7 @@ export default class MSFAnalyticsReducer {
     }
 
     static changeFilterSector(state, action) {
-        return state
-            .setIn(["filterOptions", "selectedSector"], action.sector)
-            .setIn(
-                ["filterOptions", "selectedSubsector"],
-                action.sector !== state.getIn(["filterOptions", "selectedSector"])
-                    ? null
-                    : state.getIn(["filterOptions", "selectedSector"])
-            );
+        return state.setIn(["filterOptions", "selectedSector"], action.sector);
     }
 
     static changeFilterSubsector(state, action) {
@@ -60,12 +53,20 @@ export default class MSFAnalyticsReducer {
         return state.set("areaSearchOptionsLoading", action.isLoading);
     }
 
-    static updateSectorOptionsList(state, action) {
-        return state.set("sectorOptionsList", Immutable.fromJS(action.data));
+    static updateVistaCategoryOptionsList(state, action) {
+        return state.set("vistaCategoryOptionsList", Immutable.fromJS(action.data));
     }
 
-    static sectorOptionsListLoading(state, action) {
-        return state.set("sectorOptionsLoading", action.isLoading);
+    static vistaCategoryOptionsListLoading(state, action) {
+        return state.set("vistaCategoryOptionsLoading", action.isLoading);
+    }
+
+    static updateIpccSectorOptionsList(state, action) {
+        return state.set("ipccSectorOptionsList", Immutable.fromJS(action.data));
+    }
+
+    static ipccSectorOptionsListLoading(state, action) {
+        return state.set("ipccSectorOptionsLoading", action.isLoading);
     }
 
     static changeAnalyticsDate(state, action) {
