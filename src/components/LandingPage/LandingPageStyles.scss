@@ -82,7 +82,8 @@ a.nasa_logo {
 .hero_banner {
     width: 100%;
     background: url(img/hero_image.jpg) no-repeat;
-    background-size: 100%;
+    background-size: 120%;
+    background-position-x: right;
     height: 320px;
     position: relative;
 }
@@ -114,9 +115,10 @@ a.nasa_logo {
 
 .map_button {
     background-color: #ffffff;
-    color: #4b6a8d;
+    color: #25468A;
     &:hover {
         color: #ffffff;
+        background-color: #25468A;
     }
 }
 
@@ -125,6 +127,15 @@ a.nasa_logo {
     font-size: 44px;
     text-align: center;
     font-weight: 500;
+}
+
+.section_hero {
+    color: #ffffff;
+    white-space: normal;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.6rem;
+    line-height: 1.7rem;
 }
 
 .card_content {
@@ -153,7 +164,7 @@ a.nasa_logo {
     white-space: normal;
     margin-bottom: 20px;
     font-size: 1.6rem;
-    line-height: 1.7rem;
+    line-height: 1.9rem;
 }
 
 .footer {
