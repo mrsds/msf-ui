@@ -117,17 +117,16 @@ export class EmissionsSummaryInfoContainer extends Component {
             )
             .map(source => {
                 const sourceId = source.get("source_id");
-                const sectorName = this.formatBasicL1SourceName(source.get("sector_level_1"));
-                const ipccSectorName = this.formatBasicL3SourceName(source.get("sector_level_3"));
+                const vistaCategory = source.get("vista_category").replace(/_/g, " ");
+                const ipccSectorName = source.get("sector_level_3");
                 const startDateStr = this.formatDateStr(source.get("first_flyover_date"));
                 const endDateStr = this.formatDateStr(source.get("last_flyover_date"));
                 const timespan = `${startDateStr} - ${endDateStr}`;
-                console.log(source.toJS());
                 const avgFlux =
                     source.get("avg_flux") && parseFloat(source.get("avg_flux")).toFixed(2);
-                const fluxUncertainty = source.get("flux_uncertainty");
+                const fluxUncertainty = source.get("avg_flux_uncertainty");
                 const fluxString = avgFlux
-                    ? avgFlux + fluxUncertainty ? ` ± ${fluxUncertainty}` : ""
+                    ? `${avgFlux} ${fluxUncertainty ? " ± " + fluxUncertainty : ""}`
                     : "";
 
                 const minFlux = source.get("min_flux")
@@ -139,12 +138,12 @@ export class EmissionsSummaryInfoContainer extends Component {
                 return (
                     <TableRow key={sourceId}>
                         <TableCell padding="dense">{sourceId}</TableCell>
-                        <TableCell padding="dense">{sectorName}</TableCell>
+                        <TableCell padding="dense">{vistaCategory}</TableCell>
                         <TableCell padding="dense">{ipccSectorName}</TableCell>
                         <TableCell padding="dense">{source.get("plume_count")}</TableCell>
                         <TableCell padding="dense">{source.get("flyover_count")}</TableCell>
                         <TableCell padding="dense">{timespan}</TableCell>
-                        <TableCell padding="dense">{avgFlux}</TableCell>
+                        <TableCell padding="dense">{fluxString}</TableCell>
                     </TableRow>
                 );
             });
@@ -164,7 +163,7 @@ export class EmissionsSummaryInfoContainer extends Component {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell padding="dense">Source ID</TableCell>
-                                        <TableCell padding="dense">Sector</TableCell>
+                                        <TableCell padding="dense">Vista Sector</TableCell>
                                         <TableCell padding="dense">IPCC Sector</TableCell>
                                         <TableCell padding="dense">Plumes</TableCell>
                                         <TableCell padding="dense">Flyovers</TableCell>

@@ -197,7 +197,7 @@ export class EmissionsChartsContainer extends Component {
         if (!this.props.emissionsSourceData || !this.props.emissionsSourceData.size)
             return <div className={styles.noResults}>No sources found</div>;
 
-        const vistaCategory = this.props.filterOptions.get("vistaCategoryOptionsList");
+        const vistaCategory = this.props.filterOptions.get("selectedSector");
         const ipccSector = this.props.filterOptions.get("selectedSubsector");
 
         if (!vistaCategory && !ipccSector) {
