@@ -182,7 +182,10 @@ a.nasa_logo {
     margin-bottom: 20px;
 
     div {
-        // width: 75px;
-        margin-left: 80%;
+        text-align: center;
+    }
+
+    div-right {
+        text-align: end;
     }
 }
