@@ -82,16 +82,17 @@ a.nasa_logo {
 .hero_banner {
     width: 100%;
     background: url(img/hero_image.jpg) no-repeat;
-    background-size: 100%;
-    height: 241px;
+    background-size: 130%;
+    background-position: 40% 0%;
+    height: 350px;
     position: relative;
 }
 
 .banner_shader {
     width: 100%;
-    height: 241px;
+    height: 100%;
     background-color: #000000;
-    opacity: 0.4;
+    opacity: 0.3;
 }
 
 .hero_controls {
@@ -113,18 +114,32 @@ a.nasa_logo {
 }
 
 .map_button {
+    font-size: 3rem;
+    padding: .2em 1em .2em 1em;
     background-color: #ffffff;
-    color: #4b6a8d;
+    color: #25468A;
+    transition: all .3s ease-in-out;
     &:hover {
         color: #ffffff;
+        background-color: #25468A;
+        transform: scale(1.1);
     }
 }
 
 .title {
     color: #ffffff;
-    font-size: 44px;
+    font-size: 4em;
     text-align: center;
     font-weight: 500;
+}
+
+.section_hero {
+    color: #ffffff;
+    white-space: normal;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    line-height: 2.2rem;
 }
 
 .card_content {
@@ -153,7 +168,7 @@ a.nasa_logo {
     white-space: normal;
     margin-bottom: 20px;
     font-size: 1.6rem;
-    line-height: 1.7rem;
+    line-height: 1.9rem;
 }
 
 .footer {
