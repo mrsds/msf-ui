@@ -185,6 +185,11 @@ a.nasa_logo {
     ul {
         list-style: none;
     }
+
+    li {
+        display: inline;
+    }
+
     div_footer_right {
         text-align: left;
         width: 20%;
@@ -194,5 +199,6 @@ a.nasa_logo {
     a {
         color: #a5a6a7;
         text-decoration: none;
+        text-transform: uppercase;
     }
 }

@@ -180,11 +180,12 @@ export class LandingPage extends Component {
                                 <li>
                                     <a href="http://www.nasa.gov/contact_JPL.php">Feedback</a>
                                 </li>
+                                | 
+                                <li>
+                                    Site Contact: Riley Duren<br/>
+                                    Release number: URS280411
+                                </li>
                             </ul>
-                        </div>
-                        <div className={styles.div_footer_right}>
-                            Site Contact: Riley Duren<br/>
-                            Release number: URS280411
                         </div>
                     </div>
                 </div>
