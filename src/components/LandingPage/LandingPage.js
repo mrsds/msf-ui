@@ -182,7 +182,7 @@ export class LandingPage extends Component {
                                 </li>
                             </ul>
                         </div>
-                        <div-right>Site Contact: Riley Duren<br/>>Release number: URS280411</div>
+                        <div-right>Site Contact: Riley Duren<br/>Release number: URS280411</div>
                     </div>
                 </div>
             </MuiThemeProvider>
