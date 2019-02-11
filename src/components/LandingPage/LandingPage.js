@@ -174,7 +174,7 @@ export class LandingPage extends Component {
                                 </li>
                                 |
                                 <li>
-                                    <a href="/faq.php">FAQ</a>
+                                     <a href="/faq.php">FAQ</a>
                                 </li>
                                 |
                                 <li>
@@ -182,7 +182,7 @@ export class LandingPage extends Component {
                                 </li>
                             </ul>
                         </div>
-                        <div-right>Site Contact: Riley Duren<br/>Release number: URS280411</div>
+                        <div className={styles.div-right}>Site Contact: Riley Duren<br/>Release number: URS280411</div>
                     </div>
                 </div>
             </MuiThemeProvider>
