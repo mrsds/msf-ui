@@ -155,7 +155,7 @@ export class LandingPage extends Component {
                         </CardContent>
                     </Card>
                     <div className={styles.footer}>
-                        <div>
+                        <div className={styles.footer_nav}>
                             <ul>
                                 <li>
                                     <a href="http://www.nasa.gov/">NASA</a>
