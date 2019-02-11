@@ -166,19 +166,19 @@ export class LandingPage extends Component {
                                 </li>
                                 |
                                 <li>
-                                    <a href="http://www.nasa.gov/copyrights.php">Privacy</a>
+                                    <a href="http://jpl.nasa.gov/copyrights.php">Privacy</a>
                                 </li>
                                 |
                                 <li>
-                                    <a href="http://www.nasa.gov/imagepolicy">Image Policy</a>
+                                    <a href="http://jpl.nasa.gov/imagepolicy">Image Policy</a>
                                 </li>
                                 |
                                 <li>
-                                     <a href="http://www.nasa.gov/faq.php">FAQ</a>
+                                     <a href="http://jpl.nasa.gov/faq.php">FAQ</a>
                                 </li>
                                 |
                                 <li>
-                                    <a href="http://www.nasa.gov/contact_JPL.php">Feedback</a>
+                                    <a href="http://jpl.nasa.gov/contact_JPL.php">Feedback</a>
                                 </li>
                             </ul>
                         </div>
