@@ -188,12 +188,14 @@ a.nasa_logo {
 
     li {
         display: inline;
+        margin: 0.6em;
     }
 
-    div_footer_right {
+    .div_footer_right {
         text-align: left;
         width: 20%;
         float: right;
+        position: relative;
     }
 
     a {
