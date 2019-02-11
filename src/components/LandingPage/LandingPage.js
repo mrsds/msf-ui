@@ -158,31 +158,34 @@ export class LandingPage extends Component {
                         <div>
                             <ul>
                                 <li>
-                                    <a href="http://www.nasa.gov/" target="_blank">NASA</a>
+                                    <a href="http://www.nasa.gov/">NASA</a>
                                 </li>
                                 |
                                 <li>
-                                    <a href="http://www.caltech.edu/" target="_blank">Caltech</a>
+                                    <a href="http://www.caltech.edu/">Caltech</a>
                                 </li>
                                 |
                                 <li>
-                                    <a href="/copyrights.php">Privacy</a>
+                                    <a href="http://www.nasa.gov/copyrights.php">Privacy</a>
                                 </li>
                                 |
                                 <li>
-                                    <a href="/imagepolicy">Image Policy</a>
+                                    <a href="http://www.nasa.gov/imagepolicy">Image Policy</a>
                                 </li>
                                 |
                                 <li>
-                                     <a href="/faq.php">FAQ</a>
+                                     <a href="http://www.nasa.gov/faq.php">FAQ</a>
                                 </li>
                                 |
                                 <li>
-                                    <a href="/contact_JPL.php">Feedback</a>
+                                    <a href="http://www.nasa.gov/contact_JPL.php">Feedback</a>
                                 </li>
                             </ul>
                         </div>
-                        <div className={styles.div_right}>Site Contact: Riley Duren<br/>Release number: URS280411</div>
+                        <div className={styles.div_footer_right}>
+                            Site Contact: Riley Duren<br/>
+                            Release number: URS280411
+                        </div>
                     </div>
                 </div>
             </MuiThemeProvider>

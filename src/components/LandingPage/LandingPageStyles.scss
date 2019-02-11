@@ -173,10 +173,7 @@ a.nasa_logo {
 
 .footer {
     width: 100%;
-    color: #ffffff;
-    display: flex;
-    justify-content: flex-end;
-    flex-direction: column;
+    color: #a5a6a7;
     margin-top: 40px;
     padding-right: 5%;
     margin-bottom: 20px;
@@ -185,7 +182,17 @@ a.nasa_logo {
         text-align: center;
     }
 
-    div_right {
-        text-align: end;
+    ul {
+        list-style: none;
+    }
+    div_footer_right {
+        text-align: left;
+        width: 20%;
+        float: right;
+    }
+
+    a {
+        color: #a5a6a7;
+        text-decoration: none;
     }
 }
