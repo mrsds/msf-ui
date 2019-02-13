@@ -37,6 +37,8 @@ export default function layerSidebar(
             return opt_reducer.clearFeatureLabels(state, action);
         case actionTypesMSF.UPDATE_INFRA_GLOBAL_RESULTS:
             return opt_reducer.updateInfraGlobalResults(state, action);
+        case actionTypesMSF.UPDATE_PLUME_GLOBAL_RESULTS:
+            return opt_reducer.updatePlumeGlobalResults(state, action);
         default:
             return state;
     }

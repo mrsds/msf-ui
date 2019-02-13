@@ -198,6 +198,28 @@ export class InfrastructureContainer extends Component {
         );
     }
 
+    makeListItems() {
+        const currentPageIndex = this.props.searchState.get("pageIndex");
+        const startIndex = currentPageIndex * layerSidebarTypes.FEATURES_PER_PAGE;
+        const totalSize =
+            this.props.searchState.get("searchResults").size +
+            this.props.searchState.get("globalSearchResults").size;
+        const endIndex =
+            (currentPageIndex + 1) * layerSidebarTypes.FEATURES_PER_PAGE > totalSize
+                ? totalSize
+                : (currentPageIndex + 1) * layerSidebarTypes.FEATURES_PER_PAGE;
+
+        return (
+            <React.Fragment>
+                {this.props.searchState
+                    .get("searchResults")
+                    .slice(startIndex, endIndex)
+                    .map(f => this.makeListItem(f))}
+                {this.makeGlobalSearchResults(endIndex)}
+            </React.Fragment>
+        );
+    }
+
     makeGlobalSearchResults(endIndex) {
         if (
             !this.props.searchState.get("globalSearchResults").size ||
@@ -219,28 +241,6 @@ export class InfrastructureContainer extends Component {
             <React.Fragment>
                 <ListSubheader>Results not in view</ListSubheader>
                 {globalResults.map(f => this.makeListItem(f))}
-            </React.Fragment>
-        );
-    }
-
-    makeListItems() {
-        const currentPageIndex = this.props.searchState.get("pageIndex");
-        const startIndex = currentPageIndex * layerSidebarTypes.FEATURES_PER_PAGE;
-        const totalSize =
-            this.props.searchState.get("searchResults").size +
-            this.props.searchState.get("globalSearchResults").size;
-        const endIndex =
-            (currentPageIndex + 1) * layerSidebarTypes.FEATURES_PER_PAGE > totalSize
-                ? totalSize
-                : (currentPageIndex + 1) * layerSidebarTypes.FEATURES_PER_PAGE;
-
-        return (
-            <React.Fragment>
-                {this.props.searchState
-                    .get("searchResults")
-                    .slice(startIndex, endIndex)
-                    .map(f => this.makeListItem(f))}
-                {this.makeGlobalSearchResults(endIndex)}
             </React.Fragment>
         );
     }
@@ -303,7 +303,10 @@ export class InfrastructureContainer extends Component {
                 onPageForward={() =>
                     this.props.pageForward(layerSidebarTypes.CATEGORY_INFRASTRUCTURE)
                 }
-                totalResults={this.props.availableFeatures.size}
+                totalResults={
+                    this.props.availableFeatures.size +
+                    this.props.searchState.get("globalSearchResults").size
+                }
                 clearFilterFunc={() => this.clearTextSearch()}
             />
         );

@@ -243,6 +243,27 @@ export function applyPlumeTextFilter() {
         getState()
             .map.getIn(["maps", "openlayers"])
             .setVisiblePlumes(getState().layerSidebar);
+        // Trigger global search
+        dispatch(plumesGlobalSearch());
+    };
+}
+
+function plumesGlobalSearch(dispatch) {
+    return (dispatch, getState) => {
+        const searchString = getState().layerSidebar.getIn([
+            "searchState",
+            layerSidebarTypes.CATEGORY_PLUMES,
+            "filters",
+            layerSidebarTypes.PLUME_FILTER_PLUME_ID,
+            "selectedValue"
+        ]);
+
+        if (searchString === "")
+            return dispatch({ type: types.UPDATE_PLUME_GLOBAL_RESULTS, data: null });
+
+        fetch(appConfig.URLS.avirisGlobalSearchEndpoint.replace("{source_id}", searchString))
+            .then(res => res.json())
+            .then(json => dispatch({ type: types.UPDATE_PLUME_GLOBAL_RESULTS, data: json }));
     };
 }
 

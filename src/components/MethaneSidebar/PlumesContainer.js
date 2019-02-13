@@ -6,6 +6,7 @@ import ReactDOM from "react-dom";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListSubheader from "@material-ui/core/ListSubheader";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import * as layerSidebarActions from "actions/layerSidebarActions";
@@ -196,16 +197,48 @@ export class PlumesContainer extends Component {
     makeListItems() {
         const currentPageIndex = this.props.searchState.get("pageIndex");
         const startIndex = currentPageIndex * layerSidebarTypes.FEATURES_PER_PAGE;
+        const totalSize =
+            this.props.searchState.get("searchResults").size +
+            this.props.searchState.get("globalSearchResults").size;
         const endIndex =
-            (currentPageIndex + 1) * layerSidebarTypes.FEATURES_PER_PAGE >
-            this.props.searchState.get("searchResults").size
-                ? this.props.searchState.get("searchResults").size
+            (currentPageIndex + 1) * layerSidebarTypes.FEATURES_PER_PAGE > totalSize
+                ? totalSize
                 : (currentPageIndex + 1) * layerSidebarTypes.FEATURES_PER_PAGE;
 
-        return this.props.searchState
-            .get("searchResults")
-            .slice(startIndex, endIndex)
-            .map(feature => this.makeListItem(feature));
+        return (
+            <React.Fragment>
+                {this.props.searchState
+                    .get("searchResults")
+                    .slice(startIndex, endIndex)
+                    .map(f => this.makeListItem(f))}
+                {this.makeGlobalSearchResults(endIndex)}
+            </React.Fragment>
+        );
+    }
+
+    makeGlobalSearchResults(endIndex) {
+        if (
+            !this.props.searchState.get("globalSearchResults").size ||
+            endIndex < this.props.searchState.get("searchResults").size - 1
+        )
+            return null;
+
+        // Omit any global results we've already found
+        const globalResults = this.props.searchState
+            .get("globalSearchResults")
+            .filter(f =>
+                this.props.searchState
+                    .get("searchResults")
+                    .every(result => result.get("id") !== f.get("id"))
+            );
+        if (!globalResults.size) return null;
+
+        return (
+            <React.Fragment>
+                <ListSubheader>Results not in view</ListSubheader>
+                {globalResults.map(f => this.makeListItem(f))}
+            </React.Fragment>
+        );
     }
 
     makeLoadingModal() {
@@ -220,7 +253,9 @@ export class PlumesContainer extends Component {
     }
 
     makeResultsArea() {
-        const hasResults = this.props.searchState.get("searchResults").size;
+        const hasResults =
+            this.props.searchState.get("searchResults").size ||
+            this.props.searchState.get("globalSearchResults").size;
         const resultsClassname = MiscUtil.generateStringFromSet({
             [layerSidebarStyles.sidebarContent]: true
         });
@@ -253,11 +288,17 @@ export class PlumesContainer extends Component {
     makePageControls() {
         return (
             <PageControls
-                resultCount={this.props.searchState.get("searchResults").size}
+                resultCount={
+                    this.props.searchState.get("searchResults").size +
+                    this.props.searchState.get("globalSearchResults").size
+                }
                 currentPageIndex={this.props.searchState.get("pageIndex")}
                 onPageBackward={() => this.props.pageBackward(layerSidebarTypes.CATEGORY_PLUMES)}
                 onPageForward={() => this.props.pageForward(layerSidebarTypes.CATEGORY_PLUMES)}
-                totalResults={this.props.availableFeatures.size}
+                totalResults={
+                    this.props.availableFeatures.size +
+                    this.props.searchState.get("globalSearchResults").size
+                }
                 clearFilterFunc={() => this.clearAllFilters()}
             />
         );

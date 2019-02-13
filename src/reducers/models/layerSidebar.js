@@ -42,6 +42,7 @@ export const layerSidebarState = Immutable.fromJS({
         },
         [layerSidebarTypes.CATEGORY_PLUMES]: {
             searchResults: {},
+            globalSearchResults: {},
             pageIndex: 0,
             filters: {
                 [layerSidebarTypes.PLUME_FILTER_SORT_BY]: {

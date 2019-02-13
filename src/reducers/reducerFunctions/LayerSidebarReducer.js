@@ -427,4 +427,11 @@ export default class LayerSidebarReducer {
             Immutable.fromJS(data)
         );
     }
+
+    static updatePlumeGlobalResults(state, action) {
+        return state.setIn(
+            ["searchState", layerSidebarTypes.CATEGORY_PLUMES, "globalSearchResults"],
+            Immutable.fromJS(action.data)
+        );
+    }
 }
