@@ -40,47 +40,16 @@ export function setFeatureDetail(category, feature) {
         dispatch({ type: types.FEATURE_DETAIL_PLUME_LIST_LOADING });
         dispatch({ type: types.UPDATE_FEATURE_DETAIL, category, feature });
 
-        const sourceList = getSourceList(category, feature);
-        if (!sourceList.length) {
-            dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data: [] });
-            return;
-        }
-        const sourceRequests = sourceList.map(
-            src =>
-                new Promise((resolve, reject) =>
-                    fetch(appConfig.URLS.plumeListQueryEndpoint.replace("{source_id}", src))
-                        .then(res => res.json())
-                        .then(data => {
-                            resolve({ src, data });
-                        })
-                        .catch(err => {
-                            console.warn(
-                                `Error getting available layer list for feature: ${feature.get(
-                                    "name"
-                                )}`,
-                                err
-                            );
-                            reject();
-                        })
-                )
-        );
-
-        Promise.all(sourceRequests)
-            .then(responses => {
-                dispatch({
-                    type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST,
-                    data: responses
-                        .filter(res => res.data.length)
-                        .map(res =>
-                            res.data.map(feature => {
-                                feature.sourceId = res.src;
-                                return feature;
-                            })
-                        )
-                        .reduce((acc, item) => acc.concat(item), [])
-                });
+        fetch(appConfig.URLS.plumeListQueryEndpoint.replace("{vista_id}", feature.get("id")))
+            .then(res => res.json())
+            .then(data => {
+                dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data });
             })
             .catch(err => {
+                console.warn(
+                    `Error getting available layer list for feature: ${feature.get("name")}`,
+                    err
+                );
                 dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data: [] });
                 dispatch(
                     alertActions.addAlert({
@@ -92,6 +61,34 @@ export function setFeatureDetail(category, feature) {
                     })
                 );
             });
+
+        // Promise.all(sourceRequests)
+        //     .then(responses => {
+        //         dispatch({
+        //             type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST,
+        //             data: responses
+        //                 .filter(res => res.data.length)
+        //                 .map(res =>
+        //                     res.data.map(feature => {
+        //                         feature.sourceId = res.src;
+        //                         return feature;
+        //                     })
+        //                 )
+        //                 .reduce((acc, item) => acc.concat(item), [])
+        //         });
+        //     })
+        //     .catch(err => {
+        //         dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data: [] });
+        //         dispatch(
+        //             alertActions.addAlert({
+        //                 title: appStringsMSF.ALERTS.FEATURE_DETAIL_PLUME_LIST_LOAD_FAILED.title,
+        //                 body: appStringsMSF.ALERTS.FEATURE_DETAIL_PLUME_LIST_LOAD_FAILED,
+        //                 severity:
+        //                     appStringsMSF.ALERTS.FEATURE_DETAIL_PLUME_LIST_LOAD_FAILED.severity,
+        //                 time: new Date()
+        //             })
+        //         );
+        //     });
     };
 }
 

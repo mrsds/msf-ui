@@ -245,25 +245,6 @@ function getSourceList(data) {
     }, []);
 }
 
-function getImeList({ id, nearestFacility }) {
-    return new Promise((resolve, reject) =>
-        fetch(appConfig.URLS.plumeListQueryEndpoint.replace("{source_id}", id))
-            .then(data => data.json())
-            .then(data => {
-                resolve({
-                    id,
-                    imeList: data.reduce((acc, flyover) => {
-                        if (flyover.plumes.length) {
-                            flyover.plumes.forEach(plume => acc.push(plume.ime_20));
-                        }
-                        return acc;
-                    }, []),
-                    nearestFacility
-                });
-            })
-    );
-}
-
 function getSubcategoryList(getState) {
     const sector = getState().MSFAnalytics.getIn(["filterOptions", "selectedSector"]);
 

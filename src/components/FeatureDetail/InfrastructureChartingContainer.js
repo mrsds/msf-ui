@@ -50,7 +50,7 @@ export class InfrastructureChartingContainer extends Component {
             .filter(
                 feature =>
                     !this.props.plumeSourceId ||
-                    this.props.plumeSourceId === feature.get("sourceId")
+                    this.props.plumeSourceId === feature.get("source_id")
             )
             .filter(
                 feature =>
@@ -84,7 +84,8 @@ export class InfrastructureChartingContainer extends Component {
 
     getAvailablePlumeSources() {
         return this.props.plumeList.reduce((acc, feature) => {
-            if (!acc.includes(feature.get("sourceId"))) acc.push(feature.get("sourceId"));
+            if (feature.get("source_id") && !acc.includes(feature.get("source_id")))
+                acc.push(feature.get("source_id"));
             return acc;
         }, []);
     }
@@ -378,7 +379,7 @@ export class InfrastructureChartingContainer extends Component {
             >
                 <TableRow>
                     <TableCell padding="dense">{isFlyover ? "No" : "Yes"}</TableCell>
-                    <TableCell padding="dense">{feature.get("sourceId")}</TableCell>
+                    <TableCell padding="dense">{feature.get("source_id")}</TableCell>
                     <TableCell padding="dense">
                         {dateString}
                         <br />
@@ -529,7 +530,7 @@ export class InfrastructureChartingContainer extends Component {
                 if (!plume.get("candidate_id")) {
                     acc.flyovers.push(plume);
                 } else {
-                    const sourceId = plume.get("sourceId");
+                    const sourceId = plume.get("source_id");
                     acc[sourceId] = acc[sourceId] ? acc[sourceId].concat([plume]) : [plume];
                 }
                 return acc;
