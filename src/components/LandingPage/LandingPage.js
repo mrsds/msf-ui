@@ -155,8 +155,37 @@ export class LandingPage extends Component {
                         </CardContent>
                     </Card>
                     <div className={styles.footer}>
-                        <div>Site Contact: Riley Duren</div>
-                        <div>Release number: URS280411</div>
+                        <div className={styles.footer_nav}>
+                            <ul>
+                                <li>
+                                    <a href="http://www.nasa.gov/">NASA</a>
+                                </li>
+                                |
+                                <li>
+                                    <a href="http://www.caltech.edu/">Caltech</a>
+                                </li>
+                                |
+                                <li>
+                                    <a href="http://jpl.nasa.gov/copyrights.php">Privacy</a>
+                                </li>
+                                |
+                                <li>
+                                    <a href="http://jpl.nasa.gov/imagepolicy">Image Policy</a>
+                                </li>
+                                |
+                                <li>
+                                     <a href="http://jpl.nasa.gov/faq.php">FAQ</a>
+                                </li>
+                                |
+                                <li>
+                                    <a href="http://jpl.nasa.gov/contact_JPL.php">Feedback</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className={styles.div_footer_right}>
+                            Site Contact: Riley Duren<br/>
+                            Release number: URS280411
+                        </div>
                     </div>
                 </div>
             </MuiThemeProvider>
