@@ -1,57 +1,27 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import ReactDOM from "react-dom";
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import CloudOffOutlineIcon from "mdi-material-ui/CloudOffOutline";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListSubheader from "@material-ui/core/ListSubheader";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
-import * as layerSidebarActions from "actions/layerSidebarActions";
-import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import IconButton from "@material-ui/core/IconButton";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import CloudOffOutlineIcon from "mdi-material-ui/CloudOffOutline";
-import InfoOutlineIcon from "@material-ui/icons/InfoOutline";
-import InfoIcon from "@material-ui/icons/Info";
-import MyLocationIcon from "@material-ui/icons/MyLocation";
-import Select from "@material-ui/core/Select";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import Typography from "@material-ui/core/Typography";
+
+import MiscUtil from "_core/utils/MiscUtil";
 import MiscUtilExtended from "utils/MiscUtilExtended";
-import MetadataUtil from "utils/MetadataUtil";
-import appConfig from "constants/appConfig";
-import * as mapActionsMSF from "actions/mapActions";
 import PageControls from "components/PageControls/PageControls";
 import PlumeFiltersContainer from "components/MethaneSidebar/PlumeFiltersContainer";
+import * as layerSidebarActions from "actions/layerSidebarActions";
 import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
-import SearchInput from "components/Reusables/SearchInput";
-import MiscUtil from "_core/utils/MiscUtil";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import * as mapActionsMSF from "actions/mapActions";
 
 export class PlumesContainer extends Component {
-    // componentDidUpdate(prevProps) {
-    //     console.log(this.props.isLoading, "isloading");
-    //     if (
-    //         !this.props.isLoading &&
-    //         this.props.activeFeature.getIn(["feature", "id"]) &&
-    //         prevProps.activeFeature.getIn(["feature", "id"]) !==
-    //             this.props.activeFeature.getIn(["feature", "id"])
-    //     ) {
-    //         // Bring new active feature into view if needed
-    //         let item = ReactDOM.findDOMNode(this.activeListItemRef);
-    //         if (item) {
-    //             console.log(item);
-    //             console.log("item found, scrolling");
-    //             // item.scrollIntoView();
-    //         }
-    //     }
-    // }
-
     clearAllFilters() {
         this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_ID, "");
         this.props.setPlumeFilter(layerSidebarTypes.PLUME_FILTER_PLUME_FLUX, null);

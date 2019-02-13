@@ -1,19 +1,17 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import MenuItem from "@material-ui/core/MenuItem";
-import { connect } from "react-redux";
+import { Arrow } from "react-popper";
 import Button from "@material-ui/core/Button";
-import FormGroup from "@material-ui/core/FormGroup";
 import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
+import FormGroup from "@material-ui/core/FormGroup";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
-import MiscUtil from "_core/utils/MiscUtil";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import Select from "@material-ui/core/Select";
 import moment from "moment";
-import { Arrow } from "react-popper";
-import { LayerControlLabel } from "_core/components/LayerMenu";
+
+import MiscUtil from "_core/utils/MiscUtil";
 import styles from "components/LayerMenu/LayerDateControlStyles.scss";
 
 export class PlumeDateFilterControl extends Component {

@@ -1,20 +1,18 @@
+import Cookies from "universal-cookie";
+import Immutable from "immutable";
+import Ol_Extent from "ol/extent";
+
+import * as MSFTypes from "constants/MSFTypes";
+import MiscUtil from "_core/utils/MiscUtil";
+import * as alertActions from "_core/actions/alertActions";
+import appConfig from "constants/appConfig";
+import * as appStrings from "_core/constants/appStrings";
+import * as appStringsMSF from "constants/appStrings";
+import * as asyncActions from "_core/actions/asyncActions";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import * as mapActions from "_core/actions/mapActions";
 import * as types from "_core/constants/actionTypes";
 import * as typesMSF from "constants/actionTypes";
-import MiscUtil from "_core/utils/MiscUtil";
-import MapUtilExtended from "utils/MapUtilExtended";
-import * as appStringsMSF from "constants/appStrings";
-import * as alertActions from "_core/actions/alertActions";
-import * as mapActions from "_core/actions/mapActions";
-import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import * as appStrings from "_core/constants/appStrings";
-import * as featureDetailActions from "actions/featureDetailActions";
-import appConfig from "constants/appConfig";
-import * as asyncActions from "_core/actions/asyncActions";
-import Immutable from "immutable";
-import * as MSFTypes from "constants/MSFTypes";
-import Cookies from "universal-cookie";
-import Ol_Extent from "ol/extent";
-import Ol_Proj from "ol/proj";
 
 export function updateFeatureList_Layer(layer, active) {
     return (dispatch, getState) => {

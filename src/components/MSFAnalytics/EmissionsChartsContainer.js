@@ -1,23 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { Bar as BarChart } from "react-chartjs-2";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
-import Table from "@material-ui/core/Table";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableBody from "@material-ui/core/TableBody";
-import { bindActionCreators } from "redux";
-import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
-import * as MSFTypes from "constants/MSFTypes";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import { Bar as BarChart } from "react-chartjs-2";
 import ErrorBarsPlugin from "chartjs-plugin-error-bars";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import Typography from "@material-ui/core/Typography";
+
+import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
+import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
 
 export class EmissionsChartsContainer extends Component {
     componentDidMount() {

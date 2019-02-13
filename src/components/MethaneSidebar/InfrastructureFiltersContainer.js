@@ -1,37 +1,36 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { Manager, Target, Popper } from "react-popper";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as layerSidebarActions from "actions/layerSidebarActions";
-import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import AppBar from "@material-ui/core/AppBar";
+import Check from "@material-ui/icons/Check";
+import Checkbox from "@material-ui/core/Checkbox";
+import Clear from "@material-ui/icons/Clear";
+import CloseIcon from "@material-ui/icons/Close";
+import Grow from "@material-ui/core/Grow";
+import Immutable from "immutable";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
-import Checkbox from "@material-ui/core/Checkbox";
-import Switch from "@material-ui/core/Switch";
-import Popover from "@material-ui/core/Popover";
+import ListSubheader from "@material-ui/core/ListSubheader";
 import Paper from "@material-ui/core/Paper";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import Search from "@material-ui/icons/Search";
 import Sort from "@material-ui/icons/SortByAlpha";
-import Check from "@material-ui/icons/Check";
-import Clear from "@material-ui/icons/Clear";
-import Grow from "@material-ui/core/Grow";
-import AppBar from "@material-ui/core/AppBar";
-import Typography from "@material-ui/core/Typography";
+import Switch from "@material-ui/core/Switch";
 import Toolbar from "@material-ui/core/Toolbar";
-import DomainIcon from "mdi-material-ui/Domain";
-import CloseIcon from "@material-ui/icons/Close";
-import { Manager, Target, Popper } from "react-popper";
-import ChipDropdown from "components/Reusables/ChipDropdown";
-import SearchInput from "components/Reusables/SearchInput";
-import styles from "components/MethaneSidebar/FiltersContainerStyles.scss";
-import displayStyles from "_core/styles/display.scss";
+import Typography from "@material-ui/core/Typography";
+
 import { IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
+import ChipDropdown from "components/Reusables/ChipDropdown";
 import MapUtilExtended from "utils/MapUtilExtended";
-import Immutable from "immutable";
+import SearchInput from "components/Reusables/SearchInput";
+import displayStyles from "_core/styles/display.scss";
+import * as layerSidebarActions from "actions/layerSidebarActions";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import styles from "components/MethaneSidebar/FiltersContainerStyles.scss";
 
 export class InfrastructureFiltersContainer extends Component {
     constructor(props) {
@@ -333,7 +332,8 @@ export class InfrastructureFiltersContainer extends Component {
                                     <Paper elevation={8} className={styles.popoverPaper}>
                                         <List>
                                             <div className={styles.sorterHeader}>
-                                                Sort By<Sort />
+                                                Sort By
+                                                <Sort />
                                             </div>
                                             {infrastructureSortByFilter
                                                 .get("selectableValues")

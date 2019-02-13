@@ -1,12 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
-import { IconButtonSmall } from "_core/components/Reusables";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import Divider from "@material-ui/core/Divider";
+import PropTypes from "prop-types";
+import React from "react";
+import Typography from "@material-ui/core/Typography";
+
+import { IconButtonSmall } from "_core/components/Reusables";
 import styles from "components/MSFAnalytics/PageControlsStyles.scss";
 
 export const PageControls = props => {

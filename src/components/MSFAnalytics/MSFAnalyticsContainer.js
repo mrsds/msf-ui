@@ -1,29 +1,24 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import MiscUtil from "_core/utils/MiscUtil";
-import Paper from "@material-ui/core/Paper";
 import AppBar from "@material-ui/core/AppBar";
-import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 import InsertChartIcon from "@material-ui/icons/InsertChart";
-import RadioButtonChecked from "@material-ui/icons/RadioButtonChecked";
-import RadioButtonUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { bindActionCreators } from "redux";
-import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
-import * as MSFTypes from "constants/MSFTypes";
-import Divider from "@material-ui/core/Divider";
+import Paper from "@material-ui/core/Paper";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import Typography from "@material-ui/core/Typography";
+
 import DataFilterContainer from "components/MSFAnalytics/DataFilterContainer";
 import EmissionsChartsContainer from "components/MSFAnalytics/EmissionsChartsContainer";
 import EmissionsSummaryInfoContainer from "components/MSFAnalytics/EmissionsSummaryInfoContainer";
+import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
+import * as MSFTypes from "constants/MSFTypes";
+import MiscUtil from "_core/utils/MiscUtil";
 import PlumeDetectionStatisticsContainer from "components/MSFAnalytics/PlumeDetectionStatisticsContainer";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
+import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
 
 export class MSFAnalyticsContainer extends Component {
     makeAnalyticsModeListItems() {

@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
+import ArrowDropDownIcon from "mdi-material-ui/MenuLeft";
+import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import Tooltip from "@material-ui/core/Tooltip";
+
+import InfrastructureContainer from "components/MethaneSidebar/InfrastructureContainer";
+import MiscUtil from "_core/utils/MiscUtil";
+import PlumesContainer from "components/MethaneSidebar/PlumesContainer";
+import displayStyles from "_core/styles/display.scss";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import InfrastructureContainer from "components/MethaneSidebar/InfrastructureContainer";
-import PlumesContainer from "components/MethaneSidebar/PlumesContainer";
-import Paper from "@material-ui/core/Paper";
-import Tooltip from "@material-ui/core/Tooltip";
-import Button from "@material-ui/core/Button";
-import ArrowDropDownIcon from "mdi-material-ui/MenuLeft";
 import styles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
-import displayStyles from "_core/styles/display.scss";
-import MiscUtil from "_core/utils/MiscUtil";
-import { appColorPalette } from "styles/appColorPalette";
 
 export class LayerSidebarContainer extends Component {
     // Gets the category name for a numerical tab index

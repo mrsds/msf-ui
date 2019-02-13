@@ -1,32 +1,32 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import { Scatter as ScatterChart } from "react-chartjs-2";
 import { bindActionCreators } from "redux";
-import PropTypes from "prop-types";
-import FormGroup from "@material-ui/core/FormGroup";
+import { connect } from "react-redux";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+import FormGroup from "@material-ui/core/FormGroup";
 import Grid from "@material-ui/core/Grid";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import Switch from "@material-ui/core/Switch";
 import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import TableBody from "@material-ui/core/TableBody";
-import Button from "@material-ui/core/Button";
-import MetadataUtil from "utils/MetadataUtil";
+import Typography from "@material-ui/core/Typography";
+import moment from "moment";
+
 import * as MSFTypes from "constants/MSFTypes";
+import MiscUtilExtended from "utils/MiscUtilExtended";
 import * as featureDetailActions from "actions/featureDetailActions";
 import featureDetailStyles from "components/FeatureDetail/FeatureDetailContainerStyles.scss";
 import styles from "components/FeatureDetail/ChartingContainerStyles.scss";
-import { Scatter as ScatterChart } from "react-chartjs-2";
-import moment from "moment";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import MiscUtilExtended from "utils/MiscUtilExtended";
 
 export class PlumeChartingContainer extends Component {
     makeObservationToggle() {

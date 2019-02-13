@@ -1,29 +1,28 @@
-import moment from "moment";
-import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
-import * as featureDetailActions from "actions/featureDetailActions";
-import Typography from "@material-ui/core/Typography";
-import FileDownloadIcon from "@material-ui/icons/FileDownload";
-import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import MetadataUtil from "utils/MetadataUtil";
-import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import MiscUtil from "_core/utils/MiscUtil";
-import styles from "components/FeatureDetail/FeatureDetailContainerStyles.scss";
-import PlumeChartingContainer from "components/FeatureDetail/PlumeChartingContainer";
-import InfrastructureChartingContainer from "components/FeatureDetail/InfrastructureChartingContainer";
-import { IconButtonSmaller } from "components/Reusables";
-import InfoIcon from "@material-ui/icons/Info";
-import appConfig from "constants/appConfig";
-import Tooltip from "@material-ui/core/Tooltip";
-import Immutable from "immutable";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import FileDownloadIcon from "@material-ui/icons/FileDownload";
+import Grid from "@material-ui/core/Grid";
+import Immutable from "immutable";
+import InfoIcon from "@material-ui/icons/Info";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@material-ui/core/Typography";
+import moment from "moment";
+
+import { IconButtonSmaller } from "components/Reusables";
+import InfrastructureChartingContainer from "components/FeatureDetail/InfrastructureChartingContainer";
+import MiscUtil from "_core/utils/MiscUtil";
 import MiscUtilExtended from "utils/MiscUtilExtended";
+import PlumeChartingContainer from "components/FeatureDetail/PlumeChartingContainer";
+import * as featureDetailActions from "actions/featureDetailActions";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import styles from "components/FeatureDetail/FeatureDetailContainerStyles.scss";
 
 export class FeatureDetailContainer extends Component {
     truncateField(str, limit) {

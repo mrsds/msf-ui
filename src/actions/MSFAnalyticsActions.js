@@ -1,14 +1,12 @@
-import * as types from "_core/constants/actionTypes";
-import * as typesMSF from "constants/actionTypes";
-import appConfig from "constants/appConfig";
-import MiscUtil from "_core/utils/MiscUtil";
-import MetadataUtil from "utils/MetadataUtil";
 import Immutable from "immutable";
+
 import * as MSFTypes from "constants/MSFTypes";
-import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import * as appStringsMSF from "constants/appStrings";
+import MetadataUtil from "utils/MetadataUtil";
 import * as alertActions from "_core/actions/alertActions";
-import * as mapActions from "actions/mapActions";
+import appConfig from "constants/appConfig";
+import * as appStringsMSF from "constants/appStrings";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import * as typesMSF from "constants/actionTypes";
 
 export function changeAnalyticsMode(mode) {
     return { type: typesMSF.CHANGE_ANALYTICS_MODE, mode };

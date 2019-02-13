@@ -1,21 +1,20 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import TableBody from "@material-ui/core/TableBody";
-import { bindActionCreators } from "redux";
+import Typography from "@material-ui/core/Typography";
+
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
-import * as MSFTypes from "constants/MSFTypes";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
 
 export class PlumeDetectionStatisticsContainer extends Component {
     componentDidMount() {
@@ -157,10 +156,13 @@ export class PlumeDetectionStatisticsContainer extends Component {
                                         <TableCell padding="dense">Facilities</TableCell>
                                         <TableCell padding="dense">Facility Flyovers</TableCell>
                                         <TableCell padding="dense">
-                                            Unique Facilities<br />Flown Over
+                                            Unique Facilities
+                                            <br />
+                                            Flown Over
                                         </TableCell>
                                         <TableCell padding="dense">
-                                            Unique Facilities with<br />> 0 Plume Detections
+                                            Unique Facilities with
+                                            <br />> 0 Plume Detections
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -189,10 +191,13 @@ export class PlumeDetectionStatisticsContainer extends Component {
                                         <TableCell padding="dense">Facilities</TableCell>
                                         <TableCell padding="dense">Facility Flyovers</TableCell>
                                         <TableCell padding="dense">
-                                            Unique Facilities<br />Flown Over
+                                            Unique Facilities
+                                            <br />
+                                            Flown Over
                                         </TableCell>
                                         <TableCell padding="dense">
-                                            Unique Facilities with<br />> 0 Plume Detections
+                                            Unique Facilities with
+                                            <br />> 0 Plume Detections
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>

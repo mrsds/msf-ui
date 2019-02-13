@@ -1,35 +1,32 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { Manager, Target, Popper } from "react-popper";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as layerSidebarActions from "actions/layerSidebarActions";
-import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Radio from "@material-ui/core/Radio";
-import Popover from "@material-ui/core/Popover";
-import Paper from "@material-ui/core/Paper";
-import Search from "@material-ui/icons/Search";
-import Sort from "@material-ui/icons/SortByAlpha";
+import AppBar from "@material-ui/core/AppBar";
 import Check from "@material-ui/icons/Check";
 import Clear from "@material-ui/icons/Clear";
-import Grow from "@material-ui/core/Grow";
-import AppBar from "@material-ui/core/AppBar";
-import Typography from "@material-ui/core/Typography";
-import Toolbar from "@material-ui/core/Toolbar";
-import AirplanemodeActiveIcon from "@material-ui/icons/AirplanemodeActive";
 import CloseIcon from "@material-ui/icons/Close";
-import { Manager, Target, Popper } from "react-popper";
+import Grow from "@material-ui/core/Grow";
+import Immutable from "immutable";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Paper from "@material-ui/core/Paper";
+import PropTypes from "prop-types";
+import Radio from "@material-ui/core/Radio";
+import React, { Component } from "react";
+import Search from "@material-ui/icons/Search";
+import Sort from "@material-ui/icons/SortByAlpha";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+
+import { IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
 import ChipDropdown from "components/Reusables/ChipDropdown";
 import SearchInput from "components/Reusables/SearchInput";
-import styles from "components/MethaneSidebar/FiltersContainerStyles.scss";
 import displayStyles from "_core/styles/display.scss";
-import { IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
-import Immutable from "immutable";
+import * as layerSidebarActions from "actions/layerSidebarActions";
+import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import styles from "components/MethaneSidebar/FiltersContainerStyles.scss";
 
 export class PlumeFiltersContainer extends Component {
     constructor(props) {
