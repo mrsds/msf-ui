@@ -66,6 +66,8 @@ const APP_CONFIG = Immutable.fromJS({
         griddedVectorEndpoint: "http://" + be_endpoint + "/data/gridded/v2/Fluxes_{date}.geojson",
         plumeListQueryEndpoint:
             "http://" + be_endpoint + ":" + be_port + "/flyoversOfFacility?vista_id={vista_id}",
+        sourceListQueryEndpoint:
+            "http://" + be_endpoint + ":" + be_port + "/flyoversOfPlumeSource?source={source_id}",
         detectionStatsEndpoint:
             "http://" + be_endpoint + ":" + be_port + "/detectionBySector?county={county}",
         areaSearchOptionsListEndpoint: "http://" + be_endpoint + ":" + be_port + "/list/counties",

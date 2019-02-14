@@ -287,7 +287,7 @@ export class PlumeChartingContainer extends Component {
                 if (!plume.get("candidate_id")) {
                     acc.flyovers.push(plume);
                 } else {
-                    const sourceId = plume.get("sourceId");
+                    const sourceId = plume.get("source_id");
                     acc[sourceId] = acc[sourceId] ? acc[sourceId].concat([plume]) : [plume];
                 }
                 return acc;

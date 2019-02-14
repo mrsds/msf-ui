@@ -29,22 +29,11 @@ export function setLayerSidebarCollapsed(collapsed) {
     };
 }
 
-export function setFeatureDetail(category, feature) {
-    return dispatch => {
-        // Fetch metadata from backend if this is an VISTA feature
-        if (category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE) {
-            dispatch({ type: types.VISTA_METADATA_LOADING });
-            getVistaMetadata(feature, dispatch);
-        }
-
-        dispatch({ type: types.FEATURE_DETAIL_PLUME_LIST_LOADING });
-        dispatch({ type: types.UPDATE_FEATURE_DETAIL, category, feature });
-
+function getVistaPlumesList(feature) {
+    return dispatch =>
         fetch(appConfig.URLS.plumeListQueryEndpoint.replace("{vista_id}", feature.get("id")))
             .then(res => res.json())
-            .then(data => {
-                dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data });
-            })
+            .then(data => dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data }))
             .catch(err => {
                 console.warn(
                     `Error getting available layer list for feature: ${feature.get("name")}`,
@@ -61,34 +50,52 @@ export function setFeatureDetail(category, feature) {
                     })
                 );
             });
+}
 
-        // Promise.all(sourceRequests)
-        //     .then(responses => {
-        //         dispatch({
-        //             type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST,
-        //             data: responses
-        //                 .filter(res => res.data.length)
-        //                 .map(res =>
-        //                     res.data.map(feature => {
-        //                         feature.sourceId = res.src;
-        //                         return feature;
-        //                     })
-        //                 )
-        //                 .reduce((acc, item) => acc.concat(item), [])
-        //         });
-        //     })
-        //     .catch(err => {
-        //         dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data: [] });
-        //         dispatch(
-        //             alertActions.addAlert({
-        //                 title: appStringsMSF.ALERTS.FEATURE_DETAIL_PLUME_LIST_LOAD_FAILED.title,
-        //                 body: appStringsMSF.ALERTS.FEATURE_DETAIL_PLUME_LIST_LOAD_FAILED,
-        //                 severity:
-        //                     appStringsMSF.ALERTS.FEATURE_DETAIL_PLUME_LIST_LOAD_FAILED.severity,
-        //                 time: new Date()
-        //             })
-        //         );
-        //     });
+function getPlumesSourcesList(feature) {
+    return dispatch =>
+        fetch(
+            appConfig.URLS.sourceListQueryEndpoint.replace("{source_id}", feature.get("source_id"))
+        )
+            .then(res => res.json())
+            .then(data => dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data }))
+            .catch(err => {
+                console.warn(
+                    `Error getting available layer list for feature: ${feature.get("name")}`,
+                    err
+                );
+                dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data: [] });
+                dispatch(
+                    alertActions.addAlert({
+                        title: appStringsMSF.ALERTS.FEATURE_DETAIL_PLUME_LIST_LOAD_FAILED.title,
+                        body: appStringsMSF.ALERTS.FEATURE_DETAIL_PLUME_LIST_LOAD_FAILED,
+                        severity:
+                            appStringsMSF.ALERTS.FEATURE_DETAIL_PLUME_LIST_LOAD_FAILED.severity,
+                        time: new Date()
+                    })
+                );
+            });
+}
+
+export function setFeatureDetail(category, feature) {
+    return dispatch => {
+        // Fetch metadata from backend if this is an VISTA feature
+        if (category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE) {
+            dispatch({ type: types.VISTA_METADATA_LOADING });
+            getVistaMetadata(feature, dispatch);
+        }
+
+        dispatch({ type: types.FEATURE_DETAIL_PLUME_LIST_LOADING });
+        dispatch({ type: types.UPDATE_FEATURE_DETAIL, category, feature });
+
+        switch (category) {
+            case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
+                dispatch(getVistaPlumesList(feature));
+                break;
+            case layerSidebarTypes.CATEGORY_PLUMES:
+                dispatch(getPlumesSourcesList(feature));
+                break;
+        }
     };
 }
 
