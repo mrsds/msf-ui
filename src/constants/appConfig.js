@@ -85,7 +85,7 @@ const APP_CONFIG = Immutable.fromJS({
             be_endpoint +
             ":" +
             be_port +
-            "/methanePlumeSourcesSummary?county={county}&sector_level_1={sector_level_1}&sector_level_2={sector_level_2}"
+            "/methanePlumeSourcesSummary?county={county}&vista_category={vista_category}&sector_level_3={sector_level_3}"
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
     PLUME_START_DATE: new Date(2000, 0, 1),
