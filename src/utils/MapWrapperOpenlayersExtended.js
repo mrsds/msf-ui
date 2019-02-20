@@ -140,7 +140,8 @@ Object.keys(layerSidebarTypes.INFRASTRUCTURE_GROUPS).forEach(groupName => {
         let styles = [];
         if (
             feature.getGeometry().getType() === appStrings.GEOMETRY_LINE_STRING ||
-            feature.getGeometry().getType() === appStrings.GEOMETRY_POLYGON
+            feature.getGeometry().getType() === appStrings.GEOMETRY_POLYGON ||
+            feature.getGeometry().getType() === appStringsMSF.GEOMETRY_MULTIPOLYGON
         ) {
             styles = defaultStyleFn(feature, resolution);
         } else {
@@ -199,7 +200,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                 mapLayer = this.createVistaSourceLayer(layer, fromCache);
                 break;
             case appStringsMSF.LAYER_FLIGHT_LINES:
-                console.log("ding!");
                 mapLayer = this.createFlightLinesLayer(layer, fromCache);
                 break;
             default:
@@ -766,7 +766,8 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             let styles = [];
             if (
                 feature.getGeometry().getType() === appStrings.GEOMETRY_LINE_STRING ||
-                feature.getGeometry().getType() === appStrings.GEOMETRY_POLYGON
+                feature.getGeometry().getType() === appStrings.GEOMETRY_POLYGON ||
+                feature.getGeometry().getType() === appStringsMSF.GEOMETRY_MULTIPOLYGON
             ) {
                 styles = defaultStyleFn(feature, resolution);
             } else {
