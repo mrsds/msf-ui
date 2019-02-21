@@ -6,6 +6,7 @@ import styles from "components/FeaturePicker/FeaturePickerStyles.scss";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
@@ -17,6 +18,8 @@ import Subheader from "@material-ui/core/ListSubheader";
 import * as mapActionsMSF from "actions/mapActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import * as layerSidebarActions from "actions/layerSidebarActions";
+import CloseIcon from "@material-ui/icons/Close";
+import { IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
 
 export class FeaturePicker extends Component {
     makeInfrastructureItem(feature) {
@@ -233,6 +236,19 @@ export class FeaturePicker extends Component {
         return (
             <div className={rootClasses} style={pickerStyle}>
                 <Card className={styles.cardRoot} style={this.getCardStyle()}>
+                    <CardHeader
+                        title="Plumes and Facilities at This Position"
+                        classes={{
+                            title: styles.pickerHeaderTitle,
+                            root: styles.pickerHeaderRoot,
+                            avatar: styles.pickerHeaderAvatar
+                        }}
+                        avatar={
+                            <IconButtonSmall onClick={this.props.closeFeaturePicker}>
+                                <CloseIcon />
+                            </IconButtonSmall>
+                        }
+                    />
                     <CardContent className={styles.cardContentRoot}>
                         <List dense={true} className={styles.featureItemList}>
                             <Subheader

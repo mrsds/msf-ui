@@ -81,3 +81,20 @@
     padding-left: 16px;
     padding-right: 16px;
 }
+
+.pickerHeaderRoot {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid #dfdfdf;
+    padding-right: 10px;
+}
+
+.pickerHeaderTitle {
+    color: #8c8c8c;
+    font-size: 14px;
+}
+
+.pickerHeaderAvatar {
+    margin-right: 0;
+}

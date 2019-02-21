@@ -110,7 +110,7 @@ export class InfrastructureContainer extends Component {
         });
 
         const listKey =
-            feature.get("id") ||
+            feature.get("id") +
             Math.random()
                 .toString(36)
                 .substring(7);
