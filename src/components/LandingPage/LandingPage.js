@@ -186,7 +186,8 @@ export class LandingPage extends Component {
                             Site Contact: Riley Duren<br/>
                             Release number: URS280411
                         </div>
-                    </div>
+                        <script id="_fed_an_ua_tag" type="text/javascript" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NASA&subagency=METHANE-MAPPER&dclink=true&sp=search,s,q&sdor=false&exts=tif,tiff"></script>
+                        </div>
                 </div>
             </MuiThemeProvider>
         );
