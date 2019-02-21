@@ -263,7 +263,7 @@ function plumesGlobalSearch(dispatch) {
         ]);
 
         if (searchString === "")
-            return dispatch({ type: types.UPDATE_PLUME_GLOBAL_RESULTS, data: null });
+            return dispatch({ type: types.UPDATE_PLUME_GLOBAL_RESULTS, data: [] });
 
         fetch(appConfig.URLS.avirisGlobalSearchEndpoint.replace("{source_id}", searchString))
             .then(res => res.json())
