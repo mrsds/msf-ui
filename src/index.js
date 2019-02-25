@@ -38,6 +38,7 @@ require("styles/resources/img/map_icons/PlumeIconActive.png");
 require("styles/resources/img/landing_page/logo_nasa_trio_white.png");
 require("styles/resources/img/landing_page/logo_nasa_trio_white@2x.png");
 require("styles/resources/img/landing_page/hero_image.jpg");
+require("styles/resources/img/landing_page/msf_screenshot.jpg");
 import { BrowserRouter } from "react-router-dom";
 
 const store = configureStore();
