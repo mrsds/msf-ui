@@ -173,7 +173,7 @@ export class EmissionsChartsContainer extends Component {
                 {this.makeChart(this.props.emissionsSourceData.toArray(), "All")}
                 {Object.keys(dataBySector)
                     .sort(this.sortSectors)
-                    .map(key => this.makeChart(dataBySector[key], key))}
+                    .map(key => this.makeChart(dataBySector[key], key.replace(/_/g, " ")))}
             </React.Fragment>
         );
     }
