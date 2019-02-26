@@ -57,7 +57,7 @@ export class LandingPage extends Component {
                                 </div>
                             </div>
                             <img
-                                alt=""
+                                alt="NASA Logo"
                                 className={styles.print_logo}
                                 src="img/logo_nasa_trio_white.png"
                             />
@@ -104,6 +104,11 @@ export class LandingPage extends Component {
                                     satellites on an interactive map alongside infrastructure
                                     information.
                                 </div>
+                                <img
+                                    alt="Screenshot of Methane Source Finder"
+                                    className={styles.app_screenshot}
+                                    src="img/msf_screenshot.png"
+                                />
                                 <div className={styles.section_body}>
                                     Why focus on methane? Methane (CH4) is a powerful greenhouse gas
                                     - second only to carbon dioxide as a climate-forcing agent
@@ -186,7 +191,8 @@ export class LandingPage extends Component {
                             Site Contact: Riley Duren<br/>
                             Release number: URS280411
                         </div>
-                    </div>
+                        <script id="_fed_an_ua_tag" type="text/javascript" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NASA&subagency=METHANE-MAPPER&dclink=true&sp=search,s,q&sdor=false&exts=tif,tiff"></script>
+                        </div>
                 </div>
             </MuiThemeProvider>
         );

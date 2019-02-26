@@ -80,6 +80,19 @@ a.nasa_logo {
     display: none;
 }
 
+.app_screenshot {
+    float: right;
+    width: 350px;
+    height: 185px;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    transition: all .3s ease-in-out;
+    &:hover {
+        transform: scale(2);
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+}
+
 .hero_banner {
     width: 100%;
     background: url(img/hero_image.jpg) no-repeat;
