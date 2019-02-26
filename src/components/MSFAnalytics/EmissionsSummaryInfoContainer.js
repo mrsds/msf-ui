@@ -118,7 +118,7 @@ export class EmissionsSummaryInfoContainer extends Component {
                 const ipccSectorName = source.get("sector_level_3");
                 const startDateStr = this.formatDateStr(source.get("first_flyover_date"));
                 const endDateStr = this.formatDateStr(source.get("last_flyover_date"));
-                const timespan = `${startDateStr} - ${endDateStr}`;
+                // const timespan = `${startDateStr} - ${endDateStr}`;
                 const avgFlux =
                     source.get("avg_flux") && parseFloat(source.get("avg_flux")).toFixed(2);
                 const fluxUncertainty = source.get("avg_flux_uncertainty");
@@ -139,7 +139,6 @@ export class EmissionsSummaryInfoContainer extends Component {
                         <TableCell padding="dense">{ipccSectorName}</TableCell>
                         <TableCell padding="dense">{source.get("plume_count")}</TableCell>
                         <TableCell padding="dense">{source.get("flyover_count")}</TableCell>
-                        <TableCell padding="dense">{timespan}</TableCell>
                         <TableCell padding="dense">{fluxString}</TableCell>
                     </TableRow>
                 );
@@ -164,9 +163,6 @@ export class EmissionsSummaryInfoContainer extends Component {
                                         <TableCell padding="dense">IPCC Sector</TableCell>
                                         <TableCell padding="dense">Plumes</TableCell>
                                         <TableCell padding="dense">Flyovers</TableCell>
-                                        <TableCell padding="dense">
-                                            Plume Observations Timespan
-                                        </TableCell>
                                         <TableCell padding="dense">Avg Emissions (kg/hr)</TableCell>
                                     </TableRow>
                                 </TableHead>
