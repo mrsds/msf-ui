@@ -306,12 +306,17 @@ export class FeatureDetailContainer extends Component {
         const datetime = this.props.feature.get("datetime");
         const dateString = datetime ? moment(datetime).format("MMMM Do, YYYY, H:mm") : "(No Date)";
 
-        const flux = feature.get("flux")
-            ? MiscUtilExtended.roundTo(feature.get("flux"), 2)
-            : "none";
-        const fluxUncertainty = feature.get("flux_uncertainty")
-            ? " ± " + MiscUtilExtended.roundTo(feature.get("flux_uncertainty"), 2)
-            : "";
+        const fluxLabel = (feature => {
+            const flux = feature.get("flux");
+            if (flux === null) return "not available";
+            if (flux === -9999.0) return "TBD";
+
+            const fluxUncertainty = feature.get("flux_uncertainty")
+                ? " ± " + MiscUtilExtended.roundTo(feature.get("flux_uncertainty"), 2)
+                : "";
+
+            return `${MiscUtilExtended.roundTo(flux, 2)}${fluxUncertainty} kg/hr`;
+        })(feature);
 
         const ime = feature.get("ime") ? MiscUtilExtended.roundTo(feature.get("ime"), 2) : "none";
         const fetch = feature.get("fetch")
@@ -323,7 +328,7 @@ export class FeatureDetailContainer extends Component {
             { name: "Candidate ID", value: feature.get("name") },
             {
                 name: "Emissions",
-                value: flux + fluxUncertainty,
+                value: fluxLabel,
                 unit: "kg/hr"
             },
             { name: "Source ID", value: feature.get("sourceId") },

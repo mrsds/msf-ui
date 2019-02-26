@@ -362,11 +362,17 @@ export class InfrastructureChartingContainer extends Component {
         const timeString = datetime ? moment(datetime).format("H:mm") : "";
         const isFlyover = !feature.get("candidate_id");
 
-        const flux = feature.get("flux") && MiscUtilExtended.roundTo(feature.get("flux"), 2);
-        const fluxUncertainty = feature.get("flux_uncertainty")
-            ? " ± " + MiscUtilExtended.roundTo(feature.get("flux_uncertainty"), 2)
-            : "";
-        const fluxString = flux ? flux + fluxUncertainty : "";
+        const fluxLabel = (feature => {
+            const flux = feature.get("flux");
+            if (flux === null) return "not available";
+            if (flux === -9999.0) return "TBD";
+
+            const fluxUncertainty = feature.get("flux_uncertainty")
+                ? " ± " + MiscUtilExtended.roundTo(feature.get("flux_uncertainty"), 2)
+                : "";
+
+            return `${MiscUtilExtended.roundTo(flux, 2)}${fluxUncertainty}`;
+        })(feature);
 
         return (
             <React.Fragment
@@ -392,7 +398,7 @@ export class InfrastructureChartingContainer extends Component {
                         {isFlyover ? "-" : "(none)"}
                     </TableCell>
                     <TableCell numeric={!isFlyover} padding="dense">
-                        {isFlyover ? "-" : fluxString}
+                        {isFlyover ? "-" : fluxLabel}
                     </TableCell>
                 </TableRow>
             </React.Fragment>

@@ -87,9 +87,12 @@ export class PlumesContainer extends Component {
             [layerSidebarStyles.listItemSecondaryAction]: true
         });
 
-        const flux = feature.get("flux")
-            ? `${MiscUtilExtended.roundTo(feature.get("flux"), 2)} kg/hr`
-            : "";
+        const fluxLabel = (feature => {
+            const flux = feature.get("flux");
+            if (flux === null) return "not available";
+            if (flux === -9999.0) return "TBD";
+            return `${MiscUtilExtended.roundTo(flux, 2)} kg/hr`;
+        })(feature);
 
         return (
             <React.Fragment key={feature.get("id")}>
@@ -130,7 +133,7 @@ export class PlumesContainer extends Component {
                             variant="caption"
                             noWrap
                         >
-                            {flux}
+                            {fluxLabel}
                         </Typography>
                     </div>
                     <ListItemSecondaryAction
