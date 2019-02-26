@@ -433,7 +433,7 @@ export class TimelineContainerStyles extends Component {
                     plumeStatistics: {
                         avg: {
                             value: 0,
-                            label: "kg"
+                            label: "kg/hr"
                         }
                     }
                 });
@@ -449,11 +449,12 @@ export class TimelineContainerStyles extends Component {
         }, Immutable.Map());
 
         // Compute some statistics
+
         items = items.map(x => {
-            let avg =
-                x.plumes
-                    .map(p => MetadataUtil.getPlumeIME(p) || "0.0")
-                    .reduce((acc, i) => (acc += parseFloat(i)), 0) / x.plumes.length;
+            let avg = x.plumes
+                .filter(p => p.get("flux") && p.get("flux") !== -9999.0)
+                .map(p => p.get("flux"))
+                .reduce((acc, i) => (acc += i) / x.plumes.length, 0);
             x.plumeStatistics.avg.value = MiscUtilExtended.roundTo(avg, 1);
             return x;
         });

@@ -70,9 +70,10 @@ export class LandingPage extends Component {
                                 Methane Source Finder
                             </Typography>
                             <div className={styles.section_hero}>
-                                    Methane Source Finder is an interactive map that helps you explore<br/>
-                                    methane data and related infrastructure in the state of California.
-                                </div>
+                                Methane Source Finder is an interactive map that helps you explore
+                                <br />
+                                methane data and related infrastructure in the state of California.
+                            </div>
                             <div className={styles.map_button_container}>
                                 <Link to="./map">
                                     <Button
@@ -144,17 +145,40 @@ export class LandingPage extends Component {
                                     DISCLAIMER
                                 </Typography>
                                 <div className={styles.section_body}>
-                                This site provides free access to methane data sets and analytics to help advance collective understanding of methane emissions for science and societal benefit.  This is an experimental rather than operational data portal. This means underlying data sets are not continuous and may be updated infrequently or not at all.  We may also make updates to data sets from time to time in response to new findings from ongoing research and feedback from facility operators.  Users are encouraged to cite the relevant scientific literature describing each data set (see &quot;info&quot; icon for each map layer). Metadata including nearest facility names are based on public data records available at the time the map layers were generated and may not be current. This data set includes over 1000 methane point source plumes, many of which have not been validated by follow-up ground observations and hence attribution errors are possible. We appreciate any feedback however requests for new features, bug fixes or additional data collection are subject to available funding. The information presented here is not intended to reflect any positions by the funding agencies.   
+                                    This site provides free access to methane data sets and
+                                    analytics to help advance collective understanding of methane
+                                    emissions for science and societal benefit. This is an
+                                    experimental rather than operational data portal. This means
+                                    underlying data sets are not continuous and may be updated
+                                    infrequently or not at all. We may also make updates to data
+                                    sets from time to time in response to new findings from ongoing
+                                    research and feedback from facility operators. Users are
+                                    encouraged to cite the relevant scientific literature describing
+                                    each data set (see &quot;info&quot; icon for each map layer).
+                                    Metadata including nearest facility names are based on public
+                                    data records available at the time the map layers were generated
+                                    and may not be current. This data set includes over 1000 methane
+                                    point source plumes, many of which have not been validated by
+                                    follow-up ground observations and hence attribution errors are
+                                    possible. We appreciate any feedback however requests for new
+                                    features, bug fixes or additional data collection are subject to
+                                    available funding. The information presented here is not
+                                    intended to reflect any positions by the funding agencies.
                                 </div>
                                 <Typography
                                     className={styles.section_title}
                                     color="default"
                                     gutterBottom
                                 >
-                                ACKNOWLEDGEMENTS
+                                    ACKNOWLEDGEMENTS
                                 </Typography>
                                 <div className={styles.section_body}>
-                                These data sets were funded by NASA&#8217;s Earth Science Division, the Carbon Monitoring System (CMS) program and the Advancing Collaborative Connections for Earth System Science (ACCESS) program. Additional funding was provided by the California Air Resources Board, the California Energy Commission and the National Institute of Standards and Technology.
+                                    These data sets were funded by NASA&#8217;s Earth Science
+                                    Division, the Carbon Monitoring System (CMS) program and the
+                                    Advancing Collaborative Connections for Earth System Science
+                                    (ACCESS) program. Additional funding was provided by the
+                                    California Air Resources Board, the California Energy Commission
+                                    and the National Institute of Standards and Technology.
                                 </div>
                             </div>
                         </CardContent>
@@ -179,7 +203,7 @@ export class LandingPage extends Component {
                                 </li>
                                 |
                                 <li>
-                                     <a href="http://jpl.nasa.gov/faq.php">FAQ</a>
+                                    <a href="http://jpl.nasa.gov/faq.php">FAQ</a>
                                 </li>
                                 |
                                 <li>
@@ -188,11 +212,16 @@ export class LandingPage extends Component {
                             </ul>
                         </div>
                         <div className={styles.div_footer_right}>
-                            Site Contact: Riley Duren<br/>
+                            Site Contact: Riley Duren
+                            <br />
                             Release number: URS280411
                         </div>
-                        <script id="_fed_an_ua_tag" type="text/javascript" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NASA&subagency=METHANE-MAPPER&dclink=true&sp=search,s,q&sdor=false&exts=tif,tiff"></script>
-                        </div>
+                        <script
+                            id="_fed_an_ua_tag"
+                            type="text/javascript"
+                            src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NASA&subagency=METHANE-MAPPER&dclink=true&sp=search,s,q&sdor=false&exts=tif,tiff"
+                        />
+                    </div>
                 </div>
             </MuiThemeProvider>
         );
