@@ -51,7 +51,7 @@
         "cesium": "1.41.0",
         "chai": "4.1.2",
         "chart.js": "2.7.3",
-        "chartjs-plugin-error-bars": "1.1.0",
+        "chartjs-plugin-error-bars": "1.2.0",
         "clean-css": "4.1.9",
         "colors": "1.1.2",
         "compression": "1.7.1",

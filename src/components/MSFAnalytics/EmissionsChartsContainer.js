@@ -41,8 +41,8 @@ export class EmissionsChartsContainer extends Component {
                 return {
                     label: `Source near: ${source.get("vista_name")}`,
                     avg,
-                    min: avg - uncertainty,
-                    max: avg + uncertainty,
+                    min: avg - Math.abs(uncertainty),
+                    max: avg + Math.abs(uncertainty),
                     long: source.get("nearest_vista_longitude", null),
                     lat: source.get("nearest_vista_latitude", null),
                     uncertainty
@@ -121,7 +121,7 @@ export class EmissionsChartsContainer extends Component {
             data: sourceData.map(s => s.avg),
             backgroundColor: "rgba(97, 100, 221, 0.66)",
             errorBars: sourceData.reduce((acc, s) => {
-                acc[s.label] = { plus: s.max, minus: s.min };
+                acc[s.label] = { plus: s.uncertainty, minus: -s.uncertainty };
                 return acc;
             }, {})
         };
