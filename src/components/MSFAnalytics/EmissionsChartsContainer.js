@@ -102,7 +102,10 @@ export class EmissionsChartsContainer extends Component {
                         const uncertainty = sourceData.find(s => s.label === tooltipItem.xLabel)
                             .uncertainty;
                         const uncertaintyString = (uncertainty && `± ${uncertainty}`) || "";
-                        const label = `Emissions: ${tooltipItem.yLabel} ${uncertaintyString}`;
+                        const percentage = data.datasets[1].data[tooltipItem.index] | 0;
+                        const label = `Emissions: ${
+                            tooltipItem.yLabel
+                        } ${uncertaintyString} (${percentage}%)`;
                         return label;
                     }
                 },
