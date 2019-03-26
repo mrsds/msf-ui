@@ -69,7 +69,7 @@ export class EmissionsChartsContainer extends Component {
                         id: "y-axis-1",
                         scaleLabel: {
                             display: true,
-                            labelString: "Distibution Percentage"
+                            labelString: "Distribution Percentage"
                         },
                         ticks: {
                             display: true
@@ -170,10 +170,18 @@ export class EmissionsChartsContainer extends Component {
 
         return (
             <React.Fragment>
-                {this.makeChart(this.props.emissionsSourceData.toArray(), "All")}
+                {this.makeChart(
+                    this.props.emissionsSourceData.toArray(),
+                    "Emission Distribution by Source: All"
+                )}
                 {Object.keys(dataBySector)
                     .sort(this.sortSectors)
-                    .map(key => this.makeChart(dataBySector[key], key.replace(/_/g, " ")))}
+                    .map(key =>
+                        this.makeChart(
+                            dataBySector[key],
+                            `Emission Distribution by Source: ${key.replace(/_/g, " ")}`
+                        )
+                    )}
             </React.Fragment>
         );
     }
@@ -197,8 +205,9 @@ export class EmissionsChartsContainer extends Component {
             return this.makeTopLevelSummaryChart();
         }
 
-        const vistaLabel = vistaCategory && `Vista Sector: ${vistaCategory.replace(/_/g, " ")}`;
-        const ipccLabel = ipccSector && `IPCC Sector: ${ipccSector}`;
+        const vistaLabel =
+            vistaCategory && `Emission Distribution by Source: ${vistaCategory.replace(/_/g, " ")}`;
+        const ipccLabel = ipccSector && `Emission Distribution by Source: ${ipccSector}`;
         const chartLabel = `${vistaLabel || ""}${ipccLabel && vistaLabel ? " & " : ""}${ipccLabel ||
             ""}`;
         return (
