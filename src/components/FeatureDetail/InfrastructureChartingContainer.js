@@ -39,7 +39,6 @@ export class InfrastructureChartingContainer extends Component {
         super(props);
         this.popperProps = Immutable.fromJS({
             plumeSource: false,
-            flyovers: false,
             startDate: false,
             endDate: false
         });
@@ -283,7 +282,6 @@ export class InfrastructureChartingContainer extends Component {
 
     makeFilterPicker() {
         const plumeSourcePickerActive = this.popperProps.get("plumeSource");
-        const flyoverPickerActive = this.popperProps.get("flyovers");
         const startDatePickerActive = this.popperProps.get("startDate");
         const endDatePickerActive = this.popperProps.get("endDate");
 
@@ -292,7 +290,7 @@ export class InfrastructureChartingContainer extends Component {
                 <Manager className={styles.manager}>
                     <ClickAwayListener
                         onClickAway={() => {
-                            if (plumeSourcePickerActive || flyoverPickerActive) {
+                            if (plumeSourcePickerActive) {
                                 this.closeAllPoppers();
                             }
                         }}
@@ -304,14 +302,6 @@ export class InfrastructureChartingContainer extends Component {
                             this.props.plumeSourceId,
                             this.props.setPlumeSourceFilter,
                             () => this.getAvailablePlumeSources()
-                        )}
-                        {this.makeFilter(
-                            flyoverPickerActive,
-                            "Flyovers",
-                            "flyovers",
-                            this.props.flyoverId,
-                            this.props.setFlyoverFilter,
-                            () => this.getAvailableFlyovers()
                         )}
                     </ClickAwayListener>
                     {this.makeDateSelector(
@@ -618,7 +608,6 @@ InfrastructureChartingContainer.propTypes = {
     plumeFilterEndDate: PropTypes.object,
     changeChartingMode: PropTypes.func.isRequired,
     setPlumeSourceFilter: PropTypes.func.isRequired,
-    setFlyoverFilter: PropTypes.func.isRequired,
     setPlumeFilterStartDate: PropTypes.func.isRequired,
     setPlumeFilterEndDate: PropTypes.func.isRequired
 };
@@ -646,7 +635,6 @@ function mapDispatchToProps(dispatch) {
             featureDetailActions.setPlumeSourceFilter,
             dispatch
         ),
-        setFlyoverFilter: bindActionCreators(featureDetailActions.setFlyoverFilter, dispatch),
         setPlumeFilterStartDate: bindActionCreators(
             featureDetailActions.setPlumeFilterStartDate,
             dispatch
