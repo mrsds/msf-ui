@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import ErrorBarsPlugin from "chartjs-plugin-error-bars";
+import ErrorBarsPlugin from "utils/ErrorBarsPlugin";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
@@ -99,14 +99,15 @@ export class EmissionsChartsContainer extends Component {
             tooltips: {
                 callbacks: {
                     label: (tooltipItem, data) => {
+                        const percentage = data.datasets[1].data[tooltipItem.index] | 0;
+                        if (tooltipItem.datasetIndex === 1)
+                            return `Emissions Total: ${percentage}%`;
                         const uncertainty = sourceData.find(s => s.label === tooltipItem.xLabel)
                             .uncertainty;
                         const uncertaintyString = (uncertainty && `± ${uncertainty}`) || "";
-                        const percentage = data.datasets[1].data[tooltipItem.index] | 0;
-                        const label = `Emissions: ${
+                        return `Emissions: ${
                             tooltipItem.yLabel
                         } ${uncertaintyString} (${percentage}%)`;
-                        return label;
                     }
                 },
                 backgroundColor: "rgba(0,0,0,1)",
