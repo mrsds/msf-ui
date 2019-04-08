@@ -218,7 +218,7 @@
         },
         {
             "id": "GRIDDED_EMISSIONS_EPA",
-            "title": "Methane Emission Map",
+            "title": "EPA Methane Emission Map",
             "type": "data",
             "handleAs": "gridded_geojson",
             "isDefault": false,
@@ -232,10 +232,10 @@
             "units": " kg/hr",
             "updateParameters": { "time": false },
             "palette": {
-                "name": "gridded_methane_inversion",
+                "name": "gridded_methane_epa",
                 "handleAs": "json-fixed",
-                "min": "0",
-                "max": "> 130"
+                "min": "1",
+                "max": "> 1600"
             },
             "layerOrder": 1,
             "group": "GRIDDED",

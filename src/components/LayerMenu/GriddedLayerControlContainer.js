@@ -28,6 +28,7 @@ import styles from "_core/components/LayerMenu/LayerControlContainer.scss";
 import stylesExtended from "components/LayerMenu/LayerControlContainerExtendedStyles.scss";
 import textStyles from "_core/styles/text.scss";
 import appConfig from "constants/appConfig";
+import * as appStrings from "_core/constants/appStrings";
 
 export class GriddedLayerControlContainer extends LayerControlContainerCore {
     constructor(props) {
@@ -144,7 +145,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
             >
                 {appConfig.GRIDDED_LAYER_TYPES.map(type => (
                     <option key={type.name} value={type.name}>
-                        {type.displayName}
+                        {this.props.layers.find(l => l.get("id") === type.name).get("title")}
                     </option>
                 ))}
             </select>
@@ -208,6 +209,11 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
     }
 
     renderBottomContent() {
+        const paletteName = this.props.layers
+            .find(l => l.get("id") === this.props.griddedSettings.get("activeLayer"))
+            .getIn(["palette", "name"]);
+        const palette = this.props.palettes.find(p => p.get("id") === paletteName);
+
         return (
             <div>
                 <Collapse
@@ -223,7 +229,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                         </div>
                         <div className={stylesExtended.controlRow}>
                             <Colorbar
-                                palette={this.props.palette}
+                                palette={palette}
                                 min={parseFloat(this.props.layer.get("min"))}
                                 max={parseFloat(this.props.layer.get("max"))}
                                 units={this.props.layer.get("units")}
@@ -324,7 +330,9 @@ GriddedLayerControlContainer.propTypes = {
     layer: PropTypes.object.isRequired,
     griddedSettings: PropTypes.object.isRequired,
     activeNum: PropTypes.number.isRequired,
-    palette: PropTypes.object
+    palette: PropTypes.object,
+    layers: PropTypes.object,
+    palettes: PropTypes.object
 };
 
 function mapDispatchToProps(dispatch) {
@@ -336,7 +344,9 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
     return {
-        griddedSettings: state.map.get("griddedSettings")
+        griddedSettings: state.map.get("griddedSettings"),
+        layers: state.map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA]),
+        palettes: state.map.get("palettes")
     };
 }
 

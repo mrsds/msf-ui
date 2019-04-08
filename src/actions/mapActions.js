@@ -362,8 +362,16 @@ function updateAvailableGriddedDates(dateList) {
 }
 
 export function changeActiveGriddedLayer(name) {
-    return dispatch => {
-        dispatch({ type: typesMSF.CHANGE_ACTIVE_GRIDDED_LAYER, name });
+    return (dispatch, getState) => {
+        const paletteName = getState()
+            .map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA])
+            .find(l => l.get("id") === name)
+            .getIn(["palette", "name"]);
+        const palette = getState()
+            .map.get("palettes")
+            .find(p => p.get("id") === paletteName);
+
+        dispatch({ type: typesMSF.CHANGE_ACTIVE_GRIDDED_LAYER, name, palette });
         dispatch(getAvailableGriddedDates());
     };
 }

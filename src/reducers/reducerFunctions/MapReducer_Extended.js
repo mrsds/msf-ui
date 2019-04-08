@@ -152,7 +152,7 @@ export default class MapReducer_Extended extends MapReducer {
 
     static changeActiveGriddedLayer(state, action) {
         const map = state.getIn(["maps", "openlayers"]);
-        map.setActiveGriddedLayer(action.name);
+        map.setActiveGriddedLayer(action.name, action.palette);
         return state.setIn(["griddedSettings", "activeLayer"], action.name);
     }
 

@@ -1152,13 +1152,54 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         });
     }
 
-    setActiveGriddedLayer(name) {
+    hexToRgba(hex) {
+        const colors = [
+            parseInt(hex.slice(1, 3), 16),
+            parseInt(hex.slice(3, 5), 16),
+            parseInt(hex.slice(5, 7), 16),
+            parseInt(hex.slice(7, 9), 16)
+        ];
+        return `rgba(${colors.join(",")})`;
+    }
+
+    makeGriddedStyleFunctionFromPalette(pal) {
+        let palette = pal.toJS();
+        palette.values = palette.values.map(val => {
+            const highExclusive = val.value.startsWith(">");
+
+            return Object.assign(val, {
+                color: this.hexToRgba(val.color),
+                value: parseFloat(highExclusive ? val.value.slice(1) : val.value),
+                highExclusive
+            });
+        });
+
+        // Function assumes that palette entries are in ascending order
+        return (feature, resolution) => {
+            const dnValue = parseFloat(feature.getProperties().DN);
+
+            const fillColor = palette.values.reduce(
+                (acc, { highExclusive, value, color }) =>
+                    acc
+                        ? acc
+                        : (highExclusive && dnValue > value) || dnValue < value ? color : null,
+                null
+            );
+
+            return new Ol_Style({
+                // stroke: new Ol_Style_Stroke({ color: "#000000" }),
+                fill: new Ol_Style_Fill({ color: `${fillColor}` })
+            });
+        };
+    }
+
+    setActiveGriddedLayer(name, palette) {
         this.map.getLayers().forEach(l => {
             if (!l || l.get("_layerGroup") !== "GRIDDED") return;
             const style =
                 l.get("_layerId") !== name
                     ? INVISIBLE_VISTA_STYLE
-                    : this.griddedVectorLayerStyleFunction;
+                    : this.makeGriddedStyleFunctionFromPalette(palette);
             return l.setStyle(style);
         });
     }

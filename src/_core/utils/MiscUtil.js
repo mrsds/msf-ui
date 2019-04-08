@@ -149,7 +149,7 @@ export default class MiscUtil {
      */
     static getHexFromColorString(colorStr) {
         let rgbExp = /[0-9]{1,3}(,|, | )[0-9]{1,3}(,|, | )[0-9]{1,3}/;
-        let hexExp = /[0-9A-Fa-f]{6}/;
+        let hexExp = /[0-9A-Fa-f]{8}/;
 
         if (rgbExp.test(colorStr)) {
             return this.convertRgbToHex(colorStr);
@@ -197,7 +197,7 @@ export default class MiscUtil {
      * @memberof MiscUtil
      */
     static formatHex(colorStr) {
-        let hexExp = /[0-9A-Fa-f]{6}/;
+        let hexExp = /[0-9A-Fa-f]{8}/;
         let hexParts = colorStr.match(hexExp);
 
         if (hexParts) {

@@ -105,9 +105,6 @@ export class LayerMenuContainer extends Component {
                     group={griddedMethaneGroup}
                     layer={griddedMethaneLayer}
                     activeNum={activeNum}
-                    palette={this.props.palettes.get(
-                        griddedMethaneLayer.getIn(["palette", "name"])
-                    )}
                 />
             );
 

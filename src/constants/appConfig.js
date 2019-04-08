@@ -137,14 +137,12 @@ const APP_CONFIG = Immutable.fromJS({
     GRIDDED_LAYER_TYPES: [
         {
             name: "GRIDDED_EMISSIONS_EPA",
-            displayName: "Gridded EPA Emissions",
             dateEndpoint: "http://" + be_endpoint + "/data/epa_gridded_total_date_list.json",
             endpoint: "http://" + be_endpoint + "/data/epa_gridded_total_{date}.geojson",
             period: "monthly"
         },
         {
             name: "GRIDDED_EMISSIONS_V2",
-            displayName: "Gridded Emissions",
             dateEndpoint: "http://" + be_endpoint + "/data/gridded/gridded_date_list.json",
             endpoint: "http://" + be_endpoint + "/data/gridded/v2/Fluxes_{date}.geojson",
             period: "daily"
