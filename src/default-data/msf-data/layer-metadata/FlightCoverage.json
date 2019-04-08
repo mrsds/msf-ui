@@ -1,0 +1,7 @@
+{
+    "title": "Flight Coverage",
+    "description": "Regions where the airplane carrying AVIRIS-NG was flown and where data was acquired by AVIRIS-NG.",
+    "dateRange": "October 2016 &ndash; December 2018",
+    "platform": "AVIRIS-NG",
+    "spatialResolution": "3m"
+}
