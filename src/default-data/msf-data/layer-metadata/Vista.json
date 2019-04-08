@@ -1,0 +1,7 @@
+{
+    "title": "Vista Infrastructure Database",
+    "description": "Vista-CA is a GIS dataset that maps potential methane emitting infrastructure across California following the methods in Carranza et al 2018. The locations of infrastructure are associated with three primary sectors: agriculture, waste, and energy. All infrastructure data is from public data records or data sets, with some map elements requiring further processing (see Duren et al. in review, CA CH4 Survey paper for more details).",
+    "dateRange": "Updated February 4, 2019",
+    "platform": "N/A",
+    "spatialResolution": "Depends on infrastructure type"
+}
