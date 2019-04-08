@@ -132,6 +132,7 @@ export class EmissionsSummaryInfoContainer extends Component {
                 const maxFlux = source.get("max_flux")
                     ? parseFloat(source.get("max_flux")).toFixed(2)
                     : null;
+                const persistence = source.get("persistence");
                 return (
                     <TableRow key={sourceId}>
                         <TableCell padding="dense">{sourceId}</TableCell>
@@ -140,6 +141,7 @@ export class EmissionsSummaryInfoContainer extends Component {
                         <TableCell padding="dense">{source.get("plume_count")}</TableCell>
                         <TableCell padding="dense">{source.get("flyover_count")}</TableCell>
                         <TableCell padding="dense">{fluxString}</TableCell>
+                        <TableCell padding="dense">{persistence}</TableCell>
                     </TableRow>
                 );
             });
@@ -164,6 +166,7 @@ export class EmissionsSummaryInfoContainer extends Component {
                                         <TableCell padding="dense">Plumes</TableCell>
                                         <TableCell padding="dense">Flyovers</TableCell>
                                         <TableCell padding="dense">Avg Emissions (kg/hr)</TableCell>
+                                        <TableCell padding="dense">Persistence</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>{this.makeSourcesTableBody()}</TableBody>

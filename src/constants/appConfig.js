@@ -62,8 +62,6 @@ const APP_CONFIG = Immutable.fromJS({
             }
         ],
         paletteConfig: "default-data/msf-data/palettes.json",
-        availableGriddedDates: "http://" + be_endpoint + "/data/gridded/gridded_date_list.json",
-        griddedVectorEndpoint: "http://" + be_endpoint + "/data/gridded/v2/Fluxes_{date}.geojson",
         plumeListQueryEndpoint:
             "http://" + be_endpoint + ":" + be_port + "/flyoversOfFacility?vista_id={vista_id}",
         sourceListQueryEndpoint:
@@ -135,7 +133,23 @@ const APP_CONFIG = Immutable.fromJS({
         }
     ],
     ZOOM_TO_LEVEL: 15,
-    OIL_WELL_MAX_RESOLUTION: 25
+    OIL_WELL_MAX_RESOLUTION: 25,
+    GRIDDED_LAYER_TYPES: [
+        {
+            name: "GRIDDED_EMISSIONS_EPA",
+            displayName: "Gridded EPA Emissions",
+            dateEndpoint: "http://" + be_endpoint + "/data/epa_gridded_total_date_list.json",
+            endpoint: "http://" + be_endpoint + "/data/epa_gridded_total_{date}.geojson",
+            period: "monthly"
+        },
+        {
+            name: "GRIDDED_EMISSIONS_V2",
+            displayName: "Gridded Emissions",
+            dateEndpoint: "http://" + be_endpoint + "/data/gridded/gridded_date_list.json",
+            endpoint: "http://" + be_endpoint + "/data/gridded/v2/Fluxes_{date}.geojson",
+            period: "daily"
+        }
+    ]
 });
 
 // define and export the final config

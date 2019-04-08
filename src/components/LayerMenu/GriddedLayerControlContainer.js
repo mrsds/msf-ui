@@ -1,37 +1,33 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { Manager, Target, Popper } from "react-popper";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as mapActions from "_core/actions/mapActions";
-import * as mapActionsExtended from "actions/mapActions";
-import { LayerControlContainer as LayerControlContainerCore } from "_core/components/LayerMenu/LayerControlContainer.js";
-import { EnhancedSwitch, IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
-import styles from "_core/components/LayerMenu/LayerControlContainer.scss";
-import textStyles from "_core/styles/text.scss";
-import displayStyles from "_core/styles/display.scss";
-import Tooltip from "@material-ui/core/Tooltip";
+import Collapse from "@material-ui/core/Collapse";
+import DateRangeIcon from "@material-ui/icons/DateRange";
+import Grow from "@material-ui/core/Grow";
+import InfoOutlineIcon from "@material-ui/icons/InfoOutline";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
-import InfoOutlineIcon from "@material-ui/icons/InfoOutline";
-import DateRangeIcon from "@material-ui/icons/DateRange";
-import Collapse from "@material-ui/core/Collapse";
+import PropTypes from "prop-types";
+import React from "react";
+import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
+
 import { Colorbar } from "_core/components/Colorbar";
-import colorbarStylesExtended from "components/LayerMenu/ColorbarStylesExtended.scss";
-import { Manager, Target, Popper } from "react-popper";
-import {
-    LayerPositionIcon,
-    LayerPositionControl,
-    LayerOpacityIcon,
-    LayerOpacityControl
-} from "_core/components/LayerMenu";
-import Grow from "@material-ui/core/Grow";
-import stylesExtended from "components/LayerMenu/LayerControlContainerExtendedStyles.scss";
-import MenuItem from "@material-ui/core/MenuItem";
+import { EnhancedSwitch, IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
+import { LayerControlContainer as LayerControlContainerCore } from "_core/components/LayerMenu/LayerControlContainer.js";
+import { LayerOpacityIcon, LayerOpacityControl } from "_core/components/LayerMenu";
 import LayerDateControl from "components/LayerMenu/LayerDateControl";
+import * as MSFTypes from "constants/MSFTypes";
 import MiscUtil from "_core/utils/MiscUtil";
+import colorbarStylesExtended from "components/LayerMenu/ColorbarStylesExtended.scss";
+import displayStyles from "_core/styles/display.scss";
+import * as mapActions from "_core/actions/mapActions";
+import * as mapActionsExtended from "actions/mapActions";
+import styles from "_core/components/LayerMenu/LayerControlContainer.scss";
+import stylesExtended from "components/LayerMenu/LayerControlContainerExtendedStyles.scss";
+import textStyles from "_core/styles/text.scss";
+import appConfig from "constants/appConfig";
 
 export class GriddedLayerControlContainer extends LayerControlContainerCore {
     constructor(props) {
@@ -46,12 +42,24 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
         if (
             !nextProps.griddedSettings
                 .get("currentDate")
-                .isSame(this.props.griddedSettings.get("currentDate"))
+                .isSame(this.props.griddedSettings.get("currentDate")) ||
+            nextProps.griddedSettings.get("activeLayer") !==
+                this.props.griddedSettings.get("activeLayer")
         ) {
             return true;
         }
         return LayerControlContainerCore.prototype.shouldComponentUpdate.call(this, nextProps);
     }
+
+    setLayerActive(active) {
+        this.isChangingPosition = false;
+        this.isChangingOpacity = false;
+        this.props.mapActionsExtended.setGroupVisible(this.props.group, !active);
+        this.props.mapActionsExtended.changeActiveGriddedLayer(
+            this.props.griddedSettings.get("activeLayer")
+        );
+    }
+
     toggleDatePickerVisible() {
         this.isChangingDate = !this.isChangingDate;
         this.isChangingPosition = false;
@@ -73,11 +81,8 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
         this.forceUpdate();
     }
 
-    setLayerActive(active) {
-        this.isChangingPosition = false;
-        this.isChangingOpacity = false;
-        this.props.mapActions.setLayerActive(this.props.layer.get("id"), !active);
-        this.props.mapActionsExtended.updateFeatureList_Layer(this.props.layer.get("id"), !active);
+    openLayerInfo() {
+        this.props.mapActions.loadLayerMetadata(this.props.layer);
     }
 
     renderTopContent() {
@@ -86,7 +91,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
             .format("MMM Do, YYYY");
         let title = (
             <div>
-                {this.props.layer.get("title")}
+                {this.props.group.get("title")}
                 <Typography style={{ display: "inline" }} variant="caption">
                     &nbsp;({currentGriddedDate})
                 </Typography>
@@ -98,11 +103,11 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                 classes={{ dense: styles.dense, root: stylesExtended.griddedLayerListItem }}
             >
                 <Tooltip
-                    title={this.props.layer.get("isActive") ? "Hide Layer" : "Show Layer"}
+                    title={this.props.group.get("isActive") ? "Hide Layer" : "Show Layer"}
                     placement="right"
                 >
                     <EnhancedSwitch
-                        checked={this.props.layer.get("isActive")}
+                        checked={this.props.group.get("isActive")}
                         onChange={(value, checked) => this.setLayerActive(!checked)}
                         onClick={evt => this.setLayerActive(evt.target.checked)}
                     />
@@ -113,7 +118,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                 <ListItemSecondaryAction
                     classes={{
                         root: `${styles.secondaryActionRoot} ${
-                            this.props.layer.get("isActive")
+                            this.props.group.get("isActive")
                                 ? displayStyles.invisible
                                 : displayStyles.hiddenFadeIn
                         }`
@@ -128,47 +133,25 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
             </ListItem>
         );
     }
-    renderBottomContent() {
+
+    renderSublayerSelection() {
         return (
-            <div>
-                <Collapse
-                    in={this.props.layer.get("isActive")}
-                    timeout="auto"
-                    className={styles.layerControl}
-                    classes={{ entered: styles.collapseEntered }}
-                >
-                    <div className={styles.layerControlContent}>
-                        {this.renderIconRow()}
-                        <Colorbar
-                            palette={this.props.palette}
-                            min={parseFloat(this.props.layer.get("min"))}
-                            max={parseFloat(this.props.layer.get("max"))}
-                            units={this.props.layer.get("units")}
-                            displayMin={this.props.layer.getIn(["palette", "min"])}
-                            displayMax={this.props.layer.getIn(["palette", "max"])}
-                            handleAs={this.props.layer.getIn(["palette", "handleAs"])}
-                            url={this.props.layer.getIn(["palette", "url"])}
-                            className={colorbarStylesExtended.colorbar}
-                        />
-                    </div>
-                </Collapse>
-                <Divider />
-            </div>
+            <select
+                onChange={e =>
+                    this.props.mapActionsExtended.changeActiveGriddedLayer(e.target.value)
+                }
+                className={stylesExtended.dropdownSelect}
+            >
+                {appConfig.GRIDDED_LAYER_TYPES.map(type => (
+                    <option key={type.name} value={type.name}>
+                        {type.displayName}
+                    </option>
+                ))}
+            </select>
         );
     }
 
-    renderIconRow() {
-        let positionPopoverClasses = MiscUtil.generateStringFromSet({
-            [styles.popover]: true,
-            [styles.positionPopover]: true,
-            [displayStyles.noPointer]: !this.isChangingPosition
-        });
-
-        let opacityPopoverClasses = MiscUtil.generateStringFromSet({
-            [styles.popover]: true,
-            [displayStyles.noPointer]: !this.isChangingOpacity
-        });
-
+    renderDateIcon() {
         let containerClasses = MiscUtil.generateStringFromSet({
             [styles.layerControlIconRow]: true,
             [stylesExtended.layerControlIconRow]: true
@@ -176,7 +159,10 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
 
         return (
             <span className={containerClasses}>
-                <Manager style={{ display: "inline-block" }}>
+                <div style={{ display: "unset" }}>
+                    {this.props.griddedSettings.get("currentDate").format("MMM Do YYYY")}
+                </div>
+                <Manager style={{ display: "unset" }}>
                     <Target
                         style={{
                             display: "inline-block"
@@ -216,7 +202,65 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                             </div>
                         </Grow>
                     </Popper>
+                </Manager>
+            </span>
+        );
+    }
 
+    renderBottomContent() {
+        return (
+            <div>
+                <Collapse
+                    in={this.props.group.get("isActive")}
+                    timeout="auto"
+                    className={styles.layerControl}
+                    classes={{ entered: styles.collapseEntered }}
+                >
+                    <div className={styles.layerControlContent}>
+                        <div className={stylesExtended.controlRow}>
+                            {this.renderSublayerSelection()}
+                            {this.renderDateIcon()}
+                        </div>
+                        <div className={stylesExtended.controlRow}>
+                            <Colorbar
+                                palette={this.props.palette}
+                                min={parseFloat(this.props.layer.get("min"))}
+                                max={parseFloat(this.props.layer.get("max"))}
+                                units={this.props.layer.get("units")}
+                                displayMin={this.props.layer.getIn(["palette", "min"])}
+                                displayMax={this.props.layer.getIn(["palette", "max"])}
+                                handleAs={this.props.layer.getIn(["palette", "handleAs"])}
+                                url={this.props.layer.getIn(["palette", "url"])}
+                                className={colorbarStylesExtended.colorbar}
+                            />
+                            {this.renderIconRow()}
+                        </div>
+                    </div>
+                </Collapse>
+            </div>
+        );
+    }
+
+    renderIconRow() {
+        let positionPopoverClasses = MiscUtil.generateStringFromSet({
+            [styles.popover]: true,
+            [styles.positionPopover]: true,
+            [displayStyles.noPointer]: !this.isChangingPosition
+        });
+
+        let opacityPopoverClasses = MiscUtil.generateStringFromSet({
+            [styles.popover]: true,
+            [displayStyles.noPointer]: !this.isChangingOpacity
+        });
+
+        let containerClasses = MiscUtil.generateStringFromSet({
+            [styles.layerControlIconRow]: true,
+            [stylesExtended.layerControlIconRow]: true
+        });
+
+        return (
+            <span className={containerClasses}>
+                <Manager style={{ display: "inline-block" }}>
                     <ClickAwayListener
                         onClickAway={() => {
                             if (this.isChangingOpacity) {
@@ -278,7 +322,7 @@ GriddedLayerControlContainer.propTypes = {
     mapActions: PropTypes.object.isRequired,
     mapActionsExtended: PropTypes.object.isRequired,
     layer: PropTypes.object.isRequired,
-    // griddedSettings: PropTypes.object.isRequired,
+    griddedSettings: PropTypes.object.isRequired,
     activeNum: PropTypes.number.isRequired,
     palette: PropTypes.object
 };

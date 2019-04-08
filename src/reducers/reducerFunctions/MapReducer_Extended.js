@@ -110,7 +110,14 @@ export default class MapReducer_Extended extends MapReducer {
         const newDate = snap.snapped || snap.previous || currentDate;
         if (newDate.isSame(currentDate)) return state;
 
-        state.get("maps").map(map => map.changeGriddedVectorLayerDate(newDate));
+        state
+            .get("maps")
+            .map(map =>
+                map.changeGriddedVectorLayerDate(
+                    newDate,
+                    state.getIn(["griddedSettings", "activeLayer"])
+                )
+            );
         return state.setIn(["griddedSettings", "currentDate"], newDate);
     }
 
@@ -141,6 +148,12 @@ export default class MapReducer_Extended extends MapReducer {
         if (state.getIn(["griddedSettings", "currentDate"]).isSame(newDate)) return state;
 
         return this.updateGriddedDate(state, { date: newDate });
+    }
+
+    static changeActiveGriddedLayer(state, action) {
+        const map = state.getIn(["maps", "openlayers"]);
+        map.setActiveGriddedLayer(action.name);
+        return state.setIn(["griddedSettings", "activeLayer"], action.name);
     }
 
     static resizeMap(state, action) {

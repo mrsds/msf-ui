@@ -3,6 +3,8 @@ import { mapState, layerModel } from "_core/reducers/models/map";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import moment from "moment";
 import * as typesMSF from "constants/actionTypes";
+import * as MSFTypes from "constants/MSFTypes";
+import appConfig from "constants/appConfig";
 
 export const mapState_Extended = mapState.mergeDeep(
     Immutable.fromJS({
@@ -15,6 +17,15 @@ export const mapState_Extended = mapState.mergeDeep(
                 type: "group",
                 displayIndex: 0,
                 layerOrder: 1
+            },
+            {
+                id: "GRIDDED",
+                isActive: false,
+                title: "Gridded Methane",
+                opacity: 0.3,
+                type: "group",
+                displayIndex: 1,
+                layerOrder: 2
             }
         ],
         activeFeature: {
@@ -23,6 +34,7 @@ export const mapState_Extended = mapState.mergeDeep(
         },
         hoverPlume: null,
         griddedSettings: {
+            activeLayer: appConfig.GRIDDED_LAYER_TYPES[0].name,
             availableDates: [],
             currentDate: moment()
         },

@@ -19,6 +19,7 @@ import Icon from "@material-ui/core/Icon";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import appConfig from "constants/appConfig";
 
 export class LayerDateControl extends Component {
     incrementActive(period, goBack) {
@@ -48,6 +49,51 @@ export class LayerDateControl extends Component {
         this.props.updateDate(newDate);
     }
 
+    makeDayControl() {
+        const currentDate = this.props.griddedSettings.get("currentDate");
+        const dayList = this.props.griddedSettings
+            .get("availableDates")
+            .filter(date => date.isSame(currentDate, "month"))
+            .map(date => date.date());
+
+        const dayClass = MiscUtil.generateStringFromSet({
+            [styles.dateSelector]: true,
+            [styles.daySelector]: true
+        });
+
+        return (
+            <FormControl className={dayClass} hidden>
+                <InputLabel htmlFor="day-select">
+                    <IconButton
+                        className={styles.incrementButton}
+                        disabled={this.incrementActive("day", true)}
+                    >
+                        <ChevronLeftIcon onClick={() => this.props.incrementDate("day", true)} />
+                    </IconButton>
+                    <span className={styles.incrementLabel}>Day</span>
+                    <IconButton
+                        className={styles.incrementButton}
+                        disabled={this.incrementActive("day")}
+                    >
+                        <ChevronRightIcon onClick={() => this.props.incrementDate("day")} />
+                    </IconButton>
+                </InputLabel>
+                <Select
+                    value={currentDate.date()}
+                    autoWidth={true}
+                    input={<Input name="Day" id="day-select" />}
+                    onChange={event => this.updateDatePart(event, "day")}
+                >
+                    {dayList.map(day => (
+                        <MenuItem key={day} value={day}>
+                            {day}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        );
+    }
+
     render() {
         const currentDate = this.props.griddedSettings.get("currentDate");
         const yearList = this.props.griddedSettings.get("availableDates").reduce((acc, date) => {
@@ -63,11 +109,6 @@ export class LayerDateControl extends Component {
                 return acc;
             }, []);
 
-        const dayList = this.props.griddedSettings
-            .get("availableDates")
-            .filter(date => date.isSame(currentDate, "month"))
-            .map(date => date.date());
-
         const yearClass = MiscUtil.generateStringFromSet({
             [styles.dateSelector]: true,
             [styles.yearSelector]: true
@@ -78,10 +119,8 @@ export class LayerDateControl extends Component {
             [styles.monthSelector]: true
         });
 
-        const dayClass = MiscUtil.generateStringFromSet({
-            [styles.dateSelector]: true,
-            [styles.daySelector]: true
-        });
+        const activeLayer = this.props.griddedSettings.get("activeLayer");
+        const period = appConfig.GRIDDED_LAYER_TYPES.find(l => l.name === activeLayer).period;
 
         return (
             <div>
@@ -154,39 +193,7 @@ export class LayerDateControl extends Component {
                                 ))}
                             </Select>
                         </FormControl>
-                        <FormControl className={dayClass}>
-                            <InputLabel htmlFor="day-select">
-                                <IconButton
-                                    className={styles.incrementButton}
-                                    disabled={this.incrementActive("day", true)}
-                                >
-                                    <ChevronLeftIcon
-                                        onClick={() => this.props.incrementDate("day", true)}
-                                    />
-                                </IconButton>
-                                <span className={styles.incrementLabel}>Day</span>
-                                <IconButton
-                                    className={styles.incrementButton}
-                                    disabled={this.incrementActive("day")}
-                                >
-                                    <ChevronRightIcon
-                                        onClick={() => this.props.incrementDate("day")}
-                                    />
-                                </IconButton>
-                            </InputLabel>
-                            <Select
-                                value={currentDate.date()}
-                                autoWidth={true}
-                                input={<Input name="Day" id="day-select" />}
-                                onChange={event => this.updateDatePart(event, "day")}
-                            >
-                                {dayList.map(day => (
-                                    <MenuItem key={day} value={day}>
-                                        {day}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        {period === "daily" ? this.makeDayControl() : null}
                     </FormGroup>
                     <Button
                         color="primary"
@@ -208,11 +215,5 @@ LayerDateControl.propTypes = {
     incrementDate: PropTypes.func,
     onClose: PropTypes.func
 };
-
-// function mapStateToProps(state) {
-//     return {
-//         griddedSettings: state.map.get("griddedSettings")
-//     };
-// }
 
 export default LayerDateControl;

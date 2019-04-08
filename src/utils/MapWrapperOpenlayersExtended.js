@@ -314,10 +314,13 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         const mapLayer = new Ol_Layer_Vector({
             source: layerSource,
             opacity: layer.get("opacity"),
-            style: this.griddedVectorLayerStyleFunction
+            style: INVISIBLE_AVIRIS_STYLE,
+            visible: layer.get("visibleInGroup")
         });
-        mapLayer.set("_layerId", "griddedFlux");
+        mapLayer.set("_layerId", layer.id);
         mapLayer.set("_layerOrder", layer.get("layerOrder"));
+        mapLayer.set("_layerGroup", "GRIDDED");
+
         return mapLayer;
     }
 
@@ -348,16 +351,15 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         }
     }
 
-    changeGriddedVectorLayerDate(date) {
+    changeGriddedVectorLayerDate(date, name) {
         const griddedFluxLayer = this.map
             .getLayers()
             .getArray()
-            .find(l => l.get("_layerId") === "GRIDDED_EMISSIONS_V2");
+            .find(l => l.get("_layerId") === name);
 
-        const sourceUrl = appConfig.URLS.griddedVectorEndpoint.replace(
-            "{date}",
-            date.format("YYYYMMDD")
-        );
+        const layerConfig = appConfig.GRIDDED_LAYER_TYPES.find(l => l.name === name);
+        const dateFormat = layerConfig.period === "daily" ? "YYYYMMDD" : "YYYYMM";
+        const sourceUrl = layerConfig.endpoint.replace("{date}", date.format(dateFormat));
 
         const newSource = new Ol_Source_Vector({
             url: sourceUrl,
@@ -1147,6 +1149,17 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             visible: layer.get("isActive"),
             extent: appConfig.DEFAULT_MAP_EXTENT,
             style: FLIGHT_LINES_STYLE
+        });
+    }
+
+    setActiveGriddedLayer(name) {
+        this.map.getLayers().forEach(l => {
+            if (!l || l.get("_layerGroup") !== "GRIDDED") return;
+            const style =
+                l.get("_layerId") !== name
+                    ? INVISIBLE_VISTA_STYLE
+                    : this.griddedVectorLayerStyleFunction;
+            return l.setStyle(style);
         });
     }
 }

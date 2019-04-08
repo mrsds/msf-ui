@@ -3,11 +3,31 @@
     position: relative;
     float: right;
     z-index: 1;
+    align-items: baseline;
 }
+
+.layerControlDateRow div {
+    display: unset;
+}
+
 .griddedLayerListItem {
     z-index: 0;
 }
 
 .icon {
     width: 30px;
+}
+
+.dropdownSelect {
+    width: 200px;
+    border: 1px solid black;
+    background: transparent;
+    border-radius: 0;
+}
+
+.controlRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: baseline;
 }

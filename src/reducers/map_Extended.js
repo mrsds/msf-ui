@@ -44,6 +44,8 @@ export default function map_Extended(
             return opt_reducer.setMapView(state, action);
         case actionTypes.SET_LAYER_ACTIVE:
             return opt_reducer.setLayerActive(state, action);
+        case actionTypesMSF.CHANGE_ACTIVE_GRIDDED_LAYER:
+            return opt_reducer.changeActiveGriddedLayer(state, action);
         default:
             return map.call(this, state, action, opt_reducer);
     }

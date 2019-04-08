@@ -51,10 +51,12 @@ export class LayerMenuContainer extends Component {
         });
 
         let plumeLayer = layerList.find(x => x.get("id") === "AVIRIS");
-        let griddedMethaneLayer = layerList.find(x => x.get("id") === "GRIDDED_EMISSIONS_V2");
+        let griddedMethaneGroup = this.props.groups.get(1);
+        let griddedMethaneLayer = this.props.layers.find(x => x.get("group") === "GRIDDED");
         let infrastructureLayer = this.props.groups.get(0);
         let sourceLayer = layerList.find(x => x.get("id") === "AVIRIS_SOURCES");
         let flightLinesLayer = layerList.find(x => x.get("id") === "Flight_Lines");
+
         let plumeLayerControl = null;
         let infrastructureLayerControl = null;
         let griddedMethaneLayerControl = null;
@@ -63,6 +65,7 @@ export class LayerMenuContainer extends Component {
 
         if (
             plumeLayer &&
+            griddedMethaneGroup &&
             griddedMethaneLayer &&
             infrastructureLayer &&
             sourceLayer &&
@@ -98,7 +101,8 @@ export class LayerMenuContainer extends Component {
 
             griddedMethaneLayerControl = (
                 <GriddedLayerControlContainer
-                    key={griddedMethaneLayer.get("id") + "_layer_listing"}
+                    key={griddedMethaneGroup.get("id") + "_layer_listing"}
+                    group={griddedMethaneGroup}
                     layer={griddedMethaneLayer}
                     activeNum={activeNum}
                     palette={this.props.palettes.get(

@@ -327,10 +327,13 @@ export function incrementGriddedDate(period, goBack) {
 }
 
 export function getAvailableGriddedDates() {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch(setGriddedDateAvailabilityLoadingAsync(true, false));
+        const activeGriddedLayer = getState().map.getIn(["griddedSettings", "activeLayer"]);
+
         return MiscUtil.asyncFetch({
-            url: appConfig.URLS.availableGriddedDates,
+            url: appConfig.GRIDDED_LAYER_TYPES.find(l => l.name === activeGriddedLayer)
+                .dateEndpoint,
             handleAs: "json"
         }).then(
             data => {
@@ -356,6 +359,13 @@ export function getAvailableGriddedDates() {
 
 function updateAvailableGriddedDates(dateList) {
     return { type: typesMSF.UPDATE_AVAILABLE_GRIDDED_DATES, dateList };
+}
+
+export function changeActiveGriddedLayer(name) {
+    return dispatch => {
+        dispatch({ type: typesMSF.CHANGE_ACTIVE_GRIDDED_LAYER, name });
+        dispatch(getAvailableGriddedDates());
+    };
 }
 
 export function loadInitialData(callback = null) {

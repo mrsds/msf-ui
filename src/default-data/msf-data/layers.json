@@ -212,7 +212,34 @@
                 "min": "0",
                 "max": "> 130"
             },
-            "layerOrder": 1
+            "layerOrder": 1,
+            "group": "GRIDDED",
+            "visibleInGroup": true
+        },
+        {
+            "id": "GRIDDED_EMISSIONS_EPA",
+            "title": "Methane Emission Map",
+            "type": "data",
+            "handleAs": "gridded_geojson",
+            "isDefault": false,
+            "url": "http://100.64.114.187:9090/data/epa_gridded_total_012012.geojson",
+            "thumbnailImage": "img/gridded_methane_v1.png",
+            "opacity": 0.3,
+            "metadata": {
+                "url": "default-data/msf-data/layer-metadata/epa_gridded_total_012012.geojson",
+                "handleAs": "json"
+            },
+            "units": " kg/hr",
+            "updateParameters": { "time": false },
+            "palette": {
+                "name": "gridded_methane_inversion",
+                "handleAs": "json-fixed",
+                "min": "0",
+                "max": "> 130"
+            },
+            "layerOrder": 1,
+            "group": "GRIDDED",
+            "visibleInGroup": true
         },
 
         {
