@@ -359,6 +359,12 @@
             "title": "Flight Coverage",
             "type": "data",
             "handleAs": "flight_lines",
+            "palette": {
+                "name": "flight_coverage",
+                "handleAs": "json-fixed",
+                "min": "0",
+                "max": "> 1600"
+            },
             "isDefault": false,
             "url": "http://100.64.114.187:9090/flightlines_all.kml",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
