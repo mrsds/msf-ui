@@ -996,6 +996,13 @@
                 ["1600", "fec02dff"],
                 [">1600", "fd0d1bff"]
             ]
+        },
+        {
+            "name": "flight_coverage",
+            "values": [
+                ["0", "ffffff00"],
+                [">0", "ffffffff"]
+            ]
         }
     ]
 }
