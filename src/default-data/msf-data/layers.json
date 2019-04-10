@@ -193,7 +193,7 @@
         },
         {
             "id": "GRIDDED_EMISSIONS_V2",
-            "title": "LA Megacities Inversion",
+            "title": "Los Angeles Flux Inversion",
             "type": "data",
             "handleAs": "gridded_geojson",
             "isDefault": false,
@@ -218,7 +218,7 @@
         },
         {
             "id": "GRIDDED_EMISSIONS_EPA",
-            "title": "EPA Reported Emissions",
+            "title": "EPA Gridded Inventory",
             "type": "data",
             "handleAs": "gridded_geojson",
             "isDefault": false,

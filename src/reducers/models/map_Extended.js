@@ -21,7 +21,7 @@ export const mapState_Extended = mapState.mergeDeep(
             {
                 id: "GRIDDED",
                 isActive: false,
-                title: "Methane Emission Map",
+                title: "Gridded Emission Map",
                 opacity: 0.3,
                 type: "group",
                 displayIndex: 1,
