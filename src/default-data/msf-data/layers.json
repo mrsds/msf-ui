@@ -229,7 +229,7 @@
                 "url": "default-data/msf-data/layer-metadata/Grid-EPA.geojson",
                 "handleAs": "json"
             },
-            "units": " kg/hr",
+            "units": "Tg/yr",
             "updateParameters": { "time": false },
             "palette": {
                 "name": "gridded_methane_epa",
