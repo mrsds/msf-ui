@@ -193,7 +193,7 @@
         },
         {
             "id": "GRIDDED_EMISSIONS_V2",
-            "title": "Methane Emission Map",
+            "title": "LA Megacities Inversion",
             "type": "data",
             "handleAs": "gridded_geojson",
             "isDefault": false,
@@ -218,7 +218,7 @@
         },
         {
             "id": "GRIDDED_EMISSIONS_EPA",
-            "title": "EPA Methane Emission Map",
+            "title": "EPA Reported Emissions",
             "type": "data",
             "handleAs": "gridded_geojson",
             "isDefault": false,
