@@ -52,6 +52,16 @@ export class HelpContainerExtended extends CoreHelpContainer {
                 key: "DATA_POLICY",
                 label: "Data Use and Availability Policy",
                 content: cvt.makeHtml(require("default-data/msf-data/help/dataPolicy.md"))
+            },
+            USING: {
+                key: "USING",
+                label: "Using Methane Source Finder",
+                content: cvt.makeHtml(require("default-data/msf-data/help/using.md"))
+            },
+            GLOSSARY: {
+                key: "GLOSSARY",
+                label: "Glossary",
+                content: cvt.makeHtml(require("default-data/msf-data/help/glossary.md"))
             }
         };
     }
@@ -99,6 +109,17 @@ export class HelpContainerExtended extends CoreHelpContainer {
                         <ListItem
                             button
                             onClick={() =>
+                                this.props.appActions.selectHelpPage(this.helpPageConfig.USING.key)
+                            }
+                        >
+                            <ListItemIcon>
+                                <DescriptionIcon />
+                            </ListItemIcon>
+                            <ListItemText inset primary={this.helpPageConfig.USING.label} />
+                        </ListItem>
+                        <ListItem
+                            button
+                            onClick={() =>
                                 this.props.appActions.selectHelpPage(this.helpPageConfig.FAQ.key)
                             }
                         >
@@ -132,6 +153,19 @@ export class HelpContainerExtended extends CoreHelpContainer {
                                 <DescriptionIcon />
                             </ListItemIcon>
                             <ListItemText inset primary={this.helpPageConfig.DATA_POLICY.label} />
+                        </ListItem>
+                        <ListItem
+                            button
+                            onClick={() =>
+                                this.props.appActions.selectHelpPage(
+                                    this.helpPageConfig.GLOSSARY.key
+                                )
+                            }
+                        >
+                            <ListItemIcon>
+                                <DescriptionIcon />
+                            </ListItemIcon>
+                            <ListItemText inset primary={this.helpPageConfig.GLOSSARY.label} />
                         </ListItem>
                         <Divider />
                         <ListSubheader>Get More Help</ListSubheader>

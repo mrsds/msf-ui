@@ -284,25 +284,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         });
     }
 
-    griddedVectorLayerStyleFunction(feature, resolution) {
-        const dnValue = parseFloat(feature.getProperties().DN);
-
-        let fillColor = "rgba(0, 0, 0, 0)";
-        if (dnValue >= 0 && dnValue < 38) {
-            fillColor = "rgba(148, 206, 88, 1.0)";
-        } else if (dnValue >= 38 && dnValue < 70) {
-            fillColor = "rgba(255, 254, 56, 1.0)";
-        } else if (dnValue >= 70 && dnValue < 130) {
-            fillColor = "rgba(254, 192, 45, 1.0)";
-        } else if (dnValue >= 130) {
-            fillColor = "rgba(253, 13, 27, 1.0)";
-        }
-        return new Ol_Style({
-            // stroke: new Ol_Style_Stroke({ color: "#000000" }),
-            fill: new Ol_Style_Fill({ color: `${fillColor}` })
-        });
-    }
-
     createGriddedVectorLayer(layer, options) {
         const layerSource = this.createLayerSource(
             layer.set("handleAs", appStrings.LAYER_VECTOR_GEOJSON),

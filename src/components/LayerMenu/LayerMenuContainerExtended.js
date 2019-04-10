@@ -24,6 +24,7 @@ import PlumesControlContainer from "components/LayerMenu/PlumesControlContainer"
 import SourceControlContainer from "components/LayerMenu/SourceControlContainer";
 import { ButtonBase } from "@material-ui/core";
 import { LayerControlContainer } from "_core/components/LayerMenu";
+import FlightLineControlContainer from "components/LayerMenu/FlightLineControlContainer";
 
 export class LayerMenuContainer extends Component {
     render() {
@@ -109,7 +110,7 @@ export class LayerMenuContainer extends Component {
             );
 
             flightLinesLayerControl = (
-                <LayerControlContainer
+                <FlightLineControlContainer
                     key={flightLinesLayer.get("id") + "_layer_listing"}
                     layer={flightLinesLayer}
                     activeNum={activeNum}

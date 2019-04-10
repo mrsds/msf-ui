@@ -371,7 +371,7 @@
                 "name": "flight_coverage",
                 "handleAs": "json-fixed",
                 "min": "0",
-                "max": "> 1600"
+                "max": "1"
             },
             "isDefault": false,
             "url": "http://100.64.114.187:9090/flightlines_all.kml",
