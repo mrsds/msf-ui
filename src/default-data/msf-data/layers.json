@@ -201,7 +201,7 @@
             "thumbnailImage": "img/gridded_methane_v1.png",
             "opacity": 0.3,
             "metadata": {
-                "url": "default-data/msf-data/layer-metadata/GRIDDED_EMISSIONS_V1.json",
+                "url": "default-data/msf-data/layer-metadata/Grid-Megacities.json",
                 "handleAs": "json"
             },
             "units": " kg/hr",
@@ -226,7 +226,7 @@
             "thumbnailImage": "img/gridded_methane_v1.png",
             "opacity": 0.3,
             "metadata": {
-                "url": "default-data/msf-data/layer-metadata/epa_gridded_total_012012.geojson",
+                "url": "default-data/msf-data/layer-metadata/Grid-EPA.geojson",
                 "handleAs": "json"
             },
             "units": " kg/hr",
@@ -348,6 +348,10 @@
             "title": "AVIRIS Sources",
             "type": "data",
             "handleAs": "vista_source",
+            "metadata": {
+                "url": "default-data/msf-data/layer-metadata/AVIRIS-Sources.json",
+                "handleAs": "json"
+            },
             "isDefault": true,
             "url": "http://100.64.114.187:9090/sources?maxLat={latMax}&minLat={latMin}&maxLon={lonMax}&minLon={lonMin}",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
@@ -359,6 +363,10 @@
             "title": "Flight Coverage",
             "type": "data",
             "handleAs": "flight_lines",
+            "metadata": {
+                "url": "default-data/msf-data/layer-metadata/FlightCoverage.json",
+                "handleAs": "json"
+            },
             "palette": {
                 "name": "flight_coverage",
                 "handleAs": "json-fixed",

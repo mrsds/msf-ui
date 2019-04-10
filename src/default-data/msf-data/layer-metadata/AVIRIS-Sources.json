@@ -1,7 +1,7 @@
 {
     "title": "Methane Sources",
     "description": "A methane source is the location of a surface feature (lat/long) or infrastructure component where a methane plume was observed at least once. Often times, multiple methane plumes are observed from a single surface feature or infrastructure component (methane source).",
-    "dateRange": "October 2016 &ndash; December 2018",
+    "dateRange": "October 2016 – December 2018",
     "platform": "AVIRIS-NG",
     "spatialResolution": "N/A"
 }
