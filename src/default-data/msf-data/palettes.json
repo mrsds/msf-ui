@@ -991,11 +991,11 @@
         {
             "name": "gridded_methane_epa",
             "values": [
-                ["1", "ffffff00"],
-                ["450", "94ce58ff"],
-                ["950", "fffe38ff"],
-                ["1600", "fec02dff"],
-                [">1600", "fd0d1bff"]
+                ["0", "ffffff00"],
+                ["74", "94ce58ff"],
+                ["205", "fffe38ff"],
+                ["550", "fec02dff"],
+                [">1460", "fd0d1bff"]
             ]
         },
         {
