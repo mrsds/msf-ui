@@ -171,7 +171,7 @@
         },
         {
             "id": "AVIRIS",
-            "title": "Methane Plume Observations",
+            "title": "AVIRIS-NG Plume Images",
             "type": "data",
             "handleAs": "aviris_plume",
             "isDefault": true,
@@ -360,7 +360,7 @@
         },
         {
             "id": "Flight_Lines",
-            "title": "Flight Coverage",
+            "title": "AVIRIS-NG Flight Coverage",
             "type": "data",
             "handleAs": "flight_lines",
             "metadata": {

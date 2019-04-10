@@ -12,7 +12,7 @@ export const mapState_Extended = mapState.mergeDeep(
             {
                 id: "VISTA",
                 isActive: true,
-                title: "Infrastructure",
+                title: "Infrastructure Maps",
                 opacity: 1,
                 type: "group",
                 displayIndex: 0,
@@ -21,7 +21,7 @@ export const mapState_Extended = mapState.mergeDeep(
             {
                 id: "GRIDDED",
                 isActive: false,
-                title: "Gridded Emission Map",
+                title: "Gridded Emission Maps",
                 opacity: 0.3,
                 type: "group",
                 displayIndex: 1,
