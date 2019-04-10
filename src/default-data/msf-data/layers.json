@@ -345,7 +345,7 @@
         },
         {
             "id": "AVIRIS_SOURCES",
-            "title": "AVIRIS Sources",
+            "title": "Methane Point Sources",
             "type": "data",
             "handleAs": "vista_source",
             "metadata": {
