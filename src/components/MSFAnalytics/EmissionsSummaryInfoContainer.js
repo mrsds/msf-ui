@@ -59,7 +59,8 @@ export class EmissionsSummaryInfoContainer extends Component {
             { name: "Number of Plumes", value: this.props.summaryData.get("number_of_plumes") },
             {
                 name: "Average Emissions",
-                value: `${Math.round(this.props.summaryData.get("average_flux") * 100) / 100}kg/hr`
+                value: `${Math.round(this.props.summaryData.get("q_source_final") * 100) /
+                    100}kg/hr`
             },
             {
                 name: "Average Plume Count Per Source",
@@ -120,18 +121,12 @@ export class EmissionsSummaryInfoContainer extends Component {
                 const endDateStr = this.formatDateStr(source.get("last_flyover_date"));
                 // const timespan = `${startDateStr} - ${endDateStr}`;
                 const avgFlux =
-                    source.get("avg_flux") && parseFloat(source.get("avg_flux")).toFixed(2);
-                const fluxUncertainty = source.get("avg_flux_uncertainty");
+                    source.get("q_source_final") &&
+                    parseFloat(source.get("q_source_final")).toFixed(2);
+                const fluxUncertainty = source.get("q_source_final_sigma");
                 const fluxString = avgFlux
                     ? `${avgFlux} ${fluxUncertainty ? " ± " + fluxUncertainty : ""}`
                     : "";
-
-                const minFlux = source.get("min_flux")
-                    ? parseFloat(source.get("min_flux")).toFixed(2)
-                    : null;
-                const maxFlux = source.get("max_flux")
-                    ? parseFloat(source.get("max_flux")).toFixed(2)
-                    : null;
                 const persistence = source.get("persistence");
                 return (
                     <TableRow key={sourceId}>
