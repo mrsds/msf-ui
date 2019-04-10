@@ -992,7 +992,8 @@
             "name": "gridded_methane_epa",
             "values": [
                 ["1", "ffffff00"],
-                ["550", "94ce58ff"],
+                ["450", "94ce58ff"],
+                ["950", "fffe38ff"],
                 ["1600", "fec02dff"],
                 [">1600", "fd0d1bff"]
             ]
