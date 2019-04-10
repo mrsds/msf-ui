@@ -54,20 +54,15 @@ export class EmissionsSummaryInfoContainer extends Component {
 
     makeSummaryContent() {
         if (!this.props.summaryData) return null;
+        const summaryData = this.props.summaryData.get(0);
+
         const valuePairs = [
-            { name: "Number of Sources", value: this.props.summaryData.get("number_of_sources") },
-            { name: "Number of Plumes", value: this.props.summaryData.get("number_of_plumes") },
+            { name: "Number of Sources", value: summaryData.get("number_of_sources") },
             {
                 name: "Average Emissions",
-                value: `${Math.round(this.props.summaryData.get("q_source_final") * 100) /
-                    100}kg/hr`
-            },
-            {
-                name: "Average Plume Count Per Source",
-                value:
-                    Math.round(
-                        this.props.summaryData.get("average_number_of_plumes_per_source") * 100
-                    ) / 100
+                value: `${Math.round(summaryData.get("avg_q_source_final") * 100) /
+                    100} ± ${Math.round(summaryData.get("avg_q_source_final_sigma") * 100) /
+                    100} kg/hr`
             }
         ];
         return (
