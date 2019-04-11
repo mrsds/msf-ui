@@ -204,7 +204,7 @@
                 "url": "default-data/msf-data/layer-metadata/Grid-Megacities.json",
                 "handleAs": "json"
             },
-            "units": " kg/hr",
+            "units": "kg/hr",
             "updateParameters": { "time": false },
             "palette": {
                 "name": "gridded_methane_inversion",
