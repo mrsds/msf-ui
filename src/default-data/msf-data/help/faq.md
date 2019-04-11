@@ -39,13 +39,11 @@ These data were produced by a combination of remote-sensing from aircraft and sa
 ### Why do some areas show more methane sources than others?
 Some areas have more methane sources because they tend to have more activity or infrastructure that lead to methane emissions or because those areas were sampled more frequently than other regions of California. When planning where to fly the AVIRIS-NG instrument, two of the main objectives were to fly over regions in California that have infrastructure or activity responsible for >60% of methane point source emissions and to fly over these regions multiple times so that intermittent emissions could be detected. 
 
-### Are methane sources in oil fields due to fracking?
-
 ### Why do dairies produce methane?
 There are two main factors that cause dairies to emit methane: enteric fermentation and manure management. Enteric fermentation is a part of the digestive process for cows which causes methane to be expelled from the animal through burping. While enteric fermentation contributes to methane emitted from dairies, the methane emissions from dairies seen in Methane Source Finder are primarily due to a manure management technique involving the use of anaerobic lagoons to store animal waste/manure. 
 
 ### What are the biggest categories of methane emissions in California?
-According to the California Air Resources Board (CARB), the majority of methane emissions in California come from agriculture (enteric fermentation 29%, manure management 26%), landfills (22%), and oil and gas extraction (16%). See CARB website for more information: https://www.arb.ca.gov/cc/inventory/background/ch4.htm. 
+According to the California Air Resources Board (CARB), the majority of methane emissions in California come from agriculture (enteric fermentation 29%, manure management 26%), landfills (22%), and oil and gas extraction (16%). See the [CARB website](https://www.arb.ca.gov/cc/inventory/background/ch4.htm) for more information. 
 
 ### What is the difference between a plume and a source?
 A methane source is a condensed surface feature or infrastructure component (typically < 10 meters across) that emits plumes of concentrated methane.

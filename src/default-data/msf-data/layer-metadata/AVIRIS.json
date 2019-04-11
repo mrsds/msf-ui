@@ -1,7 +1,7 @@
 {
-    "title": "Methane Plume Observations",
-    "description": "Methane emissions detected by AVIRIS-NG. Each methane plume is associated with a methane source that is responsible for of the emissions.",
-    "dateRange": "October 2016 – December 2018",
-    "platform": "AVIRIS, AVIRIS-NG",
-    "spatialResolution": "1–3 meters (typically 3m, but varies with flight altitude)"
+    "title": "AVIRIS-NG Plume Images",
+    "description": "Methane emissions detected by AVIRIS-NG (Next Generation Airborne Visible-Infrared Imaging Spectrometer); see https://aviris-ng.jpl.nasa.gov/ for more information. Each methane plume is associated with a methane source that is responsible for of the emissions.",
+    "dateRange": "August 2016 – December 2018",
+    "platform": "AVIRIS-NG",
+    "spatialResolution": "3m (Varies; for data shown here the average is ~3m)"
 }
