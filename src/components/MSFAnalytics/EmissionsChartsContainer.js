@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import ErrorBarsPlugin from "utils/ErrorBarsPlugin";
+import ErrorBarsPlugin from "chartjs-plugin-error-bars";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
