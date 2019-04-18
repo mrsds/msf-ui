@@ -8,7 +8,7 @@
             "isDefault": true,
             "visibleInGroup": true,
             "url": "http://100.64.114.187:9090/vista?category=1&maxObjects=10000",
-            "thumbnailImage": "img/AVIRIS.png",
+            "thumbnailImage": "img/Vista-Infrastructure.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
             "layerOrder": 2,
