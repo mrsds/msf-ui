@@ -29,6 +29,7 @@ export class FeaturePicker extends Component {
             [styles.selectedItem]: isActive,
             [styles.itemRoot]: true
         });
+
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem
@@ -67,7 +68,7 @@ export class FeaturePicker extends Component {
                             variant="caption"
                             noWrap
                         >
-                            {MetadataUtil.getFacilityTypeName(feature)}
+                            {feature.get("category")}
                         </Typography>
                     </div>
                     <ListItemSecondaryAction className={styles.listItemSecondaryAction}>
