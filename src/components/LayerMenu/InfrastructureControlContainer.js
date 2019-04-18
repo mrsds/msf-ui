@@ -32,6 +32,7 @@ import Grow from "@material-ui/core/Grow";
 import stylesExtended from "components/LayerMenu/LayerControlContainerExtendedStyles.scss";
 import MiscUtil from "_core/utils/MiscUtil";
 import MiscUtilExtended from "utils/MiscUtilExtended";
+import * as appStrings from "_core/constants/appStrings";
 
 export class InfrastructureControlContainer extends LayerControlContainerCore {
     setLayerActive(active) {
@@ -39,6 +40,18 @@ export class InfrastructureControlContainer extends LayerControlContainerCore {
         this.isChangingOpacity = false;
         this.props.mapActionsExtended.setGroupVisible(this.props.layer, !active);
     }
+
+    openLayerInfo() {
+        this.props.mapActions.loadLayerMetadata(
+            this.props.layers.find(
+                layer =>
+                    layer.get("group") === "VISTA" &&
+                    layer.get("thumbnailImage") &&
+                    layer.getIn(["metadata", "url"])
+            )
+        );
+    }
+
     renderTopContent() {
         return (
             <ListItem dense={true} classes={{ dense: styles.dense }}>
@@ -206,8 +219,13 @@ InfrastructureControlContainer.propTypes = {
     mapActionsExtended: PropTypes.object.isRequired,
     mapActions: PropTypes.object.isRequired,
     activeNum: PropTypes.number.isRequired,
-    layer: PropTypes.object.isRequired
+    layer: PropTypes.object.isRequired,
+    layers: PropTypes.object.isRequired
 };
+
+function mapStateToProps(state) {
+    return { layers: state.map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA]) };
+}
 
 function mapDispatchToProps(dispatch) {
     return {
@@ -216,4 +234,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(InfrastructureControlContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(InfrastructureControlContainer);

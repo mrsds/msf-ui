@@ -8,10 +8,14 @@
             "isDefault": true,
             "visibleInGroup": true,
             "url": "http://100.64.114.187:9090/vista?category=1&maxObjects=10000",
-            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "thumbnailImage": "img/AVIRIS.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
-            "layerOrder": 2
+            "layerOrder": 2,
+            "metadata": {
+                "url": "default-data/msf-data/layer-metadata/vista.json",
+                "handleAs": "json"
+            }
         },
         {
             "id": "VISTA_2017_CNG_FUELING_STATIONS",
