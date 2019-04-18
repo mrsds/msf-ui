@@ -170,6 +170,58 @@
             "layerOrder": 14
         },
         {
+            "id": "VISTA_2017_OILGAS_FACILITY_BOUNDARIES",
+            "title": "Vista 2017 - Oil and Gas Facility Boundaries",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.187:9090/vista?category=0&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 14
+        },
+        {
+            "id": "VISTA_2017_COMPOSTING_SITES",
+            "title": "Vista 2017 - Composting Sites",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.187:9090/vista?category=0&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 14
+        },
+        {
+            "id": "VISTA_2017_COMPRESSOR",
+            "title": "Vista 2017 - Compressors",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.187:9090/vista?category=0&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 14
+        },
+        {
+            "id": "VISTA_2017_DIGESTER",
+            "title": "Vista 2017 - Digester",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.187:9090/vista?category=0&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 14
+        },
+        {
             "id": "AVIRIS",
             "title": "AVIRIS-NG Plume Images",
             "type": "data",
