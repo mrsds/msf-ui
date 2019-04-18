@@ -83,7 +83,11 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
     }
 
     openLayerInfo() {
-        this.props.mapActions.loadLayerMetadata(this.props.layer);
+        this.props.mapActions.loadLayerMetadata(
+            this.props.layers.find(
+                l => l.get("id") === this.props.griddedSettings.get("activeLayer")
+            )
+        );
     }
 
     renderTopContent() {
