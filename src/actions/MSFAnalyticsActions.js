@@ -300,3 +300,12 @@ export function openMapToInfrastructure(featureInfo) {
 export function updateSummaryPageSourceIndex(index) {
     return { type: typesMSF.UPDATE_SUMMARY_PAGE_SOURCE_INDEX, index };
 }
+
+export function openMapToLatLong(lat, long) {
+    return (dispatch, getState) => {
+        dispatch({ type: typesMSF.CHANGE_APP_MODE, mode: MSFTypes.APP_MODE_MAP });
+        getState()
+            .map.getIn(["maps", "openlayers"])
+            .zoomToCoords([long, lat]);
+    };
+}

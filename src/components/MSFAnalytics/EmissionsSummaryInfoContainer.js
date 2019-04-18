@@ -12,6 +12,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import moment from "moment";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
 import PageControls from "components/MSFAnalytics/PageControls";
@@ -122,10 +123,20 @@ export class EmissionsSummaryInfoContainer extends Component {
                 const fluxString = avgFlux
                     ? `${avgFlux} ${fluxUncertainty ? " ± " + fluxUncertainty : ""}`
                     : "";
-                const persistence = source.get("persistence");
+                const persistence = source.get("source_persistence");
+                const lat = source.get("source_latitude");
+                const long = source.get("source_longitude");
                 return (
                     <TableRow key={sourceId}>
-                        <TableCell padding="dense">{sourceId}</TableCell>
+                        <TableCell padding="dense">
+                            <div
+                                className={styles.locationCol}
+                                onClick={_ => this.props.openMapToLatLong(lat, long)}
+                            >
+                                {sourceId}
+                                <LocationOnIcon fontSize="small" />
+                            </div>
+                        </TableCell>
                         <TableCell padding="dense">{vistaCategory}</TableCell>
                         <TableCell padding="dense">{ipccSectorName}</TableCell>
                         <TableCell padding="dense">{source.get("plume_count")}</TableCell>
@@ -188,6 +199,7 @@ EmissionsSummaryInfoContainer.propTypes = {
     sourcesData: PropTypes.object,
     sourceStartIndex: PropTypes.number.isRequired,
     updateSummaryPageSourceIndex: PropTypes.func.isRequired,
+    openMapToLatLong: PropTypes.func.isRequired,
     sourcesLoading: PropTypes.bool.isRequired
 };
 
@@ -211,7 +223,8 @@ function mapDispatchToProps(dispatch) {
         updateSummaryPageSourceIndex: bindActionCreators(
             MSFAnalyticsActions.updateSummaryPageSourceIndex,
             dispatch
-        )
+        ),
+        openMapToLatLong: bindActionCreators(MSFAnalyticsActions.openMapToLatLong, dispatch)
     };
 }
 
