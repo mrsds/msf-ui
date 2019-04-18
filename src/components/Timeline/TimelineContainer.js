@@ -529,6 +529,12 @@ export class TimelineContainerStyles extends Component {
             item.plumes[0]
         );
         this.items.update({ id: props.items[0], selected: true });
+
+        // Deselect all other items
+        this.items.forEach(item => {
+            if (item.id !== props.items[0]) this.items.update({ id: item.id, selected: false });
+        });
+
         this.timeline.setSelection(props.items[0]);
 
         // // Only operate on single plume data points

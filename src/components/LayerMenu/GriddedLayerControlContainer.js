@@ -209,10 +209,12 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
     }
 
     renderBottomContent() {
-        const paletteName = this.props.layers
-            .find(l => l.get("id") === this.props.griddedSettings.get("activeLayer"))
-            .getIn(["palette", "name"]);
+        const activeLayer = this.props.layers.find(
+            l => l.get("id") === this.props.griddedSettings.get("activeLayer")
+        );
+        const paletteName = activeLayer.getIn(["palette", "name"]);
         const palette = this.props.palettes.find(p => p.get("id") === paletteName);
+        const units = activeLayer.get("units");
 
         return (
             <div>
@@ -232,7 +234,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                                 palette={palette}
                                 min={parseFloat(this.props.layer.get("min"))}
                                 max={parseFloat(this.props.layer.get("max"))}
-                                units={this.props.layer.get("units")}
+                                units={units}
                                 displayMin={this.props.layer.getIn(["palette", "min"])}
                                 displayMax={this.props.layer.getIn(["palette", "max"])}
                                 handleAs={this.props.layer.getIn(["palette", "handleAs"])}
