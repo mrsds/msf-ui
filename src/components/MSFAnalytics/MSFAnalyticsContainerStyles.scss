@@ -238,4 +238,12 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+
+    &:hover .locationIcon {
+        color: rgba(0, 0, 0, 0.87);
+    }
+}
+
+.locationIcon {
+    color: rgba(0, 0, 0, 0.54);
 }

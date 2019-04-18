@@ -134,15 +134,17 @@ export class EmissionsSummaryInfoContainer extends Component {
                                 onClick={_ => this.props.openMapToLatLong(lat, long)}
                             >
                                 {sourceId}
-                                <LocationOnIcon fontSize="small" />
+                                <LocationOnIcon
+                                    classes={{ root: styles.locationIcon }}
+                                    fontSize="small"
+                                />
                             </div>
                         </TableCell>
                         <TableCell padding="dense">{vistaCategory}</TableCell>
                         <TableCell padding="dense">{ipccSectorName}</TableCell>
-                        <TableCell padding="dense">{source.get("plume_count")}</TableCell>
                         <TableCell padding="dense">{source.get("flyover_count")}</TableCell>
-                        <TableCell padding="dense">{fluxString}</TableCell>
                         <TableCell padding="dense">{persistence}</TableCell>
+                        <TableCell padding="dense">{fluxString}</TableCell>
                     </TableRow>
                 );
             });
@@ -164,10 +166,9 @@ export class EmissionsSummaryInfoContainer extends Component {
                                         <TableCell padding="dense">Source ID</TableCell>
                                         <TableCell padding="dense">Vista Sector</TableCell>
                                         <TableCell padding="dense">IPCC Sector</TableCell>
-                                        <TableCell padding="dense">Plumes</TableCell>
                                         <TableCell padding="dense">Flyovers</TableCell>
-                                        <TableCell padding="dense">Avg Emissions (kg/hr)</TableCell>
                                         <TableCell padding="dense">Persistence</TableCell>
+                                        <TableCell padding="dense">Avg Emissions (kg/hr)</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>{this.makeSourcesTableBody()}</TableBody>
