@@ -354,7 +354,7 @@
             },
             "isDefault": true,
             "url": "http://100.64.114.187:9090/sources?maxLat={latMax}&minLat={latMin}&maxLon={lonMax}&minLon={lonMin}",
-            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "thumbnailImage": "img/msf-pointsources.png",
             "updateParameters": { "time": false },
             "layerOrder": 16
         },
@@ -375,7 +375,7 @@
             },
             "isDefault": false,
             "url": "http://100.64.114.187:9090/flightlines_all.kml",
-            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "thumbnailImage": "img/msf-flightcoverage.png",
             "updateParameters": { "time": false },
             "layerOrder": 0
         }
