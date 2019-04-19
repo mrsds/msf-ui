@@ -41,6 +41,7 @@ require("styles/resources/img/landing_page/hero_image.jpg");
 require("styles/resources/img/landing_page/msf_screenshot.png");
 require("styles/resources/img/layer_thumbnails/msf-flightcoverage.png");
 require("styles/resources/img/layer_thumbnails/msf-pointsources.png");
+require("styles/resources/img/layer_thumbnails/Vista-Infrastructure.png");
 import { BrowserRouter } from "react-router-dom";
 
 const store = configureStore();
