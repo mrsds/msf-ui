@@ -1,7 +1,7 @@
 {
-    "title": "Methane Plume Observations",
-    "description": "Methane emissions detected by AVIRIS-NG. Each methane plume is associated with a methane source that is responsible for of the emissions.",
-    "dateRange": "October 2016 &ndash; December 2018",
-    "platform": "AVIRIS, AVIRIS-NG",
-    "spatialResolution": "1 &ndash; 3 meters (typically 3m, but varies with flight altitude)"
+    "title": "Los Angeles Flux Inversion",
+    "description": "Methane emissions calculated by flux inversion. Initial measurements made by the Megacities carbon-monitoring network (https://megacities.jpl.nasa.gov)",
+    "dateRange": "February 2015 – December 2016",
+    "platform": "Megacities Carbon Project Tower Network",
+    "spatialResolution": "~3 kilometers"
 }
