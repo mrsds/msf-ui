@@ -139,7 +139,7 @@ const APP_CONFIG = Immutable.fromJS({
             name: "GRIDDED_EMISSIONS_EPA",
             dateEndpoint: "http://" + be_endpoint + "/data/epa_gridded_total_date_list.json",
             endpoint: "http://" + be_endpoint + "/data/epa_gridded_total_{date}.geojson",
-            period: "monthly"
+            period: "yearly"
         },
         {
             name: "GRIDDED_EMISSIONS_V2",

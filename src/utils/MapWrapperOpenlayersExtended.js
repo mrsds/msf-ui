@@ -332,6 +332,17 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         }
     }
 
+    getGriddedDateFormat(period) {
+        switch (period) {
+            case "daily":
+                return "YYYYMMDD";
+            case "monthly":
+                return "YYYYMM";
+            case "yearly":
+                return "YYYY";
+        }
+    }
+
     changeGriddedVectorLayerDate(date, name) {
         const griddedFluxLayer = this.map
             .getLayers()
@@ -339,8 +350,11 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             .find(l => l.get("_layerId") === name);
 
         const layerConfig = appConfig.GRIDDED_LAYER_TYPES.find(l => l.name === name);
-        const dateFormat = layerConfig.period === "daily" ? "YYYYMMDD" : "YYYYMM";
-        const sourceUrl = layerConfig.endpoint.replace("{date}", date.format(dateFormat));
+        const sourceUrl = layerConfig.endpoint.replace(
+            "{date}",
+            date.format(this.getGriddedDateFormat(layerConfig.period))
+        );
+        console.log(sourceUrl);
 
         const newSource = new Ol_Source_Vector({
             url: sourceUrl,

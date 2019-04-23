@@ -94,13 +94,8 @@ export class LayerDateControl extends Component {
         );
     }
 
-    render() {
+    makeMonthControl() {
         const currentDate = this.props.griddedSettings.get("currentDate");
-        const yearList = this.props.griddedSettings.get("availableDates").reduce((acc, date) => {
-            if (!acc.includes(date.year())) acc.push(date.year());
-            return acc;
-        }, []);
-
         const monthList = this.props.griddedSettings
             .get("availableDates")
             .filter(date => date.isSame(currentDate, "year"))
@@ -109,14 +104,53 @@ export class LayerDateControl extends Component {
                 return acc;
             }, []);
 
-        const yearClass = MiscUtil.generateStringFromSet({
-            [styles.dateSelector]: true,
-            [styles.yearSelector]: true
-        });
-
         const monthClass = MiscUtil.generateStringFromSet({
             [styles.dateSelector]: true,
             [styles.monthSelector]: true
+        });
+
+        return (
+            <FormControl className={monthClass}>
+                <InputLabel htmlFor="month-select">
+                    <IconButton
+                        className={styles.incrementButton}
+                        disabled={this.incrementActive("month", true)}
+                    >
+                        <ChevronLeftIcon onClick={() => this.props.incrementDate("month", true)} />
+                    </IconButton>
+                    <span className={styles.incrementLabel}>Month</span>
+                    <IconButton
+                        className={styles.incrementButton}
+                        disabled={this.incrementActive("month")}
+                    >
+                        <ChevronRightIcon onClick={() => this.props.incrementDate("month")} />
+                    </IconButton>
+                </InputLabel>
+                <Select
+                    value={currentDate.format("MMM")}
+                    autoWidth={true}
+                    input={<Input name="Month" id="month-select" />}
+                    onChange={event => this.updateDatePart(event, "month")}
+                >
+                    {monthList.map(month => (
+                        <MenuItem key={month} value={month}>
+                            {month}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        );
+    }
+    render() {
+        const currentDate = this.props.griddedSettings.get("currentDate");
+        const yearList = this.props.griddedSettings.get("availableDates").reduce((acc, date) => {
+            if (!acc.includes(date.year())) acc.push(date.year());
+            return acc;
+        }, []);
+
+        const yearClass = MiscUtil.generateStringFromSet({
+            [styles.dateSelector]: true,
+            [styles.yearSelector]: true
         });
 
         const activeLayer = this.props.griddedSettings.get("activeLayer");
@@ -160,40 +194,11 @@ export class LayerDateControl extends Component {
                                 ))}
                             </Select>
                         </FormControl>
-                        <FormControl className={monthClass}>
-                            <InputLabel htmlFor="month-select">
-                                <IconButton
-                                    className={styles.incrementButton}
-                                    disabled={this.incrementActive("month", true)}
-                                >
-                                    <ChevronLeftIcon
-                                        onClick={() => this.props.incrementDate("month", true)}
-                                    />
-                                </IconButton>
-                                <span className={styles.incrementLabel}>Month</span>
-                                <IconButton
-                                    className={styles.incrementButton}
-                                    disabled={this.incrementActive("month")}
-                                >
-                                    <ChevronRightIcon
-                                        onClick={() => this.props.incrementDate("month")}
-                                    />
-                                </IconButton>
-                            </InputLabel>
-                            <Select
-                                value={currentDate.format("MMM")}
-                                autoWidth={true}
-                                input={<Input name="Month" id="month-select" />}
-                                onChange={event => this.updateDatePart(event, "month")}
-                            >
-                                {monthList.map(month => (
-                                    <MenuItem key={month} value={month}>
-                                        {month}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+
                         {period === "daily" ? this.makeDayControl() : null}
+                        {period === "daily" || period === "monthly"
+                            ? this.makeMonthControl()
+                            : null}
                     </FormGroup>
                     <Button
                         color="primary"

@@ -992,18 +992,15 @@
             "name": "gridded_methane_epa",
             "values": [
                 ["0", "ffffff00"],
-                ["74", "94ce58ff"],
-                ["205", "fffe38ff"],
-                ["550", "fec02dff"],
-                [">1460", "fd0d1bff"]
+                ["0.00000001", "94ce58ff"],
+                ["0.01", "fffe38ff"],
+                ["0.34", "fec02dff"],
+                [">1", "fd0d1bff"]
             ]
         },
         {
             "name": "flight_coverage",
-            "values": [
-                ["0", "ffffff00"],
-                [">0", "ffffffff"]
-            ]
+            "values": [["0", "ffffff00"], [">0", "ffffffff"]]
         }
     ]
 }

@@ -90,10 +90,26 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
         );
     }
 
+    getDateFormat() {
+        const period = appConfig.GRIDDED_LAYER_TYPES.find(
+            l => l.name === this.props.griddedSettings.get("activeLayer")
+        ).period;
+
+        switch (period) {
+            case "daily":
+                return "MMM Do, YYYY";
+            case "monthly":
+                return "MMM YYYY";
+            case "yearly":
+                return "YYYY";
+        }
+    }
+
     renderTopContent() {
         let currentGriddedDate = this.props.griddedSettings
             .get("currentDate")
-            .format("MMM Do, YYYY");
+            .format(this.getDateFormat());
+
         let title = (
             <div>
                 {this.props.group.get("title")}
@@ -165,7 +181,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
         return (
             <span className={containerClasses}>
                 <div style={{ display: "unset" }}>
-                    {this.props.griddedSettings.get("currentDate").format("MMM Do YYYY")}
+                    {this.props.griddedSettings.get("currentDate").format(this.getDateFormat())}
                 </div>
                 <Manager style={{ display: "unset" }}>
                     <Target

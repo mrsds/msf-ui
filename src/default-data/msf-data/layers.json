@@ -278,7 +278,7 @@
             "type": "data",
             "handleAs": "gridded_geojson",
             "isDefault": false,
-            "url": "http://100.64.114.187:9090/data/epa_gridded_total_012012.geojson",
+            "url": "http://100.64.114.187:9090/data/epa_gridded_total_2012.geojson",
             "thumbnailImage": "img/gridded_methane_v1.png",
             "opacity": 0.3,
             "metadata": {
@@ -290,8 +290,8 @@
             "palette": {
                 "name": "gridded_methane_epa",
                 "handleAs": "json-fixed",
-                "min": "1",
-                "max": "> 1600"
+                "min": "0",
+                "max": "> 1"
             },
             "layerOrder": 1,
             "group": "GRIDDED",
