@@ -95,7 +95,7 @@ export class LandingPage extends Component {
                                     <img
                                     alt="Methane Observation Network Diagram"
                                     className={styles.methane_diagram}
-                                    src="img/Methane_tiered_obs_system-small.jpg"
+                                    src="img/Methane_tiered_obs_system_small.jpg"
                                     />    
                                 
                                 <Typography
