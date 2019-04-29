@@ -91,6 +91,13 @@ export class LandingPage extends Component {
                     <Card className={styles.card}>
                         <CardContent className={styles.card_content}>
                             <div className={styles.left}>
+                                <Link to="img/hero_image.jpg">
+                                    <img
+                                    alt="Methane Observation Network Diagram"
+                                    className={styles.app_screenshot}
+                                    src="img/hero_image.jpg"
+                                    />    
+                                </Link>
                                 <Typography
                                     className={styles.section_title}
                                     color="default"
@@ -110,8 +117,15 @@ export class LandingPage extends Component {
                                     className={styles.app_screenshot}
                                     src="img/msf_screenshot.png"
                                 />
+                                <Typography
+                                    className={styles.section_title}
+                                    color="default"
+                                    gutterBottom
+                                >
+                                    WHY FOCUS ON METHANE?
+                                </Typography>
                                 <div className={styles.section_body}>
-                                    Why focus on methane? Methane (CH4) is a powerful greenhouse gas
+                                    Methane (CH4) is a powerful greenhouse gas
                                     - second only to carbon dioxide as a climate-forcing agent
                                     resulting from human (anthropogenic) activity. The growth rate
                                     of methane in the atmosphere is due to a complex combination of
