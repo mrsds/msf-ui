@@ -91,13 +91,13 @@ export class LandingPage extends Component {
                     <Card className={styles.card}>
                         <CardContent className={styles.card_content}>
                             <div className={styles.left}>
-                                
+                                <Link to="img/Methane_tiered_obs_system_small.jpg">
                                     <img
                                     alt="Methane Observation Network Diagram"
                                     className={styles.methane_diagram}
                                     src="img/Methane_tiered_obs_system_small.jpg"
                                     />    
-                                
+                                </Link>
                                 <Typography
                                     className={styles.section_title}
                                     color="default"
