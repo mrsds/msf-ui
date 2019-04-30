@@ -227,7 +227,9 @@ export class PlumeChartingContainer extends Component {
                                 ? " ± " +
                                   MiscUtilExtended.roundTo(feature.get("flux_uncertainty"), 2)
                                 : "";
-                            const fluxString = flux ? flux + fluxUncertainty + " kg/hr" : "";
+                            const fluxString = flux
+                                ? flux === -9999 ? "TBD" : flux + fluxUncertainty + " kg/hr"
+                                : "";
 
                             return (
                                 <GridListTile
@@ -309,17 +311,19 @@ export class PlumeChartingContainer extends Component {
             .map((key, idx) => {
                 const pointColor = key === "flyovers" ? "#ffffff00" : colorList[colorIndex++];
                 return {
-                    data: dataGroups[key].map(plume => {
-                        return {
-                            x: plume.get("plume_date") || plume.get("flightline_date"),
-                            y:
-                                key === "flyovers"
-                                    ? 0
-                                    : plume.get("flux")
-                                      ? Math.round(plume.get("flux") * 100) / 100
-                                      : 0
-                        };
-                    }),
+                    data: dataGroups[key]
+                        .filter(plume => plume.get("flux") && plume.get("flux") !== -9999)
+                        .map(plume => {
+                            return {
+                                x: plume.get("plume_date") || plume.get("flightline_date"),
+                                y:
+                                    key === "flyovers"
+                                        ? 0
+                                        : plume.get("flux")
+                                          ? Math.round(plume.get("flux") * 100) / 100
+                                          : 0
+                            };
+                        }),
                     backgroundColor: pointColor,
                     fill: false,
                     label: key === "flyovers" ? emptyFlyoverLabel : `Source: ${key}`,
