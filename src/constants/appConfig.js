@@ -11,7 +11,7 @@ import * as coreConfig from "_core/constants/appConfig";
 import * as appStrings from "_core/constants/appStrings";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
-let be_endpoint = "100.64.114.187";
+let be_endpoint = "13.59.145.54/server";
 let be_port = "9090";
 let layer_file = "layers.json";
 
@@ -39,18 +39,13 @@ const APP_CONFIG = Immutable.fromJS({
         vistaEndpoint:
             "http://" +
             be_endpoint +
-            ":" +
-            be_port +
             "/vista?maxLat={latMax}&maxLon={lonMax}&minLat={latMin}&minLon={lonMin}&category={category}",
-        vistaDetailEndpoint: "http://" + be_endpoint + ":" + be_port + "/vista?vistaId={vista_id}",
+        vistaDetailEndpoint: "http://" + be_endpoint + "/vista?vistaId={vista_id}",
         avirisEndpoint:
             "http://" +
             be_endpoint +
-            ":" +
-            be_port +
             "/aviris/plumes?maxObjects=10000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}",
-        avirisGlobalSearchEndpoint:
-            "http://" + be_endpoint + ":" + be_port + "/aviris/plumes?source={source_id}",
+        avirisGlobalSearchEndpoint: "http://" + be_endpoint + "/aviris/plumes?source={source_id}",
         layerConfig: [
             {
                 url: "default-data/msf-data/capabilities.xml",
@@ -62,27 +57,20 @@ const APP_CONFIG = Immutable.fromJS({
             }
         ],
         paletteConfig: "default-data/msf-data/palettes.json",
-        plumeListQueryEndpoint:
-            "http://" + be_endpoint + ":" + be_port + "/flyoversOfFacility?vista_id={vista_id}",
+        plumeListQueryEndpoint: "http://" + be_endpoint + "/flyoversOfFacility?vista_id={vista_id}",
         sourceListQueryEndpoint:
-            "http://" + be_endpoint + ":" + be_port + "/flyoversOfPlumeSource?source={source_id}",
-        detectionStatsEndpoint:
-            "http://" + be_endpoint + ":" + be_port + "/detectionBySector?county={county}",
-        areaSearchOptionsListEndpoint: "http://" + be_endpoint + ":" + be_port + "/list/counties",
+            "http://" + be_endpoint + "/flyoversOfPlumeSource?source={source_id}",
+        detectionStatsEndpoint: "http://" + be_endpoint + "/detectionBySector?county={county}",
+        areaSearchOptionsListEndpoint: "http://" + be_endpoint + "/list/counties",
         plumeSourceEndpoint:
             "http://" +
             be_endpoint +
-            ":" +
-            be_port +
             "/methanePlumeSources?county={county}&vista_category={vista_category}&sector_level_3={sector_level_3}",
-        ipccSectorOptionsListEndpoint: "http://" + be_endpoint + ":" + be_port + "/list/sectors",
-        vistaCategoryOptionsListEndpoint:
-            "http://" + be_endpoint + ":" + be_port + "/list/categories",
+        ipccSectorOptionsListEndpoint: "http://" + be_endpoint + "/list/sectors",
+        vistaCategoryOptionsListEndpoint: "http://" + be_endpoint + "/list/categories",
         plumeSourceSummaryEndpoint:
             "http://" +
             be_endpoint +
-            ":" +
-            be_port +
             "/methanePlumeSourcesSummary?county={county}&vista_category={vista_category}&sector_level_3={sector_level_3}"
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
