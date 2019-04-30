@@ -90,7 +90,12 @@ export class LandingPage extends Component {
                     </div>
                     <Card className={styles.card}>
                         <CardContent className={styles.card_content}>
-                            <div className={styles.left}>
+                            <div className={styles.left}>                                
+                                <img
+                                    alt="Screenshot of Methane Source Finder"
+                                    className={styles.app_screenshot}
+                                    src="img/msf_screenshot.png"
+                                />
                                 <Typography
                                     className={styles.section_title}
                                     color="default"
@@ -105,13 +110,22 @@ export class LandingPage extends Component {
                                     satellites on an interactive map alongside infrastructure
                                     information.
                                 </div>
-                                <img
-                                    alt="Screenshot of Methane Source Finder"
-                                    className={styles.app_screenshot}
-                                    src="img/msf_screenshot.png"
-                                />
+                                <a href="img/Methane_tiered_obs_system_small.jpg">
+                                    <img
+                                    alt="Methane Observation Network Diagram"
+                                    className={styles.methane_diagram}
+                                    src="img/Methane_tiered_obs_system_small.jpg"
+                                    />    
+                                </a>
+                                <Typography
+                                    className={styles.section_title}
+                                    color="default"
+                                    gutterBottom
+                                >
+                                    WHY FOCUS ON METHANE?
+                                </Typography>
                                 <div className={styles.section_body}>
-                                    Why focus on methane? Methane (CH4) is a powerful greenhouse gas
+                                    Methane (CH4) is a powerful greenhouse gas
                                     - second only to carbon dioxide as a climate-forcing agent
                                     resulting from human (anthropogenic) activity. The growth rate
                                     of methane in the atmosphere is due to a complex combination of
