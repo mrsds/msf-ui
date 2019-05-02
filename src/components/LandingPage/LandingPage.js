@@ -90,55 +90,58 @@ export class LandingPage extends Component {
                     </div>
                     <Card className={styles.card}>
                         <CardContent className={styles.card_content}>
-                            <div className={styles.left}>                                
+                            <div className={styles.left}>
                                 <img
                                     alt="Screenshot of Methane Source Finder"
                                     className={styles.app_screenshot}
                                     src="img/msf_screenshot.png"
                                 />
-                                <Typography
-                                    className={styles.section_title}
-                                    color="default"
-                                    gutterBottom
-                                >
-                                    ABOUT
-                                </Typography>
+                                <a href="img/Methane_tiered_obs_system_small.jpg">
+                                    <img
+                                        alt="Methane Observation Network Diagram"
+                                        className={styles.methane_diagram}
+                                        src="img/Methane_tiered_obs_system_small.jpg"
+                                    />
+                                </a>
+
                                 <div className={styles.section_body}>
+                                    <Typography
+                                        className={styles.section_title}
+                                        color="default"
+                                        gutterBottom
+                                    >
+                                        ABOUT
+                                    </Typography>
                                     Methane Source Finder helps you explore, analyze, and download
                                     methane data across a range of scales in California derived from
                                     airborne remote-sensing, surface monitoring networks and
                                     satellites on an interactive map alongside infrastructure
                                     information.
                                 </div>
-                                <a href="img/Methane_tiered_obs_system_small.jpg">
-                                    <img
-                                    alt="Methane Observation Network Diagram"
-                                    className={styles.methane_diagram}
-                                    src="img/Methane_tiered_obs_system_small.jpg"
-                                    />    
-                                </a>
+
                                 <Typography
                                     className={styles.section_title}
                                     color="default"
                                     gutterBottom
+                                    style={{ whiteSpace: "normal" }}
                                 >
                                     WHY FOCUS ON METHANE?
                                 </Typography>
                                 <div className={styles.section_body}>
-                                    Methane (CH4) is a powerful greenhouse gas
-                                    - second only to carbon dioxide as a climate-forcing agent
-                                    resulting from human (anthropogenic) activity. The growth rate
-                                    of methane in the atmosphere is due to a complex combination of
-                                    natural and anthropogenic emissions and natural removal
-                                    processes. The exact causes for observed changes in the methane
-                                    growth rate over time remain uncertain due to incomplete data
-                                    and disagreements between different measurement methods. Methane
-                                    emissions and their causes at local and regional scales remain
-                                    particularly uncertain. Additionally, methane is also being
-                                    increasingly prioritized by California and other governments for
-                                    near-term climate action given its relatively short atmospheric
-                                    lifetime and the potential for rapid, focused mitigation that
-                                    can complement economy-wide efforts to reduce carbon dioxide
+                                    Methane (CH4) is a powerful greenhouse gas - second only to
+                                    carbon dioxide as a climate-forcing agent resulting from human
+                                    (anthropogenic) activity. The growth rate of methane in the
+                                    atmosphere is due to a complex combination of natural and
+                                    anthropogenic emissions and natural removal processes. The exact
+                                    causes for observed changes in the methane growth rate over time
+                                    remain uncertain due to incomplete data and disagreements
+                                    between different measurement methods. Methane emissions and
+                                    their causes at local and regional scales remain particularly
+                                    uncertain. Additionally, methane is also being increasingly
+                                    prioritized by California and other governments for near-term
+                                    climate action given its relatively short atmospheric lifetime
+                                    and the potential for rapid, focused mitigation that can
+                                    complement economy-wide efforts to reduce carbon dioxide
                                     emissions. Methane is also a precursor for tropospheric ozone
                                     and is strongly linked with co-emitted reactive trace gases
                                     targeted by air quality and public health policies in
