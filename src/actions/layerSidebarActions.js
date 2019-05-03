@@ -227,9 +227,14 @@ export function setPlumeFilter(key, selectedValue) {
     return (dispatch, getState) => {
         dispatch({ type: types.SET_PLUME_FILTER, key, selectedValue });
         dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
+        const visiblePlumes = getState().layerSidebar.getIn([
+            "searchState",
+            layerSidebarTypes.CATEGORY_PLUMES,
+            "searchResults"
+        ]);
         getState()
             .map.getIn(["maps", "openlayers"])
-            .setVisiblePlumes(getState().layerSidebar);
+            .setVisiblePlumes(visiblePlumes);
     };
 }
 
@@ -244,9 +249,14 @@ export function setPlumeTextFilter(selectedValue) {
 export function applyPlumeTextFilter() {
     return (dispatch, getState) => {
         dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
+        const visiblePlumes = getState().layerSidebar.getIn([
+            "searchState",
+            layerSidebarTypes.CATEGORY_PLUMES,
+            "searchResults"
+        ]);
         getState()
             .map.getIn(["maps", "openlayers"])
-            .setVisiblePlumes(getState().layerSidebar);
+            .setVisiblePlumes(visiblePlumes);
         // Trigger global search
         dispatch(plumesGlobalSearch());
     };

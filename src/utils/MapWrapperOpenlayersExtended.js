@@ -876,6 +876,8 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             .filter(feature => feature && feature.get("id"))
             .map(feature => feature.get("id"));
 
+        console.log(activeFeatureIds);
+
         const avirisLayer = this.getAvirisLayer();
 
         if (!avirisLayer) return null;
@@ -966,11 +968,8 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             .find(l => l.get("_layerId") === "AVIRIS");
     }
 
-    setVisiblePlumes(layerSidebarState) {
-        const activePlumeIds = layerSidebarState
-            .getIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES, "searchResults"])
-            .map(f => f.get("id"));
-
+    setVisiblePlumes(plumeList) {
+        const activePlumeIds = plumeList.map(f => f.get("id"));
         const avirisLayer = this.getAvirisLayer();
 
         if (!avirisLayer) return; // Bail if this layer isn't switched on

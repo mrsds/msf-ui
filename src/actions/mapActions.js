@@ -159,7 +159,6 @@ export function toggleFeatureLabel(category, feature) {
             ),
             plumes: Immutable.List(category === layerSidebarTypes.CATEGORY_PLUMES ? [feature] : [])
         });
-        updateHighlightedPlumes(getState);
     };
 }
 
@@ -301,20 +300,22 @@ function updateHighlightedPlumes(getState) {
         layerSidebarTypes.CATEGORY_PLUMES
             ? getState().layerSidebar.getIn(["activeFeature", "feature"])
             : null;
-    const hoverPlume = getState().map.get("hoverPlume");
-    getState()
-        .map.get("maps")
-        .map(map => map.setActivePlumes([selectedPlume, hoverPlume]));
-}
-
-function updateHoverPlume(feature) {
-    return { type: typesMSF.SET_HOVER_PLUME, feature: feature };
 }
 
 export function setHoverPlume(feature) {
     return (dispatch, getState) => {
-        dispatch(updateHoverPlume(feature));
-        updateHighlightedPlumes(getState);
+        dispatch({ type: typesMSF.SET_HOVER_PLUME, feature });
+        getState()
+            .map.getIn(["maps", "openlayers"])
+            .setVisiblePlumes(
+                feature
+                    ? [feature]
+                    : getState().layerSidebar.getIn([
+                          "searchState",
+                          layerSidebarTypes.CATEGORY_PLUMES,
+                          "searchResults"
+                      ])
+            );
     };
 }
 
@@ -437,12 +438,6 @@ export function closeFeaturePicker() {
 
 export function setActivePickerFeature(category, feature) {
     return { type: typesMSF.SET_ACTIVE_PICKER_FEATURE, feature, category };
-}
-
-function revealAllPlumes(mapState) {
-    mapState.get("maps").map(map => {
-        map.setActivePlumes([]);
-    });
 }
 
 function revealAllInfrastructure(mapState) {
