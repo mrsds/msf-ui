@@ -61,8 +61,8 @@ export class EmissionsChartsContainer extends Component {
                         position: "left",
                         type: "linear",
                         ticks: {
-                            // min: 0,
-                            // max: sourceData.reduce((acc, s) => (s.avg > acc ? s.avg : acc), 0)
+                            min: 0,
+                            max: Math.max(...sourceData.map(s => s.max))
                         }
                     },
                     {
@@ -72,8 +72,8 @@ export class EmissionsChartsContainer extends Component {
                             labelString: "Distribution Percentage"
                         },
                         ticks: {
-                            display: true
-                            // min: 0,
+                            display: true,
+                            min: 0
                             // max: sourceData.reduce((acc, s) => acc + s.avg, 0)
                         },
                         gridLines: { display: false, drawBorder: true },
