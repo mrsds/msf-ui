@@ -258,4 +258,8 @@ export default class MapReducer_Extended extends MapReducer {
         // console.log(state.get("pendingZoomFeature"));
         return state;
     }
+
+    static toggleLocationInputModal(state, action) {
+        return state.set("locationInputModalVisible", action.visible);
+    }
 }

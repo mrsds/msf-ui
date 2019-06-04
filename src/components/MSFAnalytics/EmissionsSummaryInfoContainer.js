@@ -17,6 +17,7 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
 import PageControls from "components/MSFAnalytics/PageControls";
 import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
+import * as mapActionsExtended from "actions/mapActions";
 
 const SOURCE_RESULTS_PER_PAGE = 25;
 
@@ -225,7 +226,7 @@ function mapDispatchToProps(dispatch) {
             MSFAnalyticsActions.updateSummaryPageSourceIndex,
             dispatch
         ),
-        openMapToLatLong: bindActionCreators(MSFAnalyticsActions.openMapToLatLong, dispatch)
+        openMapToLatLong: bindActionCreators(mapActionsExtended.openMapToLatLong, dispatch)
     };
 }
 

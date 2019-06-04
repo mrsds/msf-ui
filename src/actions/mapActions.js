@@ -511,3 +511,43 @@ export function goToHome() {
         );
     };
 }
+
+export function toggleLocationInputModal(visible) {
+    return { type: typesMSF.TOGGLE_LOCATION_INPUT_MODAL, visible };
+}
+
+export function handleLocationInput(string) {
+    return (dispatch, getState) => {
+        // First check if we've got some coordinates and zoom to them if we do.
+        const splitString = string.split(",");
+        if (splitString.length === 2 && splitString.every(val => isNaN(val))) {
+            console.log(splitString.map(parseFloat).reverse());
+            getState()
+                .map.getIn(["maps", "openlayers"])
+                .zoomToCoords(splitString.map(parseFloat).reverse());
+            return;
+        }
+
+        // Not a lat/long, so check if it's an address.
+        fetch(`https://nominatim.openstreetmap.org/search/${string}?format=json&limit=1`)
+            .then(res => res.json())
+            .then(results => {
+                if (!results.length) return;
+                getState()
+                    .map.getIn(["maps", "openlayers"])
+                    .zoomToCoords([results[0].lon, results[0].lat].map(parseFloat));
+            });
+
+        // console.log(string);
+        // return { type: types.NO_ACTION };
+    };
+}
+
+export function openMapToLatLong(lat, long) {
+    return (dispatch, getState) => {
+        dispatch({ type: typesMSF.CHANGE_APP_MODE, mode: MSFTypes.APP_MODE_MAP });
+        getState()
+            .map.getIn(["maps", "openlayers"])
+            .zoomToCoords([long, lat]);
+    };
+}

@@ -22,6 +22,7 @@ import { MapButton, MapButtonGroup } from "_core/components/Reusables";
 import { MapToolsButton, BasemapPicker, MapLabelsButton } from "_core/components/Map";
 import styles from "_core/components/Map/MapControlsContainer.scss";
 import displayStyles from "_core/styles/display.scss";
+import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
 
 export class MapControlsContainer extends Component {
     render() {
@@ -63,6 +64,19 @@ export class MapControlsContainer extends Component {
                             <RemoveIcon />
                         </MapButton>
                     </Tooltip>
+                    <Tooltip title="Input Location" placement="right">
+                        <MapButton
+                            onClick={_ =>
+                                this.props.mapActionsExtended.toggleLocationInputModal(
+                                    !this.props.locationModalVisible
+                                )
+                            }
+                            aria-label="Input Location"
+                            className={styles.lineButton}
+                        >
+                            <LocationSearchingIcon />
+                        </MapButton>
+                    </Tooltip>
                 </Paper>
                 <BasemapPicker />
             </div>
@@ -74,14 +88,16 @@ MapControlsContainer.propTypes = {
     mapControlsToolsOpen: PropTypes.bool.isRequired,
     mapActions: PropTypes.object.isRequired,
     mapActionsExtended: PropTypes.object.isRequired,
-    appActions: PropTypes.object.isRequired
+    appActions: PropTypes.object.isRequired,
+    locationModalVisible: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
     return {
         in3DMode: state.map.getIn(["view", "in3DMode"]),
         distractionFreeMode: state.view.get("distractionFreeMode"),
-        mapControlsToolsOpen: state.view.get("mapControlsToolsOpen")
+        mapControlsToolsOpen: state.view.get("mapControlsToolsOpen"),
+        locationModalVisible: state.map.get("locationInputModalVisible")
     };
 }
 
