@@ -263,7 +263,15 @@ export default class LayerSidebarReducer {
                     return sortByName;
             }
         };
-        searchResults = searchResults.sort(sortFn(infrastructureSortOption));
+
+        // If we're sorting by name but the user has entered a search term, don't sort results (use the order)
+        // given to us by the fuzzy search).
+        searchResults =
+            infrastructureSortOption === layerSidebarTypes.INFRASTRUCTURE_FILTER_NAME &&
+            infrastructureName
+                ? searchResults
+                : searchResults.sort(sortFn(infrastructureSortOption));
+
         return state
             .setIn(
                 ["searchState", layerSidebarTypes.CATEGORY_INFRASTRUCTURE, "searchResults"],
@@ -286,16 +294,16 @@ export default class LayerSidebarReducer {
                     .trim() === searchString.toLowerCase().trim()
         );
 
-        exactMatches = exactMatches.size
-            ? exactMatches
-            : featureList.filter(
-                  res =>
-                      res.get("name") &&
-                      res
-                          .get("name")
-                          .toLowerCase()
-                          .trim() === searchString.toLowerCase().trim()
-              );
+        // exactMatches = exactMatches.size
+        //     ? exactMatches
+        //     : featureList.filter(
+        //           res =>
+        //               res.get("name") &&
+        //               res
+        //                   .get("name")
+        //                   .toLowerCase()
+        //                   .trim() === searchString.toLowerCase().trim()
+        // );
 
         if (exactMatches.size) return exactMatches;
 
