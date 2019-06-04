@@ -80,7 +80,9 @@ export class PlumeFiltersContainer extends Component {
 
         let plumeFluxFilter = this.props.filters.get(layerSidebarTypes.PLUME_FILTER_PLUME_FLUX);
         let plumeFluxFilterSelectedValue =
-            plumeFluxFilter.getIn(["selectedValue", "value"]) || null;
+            typeof plumeFluxFilter.getIn(["selectedValue", "value"]) === "undefined"
+                ? null
+                : plumeFluxFilter.getIn(["selectedValue", "value"]);
         let plumeFluxFilterSelectedValueLabel = plumeFluxFilter.getIn(["selectedValue", "label"]);
         let plumeFluxPopoverActive = this.popperProps.get("plumeFlux");
 

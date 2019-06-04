@@ -157,7 +157,8 @@ export default class LayerSidebarReducer {
             return (
                 moment(feature.get("datetime")).isBetween(startDate, endDate, "day", "[]") &&
                 (!flightCampaign || feature.get("flight_campaign") === flightCampaign) &&
-                (!plumeFlux || feature.get("flux") >= plumeFlux)
+                (typeof plumeFlux === "undefined" ||
+                    (feature.get("flux") !== null && feature.get("flux") >= plumeFlux))
             );
         });
 
@@ -195,7 +196,7 @@ export default class LayerSidebarReducer {
             flightCampaignSelectableValues
         );
 
-        let plumeFluxSelectableValues = [5, 10, 25, 50, 100, 250, 500, 1000, 1500].map(x => {
+        let plumeFluxSelectableValues = [0, 5, 10, 25, 50, 100, 250, 500, 1000, 1500].map(x => {
             return Immutable.Map({
                 value: x,
                 label: ">" + x + " kg/hr"
