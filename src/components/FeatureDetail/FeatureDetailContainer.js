@@ -175,6 +175,8 @@ export class FeatureDetailContainer extends Component {
         if (!this.props.feature.size) return null;
         const metadata = this.props.vistaMetadata || Immutable.fromJS({});
 
+        console.log(metadata.toJS());
+
         // Get all the properties we'll be using later on using metadata searches
         const name = this.props.feature.get("name");
         const category = this.props.feature.get("category");
