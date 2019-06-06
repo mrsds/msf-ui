@@ -43,8 +43,8 @@ export class EmissionsChartsContainer extends Component {
                     avg,
                     min: avg - Math.abs(uncertainty),
                     max: avg + Math.abs(uncertainty),
-                    long: source.get("nearest_vista_longitude", null),
-                    lat: source.get("nearest_vista_latitude", null),
+                    long: source.get("source_longitude", null),
+                    lat: source.get("source_latitude", null),
                     uncertainty
                 };
             })
