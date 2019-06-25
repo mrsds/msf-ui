@@ -2,6 +2,7 @@ import MiscUtil from "_core/utils/MiscUtil";
 import * as references from "constants/references";
 import moment from "moment";
 import Immutable from "immutable";
+import Papa from "papaparse";
 
 export default class MiscUtilExtended extends MiscUtil {
     static getCountyFromFeature(feature, errStr) {
@@ -164,5 +165,18 @@ export default class MiscUtilExtended extends MiscUtil {
                 break;
         }
         return [r * 255, g * 255, b * 255];
+    }
+
+    static downloadCSV(content, filename) {
+        const blob = new Blob([Papa.unparse(content)], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const div = document.createElement("a");
+        div.style.display = "none";
+        div.href = url;
+        document.body.appendChild(div);
+        div.setAttribute("download", filename);
+        div.click();
+        document.body.removeChild(div);
+        URL.revokeObjectURL(url);
     }
 }

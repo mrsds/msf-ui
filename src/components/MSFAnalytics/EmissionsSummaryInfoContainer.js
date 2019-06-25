@@ -13,6 +13,8 @@ import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import moment from "moment";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
+import Button from "@material-ui/core/Button";
+import MiscUtilExtended from "utils/MiscUtilExtended";
 
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
 import PageControls from "components/MSFAnalytics/PageControls";
@@ -39,6 +41,20 @@ export class EmissionsSummaryInfoContainer extends Component {
             );
         }
         return <div />;
+    }
+
+    makeTable(stats, filename) {
+        console.log(stats);
+        // stats = stats.map(row => {
+        //     return {
+        //         Sector: row.sector,
+        //         Facilities: row.facilities,
+        //         "Facility Flyovers": row.flyovers,
+        //         "Unique Facilities Flown Over": row.uniqueFacilityCount,
+        //         "Unique Facilities with > 0 Plume Detections": row.uniqueFacilityWithPlumeCount
+        //     };
+        // });
+        MiscUtilExtended.downloadCSV(stats, filename);
     }
 
     makeSummaryStat({ name, value }) {
@@ -153,12 +169,25 @@ export class EmissionsSummaryInfoContainer extends Component {
 
     makeSourcesContent() {
         if (!this.props.sourcesData) return null;
+        const filename = "Methane Plume Sources";
         return (
             <Card className={styles.contentCard}>
-                <CardContent className={styles.tableContent}>
-                    <Typography variant="headline" component="h2">
-                        Methane Plume Sources
-                    </Typography>
+                <CardContent>
+                    <div className={styles.tableHeader}>
+                        <Typography
+                            variant="headline"
+                            component="h2"
+                            classes={{ root: styles.tableTitle }}
+                        >
+                            Methane Plume Sources
+                        </Typography>
+                        <Button
+                            size="small"
+                            onClick={_ => this.makeTable(this.props.sourcesData.toJS(), filename)}
+                        >
+                            Download Table
+                        </Button>
+                    </div>
                     <div className={styles.tableWrapper}>
                         <div className={styles.tableScroll}>
                             <Table>

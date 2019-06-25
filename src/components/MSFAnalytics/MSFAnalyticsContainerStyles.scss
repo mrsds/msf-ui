@@ -170,7 +170,7 @@
 
 .tableWrapper {
     position: relative;
-    margin-top: 20px;
+    margin-top: 0;
 }
 .tableScroll {
     overflow: auto;
@@ -246,4 +246,15 @@
 
 .locationIcon {
     color: rgba(0, 0, 0, 0.25);
+}
+
+.tableTitle {
+    display: inline;
+}
+
+.tableHeader {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    width: 100%;
 }
