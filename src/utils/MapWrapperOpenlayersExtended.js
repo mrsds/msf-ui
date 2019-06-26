@@ -443,7 +443,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             loader: (extent, resolution, projection) => {
                 const url = MapUtilExtended.buildAvirisFeatureQueryStringNew(extent);
                 layerSource.dispatchEvent("loadingFeatures");
-                fetch(url)
+                fetch(url, { credentials: "same-origin" })
                     .then(res => res.json())
                     .then(data => {
                         data.map(layer =>
@@ -475,7 +475,8 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
     createKMZLayer(layer, fromCache = false) {
         MiscUtilExtended.asyncFetch({
             url: layer.get("url"),
-            handleAs: "blob"
+            handleAs: "blob",
+            credentials: "same-origin"
         })
             .then(res => {
                 return Promise.resolve(res.blob());
@@ -606,7 +607,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
                         extent,
                         layer.get("id")
                     );
-                    fetch(url).then(res =>
+                    fetch(url, { credentials: "same-origin" }).then(res =>
                         res.json().then(data => {
                             // Add in default name if one does not exist
                             data.features = data.features.filter(f => f.geometry);
@@ -1075,7 +1076,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             loader: (extent, resolution, projection) => {
                 const url = MapUtilExtended.buildFeatureQueryString(layer.get("url"), extent);
                 layerSource.dispatchEvent("loadingFeatures");
-                fetch(url)
+                fetch(url, { credentials: "same-origin" })
                     .then(res => res.json())
                     .then(data =>
                         data.forEach(source => {

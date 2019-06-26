@@ -31,7 +31,9 @@ export function setLayerSidebarCollapsed(collapsed) {
 
 function getVistaPlumesList(feature) {
     return dispatch =>
-        fetch(appConfig.URLS.plumeListQueryEndpoint.replace("{vista_id}", feature.get("id")))
+        fetch(appConfig.URLS.plumeListQueryEndpoint.replace("{vista_id}", feature.get("id")), {
+            credentials: "same-origin"
+        })
             .then(res => res.json())
             .then(data => dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data }))
             .catch(err => {
@@ -55,7 +57,10 @@ function getVistaPlumesList(feature) {
 function getPlumesSourcesList(feature) {
     return dispatch =>
         fetch(
-            appConfig.URLS.sourceListQueryEndpoint.replace("{source_id}", feature.get("source_id"))
+            appConfig.URLS.sourceListQueryEndpoint.replace("{source_id}", feature.get("source_id")),
+            {
+                credentials: "same-origin"
+            }
         )
             .then(res => res.json())
             .then(data => dispatch({ type: types.UPDATE_FEATURE_DETAIL_PLUME_LIST, data }))
@@ -100,7 +105,9 @@ export function setFeatureDetail(category, feature) {
 }
 
 function getVistaMetadata(feature, dispatch) {
-    fetch(appConfig.URLS.vistaDetailEndpoint.replace("{vista_id}", feature.get("id")))
+    fetch(appConfig.URLS.vistaDetailEndpoint.replace("{vista_id}", feature.get("id")), {
+        credentials: "same-origin"
+    })
         .then(res => res.json())
         .then(json =>
             dispatch({
@@ -123,7 +130,9 @@ function vistaGlobalSearch(dispatch) {
         if (searchString === "")
             return dispatch({ type: types.UPDATE_INFRA_GLOBAL_RESULTS, data: null });
 
-        fetch(appConfig.URLS.vistaDetailEndpoint.replace("{vista_id}", searchString))
+        fetch(appConfig.URLS.vistaDetailEndpoint.replace("{vista_id}", searchString), {
+            credentials: "same-origin"
+        })
             .then(res => res.json())
             .then(json => dispatch({ type: types.UPDATE_INFRA_GLOBAL_RESULTS, data: json }));
     };
@@ -265,7 +274,9 @@ function plumesGlobalSearch(dispatch) {
         if (searchString === "")
             return dispatch({ type: types.UPDATE_PLUME_GLOBAL_RESULTS, data: [] });
 
-        fetch(appConfig.URLS.avirisGlobalSearchEndpoint.replace("{source_id}", searchString))
+        fetch(appConfig.URLS.avirisGlobalSearchEndpoint.replace("{source_id}", searchString), {
+            credentials: "same-origin"
+        })
             .then(res => res.json())
             .then(json => dispatch({ type: types.UPDATE_PLUME_GLOBAL_RESULTS, data: json }));
     };

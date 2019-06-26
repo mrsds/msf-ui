@@ -61,7 +61,7 @@ export function fetchDetectionStats() {
             );
         url += startDate ? `&from_date=${startDate.unix()}` : "";
         url += endDate ? `&to_date=${endDate.unix()}` : "";
-        return fetch(url)
+        return fetch(url, { credentials: "same-origin" })
             .then(res => res.json())
             .then(
                 data => {
@@ -96,7 +96,7 @@ function detectionStatsLoading(isLoading) {
 export function fetchAreaSearchOptionsList() {
     return dispatch => {
         dispatch(areaSearchListOptionsLoading(true));
-        fetch(appConfig.URLS.areaSearchOptionsListEndpoint)
+        fetch(appConfig.URLS.areaSearchOptionsListEndpoint, { credentials: "same-origin" })
             .then(res => res.json())
             .then(json => {
                 dispatch(updateAreaSearchOptionsList(json));
@@ -117,7 +117,7 @@ function areaSearchListOptionsLoading(isLoading) {
 export function fetchVistaCategoryOptionsList() {
     return dispatch => {
         dispatch(vistaCategoryOptionsListLoading(true));
-        fetch(appConfig.URLS.vistaCategoryOptionsListEndpoint)
+        fetch(appConfig.URLS.vistaCategoryOptionsListEndpoint, { credentials: "same-origin" })
             .then(res => res.json())
             .then(json => {
                 dispatch(updateVistaCategoryOptionsList(json));
@@ -138,7 +138,7 @@ function vistaCategoryOptionsListLoading(isLoading) {
 export function fetchIpccSectorOptionsList() {
     return dispatch => {
         dispatch(ipccSectorOptionsListLoading(true));
-        fetch(appConfig.URLS.ipccSectorOptionsListEndpoint)
+        fetch(appConfig.URLS.ipccSectorOptionsListEndpoint, { credentials: "same-origin" })
             .then(res => res.json())
             .then(json => {
                 dispatch(updateIpccSectorOptionsList(json));
@@ -180,7 +180,7 @@ function fetchSummaryData(dispatch, getState) {
         appConfig.URLS.plumeSourceSummaryEndpoint,
         getState
     );
-    fetch(summaryUrl)
+    fetch(summaryUrl, { credentials: "same-origin" })
         .then(res => res.json())
         .then(json => {
             dispatch(updateSummaryData(json));
@@ -219,7 +219,7 @@ export function updateEmissionsCharts() {
 function fetchEmissionsSourceData(dispatch, getState) {
     dispatch(emissionsSourceDataLoading(true));
     const url = formatUrlWithSectorsAndDates(appConfig.URLS.plumeSourceEndpoint, getState);
-    fetch(url)
+    fetch(url, { credentials: "same-origin" })
         .then(res => res.json())
         .then(json => {
             dispatch(updateEmissionsSourceData(json));

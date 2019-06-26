@@ -334,7 +334,8 @@ export function getAvailableGriddedDates() {
         return MiscUtil.asyncFetch({
             url: appConfig.GRIDDED_LAYER_TYPES.find(l => l.name === activeGriddedLayer)
                 .dateEndpoint,
-            handleAs: "json"
+            handleAs: "json",
+            options: { credentials: "same-origin" }
         }).then(
             data => {
                 dispatch(updateAvailableGriddedDates(data));

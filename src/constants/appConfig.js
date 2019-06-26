@@ -11,7 +11,7 @@ import * as coreConfig from "_core/constants/appConfig";
 import * as appStrings from "_core/constants/appStrings";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
-let be_endpoint = "13.59.145.54/server";
+let be_endpoint = "methane.jpl.nasa.gov/server";
 let be_port = "9090";
 let layer_file = "layers.json";
 
@@ -37,15 +37,15 @@ const OPS_CONFIG = Immutable.fromJS(window.APPLICATION_CONFIG);
 const APP_CONFIG = Immutable.fromJS({
     URLS: {
         vistaEndpoint:
-            "http://" +
+            "https://" +
             be_endpoint +
             "/vista?maxLat={latMax}&maxLon={lonMax}&minLat={latMin}&minLon={lonMin}&category={category}",
-        vistaDetailEndpoint: "http://" + be_endpoint + "/vista?vistaId={vista_id}",
+        vistaDetailEndpoint: "https://" + be_endpoint + "/vista?vistaId={vista_id}",
         avirisEndpoint:
-            "http://" +
+            "https://" +
             be_endpoint +
             "/aviris/plumes?maxObjects=10000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}",
-        avirisGlobalSearchEndpoint: "http://" + be_endpoint + "/aviris/plumes?source={source_id}",
+        avirisGlobalSearchEndpoint: "https://" + be_endpoint + "/aviris/plumes?source={source_id}",
         layerConfig: [
             {
                 url: "default-data/msf-data/capabilities.xml",
@@ -57,19 +57,20 @@ const APP_CONFIG = Immutable.fromJS({
             }
         ],
         paletteConfig: "default-data/msf-data/palettes.json",
-        plumeListQueryEndpoint: "http://" + be_endpoint + "/flyoversOfFacility?vista_id={vista_id}",
+        plumeListQueryEndpoint:
+            "https://" + be_endpoint + "/flyoversOfFacility?vista_id={vista_id}",
         sourceListQueryEndpoint:
-            "http://" + be_endpoint + "/flyoversOfPlumeSource?source={source_id}",
-        detectionStatsEndpoint: "http://" + be_endpoint + "/detectionBySector?county={county}",
-        areaSearchOptionsListEndpoint: "http://" + be_endpoint + "/list/counties",
+            "https://" + be_endpoint + "/flyoversOfPlumeSource?source={source_id}",
+        detectionStatsEndpoint: "https://" + be_endpoint + "/detectionBySector?county={county}",
+        areaSearchOptionsListEndpoint: "https://" + be_endpoint + "/list/counties",
         plumeSourceEndpoint:
-            "http://" +
+            "https://" +
             be_endpoint +
             "/methanePlumeSources?county={county}&vista_category={vista_category}&sector_level_3={sector_level_3}",
-        ipccSectorOptionsListEndpoint: "http://" + be_endpoint + "/list/sectors",
-        vistaCategoryOptionsListEndpoint: "http://" + be_endpoint + "/list/categories",
+        ipccSectorOptionsListEndpoint: "https://" + be_endpoint + "/list/sectors",
+        vistaCategoryOptionsListEndpoint: "https://" + be_endpoint + "/list/categories",
         plumeSourceSummaryEndpoint:
-            "http://" +
+            "https://" +
             be_endpoint +
             "/methanePlumeSourcesSummary?county={county}&vista_category={vista_category}&sector_level_3={sector_level_3}"
     },
@@ -125,14 +126,14 @@ const APP_CONFIG = Immutable.fromJS({
     GRIDDED_LAYER_TYPES: [
         {
             name: "GRIDDED_EMISSIONS_EPA",
-            dateEndpoint: "http://" + be_endpoint + "/data/epa_gridded_total_date_list.json",
-            endpoint: "http://" + be_endpoint + "/data/epa_gridded_total_{date}.geojson",
+            dateEndpoint: "https://" + be_endpoint + "/data/epa_gridded_total_date_list.json",
+            endpoint: "https://" + be_endpoint + "/data/epa_gridded_total_{date}.geojson",
             period: "yearly"
         },
         {
             name: "GRIDDED_EMISSIONS_V2",
-            dateEndpoint: "http://" + be_endpoint + "/data/gridded/gridded_date_list.json",
-            endpoint: "http://" + be_endpoint + "/data/gridded/v2/Fluxes_{date}.geojson",
+            dateEndpoint: "https://" + be_endpoint + "/data/gridded/gridded_date_list.json",
+            endpoint: "https://" + be_endpoint + "/data/gridded/v2/Fluxes_{date}.geojson",
             period: "daily"
         }
     ]

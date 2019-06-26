@@ -7,7 +7,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://13.59.145.54:9090/vista?category=1&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=1&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -19,7 +19,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://13.59.145.54:9090/vista?category=2&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=2&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -31,7 +31,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://13.59.145.54:9090/vista?category=3&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=3&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -43,7 +43,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://13.59.145.54:9090/vista?category=4&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=4&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -55,7 +55,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://13.59.145.54:9090/vista?category=5&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=5&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -67,7 +67,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://13.59.145.54:9090/vista?category=6&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=6&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -79,7 +79,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://13.59.145.54:9090/vista?category=8&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=8&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -91,7 +91,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://13.59.145.54:9090/vista?category=9&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=9&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -103,7 +103,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://13.59.145.54:9090/vista?category=10&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=10&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -115,7 +115,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://13.59.145.54:9090/vista?category=11&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=11&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -127,7 +127,7 @@
             "handleAs": "vista_geojson",
             "isDefault": false,
             "visibleInGroup": false,
-            "url": "http://13.59.145.54:9090/vista?category=13&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=13&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -139,7 +139,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://13.59.145.54:9090/vista?category=12&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=12&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -151,7 +151,7 @@
             "handleAs": "vista_geojson",
             "isDefault": false,
             "visibleInGroup": false,
-            "url": "http://13.59.145.54:9090/vista?category=13&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=13&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -163,7 +163,7 @@
             "handleAs": "vista_geojson",
             "isDefault": false,
             "visibleInGroup": false,
-            "url": "http://13.59.145.54:9090/vista?category=0&maxObjects=10000",
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=0&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false }
@@ -174,7 +174,7 @@
             "type": "data",
             "handleAs": "aviris_plume",
             "isDefault": true,
-            "url": "http://13.59.145.54:9090/aviris/plumes",
+            "url": "https://methane.jpl.nasa.gov/server/aviris/plumes",
             "thumbnailImage": "img/AVIRIS.png",
             "palette": {
                 "name": "AVIRIS_plumes",
@@ -196,7 +196,7 @@
             "type": "data",
             "handleAs": "vector_kmz",
             "isDefault": false,
-            "url": "http://13.59.145.54/data/gridded/v1/kmz/vista_emissions.kmz",
+            "url": "https://13.59.145.54/data/gridded/v1/kmz/vista_emissions.kmz",
             "thumbnailImage": "img/gridded_methane_v1.png",
             "opacity": 0.3,
             "metadata": {
@@ -211,7 +211,7 @@
             "type": "data",
             "handleAs": "gridded_geojson",
             "isDefault": false,
-            "url": "http://13.59.145.54:9090/data/gridded/v2/Fluxes_20150128.geojson",
+            "url": "https://methane.jpl.nasa.gov/server/data/gridded/v2/Fluxes_20150128.geojson",
             "thumbnailImage": "img/gridded_methane_v1.png",
             "opacity": 0.3,
             "metadata": {
@@ -247,13 +247,11 @@
             "id": "Mapbox_Satellite_Retina",
             "title": "Mapbox Satellite",
             "type": "basemap",
-            "thumbnailImage":
-                "https://a.tiles.mapbox.com/v4/mapbox.satellite/2/1/2@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+            "thumbnailImage": "https://a.tiles.mapbox.com/v4/mapbox.satellite/2/1/2@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
             "handleAs": "xyz_raster",
             "updateParameters": { "time": false },
             "wmtsOptions": {
-                "url":
-                    "https://a.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+                "url": "https://a.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
                 "projection": "EPSG:3857",
                 "layer": "Mapbox_Satellite_Retina",
                 "tileGrid": {
@@ -267,13 +265,11 @@
             "id": "Mapbox_Streets_Satellite",
             "title": "Mapbox Streets-Satellite",
             "type": "basemap",
-            "thumbnailImage":
-                "https://a.tiles.mapbox.com/v4/mapbox.streets-satellite/2/1/2@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+            "thumbnailImage": "https://a.tiles.mapbox.com/v4/mapbox.streets-satellite/2/1/2@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
             "handleAs": "xyz_raster",
             "updateParameters": { "time": false },
             "wmtsOptions": {
-                "url":
-                    "https://a.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+                "url": "https://a.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
                 "projection": "EPSG:3857",
                 "tileGrid": {
                     "minZoom": 0,
@@ -286,13 +282,11 @@
             "id": "Mapbox_Streets",
             "title": "Mapbox Streets",
             "type": "basemap",
-            "thumbnailImage":
-                "https://a.tiles.mapbox.com/v4/mapbox.streets/2/1/2@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+            "thumbnailImage": "https://a.tiles.mapbox.com/v4/mapbox.streets/2/1/2@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
             "handleAs": "xyz_raster",
             "updateParameters": { "time": false },
             "wmtsOptions": {
-                "url":
-                    "https://a.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+                "url": "https://a.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
                 "projection": "EPSG:3857",
                 "tileGrid": {
                     "minZoom": 0,
@@ -312,8 +306,7 @@
             "wmtsOptions": {
                 "projection": "EPSG:3857",
                 "layer": "ESRI_World_Imagery",
-                "url":
-                    "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                "url": "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
                 "tileGrid": {
                     "minZoom": 1,
                     "maxZoom": 19,
@@ -343,8 +336,7 @@
             "type": "data",
             "handleAs": "vista_source",
             "isDefault": true,
-            "url":
-                "http://13.59.145.54:9090/sources?maxLat={latMax}&minLat={latMin}&maxLon={lonMax}&minLon={lonMin}",
+            "url": "https://methane.jpl.nasa.gov/server/sources?maxLat={latMax}&minLat={latMin}&maxLon={lonMax}&minLon={lonMin}",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "updateParameters": { "time": false },
             "layerOrder": 3

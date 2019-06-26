@@ -36,7 +36,10 @@ export function setPlumeFilterEndDate(date) {
 }
 
 export function downloadPlumeData(feature) {
-    Promise.all([fetch(feature.get("plume_tiff_url")), fetch(feature.get("rgb_tiff_url"))])
+    Promise.all([
+        fetch(feature.get("plume_tiff_url", { credentials: "same-origin" })),
+        fetch(feature.get("rgb_tiff_url", { credentials: "same-origin" }))
+    ])
         .then(responses => {
             const zip = new JSZip();
             responses.forEach(res => {
