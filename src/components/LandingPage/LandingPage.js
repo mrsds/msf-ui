@@ -39,7 +39,7 @@ export class LandingPage extends Component {
             <MuiThemeProvider theme={theme}>
                 <LoadingContainerExtended />
                 <div className={styles.container}>
-                    <div className={styles.header}>
+                    <div className={styles.hero_banner}>
                         <div className={styles.brand_area}>
                             <div className={styles.brand1}>
                                 <a href="http://www.nasa.gov" className={styles.nasa_logo} />
@@ -62,12 +62,10 @@ export class LandingPage extends Component {
                                 src="img/logo_nasa_trio_white.png"
                             />
                         </div>
-                    </div>
-                    <div className={styles.hero_banner}>
                         <div className={styles.banner_shader} />
                         <div className={styles.hero_controls}>
                             <Typography className={styles.title} color="textSecondary" gutterBottom>
-                                <br>Methane Source Finder
+                                <br></br>Methane Source Finder
                             </Typography>
                             <div className={styles.section_hero}>
                                 Methane Source Finder is an interactive map that helps you explore
@@ -82,7 +80,7 @@ export class LandingPage extends Component {
                                         color="primary"
                                         className={styles.map_button}
                                     >
-                                        Open Map Viewer
+                                        Explore the Map
                                     </Button>
                                 </Link>
                             </div>
