@@ -39,8 +39,8 @@ export class LandingPage extends Component {
             <MuiThemeProvider theme={theme}>
                 <LoadingContainerExtended />
                 <div className={styles.container}>
-                <div className={styles.banner_shader} />
                     <div className={styles.hero_banner}>
+                    <div className={styles.banner_shader} />
                         <div className={styles.brand_area}>
                             <div className={styles.brand1}>
                                 <a href="http://www.nasa.gov" className={styles.nasa_logo} />
