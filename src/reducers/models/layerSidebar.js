@@ -25,7 +25,8 @@ export const layerSidebarState = Immutable.fromJS({
         [layerSidebarTypes.VISTA_2017_DIGESTER]: true,
         [layerSidebarTypes.VISTA_2017_COMPRESSOR]: true,
         [layerSidebarTypes.VISTA_2017_COMPOSTING_SITES]: true,
-        [layerSidebarTypes.VISTA_2017_OILGAS_FACILITY_BOUNDARIES]: true
+        [layerSidebarTypes.VISTA_2017_OILGAS_FACILITY_BOUNDARIES]: true,
+        [layerSidebarTypes.VISTA_2017_FEED_LOTS]: true
     },
     searchState: {
         [layerSidebarTypes.CATEGORY_INFRASTRUCTURE]: {

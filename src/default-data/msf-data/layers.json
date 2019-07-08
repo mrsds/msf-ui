@@ -226,6 +226,19 @@
             "layerOrder": 14
         },
         {
+            "id": "VISTA_2017_FEED_LOTS",
+            "title": "Vista 2017 - Feed Lots",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "https://methane.jpl.nasa.gov/server/vista?category=1016&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 14
+        },
+        {
             "id": "AVIRIS",
             "title": "AVIRIS-NG Plume Images",
             "type": "data",

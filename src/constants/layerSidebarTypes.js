@@ -21,6 +21,7 @@ export const VISTA_2017_DIGESTER = "VISTA_2017_DIGESTER";
 export const VISTA_2017_COMPRESSOR = "VISTA_2017_COMPRESSOR";
 export const VISTA_2017_COMPOSTING_SITES = "VISTA_2017_COMPOSTING_SITES";
 export const VISTA_2017_OILGAS_FACILITY_BOUNDARIES = "VISTA_2017_OILGAS_FACILITY_BOUNDARIES";
+export const VISTA_2017_FEED_LOTS = "VISTA_2017_FEED_LOTS";
 
 export const SHAPE_CIRCLE = "SHAPE_CIRCLE";
 export const SHAPE_SQUARE = "SHAPE_SQUARE";
@@ -82,7 +83,8 @@ export const INFRASTRUCTURE_SUBCATEGORIES = {
     [VISTA_2017_DIGESTER]: 1003,
     [VISTA_2017_COMPRESSOR]: 1001,
     [VISTA_2017_COMPOSTING_SITES]: 1014,
-    [VISTA_2017_OILGAS_FACILITY_BOUNDARIES]: 1007
+    [VISTA_2017_OILGAS_FACILITY_BOUNDARIES]: 1007,
+    [VISTA_2017_FEED_LOTS]: 1016
 };
 
 export const INFRASTRUCTURE_FACILITY_TYPE_TO_NAME = {
@@ -103,28 +105,8 @@ export const INFRASTRUCTURE_FACILITY_TYPE_TO_NAME = {
     [VISTA_2017_DIGESTER]: "Digester",
     [VISTA_2017_COMPRESSOR]: "Compressor Stations",
     [VISTA_2017_COMPOSTING_SITES]: "Composting Sites",
-    [VISTA_2017_OILGAS_FACILITY_BOUNDARIES]: "Oil and Natural Gas Facility Boundaries"
-};
-
-export const KEVIN_INFRASTRUCTURE_FACILITY_TYPE_TO_NAME = {
-    [VISTA_2017_OILGAS_WELLS]: "Oil and Gas Wells",
-    [VISTA_2017_LIVESTOCK_DAIRIES]: "Dairies",
-    // [VISTA_2017_ANAEROBIC_LAGOONS]: "Anaerobic Lagoons",
-    [VISTA_2017_CNG_FUELING_STATIONS]: "CNG Fueling Stations",
-    [VISTA_2017_LNG_FUELING_STATIONS]: "LNG Fueling Stations",
-    [VISTA_2017_NAT_GAS_STORE_FIELDS]: "Natural Gas Storage Fields",
-    [VISTA_2017_NAT_GAS_PROC_PLANT]: "NG Processing Plants",
-    [VISTA_2017_PETRO_REFINE]: "Petroleum Refineries",
-    [VISTA_2017_WASTEWTR_TREAT_PLNT]: "Wastewater Treatment Plants",
-    [VISTA_2017_POWER_PLANT]: "Power Plants",
-    [VISTA_2017_LANDFILL]: "Landfills",
-    // [VISTA_2017_SOCAB_BOUND]: "SOCAB Bound",
-    [VISTA_2017_CEC_PIPELINES]: "CEC Pipelines",
-    [VISTA_2017_OILGAS_FIELDS]: "Oil and Natural Gas Fields",
-    [VISTA_2017_DIGESTER]: "Digester",
-    [VISTA_2017_COMPRESSOR]: "Compressor Stations",
-    [VISTA_2017_COMPOSTING_SITES]: "Composting Sites",
-    [VISTA_2017_OILGAS_FACILITY_BOUNDARIES]: "Oil and Natural Gas Facility Boundaries"
+    [VISTA_2017_OILGAS_FACILITY_BOUNDARIES]: "Oil and Natural Gas Facility Boundaries",
+    [VISTA_2017_FEED_LOTS]: "Feed Lots"
 };
 
 export const INFRASTRUCTURE_NAME_TO_TYPE = Object.keys(INFRASTRUCTURE_FACILITY_TYPE_TO_NAME).reduce(
@@ -155,7 +137,11 @@ export const IPCC_SECTOR_LEVEL_1_TO_SECTOR = Object.keys(IPCC_SECTOR_LEVEL_1).re
     return acc;
 }, {});
 
-let agricultureCategories = [VISTA_2017_LIVESTOCK_DAIRIES, VISTA_2017_DIGESTER];
+let agricultureCategories = [
+    VISTA_2017_LIVESTOCK_DAIRIES,
+    VISTA_2017_DIGESTER,
+    VISTA_2017_FEED_LOTS
+];
 
 let energyCategories = [
     VISTA_2017_POWER_PLANT,
