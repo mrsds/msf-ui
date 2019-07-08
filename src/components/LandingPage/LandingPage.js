@@ -40,50 +40,51 @@ export class LandingPage extends Component {
                 <LoadingContainerExtended />
                 <div className={styles.container}>
                     <div className={styles.hero_banner}>
-                    <div className={styles.banner_shader} />
-                        <div className={styles.brand_area}>
-                            <div className={styles.brand1}>
-                                <a href="http://www.nasa.gov" className={styles.nasa_logo} />
-                            </div>
-                            <div className={styles.brand2}>
-                                <div className={styles.jpl_logo}>
-                                    <a href="http://jpl.nasa.gov" className={styles.nasa_logo}>
-                                        Jet Propulsion Laboratory
-                                    </a>
+                        <div className={styles.banner_shader}>
+                            <div className={styles.brand_area}>
+                                <div className={styles.brand1}>
+                                    <a href="http://www.nasa.gov" className={styles.nasa_logo} />
                                 </div>
-                                <div className={styles.caltech_logo}>
-                                    <a href="http://caltech.edu" className={styles.nasa_logo}>
-                                        California Institute of Technology
-                                    </a>
+                                <div className={styles.brand2}>
+                                    <div className={styles.jpl_logo}>
+                                        <a href="http://jpl.nasa.gov" className={styles.nasa_logo}>
+                                            Jet Propulsion Laboratory
+                                        </a>
+                                    </div>
+                                    <div className={styles.caltech_logo}>
+                                        <a href="http://caltech.edu" className={styles.nasa_logo}>
+                                            California Institute of Technology
+                                        </a>
+                                    </div>
                                 </div>
+                                <img
+                                    alt="NASA Logo"
+                                    className={styles.print_logo}
+                                    src="img/logo_nasa_trio_white.png"
+                                />
                             </div>
-                            <img
-                                alt="NASA Logo"
-                                className={styles.print_logo}
-                                src="img/logo_nasa_trio_white.png"
-                            />
-                        </div>
-                        
-                        <div className={styles.hero_controls}>
-                            <Typography className={styles.title} color="textSecondary" gutterBottom>
-                                <br></br>Methane Source Finder
-                            </Typography>
-                            <div className={styles.section_hero}>
-                                Methane Source Finder is an interactive map that helps you explore
-                                <br />
-                                methane data and related infrastructure in the state of California.
-                            </div>
-                            <div className={styles.map_button_container}>
-                                <Link to="./map">
-                                    <Button
-                                        size="small"
-                                        variant="raised"
-                                        color="primary"
-                                        className={styles.map_button}
-                                    >
-                                        Explore the Map
-                                    </Button>
-                                </Link>
+                            
+                            <div className={styles.hero_controls}>
+                                <Typography className={styles.title} color="textSecondary" gutterBottom>
+                                    <br></br>Methane Source Finder
+                                </Typography>
+                                <div className={styles.section_hero}>
+                                    Methane Source Finder is an interactive map that helps you explore
+                                    <br />
+                                    methane data and related infrastructure in the state of California.
+                                </div>
+                                <div className={styles.map_button_container}>
+                                    <Link to="./map">
+                                        <Button
+                                            size="small"
+                                            variant="raised"
+                                            color="primary"
+                                            className={styles.map_button}
+                                        >
+                                            Explore the Map
+                                        </Button>
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>
