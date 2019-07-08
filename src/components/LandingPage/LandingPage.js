@@ -39,6 +39,7 @@ export class LandingPage extends Component {
             <MuiThemeProvider theme={theme}>
                 <LoadingContainerExtended />
                 <div className={styles.container}>
+                <div className={styles.banner_shader} />
                     <div className={styles.hero_banner}>
                         <div className={styles.brand_area}>
                             <div className={styles.brand1}>
@@ -62,7 +63,7 @@ export class LandingPage extends Component {
                                 src="img/logo_nasa_trio_white.png"
                             />
                         </div>
-                        <div className={styles.banner_shader} />
+                        
                         <div className={styles.hero_controls}>
                             <Typography className={styles.title} color="textSecondary" gutterBottom>
                                 <br></br>Methane Source Finder
