@@ -67,7 +67,7 @@ export class LandingPage extends Component {
                         <div className={styles.banner_shader} />
                         <div className={styles.hero_controls}>
                             <Typography className={styles.title} color="textSecondary" gutterBottom>
-                                Methane Source Finder
+                                <br>Methane Source Finder
                             </Typography>
                             <div className={styles.section_hero}>
                                 Methane Source Finder is an interactive map that helps you explore
