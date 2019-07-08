@@ -228,7 +228,7 @@ export class LandingPage extends Component {
                             </ul>
                         </div>
                         <div className={styles.div_footer_right}>
-                            Site Contact: Riley Duren
+                            Site Contact: <a href="mailto:msf@jpl.nasa.gov">Riley Duren</a>
                             <br />
                             Release number: URS280411
                         </div>
