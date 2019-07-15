@@ -152,9 +152,6 @@ export class PlumeChartingContainer extends Component {
                         {isFlyover ? "-" : feature.get("candidate_id")}
                     </TableCell>
                     <TableCell numeric={!isFlyover} padding="dense">
-                        {isFlyover ? "-" : "(none)"}
-                    </TableCell>
-                    <TableCell numeric={!isFlyover} padding="dense">
                         {isFlyover ? "-" : fluxLabel}
                     </TableCell>
                 </TableRow>
@@ -188,9 +185,6 @@ export class PlumeChartingContainer extends Component {
                                 <TableCell padding="dense">Plume Detected</TableCell>
                                 <TableCell padding="dense">Flyover Date</TableCell>
                                 <TableCell padding="dense">Candidate ID</TableCell>
-                                <TableCell numeric padding="dense">
-                                    Wind (mph/hr)
-                                </TableCell>
                                 <TableCell numeric padding="dense">
                                     Emissions (kg/hr)
                                 </TableCell>

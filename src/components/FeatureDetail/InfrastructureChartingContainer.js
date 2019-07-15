@@ -385,9 +385,6 @@ export class InfrastructureChartingContainer extends Component {
                         {isFlyover ? "-" : feature.get("candidate_id")}
                     </TableCell>
                     <TableCell numeric={!isFlyover} padding="dense">
-                        {isFlyover ? "-" : "(none)"}
-                    </TableCell>
-                    <TableCell numeric={!isFlyover} padding="dense">
                         {isFlyover ? "-" : fluxLabel}
                     </TableCell>
                 </TableRow>
@@ -421,9 +418,6 @@ export class InfrastructureChartingContainer extends Component {
                                 <TableCell padding="dense">Source ID</TableCell>
                                 <TableCell padding="dense">Flyover Date</TableCell>
                                 <TableCell padding="dense">Candidate ID</TableCell>
-                                <TableCell numeric padding="dense">
-                                    Wind (mph/hr)
-                                </TableCell>
                                 <TableCell numeric padding="dense">
                                     Emissions (kg/hr)
                                 </TableCell>
