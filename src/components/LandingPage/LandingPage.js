@@ -13,6 +13,10 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import showdown from "showdown";
+import { MarkdownPage } from "_core/components/Reusables";
+import MiscUtil from "_core/utils/MiscUtil";
+import displayStyles from "_core/styles/display.scss";
 
 const theme = createMuiTheme({
     typography: {
@@ -28,6 +32,9 @@ export class LandingPage extends Component {
     constructor(props) {
         super(props);
         this.open = true;
+        this.state = {
+            faqOpen: false
+        };
     }
 
     componentDidMount() {
@@ -35,6 +42,15 @@ export class LandingPage extends Component {
     }
 
     render() {
+        const faqStyle = MiscUtil.generateStringFromSet({
+            [styles.faq]: true,
+            [styles.only_first]: !this.state.faqOpen
+        });
+
+        const faqButtonStyle = MiscUtil.generateStringFromSet({
+            [displayStyles.hidden]: this.state.faqOpen
+        });
+
         return (
             <MuiThemeProvider theme={theme}>
                 <LoadingContainerExtended />
@@ -120,40 +136,20 @@ export class LandingPage extends Component {
                                     satellites on an interactive map alongside infrastructure
                                     information.
                                 </div>
-
-                                <Typography
-                                    className={styles.section_title}
-                                    color="default"
-                                    gutterBottom
-                                    style={{ whiteSpace: "normal" }}
+                                <MarkdownPage
+                                    content={require("default-data/msf-data/help/faq.md")}
+                                    converted={false}
+                                    className={faqStyle}
+                                />
+                                <Button
+                                    size="small"
+                                    variant="raised"
+                                    color="primary"
+                                    onClick={_ => this.setState({ faqOpen: true })}
+                                    className={faqButtonStyle}
                                 >
-                                    WHY FOCUS ON METHANE?
-                                </Typography>
-                                <div className={styles.section_body}>
-                                    Methane (CH4) is a powerful greenhouse gas - second only to
-                                    carbon dioxide as a climate-forcing agent resulting from human
-                                    (anthropogenic) activity. The growth rate of methane in the
-                                    atmosphere is due to a complex combination of natural and
-                                    anthropogenic emissions and natural removal processes. The exact
-                                    causes for observed changes in the methane growth rate over time
-                                    remain uncertain due to incomplete data and disagreements
-                                    between different measurement methods. Methane emissions and
-                                    their causes at local and regional scales remain particularly
-                                    uncertain. Additionally, methane is also being increasingly
-                                    prioritized by California and other governments for near-term
-                                    climate action given its relatively short atmospheric lifetime
-                                    and the potential for rapid, focused mitigation that can
-                                    complement economy-wide efforts to reduce carbon dioxide
-                                    emissions. Methane is also a precursor for tropospheric ozone
-                                    and is strongly linked with co-emitted reactive trace gases
-                                    targeted by air quality and public health policies in
-                                    California. Finally, methane vented to the atmosphere from leaks
-                                    in natural gas infrastructure – if not promptly detected and
-                                    repaired - can result in costly product loss and (in
-                                    sufficiently large quantities) a combustion hazard. All of the
-                                    above factors motivate the need for sharing methane data across
-                                    a broad range of scales.
-                                </div>
+                                    See all FAQs
+                                </Button>
                             </div>
                             <div className={styles.right}>
                                 <Typography
