@@ -41,9 +41,8 @@ export class LandingPage extends Component {
                 <div className={styles.container}>
                     <div className={styles.hero_banner}>
                         <div className={styles.banner_shader} />
-                        
-                        <div className={styles.hero_controls}>
 
+                        <div className={styles.hero_controls}>
                             <div className={styles.brand_area}>
                                 <div className={styles.brand1}>
                                     <a href="http://www.nasa.gov" className={styles.nasa_logo} />
@@ -68,7 +67,8 @@ export class LandingPage extends Component {
                             </div>
 
                             <Typography className={styles.title} color="textSecondary" gutterBottom>
-                                <br></br>Methane Source Finder
+                                <br />
+                                Methane Source Finder
                             </Typography>
                             <div className={styles.section_hero}>
                                 Methane Source Finder is an interactive map that helps you explore
@@ -88,24 +88,24 @@ export class LandingPage extends Component {
                                 </Link>
                             </div>
                         </div>
-                        
                     </div>
                     <Card className={styles.card}>
                         <CardContent className={styles.card_content}>
                             <div className={styles.left}>
-                                <img
-                                    alt="Screenshot of Methane Source Finder"
-                                    className={styles.app_screenshot}
-                                    src="img/msf_screenshot.png"
-                                />
-                                <a href="img/Methane_tiered_obs_system_small.jpg">
+                                <div className={styles.image_container}>
                                     <img
-                                        alt="Methane Observation Network Diagram"
-                                        className={styles.methane_diagram}
-                                        src="img/Methane_tiered_obs_system_small.jpg"
+                                        alt="Screenshot of Methane Source Finder"
+                                        className={styles.app_screenshot}
+                                        src="img/msf_screenshot.png"
                                     />
-                                </a>
-
+                                    <a href="img/Methane_tiered_obs_system_small.jpg">
+                                        <img
+                                            alt="Methane Observation Network Diagram"
+                                            className={styles.methane_diagram}
+                                            src="img/Methane_tiered_obs_system_small.jpg"
+                                        />
+                                    </a>
+                                </div>
                                 <div className={styles.section_body}>
                                     <Typography
                                         className={styles.section_title}
