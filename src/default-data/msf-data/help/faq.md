@@ -52,9 +52,9 @@ A methane source is a condensed surface feature or infrastructure component (typ
 These areas indicate the edge of a flight-line acquired with the airborne imaging spectrometer.
 
 ### I see some flux values given as Not available or TBD, what does that mean?
-For plume observations through 2017, the value will be given as "not available" when the algorithm used to estimate flux from the image data was unable to provide a decent confidence-value.  For all 2018 plume imagery, the analysis to estimate flux has not yet been performed (as of May 2019), and is therefore labeled as TBD (to be determined).
+For plume observations through 2017, the value will be given as "not available" when the algorithm used to estimate flux from the image data was unable to provide a decent confidence-value.  For all 2018 plume imagery, the analysis to estimate flux has not yet been performed (as of July 2019), and is therefore labeled as TBD (to be determined).
 
 ### A note on 2018 plume imagery
-For all 2018 plume imagery, the analysis to estimate flux has not yet been performed (as of May 2019), and is therefore labeled as TBD (to be determined).
+For all 2018 plume imagery, the analysis to estimate flux has not yet been performed (as of July 2019), and is therefore labeled as TBD (to be determined).
 
 Additionally, due to the incomplete analysis of the 2018 plume image data there will be some discrepancies between the Analytics section of the web site and the Plume Detail pages on the map. This is because the 2018 data is not completely integrated yet. For example, the number of flyovers in each representation of the data may be different.
