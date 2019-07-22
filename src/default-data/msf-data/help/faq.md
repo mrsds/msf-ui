@@ -58,3 +58,15 @@ For plume observations through 2017, the value will be given as "not available" 
 For all 2018 plume imagery, the analysis to estimate flux has not yet been performed (as of July 2019), and is therefore labeled as TBD (to be determined).
 
 Additionally, due to the incomplete analysis of the 2018 plume image data there will be some discrepancies between the Analytics section of the web site and the Plume Detail pages on the map. This is because the 2018 data is not completely integrated yet. For example, the number of flyovers in each representation of the data may be different.
+
+### Methods and Citations
+The following journal papers describe the methods used to generate the various data sets presented here. Please use the appropriate citation when referencing a given data product in a report or paper.
+
+Methane point-source data and Vista-CA spatial layers
+Duren, R., A. Thorpe, K.T. Foster, T. Rafiq, F. M. Hopkins, V. Yadav, B.Bue, D.R. Thompson, S. Conley, N. Colombi, C. Frankenberg, I.McCubbin, M.Eastwood, M.Falk, J. Herner, B. E. Croes, R. Green, C. Miller, **California's Methane Super-emitters**, *Nature*, accepted (2019). https://doi.org/TBD
+
+Los Angeles methane flux inversion maps
+Yadav, V., R. Duren, K.Mueller, K.R. Verhulst , T. Nehrkorn, J. Kim, R.F. Weiss, R. Keeling, S.Sander, M. L. Fischer, S.Newman, M. Falk, T. Kuwayama, F. Hopkins, T.Rafiq, J. Whetstone, C. Miller, **Spatio-temporally resolved methane fluxes from the Los Angeles Megacity**, *J. Geophy. Res. – Atmospheres.* (2019). https://doi.org/10.1029/2018JD030062
+
+EPA (US Environmental Protection Agency) gridded methane-inventory
+Joannes D. Maasakkers, Daniel J. Jacob, Melissa P. Sulprizio, Alexander J. Turner, Melissa Weitz, Tom Wirth, Cate Hight, Mark DeFigueiredo, Mausami Desai, Rachel Schmeltz, Leif Hockstad, Anthony A. Bloom, Kevin W. Bowman, Seongeun Jeong, and Marc L. Fischer, **Gridded National Inventory of U.S. Methane Emissions**, *Environ. Sci. Technol.* 2016,50,23,13123-13133. https://doi.org/10.1021/acs.est.6b02878
