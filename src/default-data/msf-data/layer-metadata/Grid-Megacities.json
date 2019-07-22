@@ -1,6 +1,6 @@
 {
     "title": "Los Angeles Flux Inversion",
-    "description": "Methane emissions calculated by flux inversion. Initial measurements made by the Megacities carbon-monitoring network (https://megacities.jpl.nasa.gov)",
+    "description": "Methane emissions calculated by flux inversion. Initial measurements made by the Megacities carbon-monitoring network ([https://megacities.jpl.nasa.gov](https://megacities.jpl.nasa.gov)",
     "dateRange": "February 2015 – December 2016",
     "platform": "Megacities Carbon Project Tower Network",
     "spatialResolution": "~3 kilometers"

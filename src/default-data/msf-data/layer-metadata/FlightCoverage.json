@@ -1,6 +1,6 @@
 {
     "title": "Flight Coverage",
-    "description": "Regions where the airplane carrying AVIRIS-NG (Next Generation Airborne Visible-Infrared Imaging Spectrometer) was flown and where data was acquired by AVIRIS-NG. See https://aviris-ng.jpl.nasa.gov/ for more information.",
+    "description": "Regions where the airplane carrying AVIRIS-NG (Next Generation Airborne Visible-Infrared Imaging Spectrometer) was flown and where data was acquired by AVIRIS-NG. See [https://aviris-ng.jpl.nasa.gov/](https://aviris-ng.jpl.nasa.gov/) for more information.",
     "dateRange": "October 2016 – December 2018",
     "platform": "AVIRIS-NG",
     "spatialResolution": "3m (Varies; for data shown here the average is ~3m)"

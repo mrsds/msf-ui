@@ -1,6 +1,6 @@
 {
     "title": "AVIRIS-NG Plume Images",
-    "description": "Methane emissions detected by AVIRIS-NG (Next Generation Airborne Visible-Infrared Imaging Spectrometer); see https://aviris-ng.jpl.nasa.gov/ for more information. Each methane plume is associated with a methane source that is responsible for of the emissions. Downloadable data set hosted by Oak Ridge National Laboratory (ORNL) data archive https://doi.org/10.3334/ORNLDAAC/1727",
+    "description": "Methane emissions detected by AVIRIS-NG (Next Generation Airborne Visible-Infrared Imaging Spectrometer); see [https://aviris-ng.jpl.nasa.gov/](https://aviris-ng.jpl.nasa.gov/) for more information. Each methane plume is associated with a methane source that is responsible for of the emissions. Downloadable data set hosted by Oak Ridge National Laboratory (ORNL) data archive [https://doi.org/10.3334/ORNLDAAC/1727](https://doi.org/10.3334/ORNLDAAC/1727)",
     "dateRange": "August 2016 – December 2018",
     "platform": "AVIRIS-NG",
     "spatialResolution": "3m (Varies; for data shown here the average is ~3m)"
