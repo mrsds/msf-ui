@@ -17,24 +17,3 @@
 **Plume**: methane emissions observable in AVIRIS-NG images produced by a  methane source.
 
 **Plume detection**: the process of identifying imaging spectrometer pixels representing methane enhancements.
-
-|Metric (from Andrew)	|Unit|
-|-----------------|---|
-|IME = integrated methane enhancement (total mass of methane in plume)|	kg CH4|
-|r = plume length (also referred to as L)	|meters|
-|IME/r = IME divided by plume length	|kg/m|
-|sIME/r = uncertainty (standard deviation) in IME/r estimate (also referred to as sIME)|	kg/m|
-|U10 = total (vector) wind speed at 10 meters above ground level 	|m/s|
-|sU10 = uncertainty in wind speed at 10meters above ground level (also referred to as su10)|	m/s|
-|Qplume = instantaneous plume emission rate (single observation)	|kg/hr|
-|sQplume = uncertainity in instantaneous plume emission rate (single observation)	|kg/hr|
-|Total overflights|	flight lines|
-|Source Persistence (f)|	range <0, <1.0|
-|probability that true f is >= measured f	|range <0, <1.0|
-|Qsource= average source emission rate (calculated from multiple plume observations) (also referred to as Qsource_avg)|	kg/hr|
-|sQ_avg  = total uncertainty in average source emission rate (calculated from multiple plume observations)|	kg/hr|
-|Qsource_final = average, persistence adjusted source emission rate	|kg/hr|
-|sQ_final = total uncertainty in average, persistence adjusted source emission rate	|kg/hr|
-
-
-
