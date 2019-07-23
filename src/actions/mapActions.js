@@ -305,17 +305,16 @@ function updateHighlightedPlumes(getState) {
 export function setHoverPlume(feature) {
     return (dispatch, getState) => {
         dispatch({ type: typesMSF.SET_HOVER_PLUME, feature });
-        getState()
-            .map.getIn(["maps", "openlayers"])
-            .setVisiblePlumes(
-                feature
-                    ? [feature]
-                    : getState().layerSidebar.getIn([
-                          "searchState",
-                          layerSidebarTypes.CATEGORY_PLUMES,
-                          "searchResults"
-                      ])
-            );
+        dispatch({
+            type: typesMSF.UPDATE_VISIBLE_PLUMES,
+            features: feature
+                ? [feature]
+                : getState().layerSidebar.getIn([
+                      "searchState",
+                      layerSidebarTypes.CATEGORY_PLUMES,
+                      "searchResults"
+                  ])
+        });
     };
 }
 

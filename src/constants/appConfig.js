@@ -134,6 +134,7 @@ const APP_CONFIG = Immutable.fromJS({
     ],
     ZOOM_TO_LEVEL: 15,
     OIL_WELL_MAX_RESOLUTION: 25,
+    PLUME_MAX_RESOLUTION: 76,
     GRIDDED_LAYER_TYPES: [
         {
             name: "GRIDDED_EMISSIONS_EPA",

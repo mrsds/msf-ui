@@ -9,9 +9,6 @@ import * as MSFTypes from "constants/MSFTypes";
 
 export default class MapReducer_Extended extends MapReducer {
     static updateAvailableLayers(state, action) {
-        if (state.get("pendingZoomFeature")) {
-            const jojo = false;
-        }
         return state;
     }
 
@@ -65,6 +62,14 @@ export default class MapReducer_Extended extends MapReducer {
 
     static setHoverPlume(state, action) {
         return state.set("hoverPlume", action.feature);
+    }
+
+    static updateVisiblePlumes(state, action) {
+        const map = state.getIn(["maps", "openlayers"]);
+        const currentRes = map.map.getView().getResolution();
+        // Don't bother updating the plume opacities if we're zoomed too far out, slows things down considerably.
+        if (currentRes <= appConfig.PLUME_MAX_RESOLUTION) map.setVisiblePlumes(action.features);
+        return state;
     }
 
     static setLayerOpacity(state, action) {

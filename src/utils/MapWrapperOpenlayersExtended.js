@@ -406,7 +406,7 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         let baseRes;
         let iconStyle;
         function styleFunc(feature, resolution) {
-            if (feature.get("_opacity") === 0 || resolution > 76.43702828517625) {
+            if (feature.get("_opacity") === 0 || resolution > appConfig.PLUME_MAX_RESOLUTION) {
                 return INVISIBLE_AVIRIS_STYLE;
             }
             if (!iconStyle) {
@@ -875,8 +875,6 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         const activeFeatureIds = activeFeatures
             .filter(feature => feature && feature.get("id"))
             .map(feature => feature.get("id"));
-
-        console.log(activeFeatureIds);
 
         const avirisLayer = this.getAvirisLayer();
 
