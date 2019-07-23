@@ -35,6 +35,7 @@ import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import MapUtilExtended from "utils/MapUtilExtended";
 import MiscUtil from "_core/utils/MiscUtil";
 import Immutable from "immutable";
+import MetadataUtil from "utils/MetadataUtil";
 
 const JSZip = require("jszip");
 const INVISIBLE_VISTA_STYLE = new Ol_Style({
@@ -662,25 +663,15 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         return true;
     }
 
-    centerMapOnFeature(feature, featureType) {
-        let featureId = feature.get("id");
-        // Resolve feature from id by featureType
+    centerMapOnFeature(feature) {
+        let zoomGeom = feature.get("geometry");
 
-        let zoomFeature;
-        switch (featureType) {
-            case "VISTA":
-                zoomFeature = this.getVistaLayers()
-                    .reduce((acc, l) => acc.concat(l.getSource().getFeatures()), [])
-                    .find(f => f.getProperties().id === featureId);
-                break;
-            case "AVIRIS":
-                zoomFeature = this.getAVIRISFeatureById(featureId);
-                break;
+        if (!zoomGeom) {
+            // If this feature doesn't have geometry attached, see if it's in the metadata.
+            const coords = [MetadataUtil.getLong(feature), MetadataUtil.getLat(feature)];
+            if (coords.every(x => x)) this.zoomToCoords(coords.map(x => parseFloat(x)));
+            return;
         }
-
-        if (!zoomFeature) return null;
-
-        const zoomGeom = zoomFeature.getProperties().geometry;
 
         // For point geometry, we just center the point and bring the map to a default zoom level.
         if (zoomGeom instanceof Ol_Geom_Point) {
