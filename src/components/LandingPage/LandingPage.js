@@ -148,7 +148,7 @@ export class LandingPage extends Component {
                                     onClick={_ => this.setState({ faqOpen: true })}
                                     className={faqButtonStyle}
                                 >
-                                    See all FAQs
+                                    Show all FAQs >
                                 </Button>
                             </div>
                             <div className={styles.right}>
