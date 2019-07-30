@@ -136,13 +136,15 @@ export class EmissionsSummaryInfoContainer extends Component {
                 const avgFlux =
                     source.get("q_source_final") &&
                     parseFloat(source.get("q_source_final")).toFixed(2);
-                const fluxUncertainty = source.get("q_source_final_sigma");
+                const fluxUncertainty = parseFloat(source.get("q_source_final_sigma")).toFixed(1);
                 const fluxString = avgFlux
                     ? `${avgFlux} ${fluxUncertainty ? " ± " + fluxUncertainty : ""}`
                     : "";
                 const persistence = source.get("source_persistence");
                 const lat = source.get("source_latitude");
                 const long = source.get("source_longitude");
+                const confidence = source.get("confidence_in_persistence");
+
                 return (
                     <TableRow key={sourceId}>
                         <TableCell padding="dense">
@@ -161,6 +163,7 @@ export class EmissionsSummaryInfoContainer extends Component {
                         <TableCell padding="dense">{ipccSectorName}</TableCell>
                         <TableCell padding="dense">{source.get("flyover_count")}</TableCell>
                         <TableCell padding="dense">{persistence}</TableCell>
+                        <TableCell padding="dense">{confidence}</TableCell>
                         <TableCell padding="dense">{fluxString}</TableCell>
                     </TableRow>
                 );
@@ -198,6 +201,7 @@ export class EmissionsSummaryInfoContainer extends Component {
                                         <TableCell padding="dense">IPCC Sector</TableCell>
                                         <TableCell padding="dense">Flyovers</TableCell>
                                         <TableCell padding="dense">Persistence</TableCell>
+                                        <TableCell padding="dense">Confidence</TableCell>
                                         <TableCell padding="dense">Avg Emissions (kg/hr)</TableCell>
                                     </TableRow>
                                 </TableHead>
