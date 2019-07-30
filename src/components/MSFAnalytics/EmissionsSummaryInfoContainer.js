@@ -15,7 +15,7 @@ import moment from "moment";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import Button from "@material-ui/core/Button";
 import MiscUtilExtended from "utils/MiscUtilExtended";
-
+import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
 import PageControls from "components/MSFAnalytics/PageControls";
 import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
@@ -128,6 +128,7 @@ export class EmissionsSummaryInfoContainer extends Component {
             )
             .map(source => {
                 const sourceId = source.get("source_id");
+                const vistaName = source.get("vista_name");
                 const vistaCategory = source.get("vista_category").replace(/_/g, " ");
                 const ipccSectorName = source.get("sector_level_3");
                 const startDateStr = this.formatDateStr(source.get("first_flyover_date"));
@@ -159,7 +160,17 @@ export class EmissionsSummaryInfoContainer extends Component {
                                 />
                             </div>
                         </TableCell>
-                        <TableCell padding="dense">{vistaCategory}</TableCell>
+                        <TableCell padding="dense">
+                            {vistaName}
+                            <br />
+                            <Typography
+                                className={layerSidebarStyles.listItemTextSecondary}
+                                variant="caption"
+                                noWrap
+                            >
+                                {vistaCategory}
+                            </Typography>
+                        </TableCell>
                         <TableCell padding="dense">{ipccSectorName}</TableCell>
                         <TableCell padding="dense">{source.get("flyover_count")}</TableCell>
                         <TableCell padding="dense">{persistence}</TableCell>
@@ -197,7 +208,7 @@ export class EmissionsSummaryInfoContainer extends Component {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell padding="dense">Source ID</TableCell>
-                                        <TableCell padding="dense">Vista Sector</TableCell>
+                                        <TableCell padding="dense">Vista Name</TableCell>
                                         <TableCell padding="dense">IPCC Sector</TableCell>
                                         <TableCell padding="dense">Flyovers</TableCell>
                                         <TableCell padding="dense">Persistence</TableCell>
@@ -211,8 +222,8 @@ export class EmissionsSummaryInfoContainer extends Component {
                                 </TableHead>
                                 <TableBody>{this.makeSourcesTableBody()}</TableBody>
                             </Table>
-                            {this.makePageControls()}
                         </div>
+                        {this.makePageControls()}
                     </div>
                 </CardContent>
             </Card>
