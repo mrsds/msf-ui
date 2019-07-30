@@ -80,7 +80,7 @@ export class EmissionsSummaryInfoContainer extends Component {
                 name: "Average Emissions",
                 value: `${Math.round(summaryData.get("avg_q_source_final") * 100) /
                     100} ± ${Math.round(summaryData.get("avg_q_source_final_sigma") * 100) /
-                    100} kg/hr`
+                    10} kg/hr`
             }
         ];
         return (
@@ -201,7 +201,11 @@ export class EmissionsSummaryInfoContainer extends Component {
                                         <TableCell padding="dense">IPCC Sector</TableCell>
                                         <TableCell padding="dense">Flyovers</TableCell>
                                         <TableCell padding="dense">Persistence</TableCell>
-                                        <TableCell padding="dense">Confidence</TableCell>
+                                        <TableCell padding="dense">
+                                            Confidence in
+                                            <br />
+                                            Persistence
+                                        </TableCell>
                                         <TableCell padding="dense">Avg Emissions (kg/hr)</TableCell>
                                     </TableRow>
                                 </TableHead>
