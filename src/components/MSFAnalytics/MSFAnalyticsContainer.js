@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import DataFilterContainer from "components/MSFAnalytics/DataFilterContainer";
 import EmissionsChartsContainer from "components/MSFAnalytics/EmissionsChartsContainer";
 import EmissionsSummaryInfoContainer from "components/MSFAnalytics/EmissionsSummaryInfoContainer";
+import DistributionByIPCCSectorContainer from "components/MSFAnalytics/DistributionByIPCCSectorContainer";
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
 import * as MSFTypes from "constants/MSFTypes";
 import MiscUtil from "_core/utils/MiscUtil";
@@ -31,6 +32,10 @@ export class MSFAnalyticsContainer extends Component {
             {
                 type: MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO,
                 title: "Emissions Summary Info"
+            },
+            {
+                type: MSFTypes.ANALYTICS_MODE_DISTRIBUTION_BY_SECTOR,
+                title: "Distribution by Sector"
             }
         ];
         return availableModes.map(mode => {
@@ -69,6 +74,8 @@ export class MSFAnalyticsContainer extends Component {
                 return <EmissionsSummaryInfoContainer />;
             case MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS:
                 return <PlumeDetectionStatisticsContainer />;
+            case MSFTypes.ANALYTICS_MODE_DISTRIBUTION_BY_SECTOR:
+                return <DistributionByIPCCSectorContainer />;
         }
     }
 

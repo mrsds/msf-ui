@@ -20,6 +20,7 @@ export class EmissionsChartsContainer extends Component {
     sortSectors(a, b) {
         return parseInt(a.charAt(0)) - parseInt(b.charAt(0));
     }
+
     makeLoadingModal() {
         if (this.props.isLoading) {
             return (

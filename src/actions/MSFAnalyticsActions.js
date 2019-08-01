@@ -283,6 +283,7 @@ export function updateActiveAnalyticsTab() {
             case MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO:
                 return dispatch(updateSummaryPageData());
             case MSFTypes.ANALYTICS_MODE_EMISSIONS_CHARTS:
+            case MSFTypes.ANALYTICS_MODE_DISTRIBUTION_BY_SECTOR:
                 return dispatch(updateEmissionsCharts());
         }
     };
