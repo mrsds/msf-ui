@@ -254,28 +254,6 @@ export class InfrastructureChartingContainer extends Component {
                         active={active}
                     />{" "}
                 </Target>
-                <Popper
-                    placement="bottom-start"
-                    modifiers={{
-                        computeStyle: {
-                            gpuAcceleration: false
-                        }
-                    }}
-                    eventsEnabled={active}
-                    className={!active ? styles.noPointer : styles.pointer}
-                >
-                    <Grow style={{ transformOrigin: "left top" }} in={active}>
-                        <div>
-                            <PlumeDateFilterControl
-                                currentDate={activeDate}
-                                earliestDate={earliestDate}
-                                latestDate={latestDate}
-                                updateDateFunction={updateFunction}
-                                onClose={() => this.setPopperActive(popperId, false)}
-                            />
-                        </div>
-                    </Grow>
-                </Popper>
             </React.Fragment>
         );
     }
@@ -304,24 +282,6 @@ export class InfrastructureChartingContainer extends Component {
                             () => this.getAvailablePlumeSources()
                         )}
                     </ClickAwayListener>
-                    {this.makeDateSelector(
-                        startDatePickerActive,
-                        "From: ",
-                        "startDate",
-                        this.props.plumeFilterStartDate || this.getDateRange()[0] || moment(),
-                        this.getDateRange()[0] || moment(),
-                        this.props.plumeFilterEndDate || moment(),
-                        this.props.setPlumeFilterStartDate
-                    )}
-                    {this.makeDateSelector(
-                        endDatePickerActive,
-                        "To: ",
-                        "endDate",
-                        this.props.plumeFilterEndDate || this.getDateRange()[1] || moment(),
-                        this.props.plumeFilterStartDate || this.getDateRange()[0] || moment(),
-                        this.getDateRange()[1] || moment(),
-                        this.props.setPlumeFilterEndDate
-                    )}
                 </Manager>
             </React.Fragment>
         );

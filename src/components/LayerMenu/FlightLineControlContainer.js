@@ -31,6 +31,13 @@ import stylesExtended from "components/LayerMenu/LayerControlContainerExtendedSt
 import MiscUtil from "_core/utils/MiscUtil";
 
 export class FlightLineControlContainer extends LayerControlContainerCore {
+    setLayerActive(active) {
+        this.isChangingPosition = false;
+        this.isChangingOpacity = false;
+        this.props.mapActions.setLayerActive(this.props.layer.get("id"), !active);
+        this.props.mapActionsExtended.toggleFlightLineLayer(active);
+    }
+
     renderTopContent() {
         return (
             <ListItem dense={true} classes={{ dense: styles.dense }}>

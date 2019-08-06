@@ -2,6 +2,7 @@ import * as types from "constants/actionTypes";
 import * as coreTypes from "_core/constants/actionTypes";
 import JSZip from "jszip";
 import saveAs from "save-as";
+import * as MSFTypes from "constants/MSFTypes";
 
 export function hideFeatureDetailContainer() {
     return { type: types.HIDE_FEATURE_DETAIL };
@@ -16,7 +17,20 @@ export function togglePlumesWithObservationsOnly() {
 }
 
 export function changeInfrastructureChartMode(value) {
-    return { type: types.CHANGE_INFRASTRUCTURE_CHART_MODE, value };
+    return (dispatch, getState) => {
+        const analyticsMsg = (function() {
+            switch (value) {
+                case MSFTypes.INFRASTRUCTURE_SOURCES_LIST:
+                    return types.INFRASTRUCTURE_LIST_MODE;
+                case MSFTypes.INFRASTRUCTURE_SOURCES_THUMB:
+                    return types.INFRASTRUCTURE_THUMB_MODE;
+                case MSFTypes.INFRASTRUCTURE_SOURCES_CHART:
+                    return types.INFRASTRUCTURE_CHART_MODE;
+            }
+        })();
+        dispatch({ type: analyticsMsg });
+        dispatch({ type: types.CHANGE_INFRASTRUCTURE_CHART_MODE, value });
+    };
 }
 
 export function setPlumeSourceFilter(value) {

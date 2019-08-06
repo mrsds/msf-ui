@@ -44,7 +44,7 @@ export class EmissionsSummaryInfoContainer extends Component {
     }
 
     makeTable(stats, filename) {
-        console.log(stats);
+        // console.log(stats);
         // stats = stats.map(row => {
         //     return {
         //         Sector: row.sector,
@@ -55,6 +55,7 @@ export class EmissionsSummaryInfoContainer extends Component {
         //     };
         // });
         MiscUtilExtended.downloadCSV(stats, filename);
+        this.props.emissionsSummaryDownloadRequested();
     }
 
     makeSummaryStat({ name, value }) {
@@ -250,7 +251,8 @@ EmissionsSummaryInfoContainer.propTypes = {
     sourceStartIndex: PropTypes.number.isRequired,
     updateSummaryPageSourceIndex: PropTypes.func.isRequired,
     openMapToLatLong: PropTypes.func.isRequired,
-    sourcesLoading: PropTypes.bool.isRequired
+    sourcesLoading: PropTypes.bool.isRequired,
+    emissionsSummaryDownloadRequested: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -274,7 +276,11 @@ function mapDispatchToProps(dispatch) {
             MSFAnalyticsActions.updateSummaryPageSourceIndex,
             dispatch
         ),
-        openMapToLatLong: bindActionCreators(mapActionsExtended.openMapToLatLong, dispatch)
+        openMapToLatLong: bindActionCreators(mapActionsExtended.openMapToLatLong, dispatch),
+        emissionsSummaryDownloadRequested: bindActionCreators(
+            MSFAnalyticsActions.emissionsSummaryDownloadRequested,
+            dispatch
+        )
     };
 }
 

@@ -119,7 +119,7 @@
         "react-contextmenu": "2.9.2",
         "react-dom": "16.4.0",
         "react-event-listener": "0.6.0",
-        "react-ga": "2.5.3",
+        "react-ga": "2.6.0",
         "react-key-handler": "1.0.1",
         "react-popper": "0.10.4",
         "react-redux": "5.0.7",

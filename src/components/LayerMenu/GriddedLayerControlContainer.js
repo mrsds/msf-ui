@@ -57,8 +57,10 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
         this.isChangingOpacity = false;
         this.props.mapActionsExtended.setGroupVisible(this.props.group, !active);
         this.props.mapActionsExtended.changeActiveGriddedLayer(
-            this.props.griddedSettings.get("activeLayer")
+            this.props.griddedSettings.get("activeLayer"),
+            active
         );
+        this.props.mapActionsExtended.toggleGriddedLayerForMetrics(active);
     }
 
     toggleDatePickerVisible() {

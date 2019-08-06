@@ -47,7 +47,8 @@ export const mapState_Extended = mapState.mergeDeep(
         },
         currentZoom: null,
         visiblePlumes: [],
-        locationInputModalVisible: false
+        locationInputModalVisible: false,
+        previousZoom: null
     })
 );
 

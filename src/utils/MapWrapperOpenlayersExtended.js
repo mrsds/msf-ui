@@ -1186,4 +1186,11 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             return l.setStyle(style);
         });
     }
+
+    getGriddedLayers() {
+        return this.map
+            .getLayers()
+            .getArray()
+            .filter(l => l.get("_layerGroup") === "GRIDDED");
+    }
 }

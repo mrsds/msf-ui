@@ -267,4 +267,8 @@ export default class MapReducer_Extended extends MapReducer {
     static toggleLocationInputModal(state, action) {
         return state.set("locationInputModalVisible", action.visible);
     }
+
+    static setPreviousZoom(state, action) {
+        return state.set("previousZoom", action.zoom);
+    }
 }

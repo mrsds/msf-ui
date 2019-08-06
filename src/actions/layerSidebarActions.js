@@ -88,6 +88,14 @@ export function setFeatureDetail(category, feature) {
         dispatch({ type: types.FEATURE_DETAIL_PLUME_LIST_LOADING });
         dispatch({ type: types.UPDATE_FEATURE_DETAIL, category, feature });
 
+        // Send analytics info
+        dispatch({
+            type:
+                category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                    ? types.OPEN_PLUME_DETAIL
+                    : types.OPEN_INFRASTRUCTURE_DETAIL
+        });
+
         switch (category) {
             case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
                 dispatch(getVistaPlumesList(feature));
@@ -235,6 +243,10 @@ export function setPlumeFilter(key, selectedValue) {
         getState()
             .map.getIn(["maps", "openlayers"])
             .setVisiblePlumes(visiblePlumes);
+
+        if (selectedValue.get("value") === "Plume Emissions") {
+            dispatch({ type: types.SORT_PLUMES_BY_EMISSIONS });
+        }
     };
 }
 

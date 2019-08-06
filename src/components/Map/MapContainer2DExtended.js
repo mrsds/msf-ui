@@ -87,6 +87,7 @@ export class MapContainer2D extends CoreMapContainer2D {
             );
         }
         this.props.mapActionsMSF.updateFeatureList_Map();
+        this.props.mapActionsMSF.mapMovedMetrics();
     }
 
     handlePixelClick(map, clickEvt) {
