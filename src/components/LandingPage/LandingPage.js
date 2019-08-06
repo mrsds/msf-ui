@@ -126,7 +126,7 @@ export class LandingPage extends Component {
                                     <img
                                         alt="Screenshot of Methane Source Finder"
                                         className={styles.app_screenshot}
-                                        src="img/msf_screenshot.png"
+                                        src="img/msf_screenshot.jpg"
                                     />
                                 </div>
                                 <MarkdownPage
@@ -194,7 +194,7 @@ export class LandingPage extends Component {
                                     color="default"
                                     gutterBottom
                                 >
-                                    IMAGES and MEDIA
+                                    IMAGES AND MEDIA
                                 </Typography>
                                 <div className={styles.section_body}>
                                     Diagram of the tiered observation system for methane:
