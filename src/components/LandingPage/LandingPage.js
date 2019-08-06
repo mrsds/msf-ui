@@ -108,20 +108,6 @@ export class LandingPage extends Component {
                     <Card className={styles.card}>
                         <CardContent className={styles.card_content}>
                             <div className={styles.left}>
-                                <div className={styles.image_container}>
-                                    <img
-                                        alt="Screenshot of Methane Source Finder"
-                                        className={styles.app_screenshot}
-                                        src="img/msf_screenshot.png"
-                                    />
-                                    <a href="img/Methane_tiered_obs_system_small.jpg">
-                                        <img
-                                            alt="Methane Observation Network Diagram"
-                                            className={styles.methane_diagram}
-                                            src="img/Methane_tiered_obs_system_small.jpg"
-                                        />
-                                    </a>
-                                </div>
                                 <div className={styles.section_body}>
                                     <Typography
                                         className={styles.section_title}
@@ -135,6 +121,13 @@ export class LandingPage extends Component {
                                     airborne remote-sensing, surface monitoring networks and
                                     satellites on an interactive map alongside infrastructure
                                     information.
+                                </div>
+                                <div className={styles.image_container}>
+                                    <img
+                                        alt="Screenshot of Methane Source Finder"
+                                        className={styles.app_screenshot}
+                                        src="img/msf_screenshot.jpg"
+                                    />
                                 </div>
                                 <MarkdownPage
                                     content={require("default-data/msf-data/help/faq.md")}
@@ -194,6 +187,24 @@ export class LandingPage extends Component {
                                     (ACCESS) program. Additional funding was provided by the
                                     California Air Resources Board, the California Energy Commission
                                     and the National Institute of Standards and Technology.
+                                </div>
+
+                                <Typography
+                                    className={styles.section_title}
+                                    color="default"
+                                    gutterBottom
+                                >
+                                    IMAGES AND MEDIA
+                                </Typography>
+                                <div className={styles.section_body}>
+                                    Diagram of the tiered observation system for methane:
+                                    <a href="img/Methane_tiered_obs_system_small.jpg">
+                                        <img
+                                            alt="Methane Observation Network Diagram"
+                                            className={styles.methane_diagram}
+                                            src="img/Methane_tiered_obs_system_small.jpg"
+                                        />
+                                    </a>
                                 </div>
                             </div>
                         </CardContent>
