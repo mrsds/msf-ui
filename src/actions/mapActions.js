@@ -136,9 +136,12 @@ function availableFeatureListLoaded(category) {
         ) {
             window.clearTimeout(loadTimer);
             loadTimer = setTimeout(_ => {
-                const timeElapsed =
-                    (Date.now() - getState().asynchronous.get("loadStart") - 1000) / 1000;
-                dispatch({ type: typesMSF.LOAD_TIME_ON_MOVE, analyticsValue: timeElapsed });
+                const timeElapsed = Date.now() - getState().asynchronous.get("loadStart") - 1000;
+                dispatch({
+                    type: typesMSF.LOAD_TIME_ON_MOVE,
+                    analyticsValue: timeElapsed,
+                    isAnalyticsTiming: true
+                });
             }, 1000);
         }
     };

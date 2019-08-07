@@ -136,10 +136,22 @@ export default class AnalyticsReducer_Extended extends AnalyticsReducer {
                     category,
                     action: evt.action.type,
                     label: evt.action.analyticsLabel,
-                    value: evt.action.analyticsValue | 0
+                    value:
+                        (evt.action.analyticsValue === undefined && evt.action.analyticsValue) ||
+                        evt.action.analyticsValue | 0
                 });
 
                 ReactGA.initialize(appConfig.GOOGLE_ANALYTICS_ID);
+
+                if (action.isAnalyticsTiming) {
+                    return ReactGA.timing({
+                        category,
+                        variable: evt.action.type,
+
+                        value: evt.action.analyticsValue
+                    });
+                }
+
                 ReactGA.event({
                     category,
                     action: evt.action.type,
