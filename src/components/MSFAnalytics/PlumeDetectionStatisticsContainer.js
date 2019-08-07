@@ -69,7 +69,7 @@ export class PlumeDetectionStatisticsContainer extends Component {
         const [uniqueFacilityWithPlumeCount, uniqueFacilityWithPlumePct] = this.getFieldSum(
             subSectors,
             "unique_facilities_with_plume_detections",
-            facilityCount
+            uniqueFacilityCount
         );
         return {
             sector,
@@ -89,7 +89,8 @@ export class PlumeDetectionStatisticsContainer extends Component {
         const uniqueFacilityCount = subSector.unique_facilities_flown_over;
         const uniqueFacilityPct = (uniqueFacilityCount / facilityCount * 100) | 0;
         const uniqueFacilityWithPlumeCount = subSector.unique_facilities_with_plume_detections;
-        const uniqueFacilityWithPlumePct = (uniqueFacilityWithPlumeCount / facilityCount * 100) | 0;
+        const uniqueFacilityWithPlumePct =
+            (uniqueFacilityWithPlumeCount / uniqueFacilityCount * 100) | 0;
         return {
             sector: subSector.sector_level_2,
             facilities: facilityCount,
