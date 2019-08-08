@@ -17,10 +17,11 @@ import MiscUtilExtended from "utils/MiscUtilExtended";
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
+import * as statsHelperFunctions from "components/MSFAnalytics/statsHelperFunctions";
 
 export class PlumeDetectionStatisticsContainer extends Component {
     componentDidMount() {
-        this.props.fetchDetectionStats();
+        if (!this.props.detectionStats) this.props.fetchDetectionStats();
     }
 
     shouldComponentUpdate(nextProps) {
@@ -38,13 +39,6 @@ export class PlumeDetectionStatisticsContainer extends Component {
         return <div />;
     }
 
-    getFieldSum(subSectors, field, total) {
-        const sum = subSectors.reduce((acc, subSector) => {
-            return acc + subSector[field];
-        }, 0);
-        return [sum, total && (sum / total * 100) | 0];
-    }
-
     makeTable(stats, filename) {
         stats = stats.map(row => {
             return {
@@ -56,74 +50,6 @@ export class PlumeDetectionStatisticsContainer extends Component {
             };
         });
         MiscUtilExtended.downloadCSV(stats, filename);
-    }
-
-    makeSectorStats(subSectorList, sector) {
-        const subSectors = subSectorList[sector];
-        const [facilityCount, _] = this.getFieldSum(subSectors, "facilities");
-        const [uniqueFacilityCount, uniqueFacilityPct] = this.getFieldSum(
-            subSectors,
-            "unique_facilities_flown_over",
-            facilityCount
-        );
-        const [uniqueFacilityWithPlumeCount, uniqueFacilityWithPlumePct] = this.getFieldSum(
-            subSectors,
-            "unique_facilities_with_plume_detections",
-            uniqueFacilityCount
-        );
-        return {
-            sector,
-            facilities: facilityCount,
-            flyovers: this.getFieldSum(subSectors, "facility_flyovers")[0],
-            uniqueFlownOver: [uniqueFacilityCount, uniqueFacilityPct],
-            uniqueWithPlumes: [uniqueFacilityWithPlumeCount, uniqueFacilityWithPlumePct],
-            uniqueFacilityCount,
-            uniqueFacilityPct,
-            uniqueFacilityWithPlumeCount,
-            uniqueFacilityWithPlumePct
-        };
-    }
-
-    makeSubsectorStats(subSector) {
-        const facilityCount = subSector.facilities;
-        const uniqueFacilityCount = subSector.unique_facilities_flown_over;
-        const uniqueFacilityPct = (uniqueFacilityCount / facilityCount * 100) | 0;
-        const uniqueFacilityWithPlumeCount = subSector.unique_facilities_with_plume_detections;
-        const uniqueFacilityWithPlumePct =
-            (uniqueFacilityWithPlumeCount / uniqueFacilityCount * 100) | 0;
-        return {
-            sector: subSector.sector_level_2,
-            facilities: facilityCount,
-            flyovers: subSector.facility_flyovers,
-            uniqueFlownOver: [uniqueFacilityCount, uniqueFacilityPct],
-            uniqueWithPlumes: [uniqueFacilityWithPlumeCount, uniqueFacilityWithPlumePct],
-            uniqueFacilityCount,
-            uniqueFacilityPct,
-            uniqueFacilityWithPlumeCount,
-            uniqueFacilityWithPlumePct
-        };
-    }
-
-    makePerSectorStats() {
-        if (!this.props.detectionStats) return [];
-
-        const sectors = this.props.detectionStats.reduce((acc, subSector) => {
-            const sector =
-                layerSidebarTypes.IPCC_SECTOR_LEVEL_1_TO_SECTOR[
-                    parseInt(subSector.sector_level_1.charAt(0))
-                ];
-            if (!acc[sector]) {
-                acc[sector] = [];
-            }
-            acc[sector].push(subSector);
-            return acc;
-        }, {});
-        return Object.keys(sectors).map(key => this.makeSectorStats(sectors, key));
-    }
-
-    makePerSubsectorStats() {
-        if (!this.props.detectionStats) return [];
-        return this.props.detectionStats.map(subSector => this.makeSubsectorStats(subSector));
     }
 
     makePerSectorTableBody(stats) {
@@ -166,7 +92,7 @@ export class PlumeDetectionStatisticsContainer extends Component {
 
     makePerSectorSection() {
         const filename = "Methane Plume Detection Rates by Sector";
-        const stats = this.makePerSectorStats();
+        const stats = statsHelperFunctions.getStatsBySectorLevel(this.props.detectionStats, 1);
         return (
             <Card className={styles.contentCard}>
                 <CardContent>
@@ -212,7 +138,7 @@ export class PlumeDetectionStatisticsContainer extends Component {
 
     makePerSubsectorSection() {
         const filename = "Methane Plume Detection Rates by Subsector";
-        const stats = this.makePerSubsectorStats();
+        const stats = statsHelperFunctions.getStatsBySectorLevel(this.props.detectionStats, 2);
         return (
             <Card className={styles.contentCard}>
                 <CardContent>

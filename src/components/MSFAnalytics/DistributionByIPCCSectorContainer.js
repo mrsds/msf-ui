@@ -13,26 +13,37 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Switch from "@material-ui/core/Switch";
 
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
 import * as MSFTypes from "constants/MSFTypes";
+import * as statsHelperFunctions from "components/MSFAnalytics/statsHelperFunctions";
+import MiscUtil from "_core/utils/MiscUtil";
+import displayStyles from "_core/styles/display.scss";
 
 export class DistributionByIPCCSectorContainer extends Component {
     constructor(props) {
         super(props);
-        this.state = { binningMode: MSFTypes.SECTOR_DISTRIBUTION_MODE_EMISSIONS };
+        this.state = { binningMode: MSFTypes.SECTOR_DISTRIBUTION_MODE_EMISSIONS, isScaled: false };
     }
 
     componentDidMount() {
-        this.props.updateEmissionsCharts();
+        if (!this.props.emissionsSourceData) this.props.updateEmissionsCharts();
+        if (!this.props.detectionStats && this.state.isScaled) this.props.fetchDetectionStats();
+    }
+
+    handleChange(name) {
+        return event => this.setState({ ...this.state, [name]: event.target.checked });
     }
 
     makeLoadingModal() {
-        if (this.props.isLoading) {
+        if (this.props.isLoading || (this.state.isScaled && this.props.detectionStatsAreLoading)) {
             return (
                 <div className={styles.loadingModal}>
                     <CircularProgress />
@@ -47,6 +58,24 @@ export class DistributionByIPCCSectorContainer extends Component {
             const emissions = source.get("q_source_final");
             acc[source.get(`sector_level_${sectorLevel}`)] =
                 acc[source.get(`sector_level_${sectorLevel}`)] + emissions || emissions;
+            return acc;
+        }, {});
+    }
+
+    getScaledEmissionsStatsBySector(sectorLevel) {
+        const totalEmissions = this.props.emissionsSourceData.reduce(
+            (acc, source) => acc + source.get("q_source_final"),
+            0
+        );
+
+        const stats = statsHelperFunctions.getStatsBySectorLevel(
+            this.props.detectionStats,
+            sectorLevel
+        );
+
+        return stats.reduce((acc, sector) => {
+            const scaledAmount = sector.uniqueFacilityWithPlumePct * totalEmissions;
+            if (scaledAmount) acc[sector.sector] = scaledAmount;
             return acc;
         }, {});
     }
@@ -78,8 +107,13 @@ export class DistributionByIPCCSectorContainer extends Component {
         const title = `IPCC Sector Level ${sectorLevel}`;
         const data =
             this.state.binningMode === MSFTypes.SECTOR_DISTRIBUTION_MODE_EMISSIONS
-                ? this.getEmissionsStatsBySector(sectorLevel)
+                ? this.state.isScaled
+                  ? this.getScaledEmissionsStatsBySector(sectorLevel)
+                  : this.getEmissionsStatsBySector(sectorLevel)
                 : this.getOccurrenceStatsBySector(sectorLevel);
+
+        if (!Object.keys(data).length) return null;
+
         const rankedData = Object.entries(data).sort(
             ([sectorA, avgA], [sectorB, avgB]) => avgB - avgA
         );
@@ -123,6 +157,23 @@ export class DistributionByIPCCSectorContainer extends Component {
                             {mode.title}
                         </Button>
                     ))}
+                    <FormGroup className={styles.scalingSwitch}>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={this.state.isScaled}
+                                    onChange={this.handleChange("isScaled")}
+                                    value="isScaled"
+                                    inputProps={{ "aria-label": "secondary checkbox" }}
+                                    disabled={
+                                        this.state.binningMode !==
+                                        MSFTypes.SECTOR_DISTRIBUTION_MODE_EMISSIONS
+                                    }
+                                />
+                            }
+                            label="Scaled by Coverage"
+                        />
+                    </FormGroup>
                 </CardContent>
             </Card>
         );
@@ -141,14 +192,20 @@ export class DistributionByIPCCSectorContainer extends Component {
 
 DistributionByIPCCSectorContainer.propTypes = {
     emissionsSourceData: PropTypes.object,
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool.isRequired,
+    updateEmissionsCharts: PropTypes.func,
+    fetchDetectionStats: PropTypes.func,
+    detectionStatsAreLoading: PropTypes.bool,
+    detectionStats: PropTypes.object
 };
 
 function mapStateToProps(state) {
     return {
         emissionsSourceData: state.MSFAnalytics.get("emissionsSourceData"),
         isLoading: state.MSFAnalytics.get("emissionsSourceDataIsLoading"),
-        filterOptions: state.MSFAnalytics.get("filterOptions")
+        filterOptions: state.MSFAnalytics.get("filterOptions"),
+        detectionStats: state.MSFAnalytics.get("detectionStats"),
+        detectionStatsAreLoading: state.MSFAnalytics.get("detectionStatsAreLoading")
     };
 }
 
@@ -157,7 +214,8 @@ function mapDispatchToProps(dispatch) {
         updateEmissionsCharts: bindActionCreators(
             MSFAnalyticsActions.updateEmissionsCharts,
             dispatch
-        )
+        ),
+        fetchDetectionStats: bindActionCreators(MSFAnalyticsActions.fetchDetectionStats, dispatch)
     };
 }
 
