@@ -1,31 +1,21 @@
 import { HorizontalBar as BarChart } from "react-chartjs-2";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
-
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import MiscUtilExtended from "utils/MiscUtilExtended";
+import Typography from "@material-ui/core/Typography";
 
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
-import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
 import * as MSFTypes from "constants/MSFTypes";
 import * as statsHelperFunctions from "components/MSFAnalytics/statsHelperFunctions";
-import MiscUtil from "_core/utils/MiscUtil";
-import displayStyles from "_core/styles/display.scss";
+import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
 
 export class DistributionByIPCCSectorContainer extends Component {
     constructor(props) {
@@ -192,11 +182,7 @@ export class DistributionByIPCCSectorContainer extends Component {
 
 DistributionByIPCCSectorContainer.propTypes = {
     emissionsSourceData: PropTypes.object,
-    isLoading: PropTypes.bool.isRequired,
-    updateEmissionsCharts: PropTypes.func,
-    fetchDetectionStats: PropTypes.func,
-    detectionStatsAreLoading: PropTypes.bool,
-    detectionStats: PropTypes.object
+    isLoading: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {

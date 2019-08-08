@@ -1,5 +1,6 @@
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -11,13 +12,11 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import MiscUtilExtended from "utils/MiscUtilExtended";
 
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
-import * as layerSidebarTypes from "constants/layerSidebarTypes";
-import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
+import MiscUtilExtended from "utils/MiscUtilExtended";
 import * as statsHelperFunctions from "components/MSFAnalytics/statsHelperFunctions";
+import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
 
 export class PlumeDetectionStatisticsContainer extends Component {
     componentDidMount() {
