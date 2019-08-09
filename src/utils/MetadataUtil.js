@@ -7,11 +7,7 @@ export default class MetadataUtil {
     }
 
     static getValueForField(field, metadata) {
-        const result = metadata.find(
-            pair =>
-                pair.get("name") ? pair.get("name").toLowerCase() === field.toLowerCase() : false
-        );
-        return result ? result.get("value") : null;
+        return metadata.get("field");
     }
 
     static tryFields(fields, metadata) {
