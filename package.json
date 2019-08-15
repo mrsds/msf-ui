@@ -50,7 +50,7 @@
         "browser-sync": "2.23.2",
         "cesium": "1.41.0",
         "chai": "4.1.2",
-        "chart.js": "2.7.3",
+        "chart.js": "2.8.0",
         "chartjs-plugin-error-bars": "1.2.2",
         "clean-css": "4.1.9",
         "colors": "1.1.2",

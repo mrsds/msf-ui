@@ -81,20 +81,12 @@ export class DistributionByIPCCSectorContainer extends Component {
     makeEmissionsChartForSectorLevel(sectorLevel) {
         if (!this.props.emissionsSourceData) return;
 
+        const title = `IPCC Sector Level ${sectorLevel}`;
         const scaleLabel =
             this.state.binningMode === MSFTypes.SECTOR_DISTRIBUTION_MODE_EMISSIONS
                 ? "Emissions"
                 : "Occurrences";
 
-        const options = {
-            legend: { display: false },
-            scales: {
-                xAxes: [{ scaleLabel: { display: true, labelString: scaleLabel } }],
-                yAxes: [{ scaleLabel: { display: false } }]
-            }
-        };
-
-        const title = `IPCC Sector Level ${sectorLevel}`;
         const data =
             this.state.binningMode === MSFTypes.SECTOR_DISTRIBUTION_MODE_EMISSIONS
                 ? this.state.isScaled
@@ -107,6 +99,26 @@ export class DistributionByIPCCSectorContainer extends Component {
         const rankedData = Object.entries(data).sort(
             ([sectorA, avgA], [sectorB, avgB]) => avgB - avgA
         );
+
+        const options = {
+            legend: { display: false },
+            scales: {
+                xAxes: [
+                    {
+                        scaleLabel: {
+                            display: true,
+                            labelString: scaleLabel
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            min: 0,
+                            suggestedMax: rankedData[0][1]
+                        }
+                    }
+                ],
+                yAxes: [{ scaleLabel: { display: false } }]
+            }
+        };
 
         const dataset = {
             label: scaleLabel,
