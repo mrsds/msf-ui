@@ -54,9 +54,7 @@ export class PlumeDetectionStatisticsContainer extends Component {
     makePerSectorTableBody(stats) {
         return stats.map(sector => (
             <TableRow key={sector.sector}>
-                <TableCell padding="dense">
-                    {sector.sector.charAt(0) + sector.sector.toLowerCase().slice(1)}
-                </TableCell>
+                <TableCell padding="dense">{sector.sector}</TableCell>
                 <TableCell pading="dense">{sector.facilities}</TableCell>
                 <TableCell pading="dense">{sector.flyovers}</TableCell>
                 <TableCell pading="dense">
