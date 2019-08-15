@@ -29,7 +29,7 @@ export class DistributionByIPCCSectorContainer extends Component {
     }
 
     handleChange(name) {
-        return event => this.setState({ ...this.state, [name]: event.target.checked });
+        return event => this.setState({ ...this.state, [name]: event.target.checked }); // eslint-disable-line react/no-set-state
     }
 
     makeLoadingModal() {
@@ -152,7 +152,7 @@ export class DistributionByIPCCSectorContainer extends Component {
                     {MSFTypes.SECTOR_DISTRIBUTION_MODES.map(mode => (
                         <Button
                             key={mode.key}
-                            onClick={_ => this.setState({ binningMode: mode.key })}
+                            onClick={_ => this.setState({ binningMode: mode.key })} // eslint-disable-line react/no-set-state
                             variant={this.state.binningMode === mode.key ? "raised" : "outlined"}
                             color="primary"
                         >
@@ -194,7 +194,11 @@ export class DistributionByIPCCSectorContainer extends Component {
 
 DistributionByIPCCSectorContainer.propTypes = {
     emissionsSourceData: PropTypes.object,
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool.isRequired,
+    detectionStats: PropTypes.object,
+    fetchDetectionStats: PropTypes.func.isRequired,
+    detectionStatsAreLoading: PropTypes.bool.isRequired,
+    updateEmissionsCharts: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {

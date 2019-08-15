@@ -138,7 +138,7 @@ export class LandingPage extends Component {
                                     size="small"
                                     variant="raised"
                                     color="primary"
-                                    onClick={_ => this.setState({ faqOpen: true })}
+                                    onClick={_ => this.setState({ faqOpen: true })} // eslint-disable-line react/no-set-state
                                     className={faqButtonStyle}
                                 >
                                     Show all FAQs >
