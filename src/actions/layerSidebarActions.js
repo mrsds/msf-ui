@@ -231,22 +231,33 @@ function setGroupLayerActive(layer, active) {
     return { type: types.SET_GROUP_LAYER_ACTIVE, layer, active };
 }
 
+function updatePlumes(dispatch, getState) {
+    dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
+    const visiblePlumes = getState().layerSidebar.getIn([
+        "searchState",
+        layerSidebarTypes.CATEGORY_PLUMES,
+        "searchResults"
+    ]);
+    getState()
+        .map.getIn(["maps", "openlayers"])
+        .setVisiblePlumes(visiblePlumes);
+}
+
 export function setPlumeFilter(key, selectedValue) {
     return (dispatch, getState) => {
         dispatch({ type: types.SET_PLUME_FILTER, key, selectedValue });
-        dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
-        const visiblePlumes = getState().layerSidebar.getIn([
-            "searchState",
-            layerSidebarTypes.CATEGORY_PLUMES,
-            "searchResults"
-        ]);
-        getState()
-            .map.getIn(["maps", "openlayers"])
-            .setVisiblePlumes(visiblePlumes);
+        updatePlumes(dispatch, getState);
 
-        if (selectedValue.get("value") === "Plume Emissions") {
+        if (selectedValue && selectedValue.get("value") === "Plume Emissions") {
             dispatch({ type: types.SORT_PLUMES_BY_EMISSIONS });
         }
+    };
+}
+
+export function setPlumeDateFilter(startDate, endDate) {
+    return (dispatch, getState) => {
+        dispatch({ type: types.SET_PLUME_DATE_FILTER, startDate, endDate });
+        updatePlumes(dispatch, getState);
     };
 }
 

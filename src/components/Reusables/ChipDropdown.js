@@ -33,7 +33,7 @@ const ChipDropdown = props => {
 ChipDropdown.propTypes = {
     active: PropTypes.bool.isRequired,
     label: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
+    onClick: PropTypes.func,
     onDelete: PropTypes.func.isRequired,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     className: PropTypes.string

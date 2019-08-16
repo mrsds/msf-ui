@@ -20,6 +20,7 @@ import MiscUtil from "_core/utils/MiscUtil";
 import MiscUtilExtended from "utils/MiscUtilExtended";
 import MetadataUtil from "utils/MetadataUtil";
 import styles from "components/Timeline/TimelineContainerStyles.scss";
+import * as layerSidebarActions from "actions/layerSidebarActions";
 
 let util = require("vis/lib/util");
 let TimeStep = require("vis/lib/timeline/TimeStep");
@@ -358,7 +359,7 @@ export class TimelineContainerStyles extends Component {
         // this.props.dateSliderTimeResolution.get("resolution")
         // let resolution = VIS_SCALE_SIZES[this.props.dateSliderTimeResolution.get("resolution")];
         let resolution = this.props.dateSliderTimeResolution.get("resolution");
-        let items = this.props.searchResults.reduce((acc, x) => {
+        let items = this.props.textSearchResults.reduce((acc, x) => {
             let datetime = moment(x.get("datetime"));
             let dateBin = "";
             let itemStart = "";
@@ -519,15 +520,52 @@ export class TimelineContainerStyles extends Component {
     //     let item = this.items.get(props.item);
     // }
 
+    calculateStartAndEndDateForSelectedPeriod(item) {
+        const [year, month, day, hour, minute, second] = item[0].toString().split("_");
+        let formatStr;
+        const period = (function() {
+            if (typeof month === "undefined") {
+                formatStr = "Y";
+                return "years";
+            } else if (typeof day === "undefined") {
+                formatStr = "MMM Y";
+                return "months";
+            } else if (typeof hour === "undefined") {
+                formatStr = "MMM D, Y";
+                return "days";
+            } else if (typeof minute === "undefined") {
+                formatStr = "MMM D, Y - HH:[xx]";
+                return "hours";
+            } else if (typeof second === "undefined") {
+                formatStr = "MMM D, Y - HH:mm";
+                return "minutes";
+            } else {
+                formatStr = "MMM D, Y - HH:mm:ss";
+                return "seconds";
+            }
+        })();
+
+        const baseDate = moment(typeof item[0] === "string" ? item[0].split("_") : item);
+        const startDate = moment(baseDate);
+        const start = Immutable.fromJS({ label: baseDate.format(formatStr), value: startDate });
+        const endDate = baseDate.endOf(period);
+        const end = Immutable.fromJS({ label: endDate.format(formatStr), value: endDate });
+        return [start, end];
+    }
+
     handleItemSelect(props) {
+        const [startDate, endDate] = this.calculateStartAndEndDateForSelectedPeriod(props.items);
+
+        this.props.layerSidebarActions.setPlumeDateFilter(startDate, endDate);
+
         // Clear old
         let item = this.items.get(props.items[0]);
 
-        // Select first plume
-        this.props.mapActionsMSF.toggleFeatureLabel(
-            layerSidebarTypes.CATEGORY_PLUMES,
-            item.plumes[0]
-        );
+        // // Select first plume
+        // this.props.mapActionsMSF.toggleFeatureLabel(
+        //     layerSidebarTypes.CATEGORY_PLUMES,
+        //     item.plumes[0]
+        // );
         this.items.update({ id: props.items[0], selected: true });
 
         // Deselect all other items
@@ -884,7 +922,9 @@ TimelineContainerStyles.propTypes = {
     activeFeature: PropTypes.object.isRequired,
     dateSliderTimeResolution: PropTypes.object.isRequired,
     layerSidebarCollapsed: PropTypes.bool.isRequired,
-    mapActionsMSF: PropTypes.object.isRequired
+    mapActionsMSF: PropTypes.object.isRequired,
+    layerSidebarActions: PropTypes.object.isRequired,
+    textSearchResults: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -897,6 +937,11 @@ function mapStateToProps(state) {
             layerSidebarTypes.CATEGORY_PLUMES,
             "searchResults"
         ]),
+        textSearchResults: state.layerSidebar.getIn([
+            "searchState",
+            layerSidebarTypes.CATEGORY_PLUMES,
+            "textSearchResults"
+        ]),
         dateSliderTimeResolution: state.dateSlider.get("resolution")
     };
 }
@@ -904,7 +949,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         mapActions: bindActionCreators(mapActions, dispatch),
-        mapActionsMSF: bindActionCreators(mapActionsMSF, dispatch)
+        mapActionsMSF: bindActionCreators(mapActionsMSF, dispatch),
+        layerSidebarActions: bindActionCreators(layerSidebarActions, dispatch)
     };
 }
 

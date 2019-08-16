@@ -1,6 +1,7 @@
 import Immutable from "immutable";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import appConfig from "constants/appConfig";
+import moment from "moment";
 
 export const layerSidebarState = Immutable.fromJS({
     activeFeatureCategory: layerSidebarTypes.CATEGORY_PLUMES,
@@ -47,6 +48,7 @@ export const layerSidebarState = Immutable.fromJS({
         [layerSidebarTypes.CATEGORY_PLUMES]: {
             searchResults: {},
             globalSearchResults: {},
+            textSearchResults: {},
             pageIndex: 0,
             filters: {
                 [layerSidebarTypes.PLUME_FILTER_SORT_BY]: {
@@ -69,15 +71,15 @@ export const layerSidebarState = Immutable.fromJS({
                 },
                 [layerSidebarTypes.PLUME_FILTER_PLUME_START_DATE]: {
                     selectedValue: {
-                        value: appConfig.PLUME_START_DATE,
-                        label: appConfig.PLUME_START_DATE
+                        value: null,
+                        label: null
                     },
                     selectableValues: []
                 },
                 [layerSidebarTypes.PLUME_FILTER_PLUME_END_DATE]: {
                     selectedValue: {
-                        value: appConfig.PLUME_END_DATE,
-                        label: appConfig.PLUME_END_DATE
+                        value: null,
+                        label: null
                     },
                     selectableValues: []
                 }

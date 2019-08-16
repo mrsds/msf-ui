@@ -107,18 +107,22 @@ export default class LayerSidebarReducer {
     static getPlumeSearchResults(state) {
         let filters = state.getIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES, "filters"]);
         const featureList = state.getIn(["availableFeatures", layerSidebarTypes.CATEGORY_PLUMES]);
-        let searchResults = Immutable.Map();
+
         // Extract search filters
-        const startDate = moment(
+        const startDate =
             filters.getIn([
                 layerSidebarTypes.PLUME_FILTER_PLUME_START_DATE,
                 "selectedValue",
                 "value"
-            ])
-        );
-        const endDate = moment(
-            filters.getIn([layerSidebarTypes.PLUME_FILTER_PLUME_END_DATE, "selectedValue", "value"])
-        );
+            ]) || moment(appConfig.default.PLUME_START_DATE);
+
+        const endDate =
+            filters.getIn([
+                layerSidebarTypes.PLUME_FILTER_PLUME_END_DATE,
+                "selectedValue",
+                "value"
+            ]) || moment(appConfig.default.PLUME_END_DATE);
+
         const flightCampaign = filters.getIn([
             layerSidebarTypes.PLUME_FILTER_FLIGHT_CAMPAIGN,
             "selectedValue",
@@ -140,7 +144,7 @@ export default class LayerSidebarReducer {
         ]);
 
         // Filter by plumeID exact match within string
-        searchResults = featureList.filter(
+        const exactSearchResults = featureList.filter(
             x =>
                 x
                     .get("source_id")
@@ -153,14 +157,17 @@ export default class LayerSidebarReducer {
         );
 
         // Filter by other filters
-        searchResults = searchResults.filter(feature => {
+        const textSearchResults = exactSearchResults.filter(feature => {
             return (
-                moment(feature.get("datetime")).isBetween(startDate, endDate, "day", "[]") &&
                 (!flightCampaign || feature.get("flight_campaign") === flightCampaign) &&
                 (typeof plumeFlux === "undefined" ||
                     (feature.get("flux") !== null && feature.get("flux") >= plumeFlux))
             );
         });
+
+        let searchResults = textSearchResults.filter(feature =>
+            moment(feature.get("datetime")).isBetween(startDate, endDate, null, "[]")
+        );
 
         // Sort list
         let sortFn = sortOption => {
@@ -215,7 +222,11 @@ export default class LayerSidebarReducer {
                 searchResults
             )
             .setIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES, "filters"], filters)
-            .setIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES, "pageIndex"], 0);
+            .setIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES, "pageIndex"], 0)
+            .setIn(
+                ["searchState", layerSidebarTypes.CATEGORY_PLUMES, "textSearchResults"],
+                textSearchResults
+            );
     }
 
     static getInfrastructureSearchResults(state) {
@@ -356,6 +367,30 @@ export default class LayerSidebarReducer {
         );
     }
 
+    static setPlumeDateFilter(state, action) {
+        return state
+            .setIn(
+                [
+                    "searchState",
+                    layerSidebarTypes.CATEGORY_PLUMES,
+                    "filters",
+                    layerSidebarTypes.PLUME_FILTER_PLUME_START_DATE,
+                    "selectedValue"
+                ],
+                Immutable.fromJS(action.startDate)
+            )
+            .setIn(
+                [
+                    "searchState",
+                    layerSidebarTypes.CATEGORY_PLUMES,
+                    "filters",
+                    layerSidebarTypes.PLUME_FILTER_PLUME_END_DATE,
+                    "selectedValue"
+                ],
+                Immutable.fromJS(action.endDate)
+            );
+    }
+
     static setInfrastructureFilter(state, action) {
         return state.setIn(
             [
@@ -447,5 +482,9 @@ export default class LayerSidebarReducer {
                     .set("sourceId", f.get("source_id"))
             )
         );
+    }
+
+    static setTimelineDate(state, action) {
+        return state;
     }
 }

@@ -147,8 +147,8 @@ export default class AnalyticsReducer_Extended extends AnalyticsReducer {
                     return ReactGA.timing({
                         category,
                         variable: evt.action.type,
-
-                        value: evt.action.analyticsValue
+                        value: evt.action.analyticsValue,
+                        dimension1: process.env.NODE_ENV
                     });
                 }
 
@@ -156,7 +156,8 @@ export default class AnalyticsReducer_Extended extends AnalyticsReducer {
                     category,
                     action: evt.action.type,
                     label: evt.action.analyticsLabel,
-                    value: evt.action.analyticsValue | 0
+                    value: evt.action.analyticsValue | 0,
+                    dimension1: process.env.NODE_ENV
                 });
             });
 

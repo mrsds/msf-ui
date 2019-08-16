@@ -39,6 +39,10 @@ export default function layerSidebar(
             return opt_reducer.updateInfraGlobalResults(state, action);
         case actionTypesMSF.UPDATE_PLUME_GLOBAL_RESULTS:
             return opt_reducer.updatePlumeGlobalResults(state, action);
+        case actionTypesMSF.SET_TIMELINE_DATE:
+            return opt_reducer.setTimelineDate(state, action);
+        case actionTypesMSF.SET_PLUME_DATE_FILTER:
+            return opt_reducer.setPlumeDateFilter(state, action);
         default:
             return state;
     }
