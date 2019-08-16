@@ -243,7 +243,6 @@ export class PlumeFiltersContainer extends Component {
                             label={this.props.startDate ? this.props.startDate : ""}
                             active={true}
                         />
-                        <span className={styles.fabLabel}>test</span>
                         <Target className={styles.sorterContainer}>
                             <div
                                 className={styles.sorter}
