@@ -7,7 +7,7 @@ export default class MetadataUtil {
     }
 
     static getValueForField(field, metadata) {
-        return metadata.get("field");
+        return metadata.get(field);
     }
 
     static tryFields(fields, metadata) {

@@ -457,15 +457,7 @@ export default class LayerSidebarReducer {
 
     static updateInfraGlobalResults(state, action) {
         // Convert metadata to the format that OL stores it in for ease of later use
-        const data = !action.data
-            ? []
-            : action.data.features.map(f => f.properties).map(prop => {
-                  prop.metadata = Object.entries(prop.metadata).map(([key, value]) => {
-                      return { name: key, value };
-                  });
-                  return prop;
-              });
-
+        const data = !action.data ? [] : action.data.features.map(f => f.properties);
         return state.setIn(
             ["searchState", layerSidebarTypes.CATEGORY_INFRASTRUCTURE, "globalSearchResults"],
             Immutable.fromJS(data)

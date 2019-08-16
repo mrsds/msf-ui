@@ -159,14 +159,6 @@ export class InfrastructureContainer extends Component {
                         >
                             {(feature.get("num_flights_matching") || "0") + " flyovers"}
                         </Typography>
-                        <Typography
-                            color={isItemPrimary ? "inherit" : "default"}
-                            className={layerSidebarStyles.listItemTextSecondary}
-                            variant="caption"
-                            noWrap
-                        >
-                            {MetadataUtil.getFacilityTypeName(feature)}
-                        </Typography>
                     </div>
                     <ListItemSecondaryAction className={listItemSecondaryActionClasses}>
                         <Button
