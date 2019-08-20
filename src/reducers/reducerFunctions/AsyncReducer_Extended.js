@@ -11,8 +11,14 @@ export default class AsyncReducer_Extended extends AsyncReducer {
     }
 
     static availableFeatureListLoaded(state, action) {
-        return state
+        const newState = state
             .set("loadingLayerAvailabilityData", false)
             .setIn(["loadingFeatures", action.category], false);
+
+        return newState;
+    }
+
+    static startFeatureLoading(state, action) {
+        return state.set("loadStart", Date.now());
     }
 }

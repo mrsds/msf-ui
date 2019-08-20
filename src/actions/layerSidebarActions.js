@@ -93,6 +93,14 @@ export function setFeatureDetail(category, feature) {
         dispatch({ type: types.FEATURE_DETAIL_PLUME_LIST_LOADING });
         dispatch({ type: types.UPDATE_FEATURE_DETAIL, category, feature });
 
+        // Send analytics info
+        dispatch({
+            type:
+                category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE
+                    ? types.OPEN_PLUME_DETAIL
+                    : types.OPEN_INFRASTRUCTURE_DETAIL
+        });
+
         switch (category) {
             case layerSidebarTypes.CATEGORY_INFRASTRUCTURE:
                 dispatch(getVistaPlumesList(feature));
@@ -232,13 +240,33 @@ function setGroupLayerActive(layer, active) {
     return { type: types.SET_GROUP_LAYER_ACTIVE, layer, active };
 }
 
+function updatePlumes(dispatch, getState) {
+    dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
+    const visiblePlumes = getState().layerSidebar.getIn([
+        "searchState",
+        layerSidebarTypes.CATEGORY_PLUMES,
+        "searchResults"
+    ]);
+    getState()
+        .map.getIn(["maps", "openlayers"])
+        .setVisiblePlumes(visiblePlumes);
+}
+
 export function setPlumeFilter(key, selectedValue) {
     return (dispatch, getState) => {
         dispatch({ type: types.SET_PLUME_FILTER, key, selectedValue });
-        dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
-        getState()
-            .map.getIn(["maps", "openlayers"])
-            .setVisiblePlumes(getState().layerSidebar);
+        updatePlumes(dispatch, getState);
+
+        if (selectedValue && selectedValue.get("value") === "Plume Emissions") {
+            dispatch({ type: types.SORT_PLUMES_BY_EMISSIONS });
+        }
+    };
+}
+
+export function setPlumeDateFilter(startDate, endDate) {
+    return (dispatch, getState) => {
+        dispatch({ type: types.SET_PLUME_DATE_FILTER, startDate, endDate });
+        updatePlumes(dispatch, getState);
     };
 }
 
@@ -253,9 +281,14 @@ export function setPlumeTextFilter(selectedValue) {
 export function applyPlumeTextFilter() {
     return (dispatch, getState) => {
         dispatch(updateFeatureSearchResults(layerSidebarTypes.CATEGORY_PLUMES));
+        const visiblePlumes = getState().layerSidebar.getIn([
+            "searchState",
+            layerSidebarTypes.CATEGORY_PLUMES,
+            "searchResults"
+        ]);
         getState()
             .map.getIn(["maps", "openlayers"])
-            .setVisiblePlumes(getState().layerSidebar);
+            .setVisiblePlumes(visiblePlumes);
         // Trigger global search
         dispatch(plumesGlobalSearch());
     };

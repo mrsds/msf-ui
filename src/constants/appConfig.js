@@ -36,6 +36,7 @@ const OPS_CONFIG = Immutable.fromJS(window.APPLICATION_CONFIG);
 // define your overrides for Core config here
 const APP_CONFIG = Immutable.fromJS({
     URLS: {
+        analyticsEndpoint: "http://localhost:4000/",
         vistaEndpoint:
             "https://" +
             be_endpoint +
@@ -123,6 +124,7 @@ const APP_CONFIG = Immutable.fromJS({
     ],
     ZOOM_TO_LEVEL: 15,
     OIL_WELL_MAX_RESOLUTION: 25,
+    PLUME_MAX_RESOLUTION: 76,
     GRIDDED_LAYER_TYPES: [
         {
             name: "GRIDDED_EMISSIONS_EPA",
@@ -136,7 +138,10 @@ const APP_CONFIG = Immutable.fromJS({
             endpoint: "https://" + be_endpoint + "/data/gridded/v2/Fluxes_{date}.geojson",
             period: "daily"
         }
-    ]
+    ],
+    DEFAULT_ANALYTICS_ENABLED: true,
+    GOOGLE_ANALYTICS_ENABLED: true,
+    GOOGLE_ANALYTICS_ID: "UA-145064320-1"
 });
 
 // define and export the final config

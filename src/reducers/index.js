@@ -20,6 +20,7 @@ import featureDetail from "reducers/featureDetail";
 import view_Extended from "reducers/view_Extended";
 import MSFAnalytics from "reducers/MSFAnalytics";
 import settings_Extended from "reducers/settings_Extended";
+import analytics_Extended from "reducers/analytics_Extended";
 
 const rootReducer = combineReducers({
     view: view_Extended,
@@ -30,7 +31,7 @@ const rootReducer = combineReducers({
     share,
     dateSlider,
     asynchronous: asynchronous_Extended,
-    analytics,
+    analytics: analytics_Extended,
     alerts,
     layerSidebar,
     featureDetail,

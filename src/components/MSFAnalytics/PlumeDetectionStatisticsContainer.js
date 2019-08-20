@@ -1,5 +1,6 @@
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -13,12 +14,13 @@ import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
-import * as layerSidebarTypes from "constants/layerSidebarTypes";
+import MiscUtilExtended from "utils/MiscUtilExtended";
+import * as statsHelperFunctions from "components/MSFAnalytics/statsHelperFunctions";
 import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
 
 export class PlumeDetectionStatisticsContainer extends Component {
     componentDidMount() {
-        this.props.fetchDetectionStats();
+        if (!this.props.detectionStats) this.props.fetchDetectionStats();
     }
 
     shouldComponentUpdate(nextProps) {
@@ -36,78 +38,23 @@ export class PlumeDetectionStatisticsContainer extends Component {
         return <div />;
     }
 
-    getFieldSum(subSectors, field, total) {
-        const sum = subSectors.reduce((acc, subSector) => {
-            return acc + subSector[field];
-        }, 0);
-        return [sum, total && (sum / total * 100) | 0];
+    makeTable(stats, filename) {
+        stats = stats.map(row => {
+            return {
+                Sector: row.sector,
+                Facilities: row.facilities,
+                "Facility Flyovers": row.flyovers,
+                "Unique Facilities Flown Over": row.uniqueFacilityCount,
+                "Unique Facilities with > 0 Plume Detections": row.uniqueFacilityWithPlumeCount
+            };
+        });
+        MiscUtilExtended.downloadCSV(stats, filename);
     }
 
-    makeSectorStats(subSectorList, sector) {
-        const subSectors = subSectorList[sector];
-        const [facilityCount, _] = this.getFieldSum(subSectors, "facilities");
-        const [uniqueFacilityCount, uniqueFacilityPct] = this.getFieldSum(
-            subSectors,
-            "unique_facilities_flown_over",
-            facilityCount
-        );
-        const [uniqueFacilityWithPlumeCount, uniqueFacilityWithPlumePct] = this.getFieldSum(
-            subSectors,
-            "unique_facilities_with_plume_detections",
-            facilityCount
-        );
-        return {
-            sector,
-            facilities: facilityCount,
-            flyovers: this.getFieldSum(subSectors, "facility_flyovers")[0],
-            uniqueFlownOver: [uniqueFacilityCount, uniqueFacilityPct],
-            uniqueWithPlumes: [uniqueFacilityWithPlumeCount, uniqueFacilityWithPlumePct]
-        };
-    }
-
-    makeSubsectorStats(subSector) {
-        const facilityCount = subSector.facilities;
-        const uniqueFacilityCount = subSector.unique_facilities_flown_over;
-        const uniqueFacilityPct = (uniqueFacilityCount / facilityCount * 100) | 0;
-        const uniqueFacilityWithPlumeCount = subSector.unique_facilities_with_plume_detections;
-        const uniqueFacilityWithPlumePct = (uniqueFacilityWithPlumeCount / facilityCount * 100) | 0;
-        return {
-            sector: subSector.sector_level_2,
-            facilities: facilityCount,
-            flyovers: subSector.facility_flyovers,
-            uniqueFlownOver: [uniqueFacilityCount, uniqueFacilityPct],
-            uniqueWithPlumes: [uniqueFacilityWithPlumeCount, uniqueFacilityWithPlumePct]
-        };
-    }
-
-    makePerSectorStats() {
-        if (!this.props.detectionStats) return [];
-
-        const sectors = this.props.detectionStats.reduce((acc, subSector) => {
-            const sector =
-                layerSidebarTypes.IPCC_SECTOR_LEVEL_1_TO_SECTOR[
-                    parseInt(subSector.sector_level_1.charAt(0))
-                ];
-            if (!acc[sector]) {
-                acc[sector] = [];
-            }
-            acc[sector].push(subSector);
-            return acc;
-        }, {});
-        return Object.keys(sectors).map(key => this.makeSectorStats(sectors, key));
-    }
-
-    makePerSubsectorStats() {
-        if (!this.props.detectionStats) return [];
-        return this.props.detectionStats.map(subSector => this.makeSubsectorStats(subSector));
-    }
-
-    makePerSectorTableBody() {
-        return this.makePerSectorStats().map(sector => (
+    makePerSectorTableBody(stats) {
+        return stats.map(sector => (
             <TableRow key={sector.sector}>
-                <TableCell padding="dense">
-                    {sector.sector.charAt(0) + sector.sector.toLowerCase().slice(1)}
-                </TableCell>
+                <TableCell padding="dense">{sector.sector}</TableCell>
                 <TableCell pading="dense">{sector.facilities}</TableCell>
                 <TableCell pading="dense">{sector.flyovers}</TableCell>
                 <TableCell pading="dense">
@@ -122,8 +69,8 @@ export class PlumeDetectionStatisticsContainer extends Component {
         ));
     }
 
-    makePerSubsectorTableBody() {
-        return this.makePerSubsectorStats().map(sector => (
+    makePerSubsectorTableBody(stats) {
+        return stats.map(sector => (
             <TableRow key={sector.sector}>
                 <TableCell padding="dense">{sector.sector.replace(/^\d{1}.\s/, "")}</TableCell>
                 <TableCell pading="dense">{sector.facilities}</TableCell>
@@ -141,12 +88,23 @@ export class PlumeDetectionStatisticsContainer extends Component {
     }
 
     makePerSectorSection() {
+        const filename = "Methane Plume Detection Rates by Sector";
+        const stats = statsHelperFunctions.getStatsBySectorLevel(this.props.detectionStats, 1);
         return (
             <Card className={styles.contentCard}>
                 <CardContent>
-                    <Typography variant="headline" component="h2">
-                        Methane Plume Detection Rates by Sector
-                    </Typography>
+                    <div className={styles.tableHeader}>
+                        <Typography
+                            variant="headline"
+                            component="h2"
+                            classes={{ root: styles.tableTitle }}
+                        >
+                            Methane Plume Detection Rates by Sector
+                        </Typography>
+                        <Button size="small" onClick={_ => this.makeTable(stats, filename)}>
+                            Download Table
+                        </Button>
+                    </div>
                     <div className={styles.tableWrapper}>
                         <div className={styles.tableScroll}>
                             <Table>
@@ -166,7 +124,7 @@ export class PlumeDetectionStatisticsContainer extends Component {
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
-                                <TableBody>{this.makePerSectorTableBody()}</TableBody>
+                                <TableBody>{this.makePerSectorTableBody(stats)}</TableBody>
                             </Table>
                         </div>
                     </div>
@@ -176,12 +134,19 @@ export class PlumeDetectionStatisticsContainer extends Component {
     }
 
     makePerSubsectorSection() {
+        const filename = "Methane Plume Detection Rates by Subsector";
+        const stats = statsHelperFunctions.getStatsBySectorLevel(this.props.detectionStats, 2);
         return (
             <Card className={styles.contentCard}>
                 <CardContent>
-                    <Typography variant="headline" component="h2">
-                        Methane Plume Detection Rates by Subsector
-                    </Typography>
+                    <div className={styles.tableHeader}>
+                        <Typography variant="headline" component="h2">
+                            Methane Plume Detection Rates by Subsector
+                        </Typography>
+                        <Button size="small" onClick={_ => this.makeTable(stats, filename)}>
+                            Download Table
+                        </Button>
+                    </div>
                     <div className={styles.tableWrapper}>
                         <div className={styles.tableScroll}>
                             <Table>
@@ -201,7 +166,7 @@ export class PlumeDetectionStatisticsContainer extends Component {
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
-                                <TableBody>{this.makePerSubsectorTableBody()}</TableBody>
+                                <TableBody>{this.makePerSubsectorTableBody(stats)}</TableBody>
                             </Table>
                         </div>
                     </div>

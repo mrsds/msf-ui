@@ -167,21 +167,6 @@ export class HelpContainerExtended extends CoreHelpContainer {
                             </ListItemIcon>
                             <ListItemText inset primary={this.helpPageConfig.GLOSSARY.label} />
                         </ListItem>
-                        <Divider />
-                        <ListSubheader>Get More Help</ListSubheader>
-                        <ListItem
-                            button
-                            onClick={() => {
-                                MiscUtil.openLinkInNewTab(
-                                    "https://github.com/nasa/common-mapping-client"
-                                );
-                            }}
-                        >
-                            <ListItemIcon>
-                                <LinkIcon />
-                            </ListItemIcon>
-                            <ListItemText inset primary="View Source Code" />
-                        </ListItem>
                     </List>
                 </Paper>
                 <MarkdownPage className={pageClasses} content={pageContent} converted={true} />

@@ -20,6 +20,7 @@ export class EmissionsChartsContainer extends Component {
     sortSectors(a, b) {
         return parseInt(a.charAt(0)) - parseInt(b.charAt(0));
     }
+
     makeLoadingModal() {
         if (this.props.isLoading) {
             return (
@@ -43,8 +44,8 @@ export class EmissionsChartsContainer extends Component {
                     avg,
                     min: avg - Math.abs(uncertainty),
                     max: avg + Math.abs(uncertainty),
-                    long: source.get("nearest_vista_longitude", null),
-                    lat: source.get("nearest_vista_latitude", null),
+                    long: source.get("source_longitude", null),
+                    lat: source.get("source_latitude", null),
                     uncertainty
                 };
             })
@@ -61,8 +62,8 @@ export class EmissionsChartsContainer extends Component {
                         position: "left",
                         type: "linear",
                         ticks: {
-                            // min: 0,
-                            // max: sourceData.reduce((acc, s) => (s.avg > acc ? s.avg : acc), 0)
+                            min: 0,
+                            max: Math.max(...sourceData.map(s => s.max))
                         }
                     },
                     {
@@ -72,8 +73,8 @@ export class EmissionsChartsContainer extends Component {
                             labelString: "Distribution Percentage"
                         },
                         ticks: {
-                            display: true
-                            // min: 0,
+                            display: true,
+                            min: 0
                             // max: sourceData.reduce((acc, s) => acc + s.avg, 0)
                         },
                         gridLines: { display: false, drawBorder: true },

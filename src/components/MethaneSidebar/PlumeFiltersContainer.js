@@ -19,7 +19,9 @@ import Search from "@material-ui/icons/Search";
 import Sort from "@material-ui/icons/SortByAlpha";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import Chip from "@material-ui/core/Chip";
 
+import MiscUtil from "_core/utils/MiscUtil";
 import { IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
 import ChipDropdown from "components/Reusables/ChipDropdown";
 import SearchInput from "components/Reusables/SearchInput";
@@ -80,7 +82,9 @@ export class PlumeFiltersContainer extends Component {
 
         let plumeFluxFilter = this.props.filters.get(layerSidebarTypes.PLUME_FILTER_PLUME_FLUX);
         let plumeFluxFilterSelectedValue =
-            plumeFluxFilter.getIn(["selectedValue", "value"]) || null;
+            typeof plumeFluxFilter.getIn(["selectedValue", "value"]) === "undefined"
+                ? null
+                : plumeFluxFilter.getIn(["selectedValue", "value"]);
         let plumeFluxFilterSelectedValueLabel = plumeFluxFilter.getIn(["selectedValue", "label"]);
         let plumeFluxPopoverActive = this.popperProps.get("plumeFlux");
 
@@ -88,6 +92,11 @@ export class PlumeFiltersContainer extends Component {
         let plumeSortBySelectedValue = plumeSortByFilter.getIn(["selectedValue", "value"]);
         let plumeSortBySelectedValueLabel = plumeSortByFilter.getIn(["selectedValue", "label"]);
         let plumeSortByPopperActive = this.popperProps.get("sortBy");
+
+        const dateChipStyles = MiscUtil.generateStringFromSet({
+            [styles.chip]: true,
+            [displayStyles.hidden]: !this.props.startDate
+        });
 
         return (
             <React.Fragment>
@@ -225,6 +234,15 @@ export class PlumeFiltersContainer extends Component {
                                 </div>
                             </Grow>
                         </Popper>
+                        <ChipDropdown
+                            className={dateChipStyles}
+                            onDelete={() => {
+                                this.props.setPlumeDateFilter();
+                            }}
+                            value={this.props.startDate ? this.props.startDate : ""}
+                            label={this.props.startDate ? this.props.startDate : ""}
+                            active={true}
+                        />
                         <Target className={styles.sorterContainer}>
                             <div
                                 className={styles.sorter}
@@ -299,7 +317,9 @@ PlumeFiltersContainer.propTypes = {
     filters: PropTypes.object.isRequired,
     setPlumeFilter: PropTypes.func.isRequired,
     setPlumeTextFilter: PropTypes.func.isRequired,
-    applyPlumeTextFilter: PropTypes.func.isRequired
+    applyPlumeTextFilter: PropTypes.func.isRequired,
+    setPlumeDateFilter: PropTypes.func.isRequired,
+    startDate: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -308,6 +328,14 @@ function mapStateToProps(state) {
             "searchState",
             layerSidebarTypes.CATEGORY_PLUMES,
             "filters"
+        ]),
+        startDate: state.layerSidebar.getIn([
+            "searchState",
+            layerSidebarTypes.CATEGORY_PLUMES,
+            "filters",
+            layerSidebarTypes.PLUME_FILTER_PLUME_START_DATE,
+            "selectedValue",
+            "label"
         ])
     };
 }
@@ -316,7 +344,11 @@ function mapDispatchToProps(dispatch) {
     return {
         setPlumeFilter: bindActionCreators(layerSidebarActions.setPlumeFilter, dispatch),
         setPlumeTextFilter: bindActionCreators(layerSidebarActions.setPlumeTextFilter, dispatch),
-        applyPlumeTextFilter: bindActionCreators(layerSidebarActions.applyPlumeTextFilter, dispatch)
+        applyPlumeTextFilter: bindActionCreators(
+            layerSidebarActions.applyPlumeTextFilter,
+            dispatch
+        ),
+        setPlumeDateFilter: bindActionCreators(layerSidebarActions.setPlumeDateFilter, dispatch)
     };
 }
 

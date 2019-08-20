@@ -1,6 +1,7 @@
 import Immutable from "immutable";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import appConfig from "constants/appConfig";
+import moment from "moment";
 
 export const layerSidebarState = Immutable.fromJS({
     activeFeatureCategory: layerSidebarTypes.CATEGORY_PLUMES,
@@ -21,7 +22,7 @@ export const layerSidebarState = Immutable.fromJS({
         [layerSidebarTypes.VISTA_2017_WASTEWTR_TREAT_PLNT]: true,
         [layerSidebarTypes.VISTA_2017_POWER_PLANT]: true,
         [layerSidebarTypes.VISTA_2017_LANDFILL]: true,
-        [layerSidebarTypes.VISTA_2017_CEC_PIPELINES]: true,
+        // [layerSidebarTypes.VISTA_2017_CEC_PIPELINES]: true,
         [layerSidebarTypes.VISTA_2017_DIGESTER]: true,
         [layerSidebarTypes.VISTA_2017_COMPRESSOR]: true,
         [layerSidebarTypes.VISTA_2017_COMPOSTING_SITES]: true,
@@ -47,6 +48,7 @@ export const layerSidebarState = Immutable.fromJS({
         [layerSidebarTypes.CATEGORY_PLUMES]: {
             searchResults: {},
             globalSearchResults: {},
+            textSearchResults: {},
             pageIndex: 0,
             filters: {
                 [layerSidebarTypes.PLUME_FILTER_SORT_BY]: {
@@ -61,10 +63,7 @@ export const layerSidebarState = Immutable.fromJS({
                     selectableValues: []
                 },
                 [layerSidebarTypes.PLUME_FILTER_PLUME_FLUX]: {
-                    selectedValue: {
-                        value: "",
-                        label: ""
-                    },
+                    selectedValue: null,
                     selectableValues: []
                 },
                 [layerSidebarTypes.PLUME_FILTER_PLUME_ID]: {
@@ -72,15 +71,15 @@ export const layerSidebarState = Immutable.fromJS({
                 },
                 [layerSidebarTypes.PLUME_FILTER_PLUME_START_DATE]: {
                     selectedValue: {
-                        value: appConfig.PLUME_START_DATE,
-                        label: appConfig.PLUME_START_DATE
+                        value: null,
+                        label: null
                     },
                     selectableValues: []
                 },
                 [layerSidebarTypes.PLUME_FILTER_PLUME_END_DATE]: {
                     selectedValue: {
-                        value: appConfig.PLUME_END_DATE,
-                        label: appConfig.PLUME_END_DATE
+                        value: null,
+                        label: null
                     },
                     selectableValues: []
                 }

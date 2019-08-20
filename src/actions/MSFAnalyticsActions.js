@@ -16,6 +16,7 @@ export function changeFilterSelectedArea(areaName) {
     return (dispatch, getState) => {
         dispatch(updateFilterSelectedArea(areaName));
         dispatch(updateActiveAnalyticsTab());
+        dispatch({ type: typesMSF.SET_ANALYTICS_FILTER });
     };
 }
 
@@ -27,6 +28,7 @@ export function changeFilterSector(sector) {
     return (dispatch, getState) => {
         dispatch({ type: typesMSF.CHANGE_ANALYTICS_FILTER_SELECTED_SECTOR, sector });
         dispatch(updateActiveAnalyticsTab(getState));
+        dispatch({ type: typesMSF.SET_ANALYTICS_FILTER });
     };
 }
 
@@ -34,11 +36,15 @@ export function changeFilterSubsector(subsector) {
     return (dispatch, getState) => {
         dispatch({ type: typesMSF.CHANGE_ANALYTICS_FILTER_SELECTED_SUBSECTOR, subsector });
         dispatch(updateActiveAnalyticsTab(getState));
+        dispatch({ type: typesMSF.SET_ANALYTICS_FILTER });
     };
 }
 
 export function changeFilterUnits(units) {
-    return { type: typesMSF.CHANGE_ANALYTICS_FILTER_SELECTED_UNITS, units };
+    return dispatch => {
+        dispatch({ type: typesMSF.CHANGE_ANALYTICS_FILTER_SELECTED_UNITS, units });
+        dispatch({ type: typesMSF.SET_ANALYTICS_FILTER });
+    };
 }
 
 export function fetchDetectionStats() {
@@ -283,6 +289,7 @@ export function updateActiveAnalyticsTab() {
             case MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO:
                 return dispatch(updateSummaryPageData());
             case MSFTypes.ANALYTICS_MODE_EMISSIONS_CHARTS:
+            case MSFTypes.ANALYTICS_MODE_DISTRIBUTION_BY_SECTOR:
                 return dispatch(updateEmissionsCharts());
         }
     };
@@ -301,11 +308,6 @@ export function updateSummaryPageSourceIndex(index) {
     return { type: typesMSF.UPDATE_SUMMARY_PAGE_SOURCE_INDEX, index };
 }
 
-export function openMapToLatLong(lat, long) {
-    return (dispatch, getState) => {
-        dispatch({ type: typesMSF.CHANGE_APP_MODE, mode: MSFTypes.APP_MODE_MAP });
-        getState()
-            .map.getIn(["maps", "openlayers"])
-            .zoomToCoords([long, lat]);
-    };
+export function emissionsSummaryDownloadRequested() {
+    return { type: typesMSF.EMISSIONS_SUMMARY_DOWNLOAD_REQUESTED };
 }

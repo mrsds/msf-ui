@@ -46,6 +46,12 @@ export default function map_Extended(
             return opt_reducer.setLayerActive(state, action);
         case actionTypesMSF.CHANGE_ACTIVE_GRIDDED_LAYER:
             return opt_reducer.changeActiveGriddedLayer(state, action);
+        case actionTypesMSF.TOGGLE_LOCATION_INPUT_MODAL:
+            return opt_reducer.toggleLocationInputModal(state, action);
+        case actionTypesMSF.UPDATE_VISIBLE_PLUMES:
+            return opt_reducer.updateVisiblePlumes(state, action);
+        case actionTypesMSF.SET_PREVIOUS_ZOOM:
+            return opt_reducer.setPreviousZoom(state, action);
         default:
             return map.call(this, state, action, opt_reducer);
     }

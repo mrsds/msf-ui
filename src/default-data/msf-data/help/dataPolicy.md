@@ -6,7 +6,7 @@ Every effort is made to produce the most accurate and precise measurements possi
 
 If the data from this portal are obtained for potential use in a publication or presentation, the Methane Source Finder team should be informed at the outset of the nature of this work. If the Methane Source Finder data are essential to the work, or if an important result or conclusion depends on the data, it may be appropriate for those obtaining the data to consider co-authorship. It is strongly encouraged that topics be discussed at an early stage in the work. Manuscripts using the data should be sent to the Methane Source Finder team for review before they are submitted for publication to insure that the quality and limitations of the data are accurately represented. Sharing of manuscripts will result in a prompt response from team members.
 
-To discuss publication, presentation and collaboration, please contact the Methane Source Finder Team (hyperlink to TBD listserv) describing your plans for use.
+To discuss publication, presentation and collaboration, please [email the Methane Source Finder Team](mailto:msf@jpl.nasa.gov) describing your plans for use.
 
 ### Reciprocity Agreement
 

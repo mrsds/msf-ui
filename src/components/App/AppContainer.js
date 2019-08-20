@@ -63,6 +63,7 @@ import * as MSFTypes from "constants/MSFTypes";
 import MSFAnalyticsContainer from "components/MSFAnalytics/MSFAnalyticsContainer";
 import CookieAcceptContainer from "components/CookieAccept/CookieAcceptContainer";
 import Cookies from "universal-cookie";
+import LocationInputContainer from "components/LocationInput/LocationInputContainer";
 
 const theme = createMuiTheme({
     typography: {
@@ -189,6 +190,7 @@ export class AppContainer extends Component {
                         <MapControlsContainerExtended />
                         <CoordinateTracker />
                         <FeaturePicker />
+                        <LocationInputContainer />
                     </div>
                     <div className={analyticsContainerStyle}>
                         <MSFAnalyticsContainer />

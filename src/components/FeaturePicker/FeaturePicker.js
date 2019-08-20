@@ -116,13 +116,8 @@ export class FeaturePicker extends Component {
                     onClick={() =>
                         this.props.toggleFeatureLabel(layerSidebarTypes.CATEGORY_PLUMES, feature)
                     }
-                    onMouseEnter={() =>
-                        this.props.setActivePickerFeature(
-                            layerSidebarTypes.CATEGORY_PLUMES,
-                            feature
-                        )
-                    }
-                    onMouseLeave={() => this.props.setActivePickerFeature()}
+                    onMouseEnter={() => this.props.setHoverPlume(feature)}
+                    onMouseLeave={() => this.props.setHoverPlume(null)}
                     button
                 >
                     <div className={styles.listItemTextContainer}>
@@ -289,7 +284,8 @@ FeaturePicker.propTypes = {
     toggleFeatureLabel: PropTypes.func.isRequired,
     setFeatureDetail: PropTypes.func.isRequired,
     layerSidebarCollapsed: PropTypes.bool.isRequired,
-    featureDetailActiveFeature: PropTypes.object
+    featureDetailActiveFeature: PropTypes.object,
+    setHoverPlume: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -308,7 +304,8 @@ function mapDispatchToProps(dispatch) {
         closeFeaturePicker: bindActionCreators(mapActionsMSF.closeFeaturePicker, dispatch),
         setActivePickerFeature: bindActionCreators(mapActionsMSF.setActivePickerFeature, dispatch),
         toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch),
-        setFeatureDetail: bindActionCreators(layerSidebarActions.setFeatureDetail, dispatch)
+        setFeatureDetail: bindActionCreators(layerSidebarActions.setFeatureDetail, dispatch),
+        setHoverPlume: bindActionCreators(mapActionsMSF.setHoverPlume, dispatch)
     };
 }
 

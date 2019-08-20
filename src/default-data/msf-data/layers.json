@@ -135,19 +135,6 @@
             "layerOrder": 11
         },
         {
-            "id": "VISTA_2017_CEC_PIPELINES",
-            "title": "Vista 2017 - CEC Pipelines",
-            "type": "data",
-            "handleAs": "vista_geojson",
-            "isDefault": true,
-            "visibleInGroup": true,
-            "url": "https://methane.jpl.nasa.gov/server/vista?category=12&maxObjects=10000",
-            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
-            "group": "VISTA",
-            "updateParameters": { "time": false },
-            "layerOrder": 12
-        },
-        {
             "id": "VISTA_2017_OILGAS_FIELDS",
             "title": "Vista 2017 - Oil and Gas Fields",
             "type": "data",
@@ -233,6 +220,19 @@
             "isDefault": true,
             "visibleInGroup": true,
             "url": "https://methane.jpl.nasa.gov/server/vista?category=1016&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 14
+        },
+        {
+            "id": "VISTA_2017_FEED_LOTS",
+            "title": "Vista 2017 - Feed Lots",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "http://100.64.114.187:9090/vista?category=1016&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },

@@ -76,7 +76,7 @@ export function avirisLayerLoaded() {
 }
 
 export function vistaLayersLoaded() {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_INFRASTRUCTURE));
         return updateFeatureList_Map(layerSidebarTypes.CATEGORY_INFRASTRUCTURE);
     };
@@ -84,6 +84,7 @@ export function vistaLayersLoaded() {
 
 export function updateFeatureList_Map() {
     return (dispatch, getState) => {
+        dispatch({ type: typesMSF.START_FEATURE_LOADING });
         dispatch(updateVistaFeatures());
         dispatch(updateAvirisFeatures());
     };
@@ -124,8 +125,26 @@ function availableFeatureListLoading(category) {
     return { type: typesMSF.AVAILABLE_LAYER_LIST_LOADING, category };
 }
 
+let loadTimer;
 function availableFeatureListLoaded(category) {
-    return { type: typesMSF.AVAILABLE_LAYER_LIST_LOADED, category };
+    return (dispatch, getState) => {
+        dispatch({ type: typesMSF.AVAILABLE_LAYER_LIST_LOADED, category });
+        if (
+            getState()
+                .asynchronous.get("loadingFeatures")
+                .every(v => !v)
+        ) {
+            window.clearTimeout(loadTimer);
+            loadTimer = setTimeout(_ => {
+                const timeElapsed = Date.now() - getState().asynchronous.get("loadStart") - 1000;
+                dispatch({
+                    type: typesMSF.LOAD_TIME_ON_MOVE,
+                    analyticsValue: timeElapsed,
+                    isAnalyticsTiming: true
+                });
+            }, 1000);
+        }
+    };
 }
 
 function updateAvailableFeatures(category, featureList) {
@@ -159,7 +178,6 @@ export function toggleFeatureLabel(category, feature) {
             ),
             plumes: Immutable.List(category === layerSidebarTypes.CATEGORY_PLUMES ? [feature] : [])
         });
-        updateHighlightedPlumes(getState);
     };
 }
 
@@ -301,29 +319,36 @@ function updateHighlightedPlumes(getState) {
         layerSidebarTypes.CATEGORY_PLUMES
             ? getState().layerSidebar.getIn(["activeFeature", "feature"])
             : null;
-    const hoverPlume = getState().map.get("hoverPlume");
-    getState()
-        .map.get("maps")
-        .map(map => map.setActivePlumes([selectedPlume, hoverPlume]));
-}
-
-function updateHoverPlume(feature) {
-    return { type: typesMSF.SET_HOVER_PLUME, feature: feature };
 }
 
 export function setHoverPlume(feature) {
     return (dispatch, getState) => {
-        dispatch(updateHoverPlume(feature));
-        updateHighlightedPlumes(getState);
+        dispatch({ type: typesMSF.SET_HOVER_PLUME, feature });
+        dispatch({
+            type: typesMSF.UPDATE_VISIBLE_PLUMES,
+            features: feature
+                ? [feature]
+                : getState().layerSidebar.getIn([
+                      "searchState",
+                      layerSidebarTypes.CATEGORY_PLUMES,
+                      "searchResults"
+                  ])
+        });
     };
 }
 
 export function updateGriddedDate(date) {
-    return { type: typesMSF.UPDATE_GRIDDED_DATE, date };
+    return dispatch => {
+        dispatch({ type: typesMSF.UPDATE_GRIDDED_DATE, date });
+        dispatch({ type: typesMSF.CHANGE_GRIDDED_DATE });
+    };
 }
 
 export function incrementGriddedDate(period, goBack) {
-    return { type: typesMSF.INCREMENT_GRIDDED_DATE, period, goBack };
+    return dispatch => {
+        dispatch({ type: typesMSF.INCREMENT_GRIDDED_DATE, period, goBack });
+        dispatch({ type: typesMSF.CHANGE_GRIDDED_DATE });
+    };
 }
 
 export function getAvailableGriddedDates() {
@@ -362,7 +387,7 @@ function updateAvailableGriddedDates(dateList) {
     return { type: typesMSF.UPDATE_AVAILABLE_GRIDDED_DATES, dateList };
 }
 
-export function changeActiveGriddedLayer(name) {
+export function changeActiveGriddedLayer(name, active) {
     return (dispatch, getState) => {
         const paletteName = getState()
             .map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA])
@@ -372,7 +397,13 @@ export function changeActiveGriddedLayer(name) {
             .map.get("palettes")
             .find(p => p.get("id") === paletteName);
 
-        dispatch({ type: typesMSF.CHANGE_ACTIVE_GRIDDED_LAYER, name, palette });
+        dispatch({
+            type: typesMSF.CHANGE_ACTIVE_GRIDDED_LAYER,
+            name,
+            palette,
+            analyticsLabel: name,
+            analyticsIgnore: active
+        });
         dispatch(getAvailableGriddedDates());
     };
 }
@@ -438,12 +469,6 @@ export function closeFeaturePicker() {
 
 export function setActivePickerFeature(category, feature) {
     return { type: typesMSF.SET_ACTIVE_PICKER_FEATURE, feature, category };
-}
-
-function revealAllPlumes(mapState) {
-    mapState.get("maps").map(map => {
-        map.setActivePlumes([]);
-    });
 }
 
 function revealAllInfrastructure(mapState) {
@@ -516,4 +541,55 @@ export function goToHome() {
             )
         );
     };
+}
+
+export function toggleLocationInputModal(visible) {
+    return { type: typesMSF.TOGGLE_LOCATION_INPUT_MODAL, visible };
+}
+
+export function openMapToLatLong(lat, long) {
+    return (dispatch, getState) => {
+        dispatch({ type: typesMSF.CHANGE_APP_MODE, mode: MSFTypes.APP_MODE_MAP });
+        getState()
+            .map.getIn(["maps", "openlayers"])
+            .zoomToCoords([long, lat]);
+    };
+}
+
+export function toggleGriddedLayerForMetrics(active) {
+    if (active) {
+        return { type: types.NO_ACTION };
+    }
+    return (dispatch, getState) =>
+        dispatch({
+            type: typesMSF.TOGGLE_GRIDDED_LAYER_ON,
+            analyticsValue: getState().map.get("currentZoom")
+        });
+}
+
+export function mapMovedMetrics() {
+    return (dispatch, getState) => {
+        const map = getState().map;
+        const previousZoom = map.get("previousZoom");
+        const currentZoom = map.get("currentZoom");
+        if (
+            previousZoom &&
+            previousZoom < currentZoom &&
+            map.getIn(["maps", "openlayers"]).getGriddedLayers().length
+        ) {
+            dispatch({ type: typesMSF.ZOOM_IN_WITH_GRIDDED_LAYER_ON });
+        }
+        dispatch({ type: typesMSF.SET_PREVIOUS_ZOOM, zoom: currentZoom });
+        dispatch({ type: types.NO_ACTION });
+    };
+}
+
+export function toggleFlightLineLayer(active) {
+    if (!active)
+        return (dispatch, getState) =>
+            dispatch({
+                type: typesMSF.TOGGLE_FLIGHT_LINE_LAYER_ON,
+                analyticsValue: getState().map.get("currentZoom")
+            });
+    return { type: types.NO_ACTION };
 }

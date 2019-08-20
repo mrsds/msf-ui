@@ -9,6 +9,7 @@ export const asyncState_Extended = asyncState.mergeDeep(
             [layerSidebarTypes.CATEGORY_INFRASTRUCTURE]: false,
             [layerSidebarTypes.CATEGORY_PLUMES]: false
         },
+        loadStart: null,
         griddedDateAvailabilityAsync: asyncModel
     })
 );
