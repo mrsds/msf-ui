@@ -40,7 +40,7 @@ import {
     CoordinateTracker
 } from "_core/components/Map";
 import { ShareContainer } from "_core/components/Share";
-import { LayerInfoContainer } from "_core/components/LayerInfo";
+import { LayerInfoContainer_Extended as LayerInfoContainer } from "components/LayerInfo_Extended";
 import { LoadingContainerExtended as LoadingContainer } from "components/Loading";
 import { AlertsContainer } from "_core/components/Alerts";
 import { MouseFollowerContainer } from "_core/components/MouseFollower";
