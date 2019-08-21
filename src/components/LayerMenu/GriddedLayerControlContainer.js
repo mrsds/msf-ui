@@ -161,7 +161,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
         return (
             <select
                 onChange={e =>
-                    this.props.mapActionsExtended.changeActiveGriddedLayer(e.target.value)
+                    this.props.mapActionsExtended.changeActiveGriddedLayer(e.target.value, true)
                 }
                 className={stylesExtended.dropdownSelect}
             >
