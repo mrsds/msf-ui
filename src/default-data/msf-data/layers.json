@@ -232,7 +232,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "http://100.64.114.187:9090/vista?category=1016&maxObjects=10000",
+            "url": "http://methane.jpl.nasa.gov/server/vista?category=1016&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
