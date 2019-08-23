@@ -11,7 +11,7 @@ import turfArea from "turf-area";
 import Qty from "js-quantities";
 import turfCentroid from "turf-centroid";
 import proj4js from "proj4";
-import { GreatCircle } from "assets/arc/arc";
+import GreatCircle from "lib/arc/arc";
 import Ol_Format_WMTSCapabilities from "ol/format/wmtscapabilities";
 import Ol_Source_WMTS from "ol/source/wmts";
 import Ol_Proj from "ol/proj";
