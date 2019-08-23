@@ -3,5 +3,7 @@
     "description": "Gridded inventory of U.S. anthropogenic methane emissions that is consistent with the 2016 U.S. EPA Inventory of U.S. Greenhouse Gas Emissions and Sinks estimates for 2012. See https://www.epa.gov/ghgemissions/gridded-2012-methane-emissions for more information.  Note: Only the potion of the gridded inventory that is over California is displayed. Values in Tg/yr.",
     "dateRange": "2012, annual",
     "platform": "N/A",
-    "spatialResolution": "0.1 degree"
+    "spatialResolution": "0.1 degree",
+    "dataSetVersion": "2012 (California only)",
+    "dataSetURL": "https://www.epa.gov/ghgemissions/gridded-2012-methane-emissions"
 }

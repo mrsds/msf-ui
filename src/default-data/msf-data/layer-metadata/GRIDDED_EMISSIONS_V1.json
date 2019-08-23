@@ -3,5 +3,7 @@
     "description": "Methane estimates based on LA tower inversions. More detailed description here!",
     "dateRange": "? – Present",
     "platform": "Megacities Carbon Project Tower Network",
-    "spatialResolution": "~3km spatial resolution"
+    "spatialResolution": "~3km spatial resolution",
+    "dataSetVersion": "",
+    "dataSetURL": ""
 }
