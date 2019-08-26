@@ -113,6 +113,8 @@ export class LayerInfoContainer_Extended extends Component {
                                 />
                             </ListItem>
                             <ListItem>
+                            <ListItemIcon>
+                                </ListItemIcon>
                                 <ListItemText
                                     primary={metadata.get("dataSetVersion")}
                                     secondary="Data Set Version"
@@ -122,6 +124,8 @@ export class LayerInfoContainer_Extended extends Component {
                                 onClick={_ => window.open(metadata.get("dataSetURL"), "_blank")}
                                 style={{ cursor: "pointer" }}
                             >
+                                <ListItemIcon>
+                                </ListItemIcon>
                                 <ListItemText
                                     primary={metadata.get("dataSetURL")}
                                     secondary="Data Set URL"
