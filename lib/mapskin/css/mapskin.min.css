@@ -5,63 +5,54 @@
  *  License: SIL OFL 1.1
  *  Author: Nicolas Bozon
  */
-
 @font-face {
-    font-family: 'mapskin';
-    src:url('mapskin.eot');
-    src:url('mapskin.eot') format('embedded-opentype'),
-        url('mapskin.ttf') format('truetype'),
-        url('mapskin.woff') format('woff'),
-        url('mapskin.svg') format('svg');
-    font-weight: normal;
+    font-family: "mapskin";
+    src: url(../fonts/mapskin.eot);
+    src: url(../fonts/mapskin.eot) format("embedded-opentype"),
+        url(../fonts/mapskin.ttf) format("truetype"), url(../fonts/mapskin.woff) format("woff"),
+        url(../fonts/mapskin.svg) format("svg");
+    font-weight: 400;
     font-style: normal;
 }
-
 .ms {
-
-  display: inline-block;
-  font: normal normal normal 14px/1 mapskin;
-  font-size: inherit;
-  text-rendering: auto;
-  text-transform: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    display: inline-block;
+    font: normal normal normal 14px/1 mapskin;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
-
 .ms-2x {
-  font-size: 2em;
+    font-size: 2em;
 }
 .ms-3x {
-  font-size: 3em;
+    font-size: 3em;
 }
 .ms-4x {
-  font-size: 4em;
+    font-size: 4em;
 }
 .ms-5x {
-  font-size: 5em;
+    font-size: 5em;
 }
 .ms-6x {
-  font-size: 6em;
+    font-size: 6em;
 }
 .ms-7x {
-  font-size: 7em;
+    font-size: 7em;
 }
 .ms-8x {
-  font-size: 8em;
+    font-size: 8em;
 }
 .ms-9x {
-  font-size: 9em;
+    font-size: 9em;
 }
 .ms-10x {
-  font-size: 10em;
+    font-size: 10em;
 }
-
 .ms-fw {
-  width: 1.28571429em;
-  text-align: center;
+    width: 1.28571429em;
+    text-align: center;
 }
-
-
 .ms-plus:before {
     content: "\e001";
 }
@@ -812,4 +803,3 @@
 .ms-molamola:before {
     content: "\e0fa";
 }
-
