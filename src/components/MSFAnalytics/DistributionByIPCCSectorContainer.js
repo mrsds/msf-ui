@@ -195,7 +195,7 @@ export class DistributionByIPCCSectorContainer extends Component {
 DistributionByIPCCSectorContainer.propTypes = {
     emissionsSourceData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
-    detectionStats: PropTypes.object,
+    detectionStats: PropTypes.array,
     fetchDetectionStats: PropTypes.func.isRequired,
     detectionStatsAreLoading: PropTypes.bool.isRequired,
     updateEmissionsCharts: PropTypes.func.isRequired

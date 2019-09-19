@@ -237,25 +237,32 @@ export class DataFilterContainer extends Component {
                   )
                 : null;
 
-        const startDatePicker = this.makeDateSelector(
-            startDatePickerActive,
-            "From: ",
-            "startDate",
-            this.props.startDate || moment("2000-01-01"),
-            moment("2000-01-01"),
-            moment(Date.now()),
-            this.props.changeDate.bind(null, true)
-        );
+        // Right now, date pickers are only for plume detection stats mode
+        const startDatePicker =
+            this.props.analyticsMode === MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS
+                ? this.makeDateSelector(
+                      startDatePickerActive,
+                      "From: ",
+                      "startDate",
+                      this.props.startDate || moment("2000-01-01"),
+                      moment("2000-01-01"),
+                      moment(Date.now()),
+                      this.props.changeDate.bind(null, true)
+                  )
+                : null;
 
-        const endDatePicker = this.makeDateSelector(
-            endDatePickerActive,
-            "To: ",
-            "endDate",
-            this.props.endDate || moment(Date.now()),
-            this.props.startDate || moment(Date.now()),
-            moment(Date.now()),
-            this.props.changeDate.bind(null, false)
-        );
+        const endDatePicker =
+            this.props.analyticsMode === MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS
+                ? this.makeDateSelector(
+                      endDatePickerActive,
+                      "To: ",
+                      "endDate",
+                      this.props.endDate || moment(Date.now()),
+                      this.props.startDate || moment(Date.now()),
+                      moment(Date.now()),
+                      this.props.changeDate.bind(null, false)
+                  )
+                : null;
 
         return (
             <Card className={styles.cardRoot}>
