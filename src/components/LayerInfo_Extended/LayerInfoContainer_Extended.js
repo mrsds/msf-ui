@@ -20,6 +20,8 @@ import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import HttpIcon from "@material-ui/icons/Http";
+import HdrStrongIcon from "@material-ui/icons/HdrStrong";
 import Typography from "@material-ui/core/Typography";
 import { LoadingSpinner } from "_core/components/Reusables";
 import { AsyncImage } from "_core/components/AsyncImage";
@@ -113,6 +115,9 @@ export class LayerInfoContainer_Extended extends Component {
                                 />
                             </ListItem>
                             <ListItem>
+                                <ListItemIcon>
+                                    <HdrStrongIcon />
+                                </ListItemIcon>
                                 <ListItemText
                                     primary={metadata.get("dataSetVersion")}
                                     secondary="Data Set Version"
@@ -122,6 +127,9 @@ export class LayerInfoContainer_Extended extends Component {
                                 onClick={_ => window.open(metadata.get("dataSetURL"), "_blank")}
                                 style={{ cursor: "pointer" }}
                             >
+                                <ListItemIcon>
+                                    <HttpIcon />
+                                </ListItemIcon>
                                 <ListItemText
                                     primary={metadata.get("dataSetURL")}
                                     secondary="Data Set URL"
