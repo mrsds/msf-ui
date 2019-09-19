@@ -169,17 +169,31 @@ a.nasa_logo {
 
 .card_content {
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
+    align-items: center;
     font-family: Helvetica, Arial, sans-serif;
+
+    @media only screen and (min-width: 992px) {
+        flex-direction: row;
+        align-items: stretch;
+    }
 }
 
 .left {
-    width: 50%;
+    width: 85%;
+    margin-bottom: 20px;
+    @media only screen and (min-width: 992px) {
+        width: 50%;
+    }
 }
 
 .right {
-    width: 25%;
-    margin-left: -12%;
+    width: 85%;
+    @media only screen and (min-width: 992px) {
+        width: 25%;
+        margin-left: -12%;
+    }
 
     .section_body:first-of-type {
         margin-bottom: 20px;
