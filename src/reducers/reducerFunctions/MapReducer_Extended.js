@@ -271,4 +271,8 @@ export default class MapReducer_Extended extends MapReducer {
     static setPreviousZoom(state, action) {
         return state.set("previousZoom", action.zoom);
     }
+
+    static setJumpToNearestPending(state, action) {
+        return state.set("timelineJumpToNearestPending", action.direction);
+    }
 }

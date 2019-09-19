@@ -11,6 +11,7 @@ import KeyHandler, { KEYUP, KEYDOWN } from "react-key-handler";
 import { KeyboardControlsContainer as CoreKeyboardControlsContainer } from "_core/components/KeyboardControls/KeyboardControlsContainer";
 import * as featureDetailActions from "actions/featureDetailActions";
 import * as mapActionsMSF from "actions/mapActions";
+import * as dateSliderActionsExtended from "actions/dateSliderActionsExtended";
 
 export class KeyboardControlsContainer extends CoreKeyboardControlsContainer {
     handleKeyUp_Escape() {
@@ -40,18 +41,9 @@ export class KeyboardControlsContainer extends CoreKeyboardControlsContainer {
         }
     }
 
-    beginDateAutoIncrement(increment) {
-        if (this.dateAutoIncrementEnabled) {
-            this.dateShouldAutoIncrement = true;
-            this.dateIncrementForward = increment;
-            if (this.dateAutoIncrementInterval === null) {
-                this.dateAutoIncrementInterval = setTimeout(
-                    () => this.dateAutoIncrement(),
-                    this.dateAutoIncrementSpeed
-                );
-                this.incrementActivePlume(increment);
-            }
-        }
+    beginDateAutoIncrement(isRight) {
+        const direction = (isRight && "right") || "left";
+        this.props.dateSliderActionsExtended.setJumpToNearestPending(direction);
     }
 
     endDateAutoIncrement() {
@@ -71,7 +63,8 @@ KeyboardControlsContainer.propTypes = {
     dateSliderTimeResolution: PropTypes.object.isRequired,
     date: PropTypes.object.isRequired,
     featureDetail: PropTypes.object,
-    featureDetailActions: PropTypes.object.isRequired
+    featureDetailActions: PropTypes.object.isRequired,
+    dateSliderActionsExtended: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -90,6 +83,7 @@ function mapDispatchToProps(dispatch) {
         mapActions: bindActionCreators(mapActions, dispatch),
         mapActionsMSF: bindActionCreators(mapActionsMSF, dispatch),
         dateSliderActions: bindActionCreators(dateSliderActions, dispatch),
+        dateSliderActionsExtended: bindActionCreators(dateSliderActionsExtended, dispatch),
         featureDetailActions: bindActionCreators(featureDetailActions, dispatch)
     };
 }

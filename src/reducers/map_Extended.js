@@ -52,6 +52,8 @@ export default function map_Extended(
             return opt_reducer.updateVisiblePlumes(state, action);
         case actionTypesMSF.SET_PREVIOUS_ZOOM:
             return opt_reducer.setPreviousZoom(state, action);
+        case actionTypesMSF.SET_JUMP_TO_NEAREST_PENDING:
+            return opt_reducer.setJumpToNearestPending(state, action);
         default:
             return map.call(this, state, action, opt_reducer);
     }
