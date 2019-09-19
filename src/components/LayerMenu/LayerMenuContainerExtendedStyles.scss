@@ -25,7 +25,8 @@
 }
 .layerMenuContent {
     composes: layerMenuContent from "_core/components/LayerMenu/LayerMenuContainer.scss";
-    max-height: 60rem;
+    max-height: 120rem;
+    // height: unset;
     // overflow: visible;
     // overflow-y: visible;
 }

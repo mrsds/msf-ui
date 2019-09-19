@@ -931,7 +931,8 @@ TimelineContainerStyles.propTypes = {
     mapActionsMSF: PropTypes.object.isRequired,
     layerSidebarActions: PropTypes.object.isRequired,
     textSearchResults: PropTypes.object.isRequired,
-    dateSliderActionsExtended: PropTypes.object.isRequired
+    dateSliderActionsExtended: PropTypes.object.isRequired,
+    timelineJumpToNearestPending: PropTypes.string
 };
 
 function mapStateToProps(state) {
