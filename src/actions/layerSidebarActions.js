@@ -298,9 +298,25 @@ function plumesGlobalSearch(dispatch) {
         if (searchString === "")
             return dispatch({ type: types.UPDATE_PLUME_GLOBAL_RESULTS, data: [] });
 
-        fetch(appConfig.URLS.avirisGlobalSearchEndpoint.replace("{source_id}", searchString))
-            .then(res => res.json())
-            .then(json => dispatch({ type: types.UPDATE_PLUME_GLOBAL_RESULTS, data: json }));
+        const sourceIdSearch = appConfig.URLS.avirisGlobalSearchEndpointSourceId.replace(
+            "{source_id}",
+            searchString
+        );
+
+        const candidateIdSearch = appConfig.URLS.avirisGlobalSearchEndpointCandidateId.replace(
+            "{cid}",
+            searchString
+        );
+        const searches = [sourceIdSearch, candidateIdSearch].map(url =>
+            fetch(url).then(res => res.json())
+        );
+
+        Promise.all(searches).then(jsonResponses => {
+            dispatch({
+                type: types.UPDATE_PLUME_GLOBAL_RESULTS,
+                data: jsonResponses.reduce((acc, ary) => acc.concat(ary), [])
+            });
+        });
     };
 }
 

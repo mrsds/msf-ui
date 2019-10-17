@@ -179,4 +179,13 @@ export default class MiscUtilExtended extends MiscUtil {
         document.body.removeChild(div);
         URL.revokeObjectURL(url);
     }
+
+    static createNewId(length = 5) {
+        const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+        let out = "";
+        for (let i = 0; i < length; i++) {
+            out += alphabet[Math.floor(Math.random() * alphabet.length)];
+        }
+        return out;
+    }
 }

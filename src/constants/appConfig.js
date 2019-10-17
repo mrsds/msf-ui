@@ -50,8 +50,10 @@ const APP_CONFIG = Immutable.fromJS({
             ":" +
             be_port +
             "/aviris/plumes?maxObjects=10000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}",
-        avirisGlobalSearchEndpoint:
+        avirisGlobalSearchEndpointSourceId:
             "http://" + be_endpoint + ":" + be_port + "/aviris/plumes?source={source_id}",
+        avirisGlobalSearchEndpointCandidateId:
+            "http://" + be_endpoint + ":" + be_port + "/aviris/plumes?cid={cid}",
         layerConfig: [
             {
                 url: "default-data/msf-data/capabilities.xml",
