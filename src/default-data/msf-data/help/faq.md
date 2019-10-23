@@ -63,7 +63,7 @@ Additionally, due to the incomplete analysis of the 2018 plume image data there 
 The following journal papers describe the methods used to generate the various data sets presented here. Please use the appropriate citation when referencing a given data product in a report or paper.
 
 Methane point-source data and Vista-CA spatial layers
-Duren, R., A. Thorpe, K.T. Foster, T. Rafiq, F. M. Hopkins, V. Yadav, B.Bue, D.R. Thompson, S. Conley, N. Colombi, C. Frankenberg, I.McCubbin, M.Eastwood, M.Falk, J. Herner, B. E. Croes, R. Green, C. Miller, **California's Methane Super-emitters**, *Nature*, accepted (2019). https://doi.org/10.1038/s41586-019-1720-3
+Duren, R., A. Thorpe, K.T. Foster, T. Rafiq, F. M. Hopkins, V. Yadav, B.Bue, D.R. Thompson, S. Conley, N. Colombi, C. Frankenberg, I.McCubbin, M.Eastwood, M.Falk, J. Herner, B. E. Croes, R. Green, C. Miller, **California's Methane Super-emitters**, *Nature* (2019). https://doi.org/10.1038/s41586-019-1720-3
 
 Los Angeles methane flux inversion maps
 Yadav, V., R. Duren, K.Mueller, K.R. Verhulst , T. Nehrkorn, J. Kim, R.F. Weiss, R. Keeling, S.Sander, M. L. Fischer, S.Newman, M. Falk, T. Kuwayama, F. Hopkins, T.Rafiq, J. Whetstone, C. Miller, **Spatio-temporally resolved methane fluxes from the Los Angeles Megacity**, *J. Geophy. Res. – Atmospheres.* (2019). https://doi.org/10.1029/2018JD030062
