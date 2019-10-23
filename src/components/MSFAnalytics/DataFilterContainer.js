@@ -103,7 +103,7 @@ export class DataFilterContainer extends Component {
                     }}
                     eventsEnabled={active}
                     className={!active ? displayStyles.noPointer : styles.pointer}
-                    style={{ zIndex: 1 }}
+                    style={{ zIndex: 2 }}
                 >
                     <Grow style={{ transformOrigin: "left top" }} in={active}>
                         <div>
