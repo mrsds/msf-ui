@@ -671,8 +671,13 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
 
         if (!zoomGeom) {
             // If this feature doesn't have geometry attached, see if it's in the metadata.
-            const coords = [MetadataUtil.getLong(feature), MetadataUtil.getLat(feature)];
-            if (coords.every(x => x)) this.zoomToCoords(coords.map(x => parseFloat(x)));
+            let coords = [MetadataUtil.getLong(feature), MetadataUtil.getLat(feature)];
+            if (coords.every(x => x)) return this.zoomToCoords(coords.map(x => parseFloat(x)));
+
+            // Hacky, but the fields for location seem to vary a bit, so this is just to keep things working.
+            coords = feature.get("location").toJS();
+            if (coords.every(x => x)) return this.zoomToCoords(coords.reverse());
+
             return;
         }
 
