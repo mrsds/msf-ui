@@ -101,9 +101,6 @@ export class PlumeDetectionStatisticsContainer extends Component {
                         >
                             Methane Plume Detection Rates by Sector
                         </Typography>
-                        <Button size="small" onClick={_ => this.makeTable(stats, filename)}>
-                            Download Table
-                        </Button>
                     </div>
                     <div className={styles.tableWrapper}>
                         <div className={styles.tableScroll}>
@@ -143,9 +140,6 @@ export class PlumeDetectionStatisticsContainer extends Component {
                         <Typography variant="headline" component="h2">
                             Methane Plume Detection Rates by Subsector
                         </Typography>
-                        <Button size="small" onClick={_ => this.makeTable(stats, filename)}>
-                            Download Table
-                        </Button>
                     </div>
                     <div className={styles.tableWrapper}>
                         <div className={styles.tableScroll}>
