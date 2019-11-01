@@ -11,17 +11,7 @@ import * as coreConfig from "_core/constants/appConfig";
 import * as appStrings from "_core/constants/appStrings";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 
-let be_endpoint = "100.64.114.187";
-let be_port = "9090";
 let layer_file = "layers.json";
-
-if (process.env.REACT_APP_BE_ENDPOINT != undefined) {
-    be_endpoint = process.env.REACT_APP_BE_ENDPOINT.toLowerCase();
-}
-
-if (process.env.hasOwnProperty("REACT_APP_BE_PORT")) {
-    be_endpoint = process.env.REACT_APP_BE_PORT.toLowerCase();
-}
 
 if (process.env.REACT_APP_LAYER_FILE != undefined) {
     layer_file = process.env.REACT_APP_LAYER_FILE;
@@ -33,27 +23,22 @@ const CORE_CONFIG = Immutable.fromJS(coreConfig);
 // this config is defined in `src/config.js` for in ops changes
 const OPS_CONFIG = Immutable.fromJS(window.APPLICATION_CONFIG);
 
+const bePort = OPS_CONFIG.get("BE_PORT") ? `:${OPS_CONFIG.get("BE_PORT")}` : "";
+const beEndpoint = `${OPS_CONFIG.get("BE_ENDPOINT")}${bePort}`;
+
 // define your overrides for Core config here
 const APP_CONFIG = Immutable.fromJS({
     URLS: {
         analyticsEndpoint: "http://localhost:4000/",
         vistaEndpoint:
-            "http://" +
-            be_endpoint +
-            ":" +
-            be_port +
+            beEndpoint +
             "/vista?maxLat={latMax}&maxLon={lonMax}&minLat={latMin}&minLon={lonMin}&category={category}",
-        vistaDetailEndpoint: "http://" + be_endpoint + ":" + be_port + "/vista?vistaId={vista_id}",
+        vistaDetailEndpoint: beEndpoint + "/vista?vistaId={vista_id}",
         avirisEndpoint:
-            "http://" +
-            be_endpoint +
-            ":" +
-            be_port +
+            beEndpoint +
             "/aviris/plumes?maxObjects=10000&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}",
-        avirisGlobalSearchEndpointSourceId:
-            "http://" + be_endpoint + ":" + be_port + "/aviris/plumes?source={source_id}",
-        avirisGlobalSearchEndpointCandidateId:
-            "http://" + be_endpoint + ":" + be_port + "/aviris/plumes?cid={cid}",
+        avirisGlobalSearchEndpointSourceId: beEndpoint + "/aviris/plumes?source={source_id}",
+        avirisGlobalSearchEndpointCandidateId: beEndpoint + "/aviris/plumes?cid={cid}",
         layerConfig: [
             {
                 url: "default-data/msf-data/capabilities.xml",
@@ -65,30 +50,20 @@ const APP_CONFIG = Immutable.fromJS({
             }
         ],
         paletteConfig: "default-data/msf-data/palettes.json",
-        plumeListQueryEndpoint:
-            "http://" + be_endpoint + ":" + be_port + "/flyoversOfFacility?vista_id={vista_id}",
-        sourceListQueryEndpoint:
-            "http://" + be_endpoint + ":" + be_port + "/flyoversOfPlumeSource?source={source_id}",
-        detectionStatsEndpoint:
-            "http://" + be_endpoint + ":" + be_port + "/detectionBySector?county={county}",
-        areaSearchOptionsListEndpoint: "http://" + be_endpoint + ":" + be_port + "/list/counties",
+        plumeListQueryEndpoint: beEndpoint + "/flyoversOfFacility?vista_id={vista_id}",
+        sourceListQueryEndpoint: beEndpoint + "/flyoversOfPlumeSource?source={source_id}",
+        detectionStatsEndpoint: beEndpoint + "/detectionBySector?county={county}",
+        areaSearchOptionsListEndpoint: beEndpoint + "/list/counties",
         plumeSourceEndpoint:
-            "http://" +
-            be_endpoint +
-            ":" +
-            be_port +
+            beEndpoint +
             "/methanePlumeSources?county={county}&vista_category={vista_category}&sector_level_3={sector_level_3}",
-        ipccSectorOptionsListEndpoint: "http://" + be_endpoint + ":" + be_port + "/list/sectors",
-        vistaCategoryOptionsListEndpoint:
-            "http://" + be_endpoint + ":" + be_port + "/list/categories",
+        ipccSectorOptionsListEndpoint: beEndpoint + "/list/sectors",
+        vistaCategoryOptionsListEndpoint: beEndpoint + "/list/categories",
         plumeSourceSummaryEndpoint:
-            "http://" +
-            be_endpoint +
-            ":" +
-            be_port +
+            beEndpoint +
             "/methanePlumeSourcesSummary?county={county}&vista_category={vista_category}&sector_level_3={sector_level_3}",
-        sourceListDownload: "http://100.64.114.187:9090/csv/Source_list_20191031.csv",
-        plumeListDownload: "http://100.64.114.187:9090/csv/Plume_list_20191031.csv"
+        sourceListDownload: beEndpoint + "http://100.64.114.187:9090/csv/Source_list_20191031.csv",
+        plumeListDownload: beEndpoint + "/csv/Plume_list_20191031.csv"
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
     PLUME_START_DATE: new Date(2000, 0, 1),
@@ -143,14 +118,14 @@ const APP_CONFIG = Immutable.fromJS({
     GRIDDED_LAYER_TYPES: [
         {
             name: "GRIDDED_EMISSIONS_EPA",
-            dateEndpoint: "http://" + be_endpoint + "/data/epa_gridded_total_date_list.json",
-            endpoint: "http://" + be_endpoint + "/data/epa_gridded_total_{date}.geojson",
+            dateEndpoint: OPS_CONFIG.get("BE_ENDPOINT") + "/data/epa_gridded_total_date_list.json",
+            endpoint: OPS_CONFIG.get("BE_ENDPOINT") + "/data/epa_gridded_total_{date}.geojson",
             period: "yearly"
         },
         {
             name: "GRIDDED_EMISSIONS_V2",
-            dateEndpoint: "http://" + be_endpoint + "/data/gridded/gridded_date_list.json",
-            endpoint: "http://" + be_endpoint + "/data/gridded/v2/Fluxes_{date}.geojson",
+            dateEndpoint: OPS_CONFIG.get("BE_ENDPOINT") + "/data/gridded/gridded_date_list.json",
+            endpoint: OPS_CONFIG.get("BE_ENDPOINT") + "/data/gridded/v2/Fluxes_{date}.geojson",
             period: "daily"
         }
     ],

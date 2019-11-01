@@ -40,5 +40,7 @@ APPLICATION_CONFIG = {
 */
 
 APPLICATION_CONFIG = {
-    APP_TITLE: "Methane Source Finder"
+    APP_TITLE: "Methane Source Finder",
+    BE_ENDPOINT: "http://100.64.114.187",
+    BE_PORT: "9090"
 };
