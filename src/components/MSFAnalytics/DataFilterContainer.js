@@ -1,8 +1,10 @@
+import { Button } from "@material-ui/core";
 import { Manager, Target, Popper } from "react-popper";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import FileDownloadIcon from "@material-ui/icons/FileDownload";
 import Grow from "@material-ui/core/Grow";
 import Immutable from "immutable";
 import Paper from "@material-ui/core/Paper";
@@ -11,7 +13,7 @@ import Radio from "@material-ui/core/Radio";
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
 import moment from "moment";
-
+import appConfig from "constants/appConfig";
 import { ClickAwayListener } from "_core/components/Reusables";
 import ChipDropdown from "components/Reusables/ChipDropdown";
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
@@ -207,6 +209,38 @@ export class DataFilterContainer extends Component {
         );
     }
 
+    makeDownloadButton() {
+        const downloadSettings = (_ => {
+            switch (this.props.analyticsMode) {
+                case MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS:
+                    return ["Download original plume list", appConfig.URLS.plumeListDownload];
+                case MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO:
+                    return ["Download original source list", appConfig.URLS.sourceListDownload];
+                default:
+                    null;
+            }
+        })();
+
+        if (!downloadSettings) return null;
+
+        const [downloadText, downloadUrl] = downloadSettings;
+
+        return (
+            <div className={styles.fabContainer}>
+                <Button
+                    className={styles.fab}
+                    color="inherit"
+                    href={downloadUrl}
+                    target="_blank"
+                    variant="fab"
+                >
+                    <FileDownloadIcon />
+                </Button>
+                <span className={styles.fabLabel}>{downloadText}</span>
+            </div>
+        );
+    }
+
     render() {
         const areaPickerActive = this.popperProps.get("area");
         const sectorPickerActive = this.popperProps.get("sector");
@@ -266,32 +300,39 @@ export class DataFilterContainer extends Component {
 
         return (
             <Card className={styles.cardRoot}>
-                <CardContent>
-                    <Typography variant="headline" component="h2">
-                        Data Filters
-                    </Typography>
-                    <Manager className={styles.manager}>
-                        <ClickAwayListener
-                            onClickAway={() => {
-                                if (!startDatePickerActive && !endDatePickerActive) {
-                                    this.closeAllPoppers();
-                                }
-                            }}
+                <CardContent classes={{ root: styles.dataFilterContent }}>
+                    <div className={styles.filterLeft}>
+                        <Typography
+                            variant="headline"
+                            component="h2"
+                            className={styles.filterHeader}
                         >
-                            {this.makeDropdown(
-                                "Area",
-                                this.props.selectedArea,
-                                this.getAreaList,
-                                this.props.changeSelectedArea,
-                                "area",
-                                areaPickerActive
-                            )}
-                            {sectorPicker}
-                            {subSectorPicker}
-                            {startDatePicker}
-                            {endDatePicker}
-                        </ClickAwayListener>
-                    </Manager>
+                            Data Filters
+                        </Typography>
+                        <Manager className={styles.manager}>
+                            <ClickAwayListener
+                                onClickAway={() => {
+                                    if (!startDatePickerActive && !endDatePickerActive) {
+                                        this.closeAllPoppers();
+                                    }
+                                }}
+                            >
+                                {this.makeDropdown(
+                                    "Area",
+                                    this.props.selectedArea,
+                                    this.getAreaList,
+                                    this.props.changeSelectedArea,
+                                    "area",
+                                    areaPickerActive
+                                )}
+                                {sectorPicker}
+                                {subSectorPicker}
+                                {startDatePicker}
+                                {endDatePicker}
+                            </ClickAwayListener>
+                        </Manager>
+                    </div>
+                    {this.makeDownloadButton()}
                 </CardContent>
             </Card>
         );

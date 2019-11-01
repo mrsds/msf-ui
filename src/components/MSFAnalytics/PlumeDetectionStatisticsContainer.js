@@ -38,18 +38,18 @@ export class PlumeDetectionStatisticsContainer extends Component {
         return <div />;
     }
 
-    makeTable(stats, filename) {
-        stats = stats.map(row => {
-            return {
-                Sector: row.sector,
-                Facilities: row.facilities,
-                "Facility Flyovers": row.flyovers,
-                "Unique Facilities Flown Over": row.uniqueFacilityCount,
-                "Unique Facilities with > 0 Plume Detections": row.uniqueFacilityWithPlumeCount
-            };
-        });
-        MiscUtilExtended.downloadCSV(stats, filename);
-    }
+    // makeTable(stats, filename) {
+    //     stats = stats.map(row => {
+    //         return {
+    //             Sector: row.sector,
+    //             Facilities: row.facilities,
+    //             "Facility Flyovers": row.flyovers,
+    //             "Unique Facilities Flown Over": row.uniqueFacilityCount,
+    //             "Unique Facilities with > 0 Plume Detections": row.uniqueFacilityWithPlumeCount
+    //         };
+    //     });
+    //     MiscUtilExtended.downloadCSV(stats, filename);
+    // }
 
     makePerSectorTableBody(stats) {
         return stats.map(sector => (
