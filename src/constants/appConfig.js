@@ -62,7 +62,7 @@ const APP_CONFIG = Immutable.fromJS({
         plumeSourceSummaryEndpoint:
             beEndpoint +
             "/methanePlumeSourcesSummary?county={county}&vista_category={vista_category}&sector_level_3={sector_level_3}",
-        sourceListDownload: beEndpoint + "http://100.64.114.187:9090/csv/Source_list_20191031.csv",
+        sourceListDownload: beEndpoint + "/csv/Source_list_20191031.csv",
         plumeListDownload: beEndpoint + "/csv/Plume_list_20191031.csv"
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
