@@ -171,7 +171,7 @@ export class EmissionsChartsContainer extends Component {
 
     makeTopLevelSummaryChart() {
         const dataBySector = this.props.emissionsSourceData.reduce((acc, source) => {
-            const sectorL1Name = source.get("vista_category");
+            const sectorL1Name = source.get("vista_category") || "No sector";
             if (!acc[sectorL1Name]) acc[sectorL1Name] = [];
             acc[sectorL1Name].push(source);
             return acc;
