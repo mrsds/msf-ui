@@ -5,7 +5,7 @@
 4.	Frequent high resolution remote-sensing of priority regions can help improve methane budgets and accelerate mitigation action, particularly when combined with complementary measurement systems. 
 
 ### What are some specific findings from this study?
-1.	Less than 0.2% of infrastructure elements in the state (based on a survey of 272,000 facilities and components) are responsible for 34&ndash;46 percent of total methane emissions in California.
+1.	Less than 0.2% of infrastructure elements in the state (based on a survey of 272,000 facilities and components) are responsible for 34&ndash;46% of total methane emissions in California.
 2.	Waste management is the largest methane point source emission sector in California (41% of our study total), driven by a small fraction of landfills; we only observed these plumes at 30 out of 270 surveyed facilities.
 3.	Methane point source emissions from manure management at large dairies and the oil and gas sector each contributed about 26% of emissions in our study.  
 4.	Nearly 70% of the observed oil and gas point source emissions were associated with oil production in the southern San Joaquin Valley. 

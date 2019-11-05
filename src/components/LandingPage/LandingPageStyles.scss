@@ -223,12 +223,16 @@ a.nasa_logo {
         }
     }
 
+    li {
+        line-height: 2rem;
+        margin-bottom: 0.9rem;
+    }
     // Styles to match the FAQ to the styles of the rest of the landing page
     padding: 0;
     white-space: normal;
     h3 {
         font-weight: 600;
-        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        font-family: "Helvetica", "Arial", sans-serif;
         line-height: 1.46429em;
         color: rgba(0, 0, 0, 0.87);
         font-size: 1.4rem;
