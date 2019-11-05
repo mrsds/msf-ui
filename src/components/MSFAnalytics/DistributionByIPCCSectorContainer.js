@@ -123,7 +123,7 @@ export class DistributionByIPCCSectorContainer extends Component {
         const dataset = {
             label: scaleLabel,
             yAxisID: "y-axis-0",
-            data: rankedData.map(([_, val]) => val),
+            data: rankedData.map(([_, val]) => val | 0),
             backgroundColor: "rgba(97, 100, 221, 0.66)"
         };
 
