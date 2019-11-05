@@ -21,6 +21,7 @@ import MiscUtilExtended from "utils/MiscUtilExtended";
 import MetadataUtil from "utils/MetadataUtil";
 import styles from "components/Timeline/TimelineContainerStyles.scss";
 import * as layerSidebarActions from "actions/layerSidebarActions";
+import * as dateSliderActionsExtended from "actions/dateSliderActionsExtended";
 
 let util = require("vis/lib/util");
 let TimeStep = require("vis/lib/timeline/TimeStep");
@@ -287,6 +288,11 @@ export class TimelineContainerStyles extends Component {
         // Check for resize
         if (prevProps.layerSidebarCollapsed !== this.props.layerSidebarCollapsed) {
             this.resizeTimeline();
+        }
+
+        if (this.props.timelineJumpToNearestPending) {
+            this.jumpToNearest(this.props.timelineJumpToNearestPending);
+            this.props.dateSliderActionsExtended.setJumpToNearestPending(null);
         }
     }
 
@@ -924,7 +930,9 @@ TimelineContainerStyles.propTypes = {
     layerSidebarCollapsed: PropTypes.bool.isRequired,
     mapActionsMSF: PropTypes.object.isRequired,
     layerSidebarActions: PropTypes.object.isRequired,
-    textSearchResults: PropTypes.object.isRequired
+    textSearchResults: PropTypes.object.isRequired,
+    dateSliderActionsExtended: PropTypes.object.isRequired,
+    timelineJumpToNearestPending: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -942,7 +950,8 @@ function mapStateToProps(state) {
             layerSidebarTypes.CATEGORY_PLUMES,
             "textSearchResults"
         ]),
-        dateSliderTimeResolution: state.dateSlider.get("resolution")
+        dateSliderTimeResolution: state.dateSlider.get("resolution"),
+        timelineJumpToNearestPending: state.map.get("timelineJumpToNearestPending")
     };
 }
 
@@ -950,7 +959,8 @@ function mapDispatchToProps(dispatch) {
     return {
         mapActions: bindActionCreators(mapActions, dispatch),
         mapActionsMSF: bindActionCreators(mapActionsMSF, dispatch),
-        layerSidebarActions: bindActionCreators(layerSidebarActions, dispatch)
+        layerSidebarActions: bindActionCreators(layerSidebarActions, dispatch),
+        dateSliderActionsExtended: bindActionCreators(dateSliderActionsExtended, dispatch)
     };
 }
 

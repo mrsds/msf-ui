@@ -8,6 +8,7 @@ import ErrorBarsPlugin from "chartjs-plugin-error-bars";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
+import MiscUtilExtended from "utils/MiscUtilExtended";
 
 import * as MSFAnalyticsActions from "actions/MSFAnalyticsActions";
 import styles from "components/MSFAnalytics/MSFAnalyticsContainerStyles.scss";
@@ -40,7 +41,8 @@ export class EmissionsChartsContainer extends Component {
                 const avg = source.get("q_source_final", null);
                 const uncertainty = source.get("q_source_final_sigma", null);
                 return {
-                    label: `Source near: ${source.get("vista_name")}`,
+                    humanLabel: `Source near: ${source.get("vista_name")}`,
+                    label: MiscUtilExtended.createNewId(),
                     avg,
                     min: avg - Math.abs(uncertainty),
                     max: avg + Math.abs(uncertainty),
@@ -99,6 +101,8 @@ export class EmissionsChartsContainer extends Component {
             },
             tooltips: {
                 callbacks: {
+                    title: (tooltipItem, data) =>
+                        `${sourceData.find(s => s.label === tooltipItem[0].xLabel).humanLabel}`,
                     label: (tooltipItem, data) => {
                         const percentage = data.datasets[1].data[tooltipItem.index] | 0;
                         if (tooltipItem.datasetIndex === 1)
@@ -167,7 +171,7 @@ export class EmissionsChartsContainer extends Component {
 
     makeTopLevelSummaryChart() {
         const dataBySector = this.props.emissionsSourceData.reduce((acc, source) => {
-            const sectorL1Name = source.get("vista_category");
+            const sectorL1Name = source.get("vista_category") || "No sector";
             if (!acc[sectorL1Name]) acc[sectorL1Name] = [];
             acc[sectorL1Name].push(source);
             return acc;

@@ -46,8 +46,8 @@ export class DistributionByIPCCSectorContainer extends Component {
     getEmissionsStatsBySector(sectorLevel) {
         return this.props.emissionsSourceData.reduce((acc, source) => {
             const emissions = source.get("q_source_final");
-            acc[source.get(`sector_level_${sectorLevel}`)] =
-                acc[source.get(`sector_level_${sectorLevel}`)] + emissions || emissions;
+            const sector = source.get(`sector_level_${sectorLevel}`) || "No sector";
+            acc[sector] = acc[sector] + emissions || emissions;
             return acc;
         }, {});
     }
@@ -72,8 +72,8 @@ export class DistributionByIPCCSectorContainer extends Component {
 
     getOccurrenceStatsBySector(sectorLevel) {
         return this.props.emissionsSourceData.reduce((acc, source) => {
-            acc[source.get(`sector_level_${sectorLevel}`)] =
-                acc[source.get(`sector_level_${sectorLevel}`)] + 1 || 1;
+            const sector = source.get(`sector_level_${sectorLevel}`) || "No sector";
+            acc[sector] = acc[sector] + 1 || 1;
             return acc;
         }, {});
     }
@@ -84,7 +84,7 @@ export class DistributionByIPCCSectorContainer extends Component {
         const title = `IPCC Sector Level ${sectorLevel}`;
         const scaleLabel =
             this.state.binningMode === MSFTypes.SECTOR_DISTRIBUTION_MODE_EMISSIONS
-                ? "Emissions"
+                ? "Emissions (kg/hr)"
                 : "Occurrences";
 
         const data =
@@ -123,7 +123,7 @@ export class DistributionByIPCCSectorContainer extends Component {
         const dataset = {
             label: scaleLabel,
             yAxisID: "y-axis-0",
-            data: rankedData.map(([_, val]) => val),
+            data: rankedData.map(([_, val]) => val | 0),
             backgroundColor: "rgba(97, 100, 221, 0.66)"
         };
 
@@ -195,7 +195,7 @@ export class DistributionByIPCCSectorContainer extends Component {
 DistributionByIPCCSectorContainer.propTypes = {
     emissionsSourceData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
-    detectionStats: PropTypes.object,
+    detectionStats: PropTypes.array,
     fetchDetectionStats: PropTypes.func.isRequired,
     detectionStatsAreLoading: PropTypes.bool.isRequired,
     updateEmissionsCharts: PropTypes.func.isRequired

@@ -4,7 +4,7 @@
 .layerMenu {
     width: 410px;
     top: $app-bar-height;
-    right: 15px;
+    right: 50px;
     left: initial;
 }
 
@@ -25,7 +25,7 @@
 }
 .layerMenuContent {
     composes: layerMenuContent from "_core/components/LayerMenu/LayerMenuContainer.scss";
-    max-height: 60rem;
+    max-height: 120rem;
     // overflow: visible;
     // overflow-y: visible;
 }

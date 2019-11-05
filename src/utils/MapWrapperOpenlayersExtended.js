@@ -310,7 +310,10 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
         try {
             const mapLayers = this.map.getLayers();
             let insertIndex = 0;
-            if (mapLayer.get("_layerType") === appStrings.LAYER_GROUP_TYPE_BASEMAP) {
+            if (
+                mapLayer.get("_layerType") === appStrings.LAYER_GROUP_TYPE_BASEMAP ||
+                appStrings.LAYER_GROUP_TYPE_REFERENCE
+            ) {
                 insertIndex = this.findTopInsertIndexForLayer(mapLayer);
             }
 
@@ -669,8 +672,13 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
 
         if (!zoomGeom) {
             // If this feature doesn't have geometry attached, see if it's in the metadata.
-            const coords = [MetadataUtil.getLong(feature), MetadataUtil.getLat(feature)];
-            if (coords.every(x => x)) this.zoomToCoords(coords.map(x => parseFloat(x)));
+            let coords = [MetadataUtil.getLong(feature), MetadataUtil.getLat(feature)];
+            if (coords.every(x => x)) return this.zoomToCoords(coords.map(x => parseFloat(x)));
+
+            // Hacky, but the fields for location seem to vary a bit, so this is just to keep things working.
+            coords = feature.get("location").toJS();
+            if (coords.every(x => x)) return this.zoomToCoords(coords.reverse());
+
             return;
         }
 
@@ -1193,5 +1201,40 @@ export default class MapWrapperOpenlayersExtended extends MapWrapperOpenlayers {
             .getLayers()
             .getArray()
             .filter(l => l.get("_layerGroup") === "GRIDDED");
+    }
+
+    /**
+     * Find the highest index for a layer to be displayed.
+     * Data layers are displayed below reference layers and
+     * above basemaps
+     *
+     * @param {object} mapLayer openlayers map layer to compare
+     * @returns {number} highest index display index for a layer of this type
+     * @memberof MapWrapperOpenlayers
+     */
+    findTopInsertIndexForLayer(mapLayer) {
+        let mapLayers = this.map.getLayers();
+        let index = mapLayers.getLength();
+
+        if (mapLayer.get("_layerType") === appStrings.LAYER_GROUP_TYPE_REFERENCE) {
+            // referece layers always on top of basemaps
+            return 1;
+        } else if (mapLayer.get("_layerType") === appStrings.LAYER_GROUP_TYPE_BASEMAP) {
+            // basemaps always on bottom
+            return 0;
+        } else {
+            // data layers in the middle
+            for (let i = index - 1; i >= 1; --i) {
+                let compareLayer = mapLayers.item(i);
+                if (
+                    compareLayer.get("_layerType") === appStrings.LAYER_GROUP_TYPE_DATA ||
+                    compareLayer.get("_layerType") === appStrings.LAYER_GROUP_TYPE_BASEMAP
+                ) {
+                    return i + 1;
+                }
+            }
+            index = 0;
+        }
+        return index;
     }
 }

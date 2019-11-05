@@ -32,11 +32,11 @@ export class MSFAnalyticsContainer extends Component {
             {
                 type: MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO,
                 title: "Emissions Summary Info"
-            },
-            {
-                type: MSFTypes.ANALYTICS_MODE_DISTRIBUTION_BY_SECTOR,
-                title: "Distribution by Sector"
             }
+            // {
+            //     type: MSFTypes.ANALYTICS_MODE_DISTRIBUTION_BY_SECTOR,
+            //     title: "Distribution by Sector"
+            // }
         ];
         return availableModes.map(mode => {
             const selected = mode.type === this.props.analyticsMode;

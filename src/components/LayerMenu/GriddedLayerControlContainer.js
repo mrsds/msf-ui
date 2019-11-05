@@ -239,14 +239,14 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
         const units = activeLayer.get("units");
 
         return (
-            <div>
+            <React.Fragment>
                 <Collapse
                     in={this.props.group.get("isActive")}
                     timeout="auto"
                     className={styles.layerControl}
                     classes={{ entered: styles.collapseEntered }}
                 >
-                    <div className={styles.layerControlContent}>
+                    <div className={stylesExtended.griddedLayerControlContent}>
                         <div className={stylesExtended.controlRow}>
                             {this.renderSublayerSelection()}
                             {this.renderDateIcon()}
@@ -267,7 +267,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                         </div>
                     </div>
                 </Collapse>
-            </div>
+            </React.Fragment>
         );
     }
 

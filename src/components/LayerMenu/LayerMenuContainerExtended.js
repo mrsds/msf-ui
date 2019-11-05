@@ -53,7 +53,9 @@ export class LayerMenuContainer extends Component {
 
         let plumeLayer = layerList.find(x => x.get("id") === "AVIRIS");
         let griddedMethaneGroup = this.props.groups.get(1);
-        let griddedMethaneLayer = this.props.layers.find(x => x.get("group") === "GRIDDED");
+        let griddedMethaneLayer = this.props.layers.find(
+            x => x.get("id") === this.props.activeGriddedLayer
+        );
         let infrastructureLayer = this.props.groups.get(0);
         let sourceLayer = layerList.find(x => x.get("id") === "AVIRIS_SOURCES");
         let flightLinesLayer = layerList.find(x => x.get("id") === "Flight_Lines");
@@ -177,7 +179,8 @@ LayerMenuContainer.propTypes = {
     distractionFreeMode: PropTypes.bool.isRequired,
     palettes: PropTypes.object.isRequired,
     mapState: PropTypes.object,
-    currentZoom: PropTypes.number
+    currentZoom: PropTypes.number,
+    activeGriddedLayer: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -187,7 +190,8 @@ function mapStateToProps(state) {
         groups: state.map.get("groups"),
         palettes: state.map.get("palettes"),
         distractionFreeMode: state.view.get("distractionFreeMode"),
-        currentZoom: state.map.get("currentZoom")
+        currentZoom: state.map.get("currentZoom"),
+        activeGriddedLayer: state.map.getIn(["griddedSettings", "activeLayer"])
     };
 }
 

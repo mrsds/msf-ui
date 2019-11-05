@@ -100,6 +100,15 @@
         margin-bottom: 16px;
     }
 }
+.dataFilterContent {
+    display: flex;
+    justify-content: space-between;
+}
+
+.filterLeft {
+    display: flex;
+    flex-direction: column;
+}
 
 .contentCard {
     overflow: auto;
@@ -262,4 +271,25 @@
 .scalingSwitch {
     display: inline;
     margin-left: 25px;
+}
+
+.fabContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.fabLabel {
+    display: block;
+    margin-top: 15px;
+    color: $color-primary;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.fab {
+    color: white;
+    background: $color-primary;
+}
+
+.filterHeader {
+    display: inline;
 }
