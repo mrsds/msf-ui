@@ -84,7 +84,7 @@ export class DistributionByIPCCSectorContainer extends Component {
         const title = `IPCC Sector Level ${sectorLevel}`;
         const scaleLabel =
             this.state.binningMode === MSFTypes.SECTOR_DISTRIBUTION_MODE_EMISSIONS
-                ? "Emissions"
+                ? "Emissions (kg/hr)"
                 : "Occurrences";
 
         const data =
