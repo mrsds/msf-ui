@@ -46,8 +46,8 @@ export class DistributionByIPCCSectorContainer extends Component {
     getEmissionsStatsBySector(sectorLevel) {
         return this.props.emissionsSourceData.reduce((acc, source) => {
             const emissions = source.get("q_source_final");
-            acc[source.get(`sector_level_${sectorLevel}`)] =
-                acc[source.get(`sector_level_${sectorLevel}`)] + emissions || emissions;
+            const sector = source.get(`sector_level_${sectorLevel}`) || "No sector";
+            acc[sector] = acc[sector] + emissions || emissions;
             return acc;
         }, {});
     }
@@ -72,8 +72,8 @@ export class DistributionByIPCCSectorContainer extends Component {
 
     getOccurrenceStatsBySector(sectorLevel) {
         return this.props.emissionsSourceData.reduce((acc, source) => {
-            acc[source.get(`sector_level_${sectorLevel}`)] =
-                acc[source.get(`sector_level_${sectorLevel}`)] + 1 || 1;
+            const sector = source.get(`sector_level_${sectorLevel}`) || "No sector";
+            acc[sector] = acc[sector] + 1 || 1;
             return acc;
         }, {});
     }
