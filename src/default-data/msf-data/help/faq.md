@@ -42,6 +42,9 @@ Some areas have more methane sources because they tend to have more activity or 
 ### Why do dairies produce methane?
 There are two main factors that cause dairies to emit methane: enteric fermentation and manure management. Enteric fermentation is a part of the digestive process for cows which causes methane to be expelled from the animal through burping. While enteric fermentation contributes to methane emitted from dairies, the methane emissions from dairies seen in Methane Source Finder are primarily due to a manure management technique involving the use of anaerobic lagoons to store animal waste/manure. 
 
+### Are all types of livestock methane emissions shown here?
+No, only a subset. The AVIRIS-NG methane point source data includes manure management sources which are a subset of IPCC Source Category 3A: enteric fermentation and manure management. Enteric fermentation manifests as an area source best quantified with other methods and is not included in the current version of this web site.
+
 ### What are the biggest categories of methane emissions in California?
 According to the California Air Resources Board (CARB), the majority of methane emissions in California come from agriculture (enteric fermentation 29%, manure management 26%), landfills (22%), and oil and gas extraction (16%). See the [CARB website](https://www.arb.ca.gov/cc/inventory/background/ch4.htm) for more information. 
 
