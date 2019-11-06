@@ -196,12 +196,6 @@ export class EmissionsSummaryInfoContainer extends Component {
                         >
                             Methane Plume Sources
                         </Typography>
-                        <Button
-                            size="small"
-                            onClick={_ => this.makeTable(this.props.sourcesData.toJS(), filename)}
-                        >
-                            Download Table
-                        </Button>
                     </div>
                     <div className={styles.tableWrapper}>
                         <div className={styles.tableScroll}>
