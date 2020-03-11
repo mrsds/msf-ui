@@ -1,10 +1,7 @@
-FROM node:10
-WORKDIR /msf
-COPY . /msf
-#COPY entrypoint.sh /usr/local/bin/
-EXPOSE 3000/tcp
-EXPOSE 3001/tcp
-RUN npm install
-RUN yarn install --force
-#ENTRYPOINT ["entrypoint.sh"]
-CMD ["npm", "start"]
+
+FROM nginx
+
+COPY docker/default.conf /etc/nginx/conf.d/default.conf
+COPY dist /usr/share/nginx/html
+
+EXPOSE 80/tcp
