@@ -7,7 +7,7 @@ This data portal was developed with support from NASA's [Advancing Collaborative
 
 Database hosting supported by the University of Arizona.
 
-This software is open-sourced using the [Apache 2 license](https://www.apache.org/licenses/LICENSE-2.0). The code can be found at the [NASA MSF Github repository](https://github.com/nasa/msf).
+This software is open-sourced using the [Apache 2 license](https://www.apache.org/licenses/LICENSE-2.0).
 
 ### Site Feedback and Contact
 For questions or comments about the site or data sets, please [contact the Methane Source Finder team](mailto:msf@jpl.nasa.gov).
