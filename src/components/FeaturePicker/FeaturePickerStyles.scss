@@ -1,0 +1,100 @@
+@import "~styles/colors";
+.cardContentRoot {
+    padding: 0;
+}
+.cardRoot {
+    overflow: auto;
+}
+.itemRoot {
+    composes: itemRoot from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
+    &:hover {
+        background: $color-background;
+    }
+    padding-left: 0;
+    padding-right: 0;
+    // &.selectedItem {
+    //     background-color: $color-primary !important;
+    //     .listItemText {
+    //         color: white;
+    //         -webkit-font-smoothing: auto;
+    //     }
+    //     .listItemTextSecondary {
+    //         color: rgba(255, 255, 255, 0.692);
+    //         -webkit-font-smoothing: auto;
+    //     }
+}
+
+.listItemSecondaryAction {
+    composes: listItemSecondaryAction from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
+    button:first-child {
+        margin-bottom: 0;
+    }
+    opacity: 1;
+    pointer-events: all;
+    right: 16px;
+}
+
+.listItemTextContainer {
+    flex: 1 1 auto;
+    padding: 0 16px;
+    min-width: 0;
+    font-size: 1.3rem;
+}
+
+.listItemText {
+    max-width: 250px;
+    padding-bottom: 4px;
+}
+
+.featurePicker {
+    width: 365px;
+    z-index: 1;
+}
+
+.featurePickerArrowLeft:after {
+    width: 0;
+    height: 0;
+    border-right: 8px solid $color-light;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    margin-left: -8px;
+    top: 20px;
+    left: 0;
+}
+.featurePickerArrowRight:after {
+    width: 0;
+    height: 0;
+    border-left: 8px solid $color-light;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    margin-right: -7px;
+    top: 20px;
+    right: 0;
+}
+.subheader {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.pickerHeaderRoot {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid #dfdfdf;
+    padding-right: 10px;
+}
+
+.pickerHeaderTitle {
+    color: #8c8c8c;
+    font-size: 14px;
+}
+
+.pickerHeaderAvatar {
+    margin-right: 0;
+}

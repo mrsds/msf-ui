@@ -1,0 +1,40 @@
+@import "~styles/colors";
+
+:global(.ol-overlay-container) {
+    pointer-events: none;
+}
+
+.tooltip {
+    composes: tooltip from "_core/components/Map/MapTooltip.scss";
+    border-radius: 2px;
+    pointer-events: all;
+    margin-bottom: 13px;
+    padding: 10px 13px;
+    padding-right: 100px;
+    background: white;
+    &:after {
+        border-top: 8px solid #ffffffbd;
+    }
+}
+
+.title,
+.subtitle {
+    composes: fontRoboto from "_core/styles/text.scss";
+    font-weight: 400;
+    line-height: 1.46429em;
+}
+.title {
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 1.4rem;
+    padding-bottom: 5px;
+}
+.subtitle {
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 1.3rem;
+}
+.listItemSecondaryAction {
+    composes: listItemSecondaryAction from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
+    opacity: 1;
+    pointer-events: all;
+    right: 16px;
+}

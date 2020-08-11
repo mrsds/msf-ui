@@ -1,0 +1,60 @@
+@import "~styles/colors";
+@import "~styles/misc";
+
+.root {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    z-index: 4;
+}
+.shadow {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: calc(100% - #{$layer-sidebar-width});
+    z-index: 1;
+    height: $app-bar-height;
+}
+.toolbarRoot {
+    min-height: $app-bar-height;
+    justify-content: space-between;
+}
+.title {
+    flex: 1;
+    color: white;
+    display: inline-block;
+    color: $color-light;
+    font-size: 1.8rem;
+    -webkit-font-smoothing: antialiased;
+    flex-grow: 0;
+    font-weight: 600;
+    letter-spacing: 0.04rem;
+    // letter-spacing: 0.0756em;
+}
+
+.appLogo {
+    fill: white;
+    width: 28px;
+    height: 28px;
+    top: 1px;
+    position: relative;
+    margin-right: 11px;
+}
+
+.tabsRoot {
+    width: $layer-sidebar-width;
+    // background: $color-secondary;
+}
+.tabsIndicator {
+    background: white;
+}
+.tabLabelContainer {
+    width: 200px;
+    span {
+        -webkit-font-smoothing: antialiased;
+    }
+}
+.toolbarLeft {
+    display: flex;
+    align-items: center;
+}

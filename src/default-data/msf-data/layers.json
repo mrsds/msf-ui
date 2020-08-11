@@ -1,0 +1,439 @@
+{
+    "layers": [
+        {
+            "id": "VISTA_2017_LIVESTOCK_DAIRIES",
+            "title": "Vista 2017 - Livestock Dairies",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=1&maxObjects=10000",
+            "thumbnailImage": "img/Vista-Infrastructure.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 2,
+            "metadata": {
+                "url": "default-data/msf-data/layer-metadata/vista.json",
+                "handleAs": "json"
+            }
+        },
+        {
+            "id": "VISTA_2017_CNG_FUELING_STATIONS",
+            "title": "Vista 2017 - CNG Fueling Stations",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=3&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 3
+        },
+        {
+            "id": "VISTA_2017_LNG_FUELING_STATIONS",
+            "title": "Vista 2017 - LNG Fueling Stations",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=4&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 4
+        },
+        {
+            "id": "VISTA_2017_NAT_GAS_STORE_FIELDS",
+            "title": "Vista 2017 - Natural Gas Storage Fields",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=5&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 5
+        },
+        {
+            "id": "VISTA_2017_NAT_GAS_PROC_PLANT",
+            "title": "Vista 2017 - Natural Gas Processing Plants",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=6&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 6
+        },
+        {
+            "id": "VISTA_2017_PETRO_REFINE",
+            "title": "Vista 2017 - Petroleum Refineries",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=8&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 7
+        },
+        {
+            "id": "VISTA_2017_WASTEWTR_TREAT_PLNT",
+            "title": "Vista 2017 - Wastewater Treatment Plants",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=9&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 8
+        },
+        {
+            "id": "VISTA_2017_POWER_PLANT",
+            "title": "Vista 2017 - Power Plants",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=10&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 9
+        },
+        {
+            "id": "VISTA_2017_LANDFILL",
+            "title": "Vista 2017 - Landfills",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=11&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 10
+        },
+        {
+            "id": "VISTA_2017_SOCAB_BOUND",
+            "title": "Vista 2017 - SoCAB Boundary",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": false,
+            "visibleInGroup": false,
+            "url": "/api/vista?category=13&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 11
+        },
+        {
+            "id": "VISTA_2017_OILGAS_FIELDS",
+            "title": "Vista 2017 - Oil and Gas Fields",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=1000&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 13
+        },
+        {
+            "id": "VISTA_2017_OILGAS_WELLS",
+            "title": "Vista 2017 - Oil and Gas Wells",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=0&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 14
+        },
+        {
+            "id": "VISTA_2017_OILGAS_FACILITY_BOUNDARIES",
+            "title": "Vista 2017 - Oil and Gas Facility Boundaries",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=0&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 14
+        },
+        {
+            "id": "VISTA_2017_COMPOSTING_SITES",
+            "title": "Vista 2017 - Composting Sites",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=0&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 14
+        },
+        {
+            "id": "VISTA_2017_COMPRESSOR",
+            "title": "Vista 2017 - Compressors",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=0&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 14
+        },
+        {
+            "id": "VISTA_2017_DIGESTER",
+            "title": "Vista 2017 - Digester",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=0&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 14
+        },
+        {
+            "id": "VISTA_2017_FEED_LOTS",
+            "title": "Vista 2017 - Feed Lots",
+            "type": "data",
+            "handleAs": "vista_geojson",
+            "isDefault": true,
+            "visibleInGroup": true,
+            "url": "/api/vista?category=1016&maxObjects=10000",
+            "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
+            "group": "VISTA",
+            "updateParameters": { "time": false },
+            "layerOrder": 14
+        },
+        {
+            "id": "AVIRIS",
+            "title": "AVIRIS-NG Plume Images",
+            "type": "data",
+            "handleAs": "aviris_plume",
+            "isDefault": true,
+            "url": "/api/aviris/plumes",
+            "thumbnailImage": "img/AVIRIS.png",
+            "palette": {
+                "name": "AVIRIS_plumes",
+                "handleAs": "json-fixed"
+            },
+            "min": 0,
+            "max": 4000,
+            "units": " enhancement (ppm-m)",
+            "metadata": {
+                "url": "default-data/msf-data/layer-metadata/AVIRIS.json",
+                "handleAs": "json"
+            },
+            "updateParameters": { "time": false },
+            "layerOrder": 3
+        },
+        {
+            "id": "GRIDDED_EMISSIONS_V2",
+            "title": "Los Angeles Flux Inversion",
+            "type": "data",
+            "handleAs": "gridded_geojson",
+            "isDefault": false,
+            "url": "/server/data/gridded/v2/Fluxes_20150128.geojson",
+            "thumbnailImage": "img/gridded_methane_v1.png",
+            "opacity": 0.3,
+            "metadata": {
+                "url": "default-data/msf-data/layer-metadata/Grid-Megacities.json",
+                "handleAs": "json"
+            },
+            "units": "kg/hr",
+            "updateParameters": { "time": false },
+            "palette": {
+                "name": "gridded_methane_inversion",
+                "handleAs": "json-fixed",
+                "min": "0",
+                "max": "> 130"
+            },
+            "layerOrder": 1,
+            "group": "GRIDDED",
+            "visibleInGroup": true
+        },
+        {
+            "id": "GRIDDED_EMISSIONS_EPA",
+            "title": "EPA Gridded Inventory",
+            "type": "data",
+            "handleAs": "gridded_geojson",
+            "isDefault": false,
+            "url": "/server/data/epa_gridded_total_2012.geojson",
+            "thumbnailImage": "img/gridded_methane_v1.png",
+            "opacity": 0.3,
+            "metadata": {
+                "url": "default-data/msf-data/layer-metadata/Grid-EPA.json",
+                "handleAs": "json"
+            },
+            "units": "Tg/yr",
+            "updateParameters": { "time": false },
+            "palette": {
+                "name": "gridded_methane_epa",
+                "handleAs": "json-fixed",
+                "min": "0",
+                "max": "> 1"
+            },
+            "layerOrder": 1,
+            "group": "GRIDDED",
+            "visibleInGroup": true
+        },
+
+        {
+            "id": "Reference_Labels",
+            "title": "Reference Labels",
+            "type": "reference",
+            "handleAs": "GIBS_raster",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "Reference_Features",
+            "title": "Reference Features",
+            "type": "reference",
+            "handleAs": "GIBS_raster",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "Mapbox_Satellite_Retina",
+            "title": "Mapbox Satellite",
+            "type": "basemap",
+            "thumbnailImage": "https://a.tiles.mapbox.com/v4/mapbox.satellite/2/1/2@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+            "handleAs": "xyz_raster",
+            "updateParameters": { "time": false },
+            "wmtsOptions": {
+                "url": "https://a.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+                "projection": "EPSG:3857",
+                "layer": "Mapbox_Satellite_Retina",
+                "tileGrid": {
+                    "minZoom": 0,
+                    "maxZoom": 19,
+                    "tileSize": 256
+                }
+            }
+        },
+        {
+            "id": "Mapbox_Streets_Satellite",
+            "title": "Mapbox Streets-Satellite",
+            "type": "basemap",
+            "thumbnailImage": "https://a.tiles.mapbox.com/v4/mapbox.streets-satellite/2/1/2@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+            "handleAs": "xyz_raster",
+            "updateParameters": { "time": false },
+            "wmtsOptions": {
+                "url": "https://a.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+                "projection": "EPSG:3857",
+                "tileGrid": {
+                    "minZoom": 0,
+                    "maxZoom": 18,
+                    "tileSize": 256
+                }
+            }
+        },
+        {
+            "id": "Mapbox_Streets",
+            "title": "Mapbox Streets",
+            "type": "basemap",
+            "thumbnailImage": "https://a.tiles.mapbox.com/v4/mapbox.streets/2/1/2@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+            "handleAs": "xyz_raster",
+            "updateParameters": { "time": false },
+            "wmtsOptions": {
+                "url": "https://a.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+                "projection": "EPSG:3857",
+                "tileGrid": {
+                    "minZoom": 0,
+                    "maxZoom": 18,
+                    "tileSize": 256
+                }
+            }
+        },
+        {
+            "id": "ESRI_World_Imagery",
+            "title": "ESRI High Resolution World Imagery",
+            "type": "basemap",
+            "thumbnailImage": "img/ESRI_World_Imagery.jpeg",
+            "isDefault": true,
+            "handleAs": "xyz_raster",
+            "updateParameters": { "time": false },
+            "wmtsOptions": {
+                "projection": "EPSG:3857",
+                "layer": "ESRI_World_Imagery",
+                "url": "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                "tileGrid": {
+                    "minZoom": 1,
+                    "maxZoom": 19,
+                    "tileSize": 256
+                }
+            }
+        },
+        {
+            "id": "OSM_Land_Water_Map",
+            "title": "Land/Water Map (data from OSM)",
+            "type": "basemap",
+            "thumbnailImage": "img/OSM_Land_Water_Map.png",
+            "handleAs": "GIBS_raster",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "ASTER_GDEM_Color_Shaded_Relief",
+            "title": "Digital Elevation Map (Color Shaded Relief)",
+            "type": "basemap",
+            "thumbnailImage": "img/ASTER_GDEM_Color_Shaded_Relief.jpeg",
+            "handleAs": "GIBS_raster",
+            "updateParameters": { "time": false }
+        },
+        {
+            "id": "AVIRIS_SOURCES",
+            "title": "Methane Point Sources",
+            "type": "data",
+            "handleAs": "vista_source",
+            "metadata": {
+                "url": "default-data/msf-data/layer-metadata/AVIRIS-Sources.json",
+                "handleAs": "json"
+            },
+            "isDefault": true,
+            "url": "api/sources?maxLat={latMax}&minLat={latMin}&maxLon={lonMax}&minLon={lonMin}",
+            "thumbnailImage": "img/msf-pointsources.png",
+            "updateParameters": { "time": false },
+            "layerOrder": 16
+        },
+        {
+            "id": "Flight_Lines",
+            "title": "AVIRIS-NG Flight Coverage",
+            "type": "data",
+            "handleAs": "flight_lines",
+            "metadata": {
+                "url": "default-data/msf-data/layer-metadata/FlightCoverage.json",
+                "handleAs": "json"
+            },
+            "palette": {
+                "name": "flight_coverage",
+                "handleAs": "json-fixed",
+                "min": "0",
+                "max": "1"
+            },
+            "isDefault": false,
+            "url": "/server/flightlines_all.kml",
+            "thumbnailImage": "img/msf-flightcoverage.png",
+            "updateParameters": { "time": false },
+            "layerOrder": 0
+        }
+    ]
+}

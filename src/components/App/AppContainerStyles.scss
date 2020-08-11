@@ -1,0 +1,4 @@
+.appContainer {
+    composes: appContainer from "_core/components/App/AppContainer.scss";
+    display: flex;
+}

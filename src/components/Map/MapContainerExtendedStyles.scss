@@ -1,0 +1,7 @@
+@import "~styles/misc";
+
+.mapContainer {
+    composes: mapContainer from "_core/components/Map/MapContainer.scss";
+    margin-top: $app-bar-height;
+    height: calc(100% - #{$app-bar-height});
+}

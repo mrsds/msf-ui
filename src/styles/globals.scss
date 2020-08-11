@@ -1,0 +1,51 @@
+/*
+export global css styles here.
+These should be used primarily to override classes
+we do not create or control. Such as those placed on components
+created by libraries like cesium.
+*/
+
+// :global(.cesium-viewer),
+// :global(.cesium-viewer-cesiumWidgetContainer),
+// :global(.cesium-widget),
+// :global(.cesium-widget canvas) {
+//     height: 100%;
+//     width: 100%;
+// }
+
+// :global(.cesium-viewer-bottom) {
+//     display: none;
+// }
+
+:global(.react-contextmenu-wrapper) {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+}
+:global(.ol-scale-line) {
+    position: absolute;
+    z-index: 21;
+    right: 153px;
+    bottom: 75px;
+    background: rgba(0, 0, 0, 0.26);
+    color: white;
+    font-family: Roboto Mono;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px;
+    border-radius: 2px;
+}
+:global(.ol-scale-line-inner) {
+    width: 76px;
+    border-right: 1px solid rgb(238, 238, 238);
+    border-bottom: 1px solid rgb(238, 238, 238);
+    border-left: 1px solid rgb(238, 238, 238);
+    border-image: initial;
+    border-top: none;
+    // color: rgb(238, 238, 238);
+    font-size: 10px;
+    text-align: center;
+    margin: 1px;
+    will-change: contents, width;
+}

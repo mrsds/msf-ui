@@ -1,0 +1,9 @@
+{
+	"title": "Methane Point Sources",
+	"description": "A methane source is the location of a surface feature (lat/long) or infrastructure component where a methane plume was observed at least once. Point sources reported here have passed our automated filtering and quality-control checks however we have not conducted surface follow-up measurements to verify every source. Additionally, not every source shown here has an emission estimate (in cases where we are still working on quantitative assessment or if there were confounding factors that precluded an emission estimate). Plumes observed by AVIRIS-NG (Next Generation Airborne Visible-Infrared Imaging Spectrometer). See Duren et al. Californias Methane Super-emitters (2019) for more information (https://doi.org/10.1038/s41586-019-1720-3).",
+	"dateRange": "October 2016 – December 2018",
+	"platform": "AVIRIS-NG",
+	"spatialResolution": "N/A",
+    "dataSetVersion": "",
+    "dataSetURL": "https://doi.org/10.1038/s41586-019-1720-3"
+}

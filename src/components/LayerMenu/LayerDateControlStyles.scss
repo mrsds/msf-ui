@@ -1,0 +1,41 @@
+.dateControl {
+    display: inline-block;
+}
+.dateSelector {
+    margin: 5px;
+    margin-top: 0;
+    // height: 20px;
+    // display: inline-block;
+    // height: 26px;
+    line-height: 0px;
+}
+.yearSelector {
+    width: 85px;
+}
+.monthSelector {
+    width: 65px;
+}
+.daySelector {
+    width: 65px;
+}
+.doneButton {
+    float: right;
+}
+.popperArrow {
+    composes: popperArrow from "_core/components/LayerMenu/LayerControlContainer.scss";
+    top: 43px !important;
+}
+
+.incrementButton {
+    font-size: 10px;
+    width: 20px;
+    height: 20px;
+    span {
+        height: 10px;
+        width: 10px;
+    }
+}
+
+.incrementLabel {
+    vertical-align: middle;
+}

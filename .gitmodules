@@ -1,0 +1,3 @@
+[submodule "cmc-core"]
+	path = cmc-core
+	url = https://github.jpl.nasa.gov/CommonMappingClient/cmc-core.git

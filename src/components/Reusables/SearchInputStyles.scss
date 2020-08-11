@@ -1,0 +1,28 @@
+@import "~styles/colors";
+
+.root {
+    composes: light from "_core/styles/shadow.scss";
+    background: white;
+    border-radius: 2px;
+    align-items: center;
+    width: 100%;
+    font-size: 1.4rem;
+    height: 40px;
+}
+.inputAdornmentPositionStart {
+    margin-right: 13px;
+    margin-left: 13px;
+    top: 2px;
+    position: relative;
+}
+.inputAdornmentPositionEnd {
+    margin-right: 6px;
+}
+.actionIcon {
+    opacity: 1;
+    transition: opacity 50ms ease-in-out;
+}
+.actionIconHidden {
+    opacity: 0;
+    pointer-events: none;
+}
