@@ -61,7 +61,11 @@ export class LandingPage extends Component {
                         <div className={styles.hero_controls}>
                             <div className={styles.brand_area}>
                                 <div className={styles.brand1}>
-                                    <a href="http://www.nasa.gov" className={styles.nasa_logo} />
+                                    <a
+                                        href="http://www.nasa.gov"
+                                        className={styles.nasa_logo}
+                                        title="Link to NASA home"
+                                    />
                                 </div>
                                 <div className={styles.brand2}>
                                     <div className={styles.jpl_logo}>
@@ -238,7 +242,8 @@ export class LandingPage extends Component {
                             </ul>
                         </div>
                         <div className={styles.div_footer_right}>
-                            Site Contact: <a href="mailto:steve.zelinka@arb.ca.gov">Steve Zelinka</a>
+                            Site Contact:{" "}
+                            <a href="mailto:steve.zelinka@arb.ca.gov">Steve Zelinka</a>
                             <br />
                             Release number: URS280411-CARB
                         </div>
