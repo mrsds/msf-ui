@@ -29,6 +29,7 @@ import displayStyles from "_core/styles/display.scss";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import styles from "components/MethaneSidebar/FiltersContainerStyles.scss";
+import accessibilityStyles from "_core/styles/accessibility.scss";
 
 export class PlumeFiltersContainer extends Component {
     constructor(props) {
@@ -100,7 +101,12 @@ export class PlumeFiltersContainer extends Component {
 
         return (
             <React.Fragment>
-                <label htmlFor="PlumeIdFilter">Filter by Plume ID</label>
+                <label
+                    htmlFor="PlumeIdFilter"
+                    className={accessibilityStyles.hideExceptForScreenReaders}
+                >
+                    Filter by Plume ID
+                </label>
                 <SearchInput
                     icon={<Search />}
                     SearchInputId="PlumeIdFilter"
