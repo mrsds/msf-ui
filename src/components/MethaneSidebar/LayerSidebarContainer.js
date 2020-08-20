@@ -100,6 +100,9 @@ export class LayerSidebarContainer extends Component {
                     placement="right"
                 >
                     <Button
+                        title={
+                            this.props.layerSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"
+                        }
                         variant="raised"
                         className={styles.sidebarCollapseButton}
                         onClick={() =>

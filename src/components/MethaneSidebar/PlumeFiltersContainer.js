@@ -100,8 +100,10 @@ export class PlumeFiltersContainer extends Component {
 
         return (
             <React.Fragment>
+                <label htmlFor="PlumeIdFilter">Filter by Plume ID</label>
                 <SearchInput
                     icon={<Search />}
+                    SearchInputId="PlumeIdFilter"
                     placeholder="Filter by Plume ID"
                     value={plumeIDFilterSelectedValue}
                     disabled={false}
