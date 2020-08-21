@@ -302,6 +302,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                             <Target style={{ display: "inline-block" }}>
                                 <Tooltip title={"Set Layer Opacity"} placement="top">
                                     <LayerOpacityIcon
+                                        aria-label="Set Gridded Emissions Layer Opacity"
                                         opacity={this.props.layer.get("opacity")}
                                         className={styles.iconButtonSmall}
                                         color={this.isChangingOpacity ? "primary" : "default"}
@@ -337,6 +338,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                 </Manager>
                 <Tooltip title="Layer information" placement="top">
                     <IconButtonSmall
+                        aria-label="Gridded Emissions Layer information"
                         className={styles.iconButtonSmall}
                         onClick={() => this.openLayerInfo()}
                     >

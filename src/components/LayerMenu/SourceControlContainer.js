@@ -109,7 +109,13 @@ export class SourceControlContainer extends LayerControlContainerCore {
     }
 
     getColorbar() {
-        return <img src="img/PlumeIcon.png" className={stylesExtended.icon} />;
+        return (
+            <img
+                src="img/PlumeIcon.png"
+                className={stylesExtended.icon}
+                alt="Icon for Methane Point Source Map Layer Toggle"
+            />
+        );
     }
 
     renderIconRow() {
@@ -143,6 +149,7 @@ export class SourceControlContainer extends LayerControlContainerCore {
                             <Target style={{ display: "inline-block" }}>
                                 <Tooltip title={"Set Layer Opacity"} placement="top">
                                     <LayerOpacityIcon
+                                        aria-label="Set Methane Point Sources Layer Opacity"
                                         opacity={this.props.layer.get("opacity")}
                                         className={styles.iconButtonSmall}
                                         color={this.isChangingOpacity ? "primary" : "default"}
@@ -178,6 +185,7 @@ export class SourceControlContainer extends LayerControlContainerCore {
                 </Manager>
                 <Tooltip title="Layer information" placement="top">
                     <IconButtonSmall
+                        aria-label="Layer information for Methane Point Sources"
                         className={styles.iconButtonSmall}
                         onClick={() => this.openLayerInfo()}
                     >

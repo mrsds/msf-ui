@@ -169,6 +169,7 @@ export class InfrastructureControlContainer extends LayerControlContainerCore {
                             <Target style={{ display: "inline-block" }}>
                                 <Tooltip title={"Set Layer Opacity"} placement="top">
                                     <LayerOpacityIcon
+                                        aria-label="Set Infrastructure Layer Opacity"
                                         opacity={this.props.layer.get("opacity")}
                                         className={styles.iconButtonSmall}
                                         color={this.isChangingOpacity ? "primary" : "default"}
@@ -204,6 +205,7 @@ export class InfrastructureControlContainer extends LayerControlContainerCore {
                 </Manager>
                 <Tooltip title="Layer information" placement="top">
                     <IconButtonSmall
+                        aria-label="Infrastructure Layer information"
                         className={styles.iconButtonSmall}
                         onClick={() => this.openLayerInfo()}
                     >
