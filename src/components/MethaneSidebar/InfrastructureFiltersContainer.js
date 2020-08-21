@@ -31,6 +31,7 @@ import displayStyles from "_core/styles/display.scss";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import styles from "components/MethaneSidebar/FiltersContainerStyles.scss";
+import accessibilityStyles from "_core/styles/accessibility.scss";
 
 export class InfrastructureFiltersContainer extends Component {
     constructor(props) {
@@ -108,8 +109,15 @@ export class InfrastructureFiltersContainer extends Component {
 
         return (
             <React.Fragment>
+                <label
+                    htmlFor="InfrastructureNameIdFilter"
+                    className={accessibilityStyles.hideExceptForScreenReaders}
+                >
+                    Filter by Infrastructure Name or ID
+                </label>
                 <SearchInput
                     icon={<Search />}
+                    SearchInputId="InfrastructureNameIdFilter"
                     placeholder="Filter by Infrastructure Name/ID"
                     value={infrastructureNameFilterSelectedValue}
                     disabled={false}

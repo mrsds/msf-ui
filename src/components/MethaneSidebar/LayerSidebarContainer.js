@@ -100,7 +100,7 @@ export class LayerSidebarContainer extends Component {
                     placement="right"
                 >
                     <Button
-                        title={
+                        aria-label={
                             this.props.layerSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"
                         }
                         variant="raised"

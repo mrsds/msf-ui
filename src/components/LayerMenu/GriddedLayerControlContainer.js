@@ -160,6 +160,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
     renderSublayerSelection() {
         return (
             <select
+                aria-label="Select gridded layer"
                 onChange={e =>
                     this.props.mapActionsExtended.changeActiveGriddedLayer(e.target.value, true)
                 }
