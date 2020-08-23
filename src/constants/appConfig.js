@@ -24,7 +24,9 @@ const CORE_CONFIG = Immutable.fromJS(coreConfig);
 const OPS_CONFIG = Immutable.fromJS(window.APPLICATION_CONFIG);
 
 //const bePort = OPS_CONFIG.get("BE_PORT") ? `:${OPS_CONFIG.get("BE_PORT")}` : "";
-const beEndpoint = '/api';//`${OPS_CONFIG.get("BE_ENDPOINT")}${bePort}`;
+//const beEndpoint = '/api';//`${OPS_CONFIG.get("BE_ENDPOINT")}${bePort}`;  // This is the standard, changing for npm start dev
+const beEndpointPrefix = "http://carbei-dev:8000"; // TAKE THIS OUT FOR PROD!
+const beEndpoint = beEndpointPrefix + "/api"; //`${OPS_CONFIG.get("BE_ENDPOINT")}${bePort}`; // TAKE THIS OUT FOR PROD!
 
 // define your overrides for Core config here
 const APP_CONFIG = Immutable.fromJS({
@@ -118,14 +120,14 @@ const APP_CONFIG = Immutable.fromJS({
     GRIDDED_LAYER_TYPES: [
         {
             name: "GRIDDED_EMISSIONS_EPA",
-            dateEndpoint: "/server/data/epa_gridded_total_date_list.json",
-            endpoint: "/server/data/epa_gridded_total_{date}.geojson",
+            dateEndpoint: beEndpointPrefix + "/server/data/epa_gridded_total_date_list.json", // REMOVE FOR PROD!
+            endpoint: beEndpointPrefix + "/server/data/epa_gridded_total_{date}.geojson", // REMOVE FOR PROD!
             period: "yearly"
         },
         {
             name: "GRIDDED_EMISSIONS_V2",
             dateEndpoint: beEndpoint + "/data/gridded/gridded_date_list.json",
-            endpoint: "/server/data/gridded/v2/Fluxes_{date}.geojson",
+            endpoint: beEndpointPrefix + "/server/data/gridded/v2/Fluxes_{date}.geojson", // REMOVE FOR PROD!
             period: "daily"
         }
     ],
