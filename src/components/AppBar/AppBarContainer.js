@@ -51,6 +51,12 @@ const AppBarContainer = props => {
                                     labelContainer: styles.tabLabelContainer
                                 }}
                             />
+                            <Tab
+                                label="MGMT Console"
+                                classes={{
+                                    labelContainer: styles.tabLabelContainer
+                                }}
+                            />
                         </Tabs>
                         <AppButtons />
                     </Toolbar>

@@ -5,6 +5,10 @@ Explore, analyze, and download methane plumes detected from airborne platforms o
 ### Acknowledgements
 This data portal was developed with support from NASA's [Advancing Collaborative Connections for Earth System Sciences (ACCESS)](https://earthdata.nasa.gov/community/community-data-system-programs/access-projects) program and [Carbon Monitoring System (CMS)](https://carbon.nasa.gov/) program.
 
+Database hosting supported by the University of Arizona.
+
+This software is open-sourced using the [Apache 2 license](https://www.apache.org/licenses/LICENSE-2.0).
+
 ### Site Feedback and Contact
 For questions or comments about the site or data sets, please [contact the Methane Source Finder team](mailto:msf@jpl.nasa.gov).
 

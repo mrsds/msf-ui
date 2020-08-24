@@ -61,6 +61,7 @@ import MapTooltip from "components/Map/MapTooltip";
 import FeaturePicker from "components/FeaturePicker/FeaturePicker";
 import * as MSFTypes from "constants/MSFTypes";
 import MSFAnalyticsContainer from "components/MSFAnalytics/MSFAnalyticsContainer";
+import MSFControlContainer from "components/MSFControl/MSFControlContainer";
 import CookieAcceptContainer from "components/CookieAccept/CookieAcceptContainer";
 import Cookies from "universal-cookie";
 import LocationInputContainer from "components/LocationInput/LocationInputContainer";
@@ -94,7 +95,7 @@ export class AppContainer extends Component {
         document.addEventListener(
             "contextmenu",
             function(e) {
-                e.preventDefault();
+                //e.preventDefault();
             },
             false
         );
@@ -166,6 +167,10 @@ export class AppContainer extends Component {
             this.props.appMode === MSFTypes.APP_MODE_ANALYTICS
                 ? containerClasses
                 : displayStyles.hidden;
+        const controlContainerStyle =
+            this.props.appMode === MSFTypes.APP_MODE_CONTROL
+                ? containerClasses
+                : displayStyles.hidden;
         return (
             <MuiThemeProvider theme={theme}>
                 <div className={containerClasses}>
@@ -194,6 +199,9 @@ export class AppContainer extends Component {
                     </div>
                     <div className={analyticsContainerStyle}>
                         <MSFAnalyticsContainer />
+                    </div>
+                    <div className={controlContainerStyle}>
+                        <MSFControlContainer />
                     </div>
                 </div>
             </MuiThemeProvider>

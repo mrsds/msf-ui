@@ -32,3 +32,14 @@ export const AVIRIS_LAYER_UPDATED = "AVIRIS_LAYER_UPDATED";
 export const UPDATING_AVIRIS_LAYER = "UPDATING_AVIRIS_LAYER";
 
 export const GEOMETRY_MULTIPOLYGON = "MultiPolygon";
+
+export const CONTROL_JOB_SUBMISSION_OWNER_ID = "Job Owner ID";
+export const CONTROL_JOB_SUBMISSION_JOB_TAG = "Job Tag";
+export const CONTROL_JOB_SUBMISSION_LONRES = "Longitude Resolution";
+export const CONTROL_JOB_SUBMISSION_LATRES = "Latitude Resolution";
+export const CONTROL_JOB_SUBMISSION_LONLL = "Lower Left Longitude";
+export const CONTROL_JOB_SUBMISSION_LATLL = "Lower Left Latitude";
+export const CONTROL_JOB_SUBMISSION_NUMPIXX = "Number of X Pixels";
+export const CONTROL_JOB_SUBMISSION_NUMPIXY = "Number of Y Pixels";
+export const CONTROL_JOB_SUBMISSION_NUMPAR = "Number of Particles";
+export const CONTROL_JOB_SUBMISSION_NHRS = "Number of Hours";
