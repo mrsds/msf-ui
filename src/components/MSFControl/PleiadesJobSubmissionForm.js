@@ -13,11 +13,15 @@ import Input from "@material-ui/core/Input";
 import TextField from "@material-ui/core/TextField";
 import InputLabel from "@material-ui/core/InputLabel";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 import styles from "components/MSFControl/PleiadesJobSubmissionFormStyles.scss";
 import * as MSFControlActions from "actions/MSFControlActions";
 import Immutable from "immutable";
 import * as appStrings from "constants/appStrings";
+import ManagementConsoleUtil from "utils/ManagementConsoleUtil";
+import Snackbar from "@material-ui/core/Snackbar";
 
 export class PleiadesJobSubmissionForm extends Component {
     constructor(props) {
@@ -62,6 +66,18 @@ export class PleiadesJobSubmissionForm extends Component {
 
     handleNhrsChange(value) {
         this.props.changeNhrs(value);
+    }
+
+    handleSubmitClicked(e) {
+        console.info("Hi");
+
+        ManagementConsoleUtil.submitPleiadesJob(this.props)
+            .then(response => {
+                console.info(response);
+            })
+            .catch(error => {
+                console.info(error);
+            });
     }
 
     render() {
@@ -167,7 +183,12 @@ export class PleiadesJobSubmissionForm extends Component {
                     />
                 </div>
                 <div className={styles.inputRow}>
-                    <Button className={styles.submitButton}>Submit</Button>
+                    <Button
+                        className={styles.submitButton}
+                        onClick={evt => this.handleSubmitClicked()}
+                    >
+                        Submit
+                    </Button>
                 </div>
             </div>
         );

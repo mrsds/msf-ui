@@ -43,3 +43,5 @@ export const CONTROL_JOB_SUBMISSION_NUMPIXX = "Number of X Pixels";
 export const CONTROL_JOB_SUBMISSION_NUMPIXY = "Number of Y Pixels";
 export const CONTROL_JOB_SUBMISSION_NUMPAR = "Number of Particles";
 export const CONTROL_JOB_SUBMISSION_NHRS = "Number of Hours";
+
+export const FILE_TYPE_JSON = "json";
