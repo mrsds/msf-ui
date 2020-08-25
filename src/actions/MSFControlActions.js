@@ -70,3 +70,63 @@ export function changeJobSubmissionNhrs(nhrs) {
         dispatch({ type: typesMSF.CHANGE_CONTROL_SUBMISSION_NHRS, nhrs });
     };
 }
+
+function _buildPleiadesJobUrl(getState) {
+    return appConfig.URLS.pleiadesJobSubmitEndpoint
+        .replace("{jobowner}", getState().MSFControl.getIn(["jobSubmissionOptions", "jobowner"]))
+        .replace("{jobtag}", getState().MSFControl.getIn(["jobSubmissionOptions", "jobtag"]))
+        .replace("{lonres}", getState().MSFControl.getIn(["jobSubmissionOptions", "lonres"]))
+        .replace("{latres}", getState().MSFControl.getIn(["jobSubmissionOptions", "latres"]))
+        .replace("{lonll}", getState().MSFControl.getIn(["jobSubmissionOptions", "lonll"]))
+        .replace("{latll}", getState().MSFControl.getIn(["jobSubmissionOptions", "latll"]))
+        .replace("{numpixx}", getState().MSFControl.getIn(["jobSubmissionOptions", "numpixx"]))
+        .replace("{numpixy}", getState().MSFControl.getIn(["jobSubmissionOptions", "numpixy"]))
+        .replace("{numpar}", getState().MSFControl.getIn(["jobSubmissionOptions", "numpar"]))
+        .replace("{nhrs}", getState().MSFControl.getIn(["jobSubmissionOptions", "nhrs"]));
+}
+
+export function submitPleiadesJob() {
+    return (dispatch, getState) => {
+        const url = _buildPleiadesJobUrl(getState);
+
+        fetch(url, { credentials: "same-origin" })
+            .then(res => res.json())
+            .then(json => {
+                console.info(json);
+                if (json.code && json.code !== 200) {
+                    dispatch(
+                        alertActions.addAlert({
+                            title: appStringsMSF.ALERTS.PLEIADES_JOB_SUBMIT_FAILED.title,
+                            body:
+                                appStringsMSF.ALERTS.PLEIADES_JOB_SUBMIT_FAILED.formatString +
+                                ": " +
+                                json.error,
+                            severity: appStringsMSF.ALERTS.PLEIADES_JOB_SUBMIT_FAILED.severity,
+                            time: new Date()
+                        })
+                    );
+                } else {
+                    dispatch(
+                        alertActions.addAlert({
+                            title: appStringsMSF.ALERTS.PLEIADES_JOB_SUBMIT_SUCCEEDED.title,
+                            body: appStringsMSF.ALERTS.PLEIADES_JOB_SUBMIT_SUCCEEDED.formatString,
+                            severity: appStringsMSF.ALERTS.PLEIADES_JOB_SUBMIT_SUCCEEDED.severity,
+                            time: new Date()
+                        })
+                    );
+                }
+            })
+            .catch(err => {
+                console.warn(`Error submitting pleiades job request`, err);
+                console.info(err);
+                dispatch(
+                    alertActions.addAlert({
+                        title: appStringsMSF.ALERTS.PLEIADES_JOB_SUBMIT_FAILED.title,
+                        body: appStringsMSF.ALERTS.PLEIADES_JOB_SUBMIT_FAILED.formatString,
+                        severity: appStringsMSF.ALERTS.PLEIADES_JOB_SUBMIT_FAILED.severity,
+                        time: new Date()
+                    })
+                );
+            });
+    };
+}

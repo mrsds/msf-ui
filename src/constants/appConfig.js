@@ -63,7 +63,10 @@ const APP_CONFIG = Immutable.fromJS({
             beEndpoint +
             "/methanePlumeSourcesSummary?county={county}&vista_category={vista_category}&sector_level_3={sector_level_3}",
         sourceListDownload: beEndpoint + "/csv/Source_list_20191031.csv",
-        plumeListDownload: beEndpoint + "/csv/Plume_list_20191031.csv"
+        plumeListDownload: beEndpoint + "/csv/Plume_list_20191031.csv",
+        pleiadesJobSubmitEndpoint:
+            beEndpoint +
+            "/pleiades/run?jobowner={jobowner}&jobtag={jobtag}&lonres={lonres}&latres={latres}&lonll={lonll}&latll={latll}&numpixx={numpixx}&numpixy={numpixy}&numpar={numpar}&nhrs={nhrs}"
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
     PLUME_START_DATE: new Date(2000, 0, 1),
@@ -131,7 +134,8 @@ const APP_CONFIG = Immutable.fromJS({
     ],
     DEFAULT_ANALYTICS_ENABLED: true,
     GOOGLE_ANALYTICS_ENABLED: true,
-    GOOGLE_ANALYTICS_ID: "UA-145064320-1"
+    GOOGLE_ANALYTICS_ID: "UA-145064320-1",
+    MSF_MANAGEMENT_CONSOLE_ENABLED: true
 });
 
 // define and export the final config

@@ -15,6 +15,18 @@ import styles from "components/AppBar/AppBarContainerStyles.scss";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import * as viewActions from "actions/viewActions";
+import appConfig from "constants/appConfig";
+
+const _managementConsoleTab = () => {
+    return (
+        <Tab
+            label="MGMT Console"
+            classes={{
+                labelContainer: styles.tabLabelContainer
+            }}
+        />
+    );
+};
 
 const AppBarContainer = props => {
     return (
@@ -51,12 +63,9 @@ const AppBarContainer = props => {
                                     labelContainer: styles.tabLabelContainer
                                 }}
                             />
-                            <Tab
-                                label="MGMT Console"
-                                classes={{
-                                    labelContainer: styles.tabLabelContainer
-                                }}
-                            />
+                            {appConfig.MSF_MANAGEMENT_CONSOLE_ENABLED
+                                ? _managementConsoleTab()
+                                : ""}
                         </Tabs>
                         <AppButtons />
                     </Toolbar>

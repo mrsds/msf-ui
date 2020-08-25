@@ -27,7 +27,7 @@ export const MSFControlState = Immutable.fromJS({
     controlMode: MSFTypes.CONTROL_MODE_JOB_SUBMISSION,
     jobSubmissionOptions: {
         jobowner: "kgill",
-        jobtag: null,
+        jobtag: "",
         lonres: 0.05,
         latres: 0.05,
         lonll: -118.5,

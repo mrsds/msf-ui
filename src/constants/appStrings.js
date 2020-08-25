@@ -23,6 +23,17 @@ export const ALERTS = {
         title: "Plume List for Feature Failed",
         formatString: "Failed to load plume list for selected feature",
         severity: 3
+    },
+    PLEIADES_JOB_SUBMIT_FAILED: {
+        title: "Pleiades Job Submission Failed",
+        formatString:
+            "The server returned an error while attempting to submit your pleiades job request",
+        severity: 3
+    },
+    PLEIADES_JOB_SUBMIT_SUCCEEDED: {
+        title: "Pleiades Job Submitted",
+        formatString: "Your Pleiades job request has been submitted successfully",
+        severity: 0
     }
 };
 

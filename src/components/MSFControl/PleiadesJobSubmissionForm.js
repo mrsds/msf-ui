@@ -1,27 +1,13 @@
-import { Bar as BarChart } from "react-chartjs-2";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import ErrorBarsPlugin from "chartjs-plugin-error-bars";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import Typography from "@material-ui/core/Typography";
-import MiscUtilExtended from "utils/MiscUtilExtended";
-import Input from "@material-ui/core/Input";
 import TextField from "@material-ui/core/TextField";
 import InputLabel from "@material-ui/core/InputLabel";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-
 import styles from "components/MSFControl/PleiadesJobSubmissionFormStyles.scss";
 import * as MSFControlActions from "actions/MSFControlActions";
-import Immutable from "immutable";
 import * as appStrings from "constants/appStrings";
-import ManagementConsoleUtil from "utils/ManagementConsoleUtil";
-import Snackbar from "@material-ui/core/Snackbar";
 
 export class PleiadesJobSubmissionForm extends Component {
     constructor(props) {
@@ -69,18 +55,23 @@ export class PleiadesJobSubmissionForm extends Component {
     }
 
     handleSubmitClicked(e) {
-        console.info("Hi");
-
-        ManagementConsoleUtil.submitPleiadesJob(this.props)
-            .then(response => {
-                console.info(response);
-            })
-            .catch(error => {
-                console.info(error);
-            });
+        this.props.submitPleiadesJob();
     }
 
     render() {
+        const {
+            jobowner,
+            jobtag,
+            lonres,
+            latres,
+            lonll,
+            latll,
+            numpixx,
+            numpixy,
+            numpar,
+            nhrs
+        } = this.props;
+
         return (
             <div className={styles.jobFormContainer}>
                 <h1>Pleiades Job Submission</h1>
@@ -89,7 +80,8 @@ export class PleiadesJobSubmissionForm extends Component {
                     <TextField
                         className={styles.inputContainer}
                         onChange={evt => this.handleOwnerChange(evt.target.value)}
-                        value={this.props.jobowner}
+                        error={jobowner == null || jobowner.length == 0}
+                        value={jobowner}
                         placeholder={appStrings.CONTROL_JOB_SUBMISSION_OWNER_ID}
                     />
                 </div>
@@ -98,7 +90,8 @@ export class PleiadesJobSubmissionForm extends Component {
                     <TextField
                         className={styles.inputContainer}
                         onChange={evt => this.handleTagChange(evt.target.value)}
-                        value={this.props.jobtag}
+                        value={jobtag}
+                        error={jobtag == null || jobtag.length == 0}
                         placeholder={appStrings.CONTROL_JOB_SUBMISSION_JOB_TAG}
                     />
                 </div>
@@ -107,7 +100,8 @@ export class PleiadesJobSubmissionForm extends Component {
                     <TextField
                         className={styles.inputContainer}
                         onChange={evt => this.handleLonResChange(evt.target.value)}
-                        value={this.props.lonres}
+                        error={lonres <= 0}
+                        value={lonres}
                         type="number"
                         placeholder={appStrings.CONTROL_JOB_SUBMISSION_LONRES}
                     />
@@ -117,7 +111,8 @@ export class PleiadesJobSubmissionForm extends Component {
                     <TextField
                         className={styles.inputContainer}
                         onChange={evt => this.handleLatResChange(evt.target.value)}
-                        value={this.props.latres}
+                        error={latres <= 0}
+                        value={latres}
                         type="number"
                         placeholder={appStrings.CONTROL_JOB_SUBMISSION_LATRES}
                     />
@@ -127,7 +122,8 @@ export class PleiadesJobSubmissionForm extends Component {
                     <TextField
                         className={styles.inputContainer}
                         onChange={evt => this.handleLonLLChange(evt.target.value)}
-                        value={this.props.lonll}
+                        error={lonll == null || lonll == "" || lonll < -180.0 || lonll > 180.0}
+                        value={lonll}
                         type="number"
                         placeholder={appStrings.CONTROL_JOB_SUBMISSION_LONLL}
                     />
@@ -137,7 +133,8 @@ export class PleiadesJobSubmissionForm extends Component {
                     <TextField
                         className={styles.inputContainer}
                         onChange={evt => this.handleLatLLChange(evt.target.value)}
-                        value={this.props.latll}
+                        error={latll == null || latll == "" || latll < -90.0 || latll > 90.0}
+                        value={latll}
                         type="number"
                         placeholder={appStrings.CONTROL_JOB_SUBMISSION_LATLL}
                     />
@@ -147,7 +144,8 @@ export class PleiadesJobSubmissionForm extends Component {
                     <TextField
                         className={styles.inputContainer}
                         onChange={evt => this.handleNumPixXChange(evt.target.value)}
-                        value={this.props.numpixx}
+                        error={numpixx <= 0}
+                        value={numpixx}
                         type="number"
                         placeholder={appStrings.CONTROL_JOB_SUBMISSION_NUMPIXX}
                     />
@@ -157,7 +155,8 @@ export class PleiadesJobSubmissionForm extends Component {
                     <TextField
                         className={styles.inputContainer}
                         onChange={evt => this.handleNumPixYChange(evt.target.value)}
-                        value={this.props.numpixy}
+                        error={numpixy <= 0}
+                        value={numpixy}
                         type="number"
                         placeholder={appStrings.CONTROL_JOB_SUBMISSION_NUMPIXY}
                     />
@@ -167,7 +166,8 @@ export class PleiadesJobSubmissionForm extends Component {
                     <TextField
                         className={styles.inputContainer}
                         onChange={evt => this.handleNumParChange(evt.target.value)}
-                        value={this.props.numpar}
+                        error={numpar <= 0}
+                        value={numpar}
                         type="number"
                         placeholder={appStrings.CONTROL_JOB_SUBMISSION_NUMPAR}
                     />
@@ -177,7 +177,8 @@ export class PleiadesJobSubmissionForm extends Component {
                     <TextField
                         className={styles.inputContainer}
                         onChange={evt => this.handleNhrsChange(evt.target.value)}
-                        value={this.props.nhrs}
+                        error={nhrs <= 0}
+                        value={nhrs}
                         type="number"
                         placeholder={appStrings.CONTROL_JOB_SUBMISSION_NHRS}
                     />
@@ -215,7 +216,8 @@ PleiadesJobSubmissionForm.propTypes = {
     changeNumPixX: PropTypes.func.isRequired,
     changeNumPixY: PropTypes.func.isRequired,
     changeNumPar: PropTypes.func.isRequired,
-    changeNhrs: PropTypes.func.isRequired
+    changeNhrs: PropTypes.func.isRequired,
+    submitPleiadesJob: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -244,7 +246,8 @@ function mapDispatchToProps(dispatch) {
         changeNumPixX: bindActionCreators(MSFControlActions.changeJobSubmissionNumPixX, dispatch),
         changeNumPixY: bindActionCreators(MSFControlActions.changeJobSubmissionNumPixY, dispatch),
         changeNumPar: bindActionCreators(MSFControlActions.changeJobSubmissionNumPar, dispatch),
-        changeNhrs: bindActionCreators(MSFControlActions.changeJobSubmissionNhrs, dispatch)
+        changeNhrs: bindActionCreators(MSFControlActions.changeJobSubmissionNhrs, dispatch),
+        submitPleiadesJob: bindActionCreators(MSFControlActions.submitPleiadesJob, dispatch)
     };
 }
 
