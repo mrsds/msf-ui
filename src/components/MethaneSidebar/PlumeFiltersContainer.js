@@ -209,6 +209,9 @@ export class PlumeFiltersContainer extends Component {
                                                 <Radio
                                                     value={""}
                                                     checked={plumeFluxFilterSelectedValue === null}
+                                                    inputProps={{
+                                                        "aria-label": "Filter by Any Plume Flux"
+                                                    }}
                                                 />
                                                 <Typography className={styles.radioLabel}>
                                                     Any Plume Flux
@@ -231,6 +234,17 @@ export class PlumeFiltersContainer extends Component {
                                                             x.get("value") ===
                                                             plumeFluxFilterSelectedValue
                                                         }
+                                                        inputProps={{
+                                                            "aria-label":
+                                                                "Filter by flux greater than " +
+                                                                x.get("value").toString() +
+                                                                " kg per hr (currently " +
+                                                                (x.get("value") ===
+                                                                plumeFluxFilterSelectedValue
+                                                                    ? "checked"
+                                                                    : "unchecked") +
+                                                                ")"
+                                                        }}
                                                     />
                                                     <Typography className={styles.radioLabel}>
                                                         {x.get("label")}

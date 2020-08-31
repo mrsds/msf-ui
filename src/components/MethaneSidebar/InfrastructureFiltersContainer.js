@@ -238,6 +238,18 @@ export class InfrastructureFiltersContainer extends Component {
                                                                     .size ===
                                                                 activeInfrastructureSubCategories.size
                                                             }
+                                                            //aria-label="Select all infrastructure"
+                                                            inputProps={{
+                                                                "aria-label":
+                                                                    "Toggle all infrastructure (currently " +
+                                                                    (this.props
+                                                                        .activeInfrastructureSubCategories
+                                                                        .size ===
+                                                                    activeInfrastructureSubCategories.size
+                                                                        ? "on"
+                                                                        : "off") +
+                                                                    ")"
+                                                            }}
                                                         />
                                                     </ListItemSecondaryAction>
                                                 </ListItem>
@@ -290,6 +302,16 @@ export class InfrastructureFiltersContainer extends Component {
                                                                         checked={checked}
                                                                         tabIndex={-1}
                                                                         disableRipple
+                                                                        inputProps={{
+                                                                            "aria-label":
+                                                                                "Toggle " +
+                                                                                categoryName +
+                                                                                " infrastructure filter (currently " +
+                                                                                (checked
+                                                                                    ? "checked"
+                                                                                    : "unchecked") +
+                                                                                ")"
+                                                                        }}
                                                                     />
                                                                     <ListItemText
                                                                         primary={categoryName}

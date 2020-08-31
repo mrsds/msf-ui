@@ -24,6 +24,7 @@ import * as layerSidebarActions from "actions/layerSidebarActions";
 import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import * as mapActionsMSF from "actions/mapActions";
+import accessibilityStyles from "_core/styles/accessibility.scss";
 
 export class InfrastructureContainer extends Component {
     clearTextSearch() {
