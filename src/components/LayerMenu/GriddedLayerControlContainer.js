@@ -133,6 +133,12 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                         checked={this.props.group.get("isActive")}
                         onChange={(value, checked) => this.setLayerActive(!checked)}
                         onClick={evt => this.setLayerActive(evt.target.checked)}
+                        inputProps={{
+                            "aria-label":
+                                "Toggle Gridded Emission Maps Layer (currently " +
+                                (this.props.layer.get("isActive") ? "on" : "off") +
+                                ")"
+                        }}
                     />
                 </Tooltip>
                 <span className={textStyles.textEllipsis}>
@@ -148,7 +154,10 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                     }}
                 >
                     <Tooltip title="Layer information" placement="left">
-                        <IconButtonSmall onClick={() => this.openLayerInfo()}>
+                        <IconButtonSmall
+                            onClick={() => this.openLayerInfo()}
+                            aria-label="Gridded Emissions Layer information"
+                        >
                             <InfoOutlineIcon />
                         </IconButtonSmall>
                     </Tooltip>
@@ -193,7 +202,10 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                         }}
                     >
                         <Tooltip title="Choose date" placement="left">
-                            <IconButtonSmall onClick={() => this.toggleDatePickerVisible()}>
+                            <IconButtonSmall
+                                onClick={() => this.toggleDatePickerVisible()}
+                                aria-label="Toggle Date Picker"
+                            >
                                 <DateRangeIcon />
                             </IconButtonSmall>
                         </Tooltip>
