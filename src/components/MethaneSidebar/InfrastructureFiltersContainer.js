@@ -194,6 +194,7 @@ export class InfrastructureFiltersContainer extends Component {
                                                     Infrastructure Types
                                                 </Typography>
                                                 <IconButtonSmall
+                                                    aria-label="Close Infrastructure Types Selector"
                                                     color="inherit"
                                                     onClick={() =>
                                                         this.setPopperActive(

@@ -185,6 +185,7 @@ export class PlumeFiltersContainer extends Component {
                                                     Plume Emissions
                                                 </Typography>
                                                 <IconButtonSmall
+                                                    aria-label="Close Plume Flux Filter Selector"
                                                     color="inherit"
                                                     onClick={() =>
                                                         this.setPopperActive("plumeFlux", false)

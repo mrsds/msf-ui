@@ -50,6 +50,7 @@ export class SearchInput extends Component {
             actionIcon = (
                 <span className={actionIconClasses}>
                     <IconButtonSmall
+                        aria-label="Clear Filters"
                         disableRipple={true}
                         color={this.props.actionIconPrimary ? "primary" : "default"}
                         disabled={
