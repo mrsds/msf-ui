@@ -251,8 +251,10 @@ export class PlumesContainer extends Component {
             innerContent = (
                 <div className={layerSidebarStyles.noResultsInfo} hidden={hasResults}>
                     <CloudOffOutlineIcon className={layerSidebarStyles.noResultsIcon} />
-                    <div className={layerSidebarStyles.noResultsTitle}>No Plumes Found</div>
-                    <div className={layerSidebarStyles.noResultsSubtitle}>
+                    <div className={layerSidebarStyles.noResultsTitleHiContrast}>
+                        No Plumes Found
+                    </div>
+                    <div className={layerSidebarStyles.noResultsSubtitleHiContrast}>
                         Try widening some search parameters
                     </div>
                 </div>

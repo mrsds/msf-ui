@@ -118,7 +118,11 @@ export class DataFilterContainer extends Component {
                                         key={"All"}
                                         className={styles.formControlLabel}
                                     >
-                                        <Radio value={""} checked={currentValue === null} />
+                                        <Radio
+                                            value={""}
+                                            checked={currentValue === null}
+                                            inputProps={{ "aria-label": "All filter" }}
+                                        />
                                         <Typography className={styles.radioLabel}>All</Typography>
                                     </div>
                                     {getOptionsFunction
@@ -138,6 +142,7 @@ export class DataFilterContainer extends Component {
                                                             currentValue !== null &&
                                                             currentValue === sourceId
                                                         }
+                                                        inputProps={{ "aria-label": sourceId }} //Add if checked, same for "All" item
                                                     />
                                                     <Typography className={styles.radioLabel}>
                                                         {sourceId.replace(/_/g, " ")}

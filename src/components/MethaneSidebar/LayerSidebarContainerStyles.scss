@@ -107,10 +107,18 @@
     font-size: 1.9rem;
     font-weight: 500;
 }
+.noResultsTitleHiContrast {
+    @extend .noResultsTitleHiContrast;
+    color: #707070;
+}
 .noResultsSubtitle {
     font-size: 1.4rem;
     margin-top: 2px;
     font-style: italic;
+}
+.noResultsSubtitleHiContrast {
+    @extend .noResultsSubtitle;
+    color: #707070;
 }
 .noResultsIcon {
     width: 125px;
