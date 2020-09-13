@@ -263,7 +263,11 @@ export class PlumeFiltersContainer extends Component {
                                 this.props.setPlumeDateFilter();
                             }}
                             value={this.props.startDate ? this.props.startDate : ""}
-                            label={this.props.startDate ? this.props.startDate : ""}
+                            label={
+                                this.props.startDate
+                                    ? this.props.startDate
+                                    : "Date filter (currently none)"
+                            }
                             active={true}
                         />
                         <Target className={styles.sorterContainer}>
