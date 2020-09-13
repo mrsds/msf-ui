@@ -235,8 +235,8 @@ export class PlumeChartingContainer extends Component {
                                     }
                                 >
                                     <img
-                                        src={feature.get("rgbqlctr_url")}
-                                        alt={feature.get("name")}
+                                        src={this.props.feature.get("rgbqlctr_url")}
+                                        alt={this.props.feature.get("name")}
                                     />
                                     <GridListTileBar
                                         title={
