@@ -1,0 +1,43 @@
+@import "~styles/colors";
+
+.root {
+}
+
+.active,
+.active:focus {
+    background: #767676;
+    .label {
+        color: white;
+    }
+}
+
+.label {
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.arrowIcon {
+    margin: 0px 1px 0px 5px;
+    // &:hover {
+    //     color: rgba(255, 255, 255, 0.77);
+    // }
+}
+.deleteIcon {
+    transition: color 50ms ease;
+    margin: 0px 4px 0px -4px;
+    color: rgba(0, 0, 0, 0.64);
+    &:hover {
+        color: rgba(255, 255, 255, 0.5);
+    }
+}
+.primary {
+    background: $color-primary !important;
+    color: white;
+    &:hover {
+        background: darken($color-primary, 5%) !important;
+    }
+    .label {
+        -webkit-font-smoothing: antialiased;
+        font-weight: 500;
+        color: white;
+    }
+}
