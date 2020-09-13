@@ -80,11 +80,15 @@ export class PlumeDateFilterControl extends Component {
                 <Paper elevation={8} className={styles.dateControl}>
                     <FormGroup row>
                         <FormControl className={yearClass}>
-                            <InputLabel htmlFor="year-select">Year</InputLabel>
+                            <InputLabel htmlFor={"year-select-" + this.props.popperId}>
+                                Year
+                            </InputLabel>
                             <Select
                                 value={currentDate.year()}
                                 autoWidth={true}
-                                input={<Input name="Year" id="year-select" />}
+                                input={
+                                    <Input name="Year" id={"year-select-" + this.props.popperId} />
+                                }
                                 onChange={event => this.updateDatePart(event, "year")}
                             >
                                 {yearList.map(year => (
@@ -95,11 +99,18 @@ export class PlumeDateFilterControl extends Component {
                             </Select>
                         </FormControl>
                         <FormControl className={monthClass}>
-                            <InputLabel htmlFor="month-select">Month</InputLabel>
+                            <InputLabel htmlFor={"month-select-" + this.props.popperId}>
+                                Month
+                            </InputLabel>
                             <Select
                                 value={currentDate.format("MMM")}
                                 autoWidth={true}
-                                input={<Input name="Month" id="month-select" />}
+                                input={
+                                    <Input
+                                        name="Month"
+                                        id={"month-select-" + this.props.popperId}
+                                    />
+                                }
                                 onChange={event => this.updateDatePart(event, "month")}
                             >
                                 {monthList.map(month => (
@@ -110,11 +121,15 @@ export class PlumeDateFilterControl extends Component {
                             </Select>
                         </FormControl>
                         <FormControl className={dayClass}>
-                            <InputLabel htmlFor="day-select">Day</InputLabel>
+                            <InputLabel htmlFor={"day-select-" + this.props.popperId}>
+                                Day
+                            </InputLabel>
                             <Select
                                 value={currentDate.date()}
                                 autoWidth={true}
-                                input={<Input name="Day" id="day-select" />}
+                                input={
+                                    <Input name="Day" id={"day-select-" + this.props.popperId} />
+                                }
                                 onChange={event => this.updateDatePart(event, "day")}
                             >
                                 {dayList.map(day => (
@@ -144,6 +159,7 @@ PlumeDateFilterControl.propTypes = {
     earliestDate: PropTypes.object,
     latestDate: PropTypes.object,
     updateDateFunction: PropTypes.func,
+    popperId: PropTypes.string, // To label date selector if it is a start or end date, otherwise get dup ids
     onClose: PropTypes.func
 };
 

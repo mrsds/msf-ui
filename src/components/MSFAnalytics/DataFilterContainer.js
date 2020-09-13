@@ -202,6 +202,7 @@ export class DataFilterContainer extends Component {
                                 earliestDate={earliestDate}
                                 latestDate={latestDate}
                                 updateDateFunction={updateFunction}
+                                popperId={popperId}
                                 onClose={() => {
                                     this.setPopperActive(popperId, false);
                                     this.props.updateActiveAnalyticsTab();
@@ -238,6 +239,7 @@ export class DataFilterContainer extends Component {
                     href={downloadUrl}
                     target="_blank"
                     variant="fab"
+                    aria-label={downloadText}
                 >
                     <FileDownloadIcon />
                 </Button>
