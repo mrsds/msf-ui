@@ -89,7 +89,7 @@ export class LandingPage extends Component {
                             <div className={styles.section_hero}>
                                 Methane Source Finder is an interactive map that helps you explore
                                 <br />
-                                methane data and related infrastructure in the state of California.
+                                multi-scale methane data in selected regions.
                             </div>
                             <div className={styles.map_button_container}>
                                 <Link to="./map">
@@ -117,10 +117,12 @@ export class LandingPage extends Component {
                                         ABOUT
                                     </Typography>
                                     Methane Source Finder helps you explore, analyze, and download
-                                    methane data across a range of scales in California derived from
-                                    airborne remote-sensing, surface monitoring networks and
-                                    satellites on an interactive map alongside infrastructure
-                                    information.
+                                    methane data across a range of scales derived from airborne
+                                    remote-sensing, surface monitoring networks and satellites on an
+                                    interactive map alongside infrastructure information, where
+                                    available. This prototype is currently limited to California and
+                                    the Permian basin. Stay tuned for future expansion to other
+                                    regions!
                                 </div>
                                 <div className={styles.image_container}>
                                     <img
@@ -185,8 +187,9 @@ export class LandingPage extends Component {
                                     Division, the Carbon Monitoring System (CMS) program and the
                                     Advancing Collaborative Connections for Earth System Science
                                     (ACCESS) program. Additional funding was provided by the
-                                    California Air Resources Board, the California Energy Commission
-                                    and the National Institute of Standards and Technology.
+                                    California Air Resources Board, the California Energy
+                                    Commission, the National Institute of Standards and Technology,
+                                    Rocky Mountain Institute, and the University of Arizona.
                                 </div>
 
                                 <Typography
