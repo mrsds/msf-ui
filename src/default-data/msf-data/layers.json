@@ -331,25 +331,8 @@
             }
         },
         {
-            "id": "Mapbox_Streets_Satellite",
-            "title": "Mapbox Streets-Satellite",
-            "type": "basemap",
-            "thumbnailImage": "https://a.tile.openstreetmap.org/2/1/2.png",
-            "handleAs": "xyz_raster",
-            "updateParameters": { "time": false },
-            "wmtsOptions": {
-                "url": "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                "projection": "EPSG:3857",
-                "tileGrid": {
-                    "minZoom": 0,
-                    "maxZoom": 18,
-                    "tileSize": 256
-                }
-            }
-        },
-        {
-            "id": "Mapbox_Streets",
-            "title": "Mapbox Streets",
+            "id": "Open_Street_Map",
+            "title": "Open Street Map",
             "type": "basemap",
             "thumbnailImage": "https://a.tile.openstreetmap.org/2/1/2.png",
             "handleAs": "xyz_raster",
