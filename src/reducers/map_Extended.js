@@ -54,6 +54,8 @@ export default function map_Extended(
             return opt_reducer.setPreviousZoom(state, action);
         case actionTypesMSF.SET_JUMP_TO_NEAREST_PENDING:
             return opt_reducer.setJumpToNearestPending(state, action);
+        case actionTypesMSF.SET_HOME_AREA_PICKER_VISIBLE:
+            return opt_reducer.setHomeAreaPickerModalVisible(state, action);
         default:
             return map.call(this, state, action, opt_reducer);
     }

@@ -494,12 +494,14 @@ function setCookie(params) {
 export function setInitialHomeArea() {
     return dispatch => {
         const cookie = getCookie();
-        const location = cookie ? cookie.location : MSFTypes.HOME_AREA_LOS_ANGELES;
-        const extent = cookie ? cookie.extent : MSFTypes.EXTENTS_LOS_ANGELES;
+        const location = cookie ? cookie.location : MSFTypes.HOME_AREA_PERMIAN_BASIN;
+        const extent = cookie ? cookie.extent : MSFTypes.EXTENTS_PERMIAN_BASIN;
 
-        dispatch({ type: typesMSF.SET_HOME_AREA, location, extent });
-        if (cookie) dispatch({ type: typesMSF.SET_COOKIE_ACCEPT, accept: true });
+        // dispatch({ type: typesMSF.SET_HOME_AREA, location, extent });
+        // if (cookie) dispatch({ type: typesMSF.SET_COOKIE_ACCEPT, accept: true });
         dispatch(mapActions.setMapView({ extent }, true));
+
+        if (!cookie || !cookie.location || !cookie.extent) dispatch(setHomeAreaPickerVisible(true));
     };
 }
 
@@ -591,4 +593,8 @@ export function toggleFlightLineLayer(active) {
                 analyticsValue: getState().map.get("currentZoom")
             });
     return { type: types.NO_ACTION };
+}
+
+export function setHomeAreaPickerVisible(visible) {
+    return { type: typesMSF.SET_HOME_AREA_PICKER_VISIBLE, visible };
 }

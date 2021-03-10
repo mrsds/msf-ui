@@ -275,4 +275,8 @@ export default class MapReducer_Extended extends MapReducer {
     static setJumpToNearestPending(state, action) {
         return state.set("timelineJumpToNearestPending", action.direction);
     }
+
+    static setHomeAreaPickerModalVisible(state, action) {
+        return state.set("chooseHomeAreaModalVisible", action.visible);
+    }
 }
