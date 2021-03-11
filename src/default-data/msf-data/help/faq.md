@@ -113,12 +113,6 @@ For plume observations through 2017, the value will be given as "not available" 
 
 The availability of Geographic Information System (GIS) data regarding facilities and infrastructure varies widely by jurisdictions. For many sectors there are incomplete data sets and/or inconsistent file formats. In California we spent two years compiling and validating a GIS data set called Vista using public records. This effort can be time-consuming and expensive to replicate in other regions and so we do not include GIS infrastructure data outside of California in this prototype data portal. We are working with our research partners to develop global data sets that will ultimately have similar content as Vista.
 
-### A note on 2018 plume imagery for California
-
-For all 2018 plume imagery, the analysis to estimate flux has not yet been performed (as of July 2019), and is therefore labeled as TBD (to be determined).
-
-Additionally, due to the incomplete analysis of the 2018 plume image data there will be some discrepancies between the Analytics section of the web site and the Plume Detail pages on the map. This is because the 2018 data is not completely integrated yet. For example, the number of flyovers in each representation of the data may be different.
-
 ### Journal Papers and Reports
 
 The following journal papers and reports describe the methods used to generate the various data sets presented here. Please use the appropriate citation when referencing a given data product in a report or paper.
