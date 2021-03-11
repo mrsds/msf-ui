@@ -46,6 +46,7 @@ import LayerSidebarContainer from "components/MethaneSidebar/LayerSidebarContain
 import LocationInputContainer from "components/LocationInput/LocationInputContainer";
 import HomeAreaPickerContainer from "components/HomeAreaPicker/HomeAreaPickerContainer";
 import MSFAnalyticsContainer from "components/MSFAnalytics/MSFAnalyticsContainer";
+import MSFControlContainer from "components/MSFControl/MSFControlContainer";
 import * as MSFTypes from "constants/MSFTypes";
 import MapContainerExtended from "components/Map/MapContainerExtended";
 import MapControlsContainerExtended from "components/Map/MapControlsContainerExtended";
