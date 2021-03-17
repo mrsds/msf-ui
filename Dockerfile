@@ -14,4 +14,6 @@ RUN npm i
 COPY . /home/msf-ui
 RUN npm run build
 
-CMD npm run open:dist
+# Build server
+RUN npm i express
+CMD node staticServer.js
