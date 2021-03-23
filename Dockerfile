@@ -1,7 +1,19 @@
+FROM node:10
 
-FROM nginx
+RUN mkdir /home/msf-ui
 
-COPY docker/default.conf /etc/nginx/conf.d/default.conf
-COPY dist /usr/share/nginx/html
+# Install server
+WORKDIR /home/msf-ui
 
-EXPOSE 80/tcp
+# Install deps
+COPY package.json /home/msf-ui
+COPY package-lock.json /home/msf-ui
+RUN npm i
+
+# Build msf-ui
+COPY . /home/msf-ui
+RUN npm run build
+
+# Build server
+RUN npm i express
+CMD node staticServer.js
