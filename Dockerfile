@@ -12,6 +12,7 @@ RUN npm i
 
 # Build msf-ui
 COPY . /home/msf-ui
+RUN npm run postinstall
 RUN npm run build
 
 # Build server
