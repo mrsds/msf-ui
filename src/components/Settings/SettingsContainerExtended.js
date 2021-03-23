@@ -1,37 +1,28 @@
-import Immutable from "immutable";
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import { connect } from "react-redux";
 import Checkbox from "@material-ui/core/Checkbox";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore";
-import appConfig from "constants/appConfig";
-import * as appStrings from "_core/constants/appStrings";
-import * as appActions from "_core/actions/appActions";
-import * as mapActions from "actions/mapActions";
-import * as dateSliderActions from "_core/actions/dateSliderActions";
-import * as analyticsActions from "_core/actions/analyticsActions";
-import MiscUtil from "_core/utils/MiscUtil";
-import { ModalMenu } from "_core/components/ModalMenu";
+import Collapse from "@material-ui/core/Collapse";
 import Divider from "@material-ui/core/Divider";
-import HomeIcon from "@material-ui/icons/Home";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import Collapse from "@material-ui/core/Collapse";
+import HomeIcon from "@material-ui/icons/Home";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore";
+
+import { ModalMenu } from "_core/components/ModalMenu";
 import * as MSFTypes from "constants/MSFTypes";
-import styles from "components/Settings/SettingsContainerStyles.scss";
+import * as analyticsActions from "_core/actions/analyticsActions";
+import * as appActions from "_core/actions/appActions";
 import * as appActionsExtended from "actions/appActionsExtended";
+import * as dateSliderActions from "_core/actions/dateSliderActions";
+import * as mapActions from "actions/mapActions";
+import styles from "components/Settings/SettingsContainerStyles.scss";
 
 export class SettingsContainerExtended extends Component {
     shouldComponentUpdate(nextProps) {
@@ -108,42 +99,25 @@ export class SettingsContainerExtended extends Component {
                     </ListItem>
                     <Collapse in={this.props.homeSelectMenuOpen} timeout="auto" unmountOnExit>
                         <List>
-                            <ListItem
-                                button
-                                onClick={() =>
-                                    this.props.mapActions.setHomeArea(
-                                        MSFTypes.HOME_AREA_LOS_ANGELES
-                                    )
-                                }
-                                className={
-                                    homeAreaLocation === MSFTypes.HOME_AREA_LOS_ANGELES
-                                        ? styles.homeAreaSelected
-                                        : styles.homeArea
-                                }
-                            >
-                                <ListItemText
-                                    inset
-                                    primary="Los Angeles"
-                                    selected={this.props.homeArea === MSFTypes.EXTENTS_LOS_ANGELES}
-                                />
-                            </ListItem>
-                            <ListItem
-                                button
-                                onClick={() =>
-                                    this.props.mapActions.setHomeArea(MSFTypes.HOME_AREA_SF_BAY)
-                                }
-                                className={
-                                    homeAreaLocation === MSFTypes.HOME_AREA_SF_BAY
-                                        ? styles.homeAreaSelected
-                                        : styles.homeArea
-                                }
-                            >
-                                <ListItemText
-                                    inset
-                                    primary="San Francisco Bay Area"
-                                    selected={this.props.homeArea === MSFTypes.EXTENTS_SF_BAY}
-                                />
-                            </ListItem>
+                            {MSFTypes.HOME_AREAS.map(area => (
+                                <ListItem
+                                    key={area.homeArea}
+                                    button
+                                    onClick={() => this.props.mapActions.setHomeArea(area.homeArea)}
+                                    className={
+                                        homeAreaLocation === area.homeArea
+                                            ? styles.homeAreaSelected
+                                            : styles.homeArea
+                                    }
+                                >
+                                    <ListItemText
+                                        inset
+                                        primary={area.title}
+                                        selected={this.props.homeArea === area.extents}
+                                    />
+                                </ListItem>
+                            ))}
+
                             <ListItem
                                 button
                                 onClick={() =>

@@ -15,7 +15,7 @@ export const ALERTS = {
         severity: 3
     },
     AVAILABLE_GRIDDED_DATES_LIST_LOAD_FAILED: {
-        title: "Availabile Gridded Layer Date List Loading Failed",
+        title: "Available Gridded Layer Date List Loading Failed",
         formatString: "Failed to load date availability list for gridded layers.",
         severity: 3
     },
