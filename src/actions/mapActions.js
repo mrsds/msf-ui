@@ -476,9 +476,9 @@ function revealAllInfrastructure(mapState) {
 }
 
 export function toggleHomeSelectMenuOpen(open) {
-    if (open && !getCookie()) {
-        return { type: typesMSF.SHOW_COOKIE_MODAL, visible: true };
-    }
+    // if (open && !getCookie()) {
+    //     return { type: typesMSF.SHOW_COOKIE_MODAL, visible: true };
+    // }
     return { type: typesMSF.TOGGLE_HOME_SELECT_MENU_OPEN, open };
 }
 
@@ -515,6 +515,9 @@ export function setHomeArea(location, extent) {
                     break;
                 case MSFTypes.HOME_AREA_SF_BAY:
                     extent = MSFTypes.EXTENTS_SF_BAY;
+                    break;
+                case MSFTypes.HOME_AREA_PERMIAN_BASIN:
+                    extent = MSFTypes.EXTENTS_PERMIAN_BASIN;
                     break;
                 case MSFTypes.HOME_AREA_CUSTOM:
                     extent = getState()
