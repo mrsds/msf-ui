@@ -417,6 +417,25 @@
             "thumbnailImage": "img/msf-flightcoverage.png",
             "updateParameters": { "time": false },
             "layerOrder": 0
+        },
+        {
+            "id": "Permian_Gridded_Inversion",
+            "title": "Permian Gridded Inversion",
+            "type": "data",
+            "handleAs": "gridded_geojson",
+            "updateParameters": { "time": false },
+            "url": "default-data/_core_default-data/permian-thumb.json",
+            "thumbnailImage": "img/permian-thumb.png",
+            "units": "kg/hr",
+            "palette": {
+                "name": "gridded_methane_inversion",
+                "handleAs": "json-fixed",
+                "min": "0",
+                "max": "> 130"
+            },
+            "layerOrder": 1,
+            "group": "GRIDDED",
+            "visibleInGroup": true
         }
     ]
 }
