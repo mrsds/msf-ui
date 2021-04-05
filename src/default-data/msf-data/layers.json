@@ -424,7 +424,7 @@
             "type": "data",
             "handleAs": "gridded_geojson",
             "updateParameters": { "time": false },
-            "url": "default-data/_core_default-data/permian-thumb.json",
+            "url": "/server/data/permian-thumb-2019.geojson",
             "thumbnailImage": "img/permian-thumb.png",
             "units": "kg/hr",
             "palette": {

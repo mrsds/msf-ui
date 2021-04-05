@@ -130,6 +130,12 @@ const APP_CONFIG = Immutable.fromJS({
             dateEndpoint: beEndpoint + "/data/gridded/gridded_date_list.json",
             endpoint: beEndpoint + "/data/gridded/v2/Fluxes_{date}.geojson",
             period: "daily"
+        },
+        {
+            name: "Permian_Gridded_Inversion",
+            dateEndpoint: beEndpoint + "/data/permian-thumb-date-list.json",
+            endpoint: beEndpoint + "/data/permian-thumb-{date}.geojson",
+            period: "yearly"
         }
     ],
     DEFAULT_ANALYTICS_ENABLED: true,
