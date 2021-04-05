@@ -428,10 +428,10 @@
             "thumbnailImage": "img/permian-thumb.png",
             "units": "kg/hr",
             "palette": {
-                "name": "gridded_methane_inversion",
+                "name": "permian",
                 "handleAs": "json-fixed",
-                "min": "0",
-                "max": "> 130"
+                "min": "179",
+                "max": "255"
             },
             "layerOrder": 1,
             "group": "GRIDDED",
