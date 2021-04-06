@@ -419,14 +419,20 @@
             "layerOrder": 0
         },
         {
-            "id": "Permian_Gridded_Inversion",
-            "title": "Permian Gridded Inversion",
+            "id": "GRIDDED_EMISSIONS_PERMIAN",
+            "title": "Permian Regional Flux Inversion",
             "type": "data",
             "handleAs": "gridded_geojson",
-            "updateParameters": { "time": false },
+            "isDefault": false,
             "url": "/server/data/permian-thumb-2019.geojson",
             "thumbnailImage": "img/permian-thumb.png",
-            "units": "kg/hr",
+            "opacity": 0.3,
+            "metadata": {
+                "url": "default-data/msf-data/layer-metadata/Grid-Permian.json",
+                "handleAs": "json"
+            },
+            "units": "kg/hr per square-meter",
+            "updateParameters": { "time": false },
             "palette": {
                 "name": "permian",
                 "handleAs": "json-fixed",
@@ -437,5 +443,6 @@
             "group": "GRIDDED",
             "visibleInGroup": true
         }
+
     ]
 }

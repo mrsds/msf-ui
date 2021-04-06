@@ -132,7 +132,7 @@ const APP_CONFIG = Immutable.fromJS({
             period: "daily"
         },
         {
-            name: "Permian_Gridded_Inversion",
+            name: "GRIDDED_EMISSIONS_PERMIAN",
             dateEndpoint: beEndpoint + "/data/permian-thumb-date-list.json",
             endpoint: beEndpoint + "/data/permian-thumb-{date}.geojson",
             period: "yearly"
