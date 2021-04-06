@@ -431,7 +431,7 @@
                 "url": "default-data/msf-data/layer-metadata/Grid-Permian.json",
                 "handleAs": "json"
             },
-            "units": "kg/hr per square-meter",
+            "units": "kg/km2/hr",
             "updateParameters": { "time": false },
             "palette": {
                 "name": "permian",
