@@ -16,20 +16,20 @@ const LOCATION_OPTIONS = [
         key: "permian",
         label: "Permian Basin, Texas/New Mexico",
         location: MSFTypes.HOME_AREA_PERMIAN_BASIN,
-        extent: MSFTypes.EXTENTS_PERMIAN_BASIN
+        extent: MSFTypes.EXTENTS_PERMIAN_BASIN,
     },
     {
         key: "la",
         label: "Los Angeles, California",
         location: MSFTypes.HOME_AREA_LOS_ANGELES,
-        extent: MSFTypes.EXTENTS_LOS_ANGELES
+        extent: MSFTypes.EXTENTS_LOS_ANGELES,
     },
     {
         key: "sfBay",
         label: "San Francisco Bay Area, California",
         location: MSFTypes.HOME_AREA_SF_BAY,
-        extent: MSFTypes.EXTENTS_SF_BAY
-    }
+        extent: MSFTypes.EXTENTS_SF_BAY,
+    },
 ];
 
 export class HomeAreaPickerContainer extends Component {
@@ -39,9 +39,8 @@ export class HomeAreaPickerContainer extends Component {
     }
 
     selectHomeArea(location) {
-        return _ => {
+        return (_) => {
             this.setState({ selectedHomeArea: location.key });
-            this.props.mapActionsExtended.setHomeArea(location.location, location.extent);
         };
     }
 
@@ -51,8 +50,9 @@ export class HomeAreaPickerContainer extends Component {
 
     goToHomeArea() {
         const homeArea = LOCATION_OPTIONS.find(
-            location => location.key === this.state.selectedHomeArea
+            (location) => location.key === this.state.selectedHomeArea
         );
+        this.props.mapActionsExtended.setHomeArea(homeArea.location, homeArea.extent);
         this.props.mapActions.setMapView({ extent: homeArea.extent }, true);
         this.closeModal();
     }
@@ -60,7 +60,7 @@ export class HomeAreaPickerContainer extends Component {
     render() {
         let containerClasses = MiscUtil.generateStringFromSet({
             [styles.shareContainer]: true,
-            [this.props.className]: typeof this.props.className !== "undefined"
+            [this.props.className]: typeof this.props.className !== "undefined",
         });
 
         return (
@@ -76,7 +76,7 @@ export class HomeAreaPickerContainer extends Component {
                         can change this later using the Settings icon in the upper right.
                     </p>
                     <div className={styles.formControl}>
-                        {LOCATION_OPTIONS.map(locationOption => (
+                        {LOCATION_OPTIONS.map((locationOption) => (
                             <div
                                 onClick={this.selectHomeArea(locationOption)}
                                 key={locationOption.key}
@@ -97,7 +97,7 @@ export class HomeAreaPickerContainer extends Component {
                         <Button
                             color="primary"
                             variant="raised"
-                            onClick={_ => this.goToHomeArea()}
+                            onClick={(_) => this.goToHomeArea()}
                             className={styles.submitButton}
                         >
                             Go to Home Area
@@ -113,19 +113,19 @@ HomeAreaPickerContainer.propTypes = {
     mapActions: PropTypes.object.isRequired,
     mapActionsExtended: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
-    className: PropTypes.string
+    className: PropTypes.string,
 };
 
 function mapStateToProps(state) {
     return {
-        isOpen: state.map.get("chooseHomeAreaModalVisible")
+        isOpen: state.map.get("chooseHomeAreaModalVisible"),
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         mapActions: bindActionCreators(mapActions, dispatch),
-        mapActionsExtended: bindActionCreators(mapActionsExtended, dispatch)
+        mapActionsExtended: bindActionCreators(mapActionsExtended, dispatch),
     };
 }
 

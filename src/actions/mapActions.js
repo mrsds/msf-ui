@@ -25,7 +25,7 @@ export function setGroupVisible(group, active) {
         dispatch(setGroupActiveState(group, active));
         getState()
             .map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA])
-            .forEach(layer => {
+            .forEach((layer) => {
                 const inGroup = layer.get("group") === group.get("id");
                 const shouldSwitch = active ? layer.get("visibleInGroup") : true;
                 if (inGroup && shouldSwitch) {
@@ -69,7 +69,7 @@ export function updateAvirisFeatureList() {
 }
 
 export function avirisLayerLoaded() {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(availableFeatureListLoaded(layerSidebarTypes.CATEGORY_PLUMES));
         return updateFeatureList_Map(layerSidebarTypes.CATEGORY_PLUMES);
     };
@@ -98,7 +98,7 @@ export function updateVistaFeatures() {
         const vistaFeatures = map
             .getVisibleVistaFeatures()
             .filter(
-                f =>
+                (f) =>
                     currentRes <= appConfig.OIL_WELL_MAX_RESOLUTION ||
                     f.getProperties().category_id !==
                         layerSidebarTypes.INFRASTRUCTURE_SUBCATEGORIES[
@@ -132,15 +132,15 @@ function availableFeatureListLoaded(category) {
         if (
             getState()
                 .asynchronous.get("loadingFeatures")
-                .every(v => !v)
+                .every((v) => !v)
         ) {
             window.clearTimeout(loadTimer);
-            loadTimer = setTimeout(_ => {
+            loadTimer = setTimeout((_) => {
                 const timeElapsed = Date.now() - getState().asynchronous.get("loadStart") - 1000;
                 dispatch({
                     type: typesMSF.LOAD_TIME_ON_MOVE,
                     analyticsValue: timeElapsed,
-                    isAnalyticsTiming: true
+                    isAnalyticsTiming: true,
                 });
             }, 1000);
         }
@@ -151,7 +151,7 @@ function updateAvailableFeatures(category, featureList) {
     return {
         type: typesMSF.UPDATE_AVAILABLE_FEATURES,
         category,
-        featureList
+        featureList,
     };
 }
 
@@ -176,7 +176,7 @@ export function toggleFeatureLabel(category, feature) {
             infrastructure: Immutable.List(
                 category === layerSidebarTypes.CATEGORY_INFRASTRUCTURE ? [feature] : []
             ),
-            plumes: Immutable.List(category === layerSidebarTypes.CATEGORY_PLUMES ? [feature] : [])
+            plumes: Immutable.List(category === layerSidebarTypes.CATEGORY_PLUMES ? [feature] : []),
         });
     };
 }
@@ -189,7 +189,7 @@ export function incrementActivePlume(increment) {
         const searchResults = layerSidebarState.getIn([
             "searchState",
             layerSidebarTypes.CATEGORY_PLUMES,
-            "searchResults"
+            "searchResults",
         ]);
         // If active feature and it's a plume, incr/decr
         const activePlume =
@@ -199,7 +199,7 @@ export function incrementActivePlume(increment) {
                 : null;
         if (activePlume) {
             let activePlumeIndex = searchResults.findIndex(
-                x => x.get("id") === activePlume.get("id")
+                (x) => x.get("id") === activePlume.get("id")
             );
             if (activePlumeIndex > -1) {
                 let nextActivePlume;
@@ -243,7 +243,7 @@ export function pixelClick(clickEvt) {
             type: typesMSF.UPDATE_FEATURE_PICKER,
             clickEvt,
             infrastructure: Immutable.List(vistaFeatures),
-            plumes: Immutable.List(avirisFeatures)
+            plumes: Immutable.List(avirisFeatures),
         });
         updateHighlightedPlumes(getState);
         return { type: types.PIXEL_CLICK, clickEvt };
@@ -254,17 +254,17 @@ function getVistaFeaturesAtPixel(clickEvt, mapState, layerSidebarState) {
     let features = [];
     mapState.forEachFeatureAtPixel(
         clickEvt.pixel,
-        feature => {
+        (feature) => {
             const featureInfo = layerSidebarState
                 .getIn(["searchState", layerSidebarTypes.CATEGORY_INFRASTRUCTURE, "searchResults"])
-                .find(f => f.get("id") === feature.get("id"));
+                .find((f) => f.get("id") === feature.get("id"));
             if (featureInfo) features.push(featureInfo);
         },
         {
             hitTolerance: 3,
-            layerFilter: function(l) {
+            layerFilter: function (l) {
                 return l.get("_layerGroup") === "VISTA";
-            }
+            },
         }
     );
     return features;
@@ -274,17 +274,17 @@ function getAvirisFeaturesAtPixel(clickEvt, mapState, layerSidebarState) {
     const features = [];
     mapState.forEachFeatureAtPixel(
         clickEvt.pixel,
-        feature => {
+        (feature) => {
             const featureInfo = layerSidebarState
                 .getIn(["searchState", layerSidebarTypes.CATEGORY_PLUMES, "searchResults"])
-                .find(f => f.get("id") === feature.get("id"));
+                .find((f) => f.get("id") === feature.get("id"));
             if (featureInfo) features.push(featureInfo);
         },
         {
             hitTolerance: 3,
-            layerFilter: function(l) {
+            layerFilter: function (l) {
                 return l.get("_layerId") === "AVIRIS";
-            }
+            },
         }
     );
     return features;
@@ -294,7 +294,7 @@ function updateFeatureLabel(category, feature) {
     return {
         type: typesMSF.TOGGLE_FEATURE_LABEL,
         category,
-        feature
+        feature,
     };
 }
 
@@ -302,7 +302,7 @@ function clearFeatureLabels() {
     return (dispatch, getState) => {
         dispatch({
             type: typesMSF.CLEAR_FEATURE_LABELS,
-            feature: getState().map.get("activeFeature")
+            feature: getState().map.get("activeFeature"),
         });
     };
 }
@@ -310,7 +310,7 @@ function clearFeatureLabels() {
 function getFeatureById(sidebarState, category, id) {
     return sidebarState
         .getIn(["searchState", category, "searchResults"])
-        .find(feature => feature.get("id") === id);
+        .find((feature) => feature.get("id") === id);
 }
 
 function updateHighlightedPlumes(getState) {
@@ -331,21 +331,21 @@ export function setHoverPlume(feature) {
                 : getState().layerSidebar.getIn([
                       "searchState",
                       layerSidebarTypes.CATEGORY_PLUMES,
-                      "searchResults"
-                  ])
+                      "searchResults",
+                  ]),
         });
     };
 }
 
 export function updateGriddedDate(date) {
-    return dispatch => {
+    return (dispatch) => {
         dispatch({ type: typesMSF.UPDATE_GRIDDED_DATE, date });
         dispatch({ type: typesMSF.CHANGE_GRIDDED_DATE });
     };
 }
 
 export function incrementGriddedDate(period, goBack) {
-    return dispatch => {
+    return (dispatch) => {
         dispatch({ type: typesMSF.INCREMENT_GRIDDED_DATE, period, goBack });
         dispatch({ type: typesMSF.CHANGE_GRIDDED_DATE });
     };
@@ -357,16 +357,16 @@ export function getAvailableGriddedDates() {
         const activeGriddedLayer = getState().map.getIn(["griddedSettings", "activeLayer"]);
 
         return MiscUtil.asyncFetch({
-            url: appConfig.GRIDDED_LAYER_TYPES.find(l => l.name === activeGriddedLayer)
+            url: appConfig.GRIDDED_LAYER_TYPES.find((l) => l.name === activeGriddedLayer)
                 .dateEndpoint,
             handleAs: "json",
-            options: { credentials: "same-origin" }
+            options: { credentials: "same-origin" },
         }).then(
-            data => {
+            (data) => {
                 dispatch(updateAvailableGriddedDates(data));
                 dispatch(setGriddedDateAvailabilityLoadingAsync(false, false));
             },
-            err => {
+            (err) => {
                 console.warn("Error getting available gridded layer dates:", err);
                 dispatch(setGriddedDateAvailabilityLoadingAsync(false, true));
                 dispatch(
@@ -375,7 +375,7 @@ export function getAvailableGriddedDates() {
                         body: appStringsMSF.ALERTS.AVAILABLE_GRIDDED_DATES_LIST_LOAD_FAILED,
                         severity:
                             appStringsMSF.ALERTS.AVAILABLE_GRIDDED_DATES_LIST_LOAD_FAILED.severity,
-                        time: new Date()
+                        time: new Date(),
                     })
                 );
             }
@@ -391,32 +391,32 @@ export function changeActiveGriddedLayer(name, active) {
     return (dispatch, getState) => {
         const paletteName = getState()
             .map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA])
-            .find(l => l.get("id") === name)
+            .find((l) => l.get("id") === name)
             .getIn(["palette", "name"]);
         const palette = getState()
             .map.get("palettes")
-            .find(p => p.get("id") === paletteName);
+            .find((p) => p.get("id") === paletteName);
 
         dispatch({
             type: typesMSF.CHANGE_ACTIVE_GRIDDED_LAYER,
             name,
             palette,
             analyticsLabel: name,
-            analyticsIgnore: active
+            analyticsIgnore: active,
         });
         dispatch(getAvailableGriddedDates());
     };
 }
 
 export function loadInitialData(callback = null) {
-    return dispatch => {
+    return (dispatch) => {
         // Set flag that initial layer data has begun loading
         dispatch(setInitialDataLoadingAsync(true, false));
         // Fetch all initial layer data
         return Promise.all([
             dispatch(mapActions.loadLayerData()),
             dispatch(mapActions.loadPaletteData()),
-            dispatch(getAvailableGriddedDates())
+            dispatch(getAvailableGriddedDates()),
         ]).then(
             () => {
                 // Set flag that initial layer data has finished loading
@@ -425,14 +425,14 @@ export function loadInitialData(callback = null) {
                     callback.call(this);
                 }
             },
-            err => {
+            (err) => {
                 console.warn("Error in mapActions.loadInitialData:", err);
                 dispatch(
                     alertActions.addAlert({
                         title: appStrings.ALERTS.INITIAL_DATA_LOAD_FAILED.title,
                         body: appStrings.ALERTS.INITIAL_DATA_LOAD_FAILED.formatString,
                         severity: appStrings.ALERTS.INITIAL_DATA_LOAD_FAILED.severity,
-                        time: new Date()
+                        time: new Date(),
                     })
                 );
                 dispatch(setInitialDataLoadingAsync(false, true));
@@ -447,14 +447,14 @@ export function loadInitialData(callback = null) {
 function setGriddedDateAvailabilityLoadingAsync(loading, failed) {
     return asyncActions.setAsyncLoadingState("griddedDateAvailabilityAsync", {
         loading: loading,
-        failed: failed
+        failed: failed,
     });
 }
 
 function setInitialDataLoadingAsync(loading, failed) {
     return asyncActions.setAsyncLoadingState("initialDataAsync", {
         loading: loading,
-        failed: failed
+        failed: failed,
     });
 }
 
@@ -463,7 +463,7 @@ export function closeFeaturePicker() {
         type: typesMSF.UPDATE_FEATURE_PICKER,
         clickEvt: null,
         infrastructure: Immutable.List([]),
-        plumes: Immutable.List([])
+        plumes: Immutable.List([]),
     };
 }
 
@@ -472,7 +472,7 @@ export function setActivePickerFeature(category, feature) {
 }
 
 function revealAllInfrastructure(mapState) {
-    mapState.get("maps").map(map => map.setActiveInfrastructure([]));
+    mapState.get("maps").map((map) => map.setActiveInfrastructure([]));
 }
 
 export function toggleHomeSelectMenuOpen(open) {
@@ -493,16 +493,13 @@ function setCookie(params) {
 }
 
 export function setInitialHomeArea() {
-    return dispatch => {
+    return (dispatch) => {
         const cookie = getCookie();
         const location = cookie ? cookie.location : MSFTypes.HOME_AREA_PERMIAN_BASIN;
         const extent = cookie ? cookie.extent : MSFTypes.EXTENTS_PERMIAN_BASIN;
 
-        // dispatch({ type: typesMSF.SET_HOME_AREA, location, extent });
-        // if (cookie) dispatch({ type: typesMSF.SET_COOKIE_ACCEPT, accept: true });
+        if (!cookie || !cookie.extent) dispatch(setHomeAreaPickerVisible(true));
         dispatch(mapActions.setMapView({ extent }, true));
-
-        if (!cookie || !cookie.location || !cookie.extent) dispatch(setHomeAreaPickerVisible(true));
     };
 }
 
@@ -520,9 +517,7 @@ export function setHomeArea(location, extent) {
                     extent = MSFTypes.EXTENTS_PERMIAN_BASIN;
                     break;
                 case MSFTypes.HOME_AREA_CUSTOM:
-                    extent = getState()
-                        .map.getIn(["maps", "openlayers"])
-                        .getCurrentExtent();
+                    extent = getState().map.getIn(["maps", "openlayers"]).getCurrentExtent();
                     break;
             }
         }
@@ -538,9 +533,7 @@ export function goToHome() {
         dispatch(
             mapActions.setMapView(
                 {
-                    extent: getState()
-                        .settings.getIn(["homeArea", "extent"])
-                        .toJS()
+                    extent: getState().settings.getIn(["homeArea", "extent"]).toJS(),
                 },
                 true
             )
@@ -555,9 +548,7 @@ export function toggleLocationInputModal(visible) {
 export function openMapToLatLong(lat, long) {
     return (dispatch, getState) => {
         dispatch({ type: typesMSF.CHANGE_APP_MODE, mode: MSFTypes.APP_MODE_MAP });
-        getState()
-            .map.getIn(["maps", "openlayers"])
-            .zoomToCoords([long, lat]);
+        getState().map.getIn(["maps", "openlayers"]).zoomToCoords([long, lat]);
     };
 }
 
@@ -568,7 +559,7 @@ export function toggleGriddedLayerForMetrics(active) {
     return (dispatch, getState) =>
         dispatch({
             type: typesMSF.TOGGLE_GRIDDED_LAYER_ON,
-            analyticsValue: getState().map.get("currentZoom")
+            analyticsValue: getState().map.get("currentZoom"),
         });
 }
 
@@ -594,7 +585,7 @@ export function toggleFlightLineLayer(active) {
         return (dispatch, getState) =>
             dispatch({
                 type: typesMSF.TOGGLE_FLIGHT_LINE_LAYER_ON,
-                analyticsValue: getState().map.get("currentZoom")
+                analyticsValue: getState().map.get("currentZoom"),
             });
     return { type: types.NO_ACTION };
 }

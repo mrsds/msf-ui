@@ -7,9 +7,9 @@ export const settingsState_Extended = settingsState.mergeDeep(
         homeSelectMenuOpen: false,
         homeArea: {
             location: MSFTypes.HOME_AREA_LOS_ANGELES,
-            extent: MSFTypes.EXTENTS_LOS_ANGELES
+            extent: MSFTypes.EXTENTS_LOS_ANGELES,
         },
-        acceptCookies: false,
-        cookieAcceptModalOpen: false
+        acceptCookies: true,
+        cookieAcceptModalOpen: false,
     })
 );
