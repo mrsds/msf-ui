@@ -499,6 +499,7 @@ export function setInitialHomeArea() {
         const extent = cookie ? cookie.extent : MSFTypes.EXTENTS_PERMIAN_BASIN;
 
         if (!cookie || !cookie.extent) dispatch(setHomeAreaPickerVisible(true));
+        dispatch({ type: typesMSF.SET_HOME_AREA, location, extent });
         dispatch(mapActions.setMapView({ extent }, true));
     };
 }
@@ -530,6 +531,7 @@ export function setHomeArea(location, extent) {
 
 export function goToHome() {
     return (dispatch, getState) => {
+        console.log("dingus");
         dispatch(
             mapActions.setMapView(
                 {

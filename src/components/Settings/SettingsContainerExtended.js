@@ -46,7 +46,7 @@ export class SettingsContainerExtended extends Component {
                     <ListSubheader disableSticky>Application Configuration</ListSubheader>
                     <ListItem
                         button
-                        onClick={evt =>
+                        onClick={(evt) =>
                             this.props.analyticsActions.setAnalyticsEnabled(
                                 !this.props.analyticsEnabled
                             )
@@ -60,7 +60,7 @@ export class SettingsContainerExtended extends Component {
                     </ListItem>
                     <ListItem
                         button
-                        onClick={evt =>
+                        onClick={(evt) =>
                             this.props.appActions.setAutoUpdateUrl(!this.props.autoUpdateUrlEnabled)
                         }
                     >
@@ -99,7 +99,7 @@ export class SettingsContainerExtended extends Component {
                     </ListItem>
                     <Collapse in={this.props.homeSelectMenuOpen} timeout="auto" unmountOnExit>
                         <List>
-                            {MSFTypes.HOME_AREAS.map(area => (
+                            {MSFTypes.HOME_AREAS.map((area) => (
                                 <ListItem
                                     key={area.homeArea}
                                     button
@@ -157,7 +157,7 @@ SettingsContainerExtended.propTypes = {
     analyticsActions: PropTypes.object.isRequired,
     homeSelectMenuOpen: PropTypes.bool.isRequired,
     homeArea: PropTypes.object.isRequired,
-    appActionsExtended: PropTypes.object.isRequired
+    appActionsExtended: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -167,7 +167,7 @@ function mapStateToProps(state) {
         analyticsEnabled: state.analytics.get("isEnabled"),
         autoUpdateUrlEnabled: state.share.get("autoUpdateUrl"),
         homeSelectMenuOpen: state.settings.get("homeSelectMenuOpen"),
-        homeArea: state.settings.get("homeArea")
+        homeArea: state.settings.get("homeArea"),
     };
 }
 
@@ -177,7 +177,7 @@ function mapDispatchToProps(dispatch) {
         mapActions: bindActionCreators(mapActions, dispatch),
         dateSliderActions: bindActionCreators(dateSliderActions, dispatch),
         analyticsActions: bindActionCreators(analyticsActions, dispatch),
-        appActionsExtended: bindActionCreators(appActionsExtended, dispatch)
+        appActionsExtended: bindActionCreators(appActionsExtended, dispatch),
     };
 }
 
