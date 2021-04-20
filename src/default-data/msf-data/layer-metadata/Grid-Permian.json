@@ -1,0 +1,9 @@
+{
+    "title": "Permian Regional Flux Inversion",
+    "description": "Regional CH4 inversion for the Permian Basin using XCH4 measurements from TROPOMI, STILT transport model, and GFS reanalysis.",
+    "dateRange": "September 2019 - November 2019",
+    "platform": "TROPOMI Instrument (Sentinel-5p)",
+    "spatialResolution": "25 kilometers",
+    "dataSetVersion": "v1",
+    "dataSetURL": "https://doi.org/TBD"
+}

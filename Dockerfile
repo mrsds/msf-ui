@@ -18,3 +18,4 @@ RUN npm run build
 # Build server
 RUN npm i express
 CMD node staticServer.js
+# CMD npm start

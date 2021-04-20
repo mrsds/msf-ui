@@ -997,6 +997,16 @@
                 ["0.005", "2AA485ff"],
                 [">.01", "F7E43Dff"]
             ]
+        },        {
+            "name": "permian",
+            "values": [
+                ["0", "ffffff00"],
+                ["3", "e4f4e4ff"],
+                ["6", "ccecf4ff"],
+                ["9", "b4ecfcff"],
+                ["12", "ccbca4ff"],
+                [">12", "f17e38ff"]
+            ]
         },
         {
             "name": "flight_coverage",
