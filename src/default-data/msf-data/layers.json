@@ -436,8 +436,8 @@
             "palette": {
                 "name": "permian",
                 "handleAs": "json-fixed",
-                "min": "179",
-                "max": "255"
+                "min": "0",
+                "max": "15"
             },
             "layerOrder": 1,
             "group": "GRIDDED",
