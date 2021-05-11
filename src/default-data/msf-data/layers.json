@@ -280,7 +280,7 @@
             "isDefault": false,
             "url": "/server/data/epa_gridded_total_2012.geojson",
             "thumbnailImage": "img/gridded_methane_v1.png",
-            "opacity": 0.3,
+            "opacity": 0.5,
             "metadata": {
                 "url": "default-data/msf-data/layer-metadata/Grid-EPA.json",
                 "handleAs": "json"
@@ -426,7 +426,7 @@
             "isDefault": false,
             "url": "/server/data/permian-thumb-2019.geojson",
             "thumbnailImage": "img/permian-thumb.png",
-            "opacity": 0.3,
+            "opacity": 0.6,
             "metadata": {
                 "url": "default-data/msf-data/layer-metadata/Grid-Permian.json",
                 "handleAs": "json"
