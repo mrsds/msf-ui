@@ -117,10 +117,13 @@ The availability of Geographic Information System (GIS) data regarding facilitie
 
 The following journal papers and reports describe the methods used to generate the various data sets presented here. Please use the appropriate citation when referencing a given data product in a report or paper.
 
-**Methane point-source data and Vista-CA spatial layers**
+**California methane point-source data and Vista-CA spatial layers**
 Duren, R., A. Thorpe, K.T. Foster, T. Rafiq, F. M. Hopkins, V. Yadav, B.Bue, D.R. Thompson, S. Conley, N. Colombi, C. Frankenberg, I.McCubbin, M.Eastwood, M.Falk, J. Herner, B. E. Croes, R. Green, C. Miller, **California's Methane Super-emitters**, Nature (2019). https://doi.org/10.1038/s41586-019-1720-3
 
 Duren, R., A. Thorpe, I. McCubbin, The California Methane Survey Final Report, CEC-500-2020-047 (2020). https://ww2.energy.ca.gov/2020publications/CEC-500-2020-047/CEC-500-2020-047.pdf
+
+**Permian point-source data**
+Cusworth, D.H., Duren R.M., Thorpe, A.K., Olson-Duvall, W., Heckler, J., Chapman, J.W., Eastwood, M.L., Helmlinger, M.C., Green, R.O., Asner, G.P., Dennison, P.E., and Miller, C.E. (2021). Intermittency of large methane emitters in the Permian Basin, Accepted at Environmental Science and Technology Letter
 
 **Los Angeles methane flux inversion maps**
 Yadav, V., R. Duren, K.Mueller, K.R. Verhulst , T. Nehrkorn, J. Kim, R.F. Weiss, R. Keeling, S.Sander, M. L. Fischer, S.Newman, M. Falk, T. Kuwayama, F. Hopkins, T.Rafiq, J. Whetstone, C. Miller, Spatio-temporally resolved methane fluxes from the Los Angeles Megacity, J. Geophy. Res. – Atmospheres. (2019). https://doi.org/10.1029/2018JD030062
