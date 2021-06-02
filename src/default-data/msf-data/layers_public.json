@@ -184,7 +184,7 @@
             "max": 4000,
             "units": " enhancement (ppm-m)",
             "metadata": {
-                "url": "default-data/msf-data/layer-metadata/AVIRIS.json",
+                "url": "default-data/msf-data/layer-metadata/Plume-images.json",
                 "handleAs": "json"
             },
             "updateParameters": { "time": false },
