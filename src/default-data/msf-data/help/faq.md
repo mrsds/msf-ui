@@ -7,7 +7,7 @@
 5. High resolution remote sensing of methane plumes can pinpoint emissions sources and identify specific equipment for efficient follow up by facility operators and regulators.
 6. Accurate quantification of regional methane budgets/inventories benefits from tiered observing systems that apply multiple measurements from different vantage points (e.g., land, air and space) to provide a complete picture of the different types of emitters, including strong point sources and wider area sources.
 
-### What are some findings from the Permian Methane Survey (2019-2020)?
+### What are some findings from the 2019 Permian Methane Survey?
 
 1. We found about 1700 high-emitting methane point sources above our detection limit from oil and gas production, gathering and processing activity in an area spanning about 55,000 km2 in Texas and New Mexico.
 2. The population of methane sources above our detection limit in the Permian is significantly skewed (higher) compared to equivalent populations of oil and gas emissions from similar studies in California and Four Corners (San Juan basin).

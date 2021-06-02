@@ -12,7 +12,7 @@ export const mapState_Extended = mapState.mergeDeep(
             {
                 id: "VISTA",
                 isActive: true,
-                title: "Infrastructure Maps",
+                title: "Infrastructure Maps (CA only)",
                 opacity: 1,
                 type: "group",
                 displayIndex: 0,

@@ -5,5 +5,5 @@
     "platform": "TROPOMI Instrument (Sentinel-5p)",
     "spatialResolution": "25 kilometers",
     "dataSetVersion": "v1",
-    "dataSetURL": "https://doi.org/TBD"
+    "dataSetURL": "https://doi.org/10.1021/acs.estlett.1c00173"
 }

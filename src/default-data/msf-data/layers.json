@@ -227,7 +227,7 @@
         },
         {
             "id": "AVIRIS",
-            "title": "AVIRIS-NG Plume Images",
+            "title": "Methane Plume Images",
             "type": "data",
             "handleAs": "aviris_plume",
             "isDefault": true,
@@ -274,7 +274,7 @@
         },
         {
             "id": "GRIDDED_EMISSIONS_EPA",
-            "title": "EPA Gridded Inventory",
+            "title": "EPA Gridded Inventory (CA only)",
             "type": "data",
             "handleAs": "gridded_geojson",
             "isDefault": false,
@@ -399,7 +399,7 @@
         },
         {
             "id": "Flight_Lines",
-            "title": "AVIRIS-NG Flight Coverage",
+            "title": "Flight Coverage",
             "type": "data",
             "handleAs": "flight_lines",
             "metadata": {

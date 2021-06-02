@@ -120,9 +120,9 @@ const APP_CONFIG = Immutable.fromJS({
     PLUME_MAX_RESOLUTION: 76,
     GRIDDED_LAYER_TYPES: [
         {
-            name: "GRIDDED_EMISSIONS_EPA",
-            dateEndpoint: beEndpoint + "/data/epa_gridded_total_date_list.json",
-            endpoint: beEndpoint + "/data/epa_gridded_total_{date}.geojson",
+            name: "GRIDDED_EMISSIONS_PERMIAN",
+            dateEndpoint: beEndpoint + "/data/permian-thumb-date-list.json",
+            endpoint: beEndpoint + "/data/permian-thumb-{date}.geojson",
             period: "yearly"
         },
         {
@@ -132,9 +132,9 @@ const APP_CONFIG = Immutable.fromJS({
             period: "daily"
         },
         {
-            name: "GRIDDED_EMISSIONS_PERMIAN",
-            dateEndpoint: beEndpoint + "/data/permian-thumb-date-list.json",
-            endpoint: beEndpoint + "/data/permian-thumb-{date}.geojson",
+            name: "GRIDDED_EMISSIONS_EPA",
+            dateEndpoint: beEndpoint + "/data/epa_gridded_total_date_list.json",
+            endpoint: beEndpoint + "/data/epa_gridded_total_{date}.geojson",
             period: "yearly"
         }
     ],
