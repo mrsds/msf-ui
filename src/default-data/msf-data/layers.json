@@ -388,7 +388,7 @@
             "type": "data",
             "handleAs": "vista_source",
             "metadata": {
-                "url": "default-data/msf-data/layer-metadata/AVIRIS-Sources.json",
+                "url": "default-data/msf-data/layer-metadata/Methane-Sources.json",
                 "handleAs": "json"
             },
             "isDefault": true,
