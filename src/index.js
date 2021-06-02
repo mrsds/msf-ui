@@ -33,6 +33,7 @@ require("_core/styles/resources/img/layer_thumbnails/ASTER_GDEM_Color_Shaded_Rel
 require("_core/styles/resources/img/layer_thumbnails/ESRI_World_Imagery.jpeg");
 require("styles/resources/img/layer_thumbnails/gridded_methane_v1.png");
 require("styles/resources/img/layer_thumbnails/AVIRIS.png");
+require("styles/resources/img/layer_thumbnails/permian-thumb.png");
 require("styles/resources/img/map_icons/PlumeIcon.png");
 require("styles/resources/img/map_icons/PlumeIconActive.png");
 require("styles/resources/img/landing_page/logo_nasa_trio_white.png");
