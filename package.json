@@ -165,6 +165,6 @@
     },
     "devDependencies": {
         "fuse.js": "3.2.1",
-        "jszip": "3.1.4"
+        "jszip": "3.7.0"
     }
 }
