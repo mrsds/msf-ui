@@ -66,12 +66,6 @@ export class PlumesControlContainer extends LayerControlContainerCore {
                         checked={this.props.layer.get("isActive")}
                         onChange={(value, checked) => this.setLayerActive(!checked)}
                         onClick={evt => this.setLayerActive(evt.target.checked)}
-                        inputProps={{
-                            "aria-label":
-                                "Toggle AVIRIS-NG Plume Images Layer (currently " +
-                                (this.props.layer.get("isActive") ? "on" : "off") +
-                                ")"
-                        }}
                     />
                 </Tooltip>
                 <span className={textStyles.textEllipsis}>
@@ -87,10 +81,7 @@ export class PlumesControlContainer extends LayerControlContainerCore {
                     }}
                 >
                     <Tooltip title="Layer information" placement="left">
-                        <IconButtonSmall
-                            onClick={() => this.openLayerInfo()}
-                            aria-label="Layer information for Plumes"
-                        >
+                        <IconButtonSmall onClick={() => this.openLayerInfo()}>
                             <InfoOutlineIcon />
                         </IconButtonSmall>
                     </Tooltip>
@@ -167,7 +158,6 @@ export class PlumesControlContainer extends LayerControlContainerCore {
                             <Target style={{ display: "inline-block" }}>
                                 <Tooltip title={"Set Layer Opacity"} placement="top">
                                     <LayerOpacityIcon
-                                        aria-label="Set Plumes Layer Opacity"
                                         opacity={this.props.layer.get("opacity")}
                                         className={styles.iconButtonSmall}
                                         color={this.isChangingOpacity ? "primary" : "default"}
@@ -203,7 +193,6 @@ export class PlumesControlContainer extends LayerControlContainerCore {
                 </Manager>
                 <Tooltip title="Layer information" placement="top">
                     <IconButtonSmall
-                        aria-label="Layer information for Plumes"
                         className={styles.iconButtonSmall}
                         onClick={() => this.openLayerInfo()}
                     >

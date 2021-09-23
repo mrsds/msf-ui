@@ -15,7 +15,7 @@ export const ALERTS = {
         severity: 3
     },
     AVAILABLE_GRIDDED_DATES_LIST_LOAD_FAILED: {
-        title: "Availabile Gridded Layer Date List Loading Failed",
+        title: "Available Gridded Layer Date List Loading Failed",
         formatString: "Failed to load date availability list for gridded layers.",
         severity: 3
     },
@@ -23,6 +23,17 @@ export const ALERTS = {
         title: "Plume List for Feature Failed",
         formatString: "Failed to load plume list for selected feature",
         severity: 3
+    },
+    PLEIADES_JOB_SUBMIT_FAILED: {
+        title: "Pleiades Job Submission Failed",
+        formatString:
+            "The server returned an error while attempting to submit your pleiades job request",
+        severity: 3
+    },
+    PLEIADES_JOB_SUBMIT_SUCCEEDED: {
+        title: "Pleiades Job Submitted",
+        formatString: "Your Pleiades job request has been submitted successfully",
+        severity: 0
     }
 };
 
@@ -32,3 +43,16 @@ export const AVIRIS_LAYER_UPDATED = "AVIRIS_LAYER_UPDATED";
 export const UPDATING_AVIRIS_LAYER = "UPDATING_AVIRIS_LAYER";
 
 export const GEOMETRY_MULTIPOLYGON = "MultiPolygon";
+
+export const CONTROL_JOB_SUBMISSION_OWNER_ID = "Job Owner ID";
+export const CONTROL_JOB_SUBMISSION_JOB_TAG = "Job Tag";
+export const CONTROL_JOB_SUBMISSION_LONRES = "Longitude Resolution";
+export const CONTROL_JOB_SUBMISSION_LATRES = "Latitude Resolution";
+export const CONTROL_JOB_SUBMISSION_LONLL = "Lower Left Longitude";
+export const CONTROL_JOB_SUBMISSION_LATLL = "Lower Left Latitude";
+export const CONTROL_JOB_SUBMISSION_NUMPIXX = "Number of X Pixels";
+export const CONTROL_JOB_SUBMISSION_NUMPIXY = "Number of Y Pixels";
+export const CONTROL_JOB_SUBMISSION_NUMPAR = "Number of Particles";
+export const CONTROL_JOB_SUBMISSION_NHRS = "Number of Hours";
+
+export const FILE_TYPE_JSON = "json";

@@ -51,10 +51,6 @@ export const PageControls = props => {
                             key="chevronLeft"
                             onClick={() => props.onPageBackward()}
                             disabled={props.currentPageIndex === 0}
-                            aria-label={
-                                "Previous set of results" +
-                                (props.currentPageIndex === 0 ? " (disabled)" : "")
-                            }
                         >
                             <ChevronLeftIcon />
                         </IconButtonSmall>
@@ -62,7 +58,6 @@ export const PageControls = props => {
                             key="chevronRight"
                             onClick={() => props.onPageForward()}
                             disabled={moreResults}
-                            aria-label={"Next set of results" + (moreResults ? " (disabled)" : "")}
                         >
                             <ChevronRightIcon />
                         </IconButtonSmall>

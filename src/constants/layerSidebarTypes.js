@@ -37,12 +37,12 @@ export const PLUME_FILTER_PLUME_OBSERVATION_DATE = "Plume Observation Date";
 export const PLUME_FILTER_SORT_BY = "Plume Sort By";
 export const PLUME_FILTER_SORT_OPTIONS = [
     {
-        value: PLUME_FILTER_PLUME_OBSERVATION_DATE,
-        label: "Plume Observation Date"
-    },
-    {
         value: PLUME_FILTER_PLUME_FLUX,
         label: "Plume Emissions"
+    },
+    {
+        value: PLUME_FILTER_PLUME_OBSERVATION_DATE,
+        label: "Plume Observation Date"
     }
 ];
 

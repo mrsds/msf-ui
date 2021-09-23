@@ -166,10 +166,6 @@ export class LayerDateControl extends Component {
                                 <IconButton
                                     className={styles.incrementButton}
                                     disabled={this.incrementActive("year", true)}
-                                    aria-label={
-                                        "Previous year" +
-                                        (this.incrementActive("year", true) ? " (disabled)" : "")
-                                    }
                                 >
                                     <ChevronLeftIcon
                                         onClick={() => this.props.incrementDate("year", true)}
@@ -179,10 +175,6 @@ export class LayerDateControl extends Component {
                                 <IconButton
                                     className={styles.incrementButton}
                                     disabled={this.incrementActive("year")}
-                                    aria-label={
-                                        "Next year" +
-                                        (this.incrementActive("year") ? " (disabled)" : "")
-                                    }
                                 >
                                     <ChevronRightIcon
                                         onClick={() => this.props.incrementDate("year")}

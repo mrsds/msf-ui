@@ -94,14 +94,6 @@ export class PlumesContainer extends Component {
             return `${MiscUtilExtended.roundTo(flux, 2)} kg/hr`;
         })(feature);
 
-        const plumeThumbnailAltString =
-            "Plume image thumbnail for Source ID: " +
-            feature.get("source_id") +
-            " Candidate ID: " +
-            feature.get("candidate_id") +
-            " on " +
-            dateString;
-
         return (
             <React.Fragment key={feature.get("id")}>
                 <ListItem
@@ -116,7 +108,7 @@ export class PlumesContainer extends Component {
                     onMouseLeave={() => this.props.setHoverPlume(null)}
                 >
                     <div className={layerSidebarStyles.imageContainer}>
-                        <img src={plumeThumbnail} alt={plumeThumbnailAltString} />
+                        <img src={plumeThumbnail} />
                     </div>
                     <div className={layerSidebarStyles.listItemTextContainer}>
                         <Typography
@@ -251,10 +243,8 @@ export class PlumesContainer extends Component {
             innerContent = (
                 <div className={layerSidebarStyles.noResultsInfo} hidden={hasResults}>
                     <CloudOffOutlineIcon className={layerSidebarStyles.noResultsIcon} />
-                    <div className={layerSidebarStyles.noResultsTitleHiContrast}>
-                        No Plumes Found
-                    </div>
-                    <div className={layerSidebarStyles.noResultsSubtitleHiContrast}>
+                    <div className={layerSidebarStyles.noResultsTitle}>No Plumes Found</div>
+                    <div className={layerSidebarStyles.noResultsSubtitle}>
                         Try widening some search parameters
                     </div>
                 </div>

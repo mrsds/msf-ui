@@ -890,7 +890,7 @@ export class TimelineContainerStyles extends Component {
                         ref={ref => (this.jumperLeft = ref)}
                     >
                         <Tooltip title="Previous Plume" placement="right">
-                            <Button color="inherit" aria-label="Previous Plume">
+                            <Button color="inherit">
                                 <KeyboardArrowLeftIcon />
                             </Button>
                         </Tooltip>
@@ -907,7 +907,7 @@ export class TimelineContainerStyles extends Component {
                         ref={ref => (this.jumperRight = ref)}
                     >
                         <Tooltip title="Next Plume" placement="left">
-                            <Button color="inherit" aria-label="Next Plume">
+                            <Button color="inherit">
                                 <KeyboardArrowRightIcon />
                             </Button>
                         </Tooltip>

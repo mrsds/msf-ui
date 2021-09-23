@@ -66,12 +66,6 @@ export class SourceControlContainer extends LayerControlContainerCore {
                         checked={this.props.layer.get("isActive")}
                         onChange={(value, checked) => this.setLayerActive(!checked)}
                         onClick={evt => this.setLayerActive(evt.target.checked)}
-                        inputProps={{
-                            "aria-label":
-                                "Toggle Methane Point Source Layer (currently " +
-                                (this.props.layer.get("isActive") ? "on" : "off") +
-                                ")"
-                        }}
                     />
                 </Tooltip>
                 <span className={textStyles.textEllipsis}>
@@ -87,10 +81,7 @@ export class SourceControlContainer extends LayerControlContainerCore {
                     }}
                 >
                     <Tooltip title="Layer information" placement="left">
-                        <IconButtonSmall
-                            onClick={() => this.openLayerInfo()}
-                            aria-label="Layer information for Methane Point Sources"
-                        >
+                        <IconButtonSmall onClick={() => this.openLayerInfo()}>
                             <InfoOutlineIcon />
                         </IconButtonSmall>
                     </Tooltip>
@@ -118,13 +109,7 @@ export class SourceControlContainer extends LayerControlContainerCore {
     }
 
     getColorbar() {
-        return (
-            <img
-                src="img/PlumeIcon.png"
-                className={stylesExtended.icon}
-                alt="Icon for Methane Point Source Map Layer Toggle"
-            />
-        );
+        return <img src="img/PlumeIcon.png" className={stylesExtended.icon} />;
     }
 
     renderIconRow() {
@@ -158,7 +143,6 @@ export class SourceControlContainer extends LayerControlContainerCore {
                             <Target style={{ display: "inline-block" }}>
                                 <Tooltip title={"Set Layer Opacity"} placement="top">
                                     <LayerOpacityIcon
-                                        aria-label="Set Methane Point Sources Layer Opacity"
                                         opacity={this.props.layer.get("opacity")}
                                         className={styles.iconButtonSmall}
                                         color={this.isChangingOpacity ? "primary" : "default"}
@@ -194,7 +178,6 @@ export class SourceControlContainer extends LayerControlContainerCore {
                 </Manager>
                 <Tooltip title="Layer information" placement="top">
                     <IconButtonSmall
-                        aria-label="Layer information for Methane Point Sources"
                         className={styles.iconButtonSmall}
                         onClick={() => this.openLayerInfo()}
                     >

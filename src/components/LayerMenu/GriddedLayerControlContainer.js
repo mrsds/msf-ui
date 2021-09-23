@@ -133,12 +133,6 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                         checked={this.props.group.get("isActive")}
                         onChange={(value, checked) => this.setLayerActive(!checked)}
                         onClick={evt => this.setLayerActive(evt.target.checked)}
-                        inputProps={{
-                            "aria-label":
-                                "Toggle Gridded Emission Maps Layer (currently " +
-                                (this.props.layer.get("isActive") ? "on" : "off") +
-                                ")"
-                        }}
                     />
                 </Tooltip>
                 <span className={textStyles.textEllipsis}>
@@ -154,10 +148,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                     }}
                 >
                     <Tooltip title="Layer information" placement="left">
-                        <IconButtonSmall
-                            onClick={() => this.openLayerInfo()}
-                            aria-label="Gridded Emissions Layer information"
-                        >
+                        <IconButtonSmall onClick={() => this.openLayerInfo()}>
                             <InfoOutlineIcon />
                         </IconButtonSmall>
                     </Tooltip>
@@ -169,7 +160,6 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
     renderSublayerSelection() {
         return (
             <select
-                aria-label="Select gridded layer"
                 onChange={e =>
                     this.props.mapActionsExtended.changeActiveGriddedLayer(e.target.value, true)
                 }
@@ -202,10 +192,7 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                         }}
                     >
                         <Tooltip title="Choose date" placement="left">
-                            <IconButtonSmall
-                                onClick={() => this.toggleDatePickerVisible()}
-                                aria-label="Toggle Date Picker"
-                            >
+                            <IconButtonSmall onClick={() => this.toggleDatePickerVisible()}>
                                 <DateRangeIcon />
                             </IconButtonSmall>
                         </Tooltip>
@@ -315,7 +302,6 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                             <Target style={{ display: "inline-block" }}>
                                 <Tooltip title={"Set Layer Opacity"} placement="top">
                                     <LayerOpacityIcon
-                                        aria-label="Set Gridded Emissions Layer Opacity"
                                         opacity={this.props.layer.get("opacity")}
                                         className={styles.iconButtonSmall}
                                         color={this.isChangingOpacity ? "primary" : "default"}
@@ -351,7 +337,6 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                 </Manager>
                 <Tooltip title="Layer information" placement="top">
                     <IconButtonSmall
-                        aria-label="Gridded Emissions Layer information"
                         className={styles.iconButtonSmall}
                         onClick={() => this.openLayerInfo()}
                     >

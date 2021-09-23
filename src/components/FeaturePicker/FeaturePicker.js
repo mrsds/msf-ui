@@ -240,10 +240,7 @@ export class FeaturePicker extends Component {
                             avatar: styles.pickerHeaderAvatar
                         }}
                         avatar={
-                            <IconButtonSmall
-                                onClick={this.props.closeFeaturePicker}
-                                aria-label="Close Feature Pop-up"
-                            >
+                            <IconButtonSmall onClick={this.props.closeFeaturePicker}>
                                 <CloseIcon />
                             </IconButtonSmall>
                         }

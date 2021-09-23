@@ -31,7 +31,6 @@ import displayStyles from "_core/styles/display.scss";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import styles from "components/MethaneSidebar/FiltersContainerStyles.scss";
-import accessibilityStyles from "_core/styles/accessibility.scss";
 
 export class InfrastructureFiltersContainer extends Component {
     constructor(props) {
@@ -109,15 +108,8 @@ export class InfrastructureFiltersContainer extends Component {
 
         return (
             <React.Fragment>
-                <label
-                    htmlFor="InfrastructureNameIdFilter"
-                    className={accessibilityStyles.hideExceptForScreenReaders}
-                >
-                    Filter by Infrastructure Name or ID
-                </label>
                 <SearchInput
                     icon={<Search />}
-                    SearchInputId="InfrastructureNameIdFilter"
                     placeholder="Filter by Infrastructure Name/ID"
                     value={infrastructureNameFilterSelectedValue}
                     disabled={false}
@@ -194,7 +186,6 @@ export class InfrastructureFiltersContainer extends Component {
                                                     Infrastructure Types
                                                 </Typography>
                                                 <IconButtonSmall
-                                                    aria-label="Close Infrastructure Types Selector"
                                                     color="inherit"
                                                     onClick={() =>
                                                         this.setPopperActive(
@@ -239,18 +230,6 @@ export class InfrastructureFiltersContainer extends Component {
                                                                     .size ===
                                                                 activeInfrastructureSubCategories.size
                                                             }
-                                                            //aria-label="Select all infrastructure"
-                                                            inputProps={{
-                                                                "aria-label":
-                                                                    "Toggle all infrastructure (currently " +
-                                                                    (this.props
-                                                                        .activeInfrastructureSubCategories
-                                                                        .size ===
-                                                                    activeInfrastructureSubCategories.size
-                                                                        ? "on"
-                                                                        : "off") +
-                                                                    ")"
-                                                            }}
                                                         />
                                                     </ListItemSecondaryAction>
                                                 </ListItem>
@@ -303,16 +282,6 @@ export class InfrastructureFiltersContainer extends Component {
                                                                         checked={checked}
                                                                         tabIndex={-1}
                                                                         disableRipple
-                                                                        inputProps={{
-                                                                            "aria-label":
-                                                                                "Toggle " +
-                                                                                categoryName +
-                                                                                " infrastructure filter (currently " +
-                                                                                (checked
-                                                                                    ? "checked"
-                                                                                    : "unchecked") +
-                                                                                ")"
-                                                                        }}
                                                                     />
                                                                     <ListItemText
                                                                         primary={categoryName}

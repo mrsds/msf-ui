@@ -1,0 +1,33 @@
+@import "~styles/colors";
+
+.inputContainer {
+    background-color: white;
+    border-radius: 2px;
+    font-size: 1.4rem;
+    input {
+        padding-left: 10px;
+        width: 250px;
+    }
+}
+
+.jobFormContainer {
+    box-sizing: border-box;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    margin-top: 20px;
+
+    .inputRow {
+        margin: 10px 0px;
+
+        label {
+            width: 250px;
+            display: inline-flex;
+        }
+        input {
+        }
+
+        .submitButton {
+        }
+    }
+}

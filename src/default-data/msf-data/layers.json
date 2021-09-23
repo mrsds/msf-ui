@@ -7,7 +7,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=1&maxObjects=10000",
+            "url": "/vista?category=1&maxObjects=10000",
             "thumbnailImage": "img/Vista-Infrastructure.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -24,7 +24,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=3&maxObjects=10000",
+            "url": "/vista?category=3&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -37,7 +37,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=4&maxObjects=10000",
+            "url": "/vista?category=4&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -50,7 +50,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=5&maxObjects=10000",
+            "url": "/vista?category=5&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -63,7 +63,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=6&maxObjects=10000",
+            "url": "/vista?category=6&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -76,7 +76,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=8&maxObjects=10000",
+            "url": "/vista?category=8&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -89,7 +89,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=9&maxObjects=10000",
+            "url": "/vista?category=9&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -102,7 +102,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=10&maxObjects=10000",
+            "url": "/vista?category=10&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -115,7 +115,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=11&maxObjects=10000",
+            "url": "/vista?category=11&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -128,7 +128,7 @@
             "handleAs": "vista_geojson",
             "isDefault": false,
             "visibleInGroup": false,
-            "url": "/api/vista?category=13&maxObjects=10000",
+            "url": "/vista?category=13&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -141,7 +141,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=1000&maxObjects=10000",
+            "url": "/vista?category=1000&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -154,7 +154,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=0&maxObjects=10000",
+            "url": "/vista?category=0&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -167,7 +167,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=0&maxObjects=10000",
+            "url": "/vista?category=0&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -180,7 +180,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=0&maxObjects=10000",
+            "url": "/vista?category=0&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -193,7 +193,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=0&maxObjects=10000",
+            "url": "/vista?category=0&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -206,7 +206,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=0&maxObjects=10000",
+            "url": "/vista?category=0&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -219,7 +219,7 @@
             "handleAs": "vista_geojson",
             "isDefault": true,
             "visibleInGroup": true,
-            "url": "/api/vista?category=1016&maxObjects=10000",
+            "url": "/vista?category=1016&maxObjects=10000",
             "thumbnailImage": "img/VIIRS_SNPP_CorrectedReflectance_TrueColor.png",
             "group": "VISTA",
             "updateParameters": { "time": false },
@@ -227,11 +227,11 @@
         },
         {
             "id": "AVIRIS",
-            "title": "AVIRIS-NG Plume Images",
+            "title": "Methane Plume Images",
             "type": "data",
             "handleAs": "aviris_plume",
             "isDefault": true,
-            "url": "/api/aviris/plumes",
+            "url": "/aviris/plumes",
             "thumbnailImage": "img/AVIRIS.png",
             "palette": {
                 "name": "AVIRIS_plumes",
@@ -241,7 +241,7 @@
             "max": 4000,
             "units": " enhancement (ppm-m)",
             "metadata": {
-                "url": "default-data/msf-data/layer-metadata/AVIRIS.json",
+                "url": "default-data/msf-data/layer-metadata/Plume-images.json",
                 "handleAs": "json"
             },
             "updateParameters": { "time": false },
@@ -274,13 +274,13 @@
         },
         {
             "id": "GRIDDED_EMISSIONS_EPA",
-            "title": "EPA Gridded Inventory",
+            "title": "EPA Gridded Inventory (CA only)",
             "type": "data",
             "handleAs": "gridded_geojson",
             "isDefault": false,
             "url": "/server/data/epa_gridded_total_2012.geojson",
             "thumbnailImage": "img/gridded_methane_v1.png",
-            "opacity": 0.3,
+            "opacity": 0.5,
             "metadata": {
                 "url": "default-data/msf-data/layer-metadata/Grid-EPA.json",
                 "handleAs": "json"
@@ -331,31 +331,14 @@
             }
         },
         {
-            "id": "Mapbox_Streets_Satellite",
-            "title": "Mapbox Streets-Satellite",
+            "id": "Open_Street_Map",
+            "title": "Open Street Map",
             "type": "basemap",
-            "thumbnailImage": "https://a.tiles.mapbox.com/v4/mapbox.streets-satellite/2/1/2@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+            "thumbnailImage": "https://a.tile.openstreetmap.org/2/1/2.png",
             "handleAs": "xyz_raster",
             "updateParameters": { "time": false },
             "wmtsOptions": {
-                "url": "https://a.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
-                "projection": "EPSG:3857",
-                "tileGrid": {
-                    "minZoom": 0,
-                    "maxZoom": 18,
-                    "tileSize": 256
-                }
-            }
-        },
-        {
-            "id": "Mapbox_Streets",
-            "title": "Mapbox Streets",
-            "type": "basemap",
-            "thumbnailImage": "https://a.tiles.mapbox.com/v4/mapbox.streets/2/1/2@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
-            "handleAs": "xyz_raster",
-            "updateParameters": { "time": false },
-            "wmtsOptions": {
-                "url": "https://a.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+                "url": "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 "projection": "EPSG:3857",
                 "tileGrid": {
                     "minZoom": 0,
@@ -405,18 +388,18 @@
             "type": "data",
             "handleAs": "vista_source",
             "metadata": {
-                "url": "default-data/msf-data/layer-metadata/AVIRIS-Sources.json",
+                "url": "default-data/msf-data/layer-metadata/Methane-Sources.json",
                 "handleAs": "json"
             },
             "isDefault": true,
-            "url": "api/sources?maxLat={latMax}&minLat={latMin}&maxLon={lonMax}&minLon={lonMin}",
+            "url": "/server/sources?maxLat={latMax}&minLat={latMin}&maxLon={lonMax}&minLon={lonMin}",
             "thumbnailImage": "img/msf-pointsources.png",
             "updateParameters": { "time": false },
             "layerOrder": 16
         },
         {
             "id": "Flight_Lines",
-            "title": "AVIRIS-NG Flight Coverage",
+            "title": "Flight Coverage",
             "type": "data",
             "handleAs": "flight_lines",
             "metadata": {
@@ -430,10 +413,36 @@
                 "max": "1"
             },
             "isDefault": false,
-            "url": "/server/flightlines_all.kml",
+            "url": "/server/data/flightlines_all.kml",
             "thumbnailImage": "img/msf-flightcoverage.png",
             "updateParameters": { "time": false },
             "layerOrder": 0
+        },
+        {
+            "id": "GRIDDED_EMISSIONS_PERMIAN",
+            "title": "Permian Regional Flux Inversion",
+            "type": "data",
+            "handleAs": "gridded_geojson",
+            "isDefault": false,
+            "url": "/server/data/permian-thumb-2019.geojson",
+            "thumbnailImage": "img/permian-thumb.png",
+            "opacity": 0.6,
+            "metadata": {
+                "url": "default-data/msf-data/layer-metadata/Grid-Permian.json",
+                "handleAs": "json"
+            },
+            "units": "kg/km2/hr",
+            "updateParameters": { "time": false },
+            "palette": {
+                "name": "permian",
+                "handleAs": "json-fixed",
+                "min": "0",
+                "max": "15"
+            },
+            "layerOrder": 1,
+            "group": "GRIDDED",
+            "visibleInGroup": true
         }
+
     ]
 }
