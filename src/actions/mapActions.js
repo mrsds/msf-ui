@@ -531,7 +531,6 @@ export function setHomeArea(location, extent) {
 
 export function goToHome() {
     return (dispatch, getState) => {
-        console.log("dingus");
         dispatch(
             mapActions.setMapView(
                 {

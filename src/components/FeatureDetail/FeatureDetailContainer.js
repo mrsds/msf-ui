@@ -139,6 +139,7 @@ export class FeatureDetailContainer extends Component {
                         onClick={() => downloadFnc(this.props.feature)}
                         target="_blank"
                         variant="fab"
+                        aria-label={downloadLabel}
                     >
                         <FileDownloadIcon />
                     </Button>
@@ -368,7 +369,15 @@ export class FeatureDetailContainer extends Component {
                                         Observation Methane Plume Imagery
                                     </Typography>
                                     <div className={styles.observationImage}>
-                                        <img src={this.props.feature.get("rgbqlctr_url")} />
+                                        <img
+                                            src={this.props.feature.get("rgbqlctr_url")}
+                                            alt={
+                                                "Image for plume source: " +
+                                                feature.get("name") +
+                                                " candidate: " +
+                                                feature.get("sourceId")
+                                            }
+                                        />
                                     </div>
                                 </CardContent>
                             </Card>
@@ -380,7 +389,15 @@ export class FeatureDetailContainer extends Component {
                                         Observation RGB Imagery
                                     </Typography>
                                     <div className={styles.observationImage}>
-                                        <img src={this.props.feature.get("png_url")} />
+                                        <img
+                                            src={this.props.feature.get("png_url")}
+                                            alt={
+                                                "Ground imagery at location of plume source: " +
+                                                feature.get("name") +
+                                                " candidate: " +
+                                                feature.get("sourceId")
+                                            }
+                                        />
                                     </div>
                                 </CardContent>
                             </Card>

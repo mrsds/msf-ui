@@ -24,6 +24,7 @@ import * as layerSidebarActions from "actions/layerSidebarActions";
 import layerSidebarStyles from "components/MethaneSidebar/LayerSidebarContainerStyles.scss";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import * as mapActionsMSF from "actions/mapActions";
+import accessibilityStyles from "_core/styles/accessibility.scss";
 
 export class InfrastructureContainer extends Component {
     clearTextSearch() {
@@ -259,8 +260,10 @@ export class InfrastructureContainer extends Component {
             innerContent = (
                 <div className={layerSidebarStyles.noResultsInfo} hidden={hasResults}>
                     <DomainIcon className={layerSidebarStyles.noResultsIcon} />
-                    <div className={layerSidebarStyles.noResultsTitle}>No Infrastructure Found</div>
-                    <div className={layerSidebarStyles.noResultsSubtitle}>
+                    <div className={layerSidebarStyles.noResultsTitleHiContrast}>
+                        No Infrastructure Found
+                    </div>
+                    <div className={layerSidebarStyles.noResultsSubtitleHiContrast}>
                         Try widening some search parameters
                     </div>
                 </div>

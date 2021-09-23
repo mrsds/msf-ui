@@ -50,6 +50,7 @@ export class SearchInput extends Component {
             actionIcon = (
                 <span className={actionIconClasses}>
                     <IconButtonSmall
+                        aria-label="Clear Filters"
                         disableRipple={true}
                         color={this.props.actionIconPrimary ? "primary" : "default"}
                         disabled={
@@ -71,6 +72,7 @@ export class SearchInput extends Component {
                 ref={input => {
                     this.input = input;
                 }}
+                id={this.props.SearchInputId}
                 disableUnderline={true}
                 className={rootClasses}
                 disabled={this.props.disabled}
@@ -108,6 +110,7 @@ SearchInput.propTypes = {
     onUpdate: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
     className: PropTypes.string,
-    placeholder: PropTypes.string.isRequired
+    placeholder: PropTypes.string.isRequired,
+    SearchInputId: PropTypes.string.isRequired
 };
 export default connect()(SearchInput);

@@ -29,6 +29,7 @@ import displayStyles from "_core/styles/display.scss";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import styles from "components/MethaneSidebar/FiltersContainerStyles.scss";
+import accessibilityStyles from "_core/styles/accessibility.scss";
 
 export class PlumeFiltersContainer extends Component {
     constructor(props) {
@@ -100,8 +101,15 @@ export class PlumeFiltersContainer extends Component {
 
         return (
             <React.Fragment>
+                <label
+                    htmlFor="PlumeIdFilter"
+                    className={accessibilityStyles.hideExceptForScreenReaders}
+                >
+                    Filter by Plume ID
+                </label>
                 <SearchInput
                     icon={<Search />}
+                    SearchInputId="PlumeIdFilter"
                     placeholder="Filter by Plume ID"
                     value={plumeIDFilterSelectedValue}
                     disabled={false}
@@ -177,6 +185,7 @@ export class PlumeFiltersContainer extends Component {
                                                     Plume Emissions
                                                 </Typography>
                                                 <IconButtonSmall
+                                                    aria-label="Close Plume Flux Filter Selector"
                                                     color="inherit"
                                                     onClick={() =>
                                                         this.setPopperActive("plumeFlux", false)
@@ -201,6 +210,9 @@ export class PlumeFiltersContainer extends Component {
                                                 <Radio
                                                     value={""}
                                                     checked={plumeFluxFilterSelectedValue === null}
+                                                    inputProps={{
+                                                        "aria-label": "Filter by Any Plume Flux"
+                                                    }}
                                                 />
                                                 <Typography className={styles.radioLabel}>
                                                     Any Plume Flux
@@ -223,6 +235,17 @@ export class PlumeFiltersContainer extends Component {
                                                             x.get("value") ===
                                                             plumeFluxFilterSelectedValue
                                                         }
+                                                        inputProps={{
+                                                            "aria-label":
+                                                                "Filter by flux greater than " +
+                                                                x.get("value").toString() +
+                                                                " kg per hr (currently " +
+                                                                (x.get("value") ===
+                                                                plumeFluxFilterSelectedValue
+                                                                    ? "checked"
+                                                                    : "unchecked") +
+                                                                ")"
+                                                        }}
                                                     />
                                                     <Typography className={styles.radioLabel}>
                                                         {x.get("label")}
@@ -240,7 +263,11 @@ export class PlumeFiltersContainer extends Component {
                                 this.props.setPlumeDateFilter();
                             }}
                             value={this.props.startDate ? this.props.startDate : ""}
-                            label={this.props.startDate ? this.props.startDate : ""}
+                            label={
+                                this.props.startDate
+                                    ? this.props.startDate
+                                    : "Date filter (currently none)"
+                            }
                             active={true}
                         />
                         <Target className={styles.sorterContainer}>

@@ -36,6 +36,7 @@ export class AppButtons extends Component {
                 >
                     <IconButtonSmall
                         color="inherit"
+                        title="Help"
                         className={styles.btn}
                         onClick={() => appActions.setHelpOpen(true)}
                     >
@@ -49,6 +50,7 @@ export class AppButtons extends Component {
                     className={styles.btnWrapper}
                 >
                     <IconButtonSmall
+                        title="Share"
                         color="inherit"
                         className={styles.btn}
                         onClick={() => appActions.setShareOpen(true)}
@@ -63,6 +65,7 @@ export class AppButtons extends Component {
                     className={styles.btnWrapper}
                 >
                     <IconButtonSmall
+                        title="Settings"
                         color="inherit"
                         className={styles.btn}
                         onClick={() => appActions.setSettingsOpen(true)}
@@ -76,7 +79,7 @@ export class AppButtons extends Component {
                     placement="bottom"
                     className={styles.btnWrapper}
                 >
-                    <FullscreenButton className={styles.btn} />
+                    <FullscreenButton title="Fullscreen" className={styles.btn} />
                 </EnhancedTooltip>
             </div>
         );

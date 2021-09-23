@@ -118,7 +118,11 @@ export class DataFilterContainer extends Component {
                                         key={"All"}
                                         className={styles.formControlLabel}
                                     >
-                                        <Radio value={""} checked={currentValue === null} />
+                                        <Radio
+                                            value={""}
+                                            checked={currentValue === null}
+                                            inputProps={{ "aria-label": "All filter" }}
+                                        />
                                         <Typography className={styles.radioLabel}>All</Typography>
                                     </div>
                                     {getOptionsFunction
@@ -138,6 +142,7 @@ export class DataFilterContainer extends Component {
                                                             currentValue !== null &&
                                                             currentValue === sourceId
                                                         }
+                                                        inputProps={{ "aria-label": sourceId }} //Add if checked, same for "All" item
                                                     />
                                                     <Typography className={styles.radioLabel}>
                                                         {sourceId.replace(/_/g, " ")}
@@ -197,6 +202,7 @@ export class DataFilterContainer extends Component {
                                 earliestDate={earliestDate}
                                 latestDate={latestDate}
                                 updateDateFunction={updateFunction}
+                                popperId={popperId}
                                 onClose={() => {
                                     this.setPopperActive(popperId, false);
                                     this.props.updateActiveAnalyticsTab();
@@ -213,9 +219,9 @@ export class DataFilterContainer extends Component {
         const downloadSettings = (_ => {
             switch (this.props.analyticsMode) {
                 case MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS:
-                    return ["Download original plume lists (CA and Permian)", appConfig.URLS.plumeListDownload];
+                    return ["Download original plume list", appConfig.URLS.plumeListDownload];
                 case MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO:
-                    return ["Download original source lists (CA and Permian)", appConfig.URLS.sourceListDownload];
+                    return ["Download original source list", appConfig.URLS.sourceListDownload];
                 default:
                     null;
             }
@@ -233,6 +239,7 @@ export class DataFilterContainer extends Component {
                     href={downloadUrl}
                     target="_blank"
                     variant="fab"
+                    aria-label={downloadText}
                 >
                     <FileDownloadIcon />
                 </Button>
