@@ -21,49 +21,44 @@ Create your own:
 3. Modify `src/index.js` to use this AppContainer instead of the _core version
 */
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { appColorPalette } from "styles/appColorPalette";
-import * as appActions from "_core/actions/appActions";
-import * as mapActionsMSF from "actions/mapActions";
-import * as mapActions from "_core/actions/mapActions";
-import * as appStrings from "_core/constants/appStrings";
-import appConfig from "constants/appConfig";
-import MiscUtil from "_core/utils/MiscUtil";
-import {
-    MapContainer,
-    MapContextMenu,
-    MapControlsContainer,
-    CoordinateTracker
-} from "_core/components/Map";
-import { ShareContainer } from "_core/components/Share";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+
+import { AlertsContainer } from "_core/components/Alerts";
+import { AnalyticsContainer } from "_core/components/Analytics";
 import { LayerInfoContainer_Extended as LayerInfoContainer } from "components/LayerInfo_Extended";
 import { LoadingContainerExtended as LoadingContainer } from "components/Loading";
-import { AlertsContainer } from "_core/components/Alerts";
+import { MapContextMenu, CoordinateTracker } from "_core/components/Map";
 import { MouseFollowerContainer } from "_core/components/MouseFollower";
-import { AnalyticsContainer } from "_core/components/Analytics";
-import styles from "components/App/AppContainerStyles.scss";
-import displayStyles from "_core/styles/display.scss";
-import SettingsContainerExtended from "components/Settings/SettingsContainerExtended";
+import { ShareContainer } from "_core/components/Share";
+import { appColorPalette } from "styles/appColorPalette";
+import AppBarContainer from "components/AppBar/AppBarContainer";
+import CookieAcceptContainer from "components/CookieAccept/CookieAcceptContainer";
+import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContainer";
+import FeaturePicker from "components/FeaturePicker/FeaturePicker";
+import HelpContainerExtended from "components/Help/HelpContainerExtended";
+import KeyboardControlsContainerExtended from "components/KeyboardControls/KeyboardControlsContainerExtended";
+import LayerMenuContainerExtended from "components/LayerMenu/LayerMenuContainerExtended";
+import LayerSidebarContainer from "components/MethaneSidebar/LayerSidebarContainer";
+import LocationInputContainer from "components/LocationInput/LocationInputContainer";
+import HomeAreaPickerContainer from "components/HomeAreaPicker/HomeAreaPickerContainer";
+import MSFAnalyticsContainer from "components/MSFAnalytics/MSFAnalyticsContainer";
+import MSFControlContainer from "components/MSFControl/MSFControlContainer";
+import * as MSFTypes from "constants/MSFTypes";
 import MapContainerExtended from "components/Map/MapContainerExtended";
 import MapControlsContainerExtended from "components/Map/MapControlsContainerExtended";
+import MiscUtil from "_core/utils/MiscUtil";
+import SettingsContainerExtended from "components/Settings/SettingsContainerExtended";
 import TimelineContainer from "components/Timeline/TimelineContainer";
-import LayerSidebarContainer from "components/MethaneSidebar/LayerSidebarContainer";
-import AppBarContainer from "components/AppBar/AppBarContainer";
-import LayerMenuContainerExtended from "components/LayerMenu/LayerMenuContainerExtended";
-import FeatureDetailContainer from "components/FeatureDetail/FeatureDetailContainer";
-import KeyboardControlsContainerExtended from "components/KeyboardControls/KeyboardControlsContainerExtended";
-import HelpContainerExtended from "components/Help/HelpContainerExtended";
-import MapTooltip from "components/Map/MapTooltip";
-import FeaturePicker from "components/FeaturePicker/FeaturePicker";
-import * as MSFTypes from "constants/MSFTypes";
-import MSFAnalyticsContainer from "components/MSFAnalytics/MSFAnalyticsContainer";
-import CookieAcceptContainer from "components/CookieAccept/CookieAcceptContainer";
-import Cookies from "universal-cookie";
-import LocationInputContainer from "components/LocationInput/LocationInputContainer";
+import * as appActions from "_core/actions/appActions";
+import * as appStrings from "_core/constants/appStrings";
+import displayStyles from "_core/styles/display.scss";
+import * as mapActions from "_core/actions/mapActions";
+import * as mapActionsMSF from "actions/mapActions";
+import styles from "components/App/AppContainerStyles.scss";
 
 const theme = createMuiTheme({
     typography: {
@@ -94,7 +89,7 @@ export class AppContainer extends Component {
         document.addEventListener(
             "contextmenu",
             function(e) {
-                e.preventDefault();
+                //e.preventDefault();
             },
             false
         );
@@ -114,18 +109,6 @@ export class AppContainer extends Component {
                     // this.props.initializeMap(appStrings.MAP_LIB_3D, "map3D");
 
                     // set initial view
-                    this.props.setInitialHomeArea();
-                    // const cookies = new Cookies();
-                    // const extent = cookies.get("nasa_methane_source_finder_home_area")
-                    //     ? cookies.get("nasa_methane_source_finder_home_area").extent
-                    //     : MSFTypes.EXTENTS_LOS_ANGELES;
-                    // const location = cookies.get("nasa_methane_source_finder_home_area")
-                    //     ? cookies.get("nasa_methane_source_finder_home_area").location
-                    //     : MSFTypes.HOME_AREA_LOS_ANGELES;
-
-                    // this.props.setHomeArea(location, extent);
-                    // this.props.setMapView({ extent }, true);
-
                     this.props.setInitialHomeArea();
 
                     // activate default/url params
@@ -166,6 +149,10 @@ export class AppContainer extends Component {
             this.props.appMode === MSFTypes.APP_MODE_ANALYTICS
                 ? containerClasses
                 : displayStyles.hidden;
+        const controlContainerStyle =
+            this.props.appMode === MSFTypes.APP_MODE_CONTROL
+                ? containerClasses
+                : displayStyles.hidden;
         return (
             <MuiThemeProvider theme={theme}>
                 <div className={containerClasses}>
@@ -191,9 +178,13 @@ export class AppContainer extends Component {
                         <CoordinateTracker />
                         <FeaturePicker />
                         <LocationInputContainer />
+                        <HomeAreaPickerContainer />
                     </div>
                     <div className={analyticsContainerStyle}>
                         <MSFAnalyticsContainer />
+                    </div>
+                    <div className={controlContainerStyle}>
+                        <MSFControlContainer />
                     </div>
                 </div>
             </MuiThemeProvider>

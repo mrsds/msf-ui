@@ -6,7 +6,7 @@ services:
         ports:
         - "3000:3000"
         environment:
-        - REACT_APP_BE_ENDPOINT=10.93.112.44
+        - REACT_APP_BE_ENDPOINT=13.59.145.54
         - REACT_APP_LAYER_FILE=layers_public.json
         networks:
         - msf

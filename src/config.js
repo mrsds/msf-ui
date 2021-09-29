@@ -1,4 +1,4 @@
-/**
+	/**
  * Copyright 2017 California Institute of Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,6 +41,6 @@ APPLICATION_CONFIG = {
 
 APPLICATION_CONFIG = {
     APP_TITLE: "Methane Source Finder",
-    BE_ENDPOINT: "http://100.64.114.187",
-    BE_PORT: "9090"
+    BE_ENDPOINT: "https://localhost:1443/server",
+    BE_PORT: ""
 };

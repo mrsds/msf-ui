@@ -23,8 +23,8 @@ const CORE_CONFIG = Immutable.fromJS(coreConfig);
 // this config is defined in `src/config.js` for in ops changes
 const OPS_CONFIG = Immutable.fromJS(window.APPLICATION_CONFIG);
 
-//const bePort = OPS_CONFIG.get("BE_PORT") ? `:${OPS_CONFIG.get("BE_PORT")}` : "";
-const beEndpoint = '/api';//`${OPS_CONFIG.get("BE_ENDPOINT")}${bePort}`;
+const bePort = OPS_CONFIG.get("BE_PORT") ? `:${OPS_CONFIG.get("BE_PORT")}` : "";
+const beEndpoint = `${OPS_CONFIG.get("BE_ENDPOINT")}${bePort}`;
 
 // define your overrides for Core config here
 const APP_CONFIG = Immutable.fromJS({
@@ -62,8 +62,11 @@ const APP_CONFIG = Immutable.fromJS({
         plumeSourceSummaryEndpoint:
             beEndpoint +
             "/methanePlumeSourcesSummary?county={county}&vista_category={vista_category}&sector_level_3={sector_level_3}",
-        sourceListDownload: "/server/csv/Source_list_20191031.csv",
-        plumeListDownload: "/server/csv/Plume_list_20191031.csv"
+        sourceListDownload: beEndpoint + "/csv/Source_list_20191031.csv",
+        plumeListDownload: beEndpoint + "/csv/Plume_list_20191031.csv",
+        pleiadesJobSubmitEndpoint:
+            beEndpoint +
+            "/pleiades/run?jobowner={jobowner}&jobtag={jobtag}&lonres={lonres}&latres={latres}&lonll={lonll}&latll={latll}&numpixx={numpixx}&numpixy={numpixy}&numpar={numpar}&nhrs={nhrs}"
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
     PLUME_START_DATE: new Date(2000, 0, 1),
@@ -117,21 +120,28 @@ const APP_CONFIG = Immutable.fromJS({
     PLUME_MAX_RESOLUTION: 76,
     GRIDDED_LAYER_TYPES: [
         {
-            name: "GRIDDED_EMISSIONS_EPA",
-            dateEndpoint: "/server/data/epa_gridded_total_date_list.json",
-            endpoint: "/server/data/epa_gridded_total_{date}.geojson",
+            name: "GRIDDED_EMISSIONS_PERMIAN",
+            dateEndpoint: beEndpoint + "/data/permian-thumb-date-list.json",
+            endpoint: beEndpoint + "/data/permian-thumb-{date}.geojson",
             period: "yearly"
         },
         {
             name: "GRIDDED_EMISSIONS_V2",
             dateEndpoint: beEndpoint + "/data/gridded/gridded_date_list.json",
-            endpoint: "/server/data/gridded/v2/Fluxes_{date}.geojson",
+            endpoint: beEndpoint + "/data/gridded/v2/Fluxes_{date}.geojson",
             period: "daily"
+        },
+        {
+            name: "GRIDDED_EMISSIONS_EPA",
+            dateEndpoint: beEndpoint + "/data/epa_gridded_total_date_list.json",
+            endpoint: beEndpoint + "/data/epa_gridded_total_{date}.geojson",
+            period: "yearly"
         }
     ],
     DEFAULT_ANALYTICS_ENABLED: true,
     GOOGLE_ANALYTICS_ENABLED: true,
-    GOOGLE_ANALYTICS_ID: "UA-145064320-1"
+    GOOGLE_ANALYTICS_ID: "UA-145064320-1",
+    MSF_MANAGEMENT_CONSOLE_ENABLED: true
 });
 
 // define and export the final config

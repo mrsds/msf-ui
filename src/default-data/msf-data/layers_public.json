@@ -184,7 +184,7 @@
             "max": 4000,
             "units": " enhancement (ppm-m)",
             "metadata": {
-                "url": "default-data/msf-data/layer-metadata/AVIRIS.json",
+                "url": "default-data/msf-data/layer-metadata/Plume-images.json",
                 "handleAs": "json"
             },
             "updateParameters": { "time": false },
@@ -262,31 +262,14 @@
             }
         },
         {
-            "id": "Mapbox_Streets_Satellite",
-            "title": "Mapbox Streets-Satellite",
+            "id": "Open_Street_Map",
+            "title": "Open Street Map",
             "type": "basemap",
-            "thumbnailImage": "https://a.tiles.mapbox.com/v4/mapbox.streets-satellite/2/1/2@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+            "thumbnailImage": "https://a.tile.openstreetmap.org/2/1/2.png",
             "handleAs": "xyz_raster",
             "updateParameters": { "time": false },
             "wmtsOptions": {
-                "url": "https://a.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
-                "projection": "EPSG:3857",
-                "tileGrid": {
-                    "minZoom": 0,
-                    "maxZoom": 18,
-                    "tileSize": 256
-                }
-            }
-        },
-        {
-            "id": "Mapbox_Streets",
-            "title": "Mapbox Streets",
-            "type": "basemap",
-            "thumbnailImage": "https://a.tiles.mapbox.com/v4/mapbox.streets/2/1/2@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
-            "handleAs": "xyz_raster",
-            "updateParameters": { "time": false },
-            "wmtsOptions": {
-                "url": "https://a.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiYWFyb25wbGF2ZSIsImEiOiJjamU0eDVqYnAxYTh0MzBycWl2dnpxdWFrIn0.JwpMMB2c-TpLxC7DXZzmUg",
+                "url": "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 "projection": "EPSG:3857",
                 "tileGrid": {
                     "minZoom": 0,

@@ -314,7 +314,7 @@ export class DataFilterContainer extends Component {
                             component="h2"
                             className={styles.filterHeader}
                         >
-                            Data Filters
+                            Data Filters (Note that analytics cover California data only)
                         </Typography>
                         <Manager className={styles.manager}>
                             <ClickAwayListener

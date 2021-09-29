@@ -19,6 +19,7 @@ import layerSidebar from "reducers/layerSidebar";
 import featureDetail from "reducers/featureDetail";
 import view_Extended from "reducers/view_Extended";
 import MSFAnalytics from "reducers/MSFAnalytics";
+import MSFControl from "reducers/MSFControl";
 import settings_Extended from "reducers/settings_Extended";
 import analytics_Extended from "reducers/analytics_Extended";
 
@@ -36,7 +37,8 @@ const rootReducer = combineReducers({
     layerSidebar,
     featureDetail,
     webWorker,
-    MSFAnalytics
+    MSFAnalytics,
+    MSFControl
 });
 
 export default rootReducer;
