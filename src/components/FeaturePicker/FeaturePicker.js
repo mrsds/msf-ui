@@ -20,6 +20,7 @@ import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 import CloseIcon from "@material-ui/icons/Close";
 import { IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
+import { Scatter as ScatterChart } from "react-chartjs-2";
 
 export class FeaturePicker extends Component {
     makeInfrastructureItem(feature) {
@@ -157,6 +158,43 @@ export class FeaturePicker extends Component {
         );
     }
 
+    makePlumeChart() {
+        const data = {
+            datasets: [{
+              label: 'Scatter Dataset',
+              data: [{
+                x: -10,
+                y: 0
+              }, {
+                x: 0,
+                y: 10
+              }, {
+                x: 10,
+                y: 5
+              }, {
+                x: 0.5,
+                y: 5.5
+              }],
+              backgroundColor: 'rgb(255, 99, 132)'
+            }],
+        };
+        const options = {
+            scales: {
+              x: {
+                type: 'linear',
+                position: 'bottom'
+              }
+            }
+        };
+        return (
+            <React.Fragment>
+                <div className={styles.chartContainer}>
+                    <ScatterChart data={data} options={options} height={250} redraw={true} />
+                </div>
+            </React.Fragment>
+        );
+    }
+
     makePlumeItems() {
         if (!this.props.plumes.size) return null;
         return this.props.plumes.map(x => this.makePlumeItem(x));
@@ -250,6 +288,7 @@ export class FeaturePicker extends Component {
                     />
                     <CardContent className={styles.cardContentRoot}>
                         <List dense={true} className={styles.featureItemList}>
+                            {this.makePlumeChart()}
                             <Subheader
                                 disableSticky
                                 className={styles.subheader}
