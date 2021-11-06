@@ -279,4 +279,12 @@ export default class MapReducer_Extended extends MapReducer {
     static setHomeAreaPickerModalVisible(state, action) {
         return state.set("chooseHomeAreaModalVisible", action.visible);
     }
+
+    static updateSdapChartData(state, action) {
+        return state.setIn(["sdapChart", "data"], action.data);
+    }
+
+    static updateSdapChartOptions(state, action) {
+        return state.setIn(["sdapChart", "options"], action.options);
+    }
 }

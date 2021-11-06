@@ -45,6 +45,10 @@ export const mapState_Extended = mapState.mergeDeep(
             activeFeature: null,
             activeFeatureCategory: null
         },
+        sdapChart: {
+            data: null,
+            options: null
+        },
         currentZoom: null,
         visiblePlumes: [],
         locationInputModalVisible: false,

@@ -10,6 +10,7 @@ export const asyncState_Extended = asyncState.mergeDeep(
             [layerSidebarTypes.CATEGORY_PLUMES]: false
         },
         loadStart: null,
-        griddedDateAvailabilityAsync: asyncModel
+        griddedDateAvailabilityAsync: asyncModel,
+        sdapChartAsync: asyncModel
     })
 );

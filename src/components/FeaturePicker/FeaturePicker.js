@@ -21,6 +21,7 @@ import * as layerSidebarActions from "actions/layerSidebarActions";
 import CloseIcon from "@material-ui/icons/Close";
 import { IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
 import { Scatter as ScatterChart } from "react-chartjs-2";
+import appConfig from "constants/appConfig";
 
 export class FeaturePicker extends Component {
     makeInfrastructureItem(feature) {
@@ -159,37 +160,109 @@ export class FeaturePicker extends Component {
     }
 
     makePlumeChart() {
-        const data = {
-            datasets: [{
-              label: 'Scatter Dataset',
-              data: [{
-                x: -10,
-                y: 0
-              }, {
-                x: 0,
-                y: 10
-              }, {
-                x: 10,
-                y: 5
-              }, {
-                x: 0.5,
-                y: 5.5
-              }],
-              backgroundColor: 'rgb(255, 99, 132)'
-            }],
+        if(this.props.sdapPlumeChartData != null) {
+            return (
+                <React.Fragment>
+                    <div className={styles.chartContainer}>
+                        <ScatterChart data={this.props.sdapPlumeChartData} options={this.props.sdapPlumeChartOptions} height={250} redraw={true} />
+                    </div>
+                </React.Fragment>
+            );
+        }
+        // Get lat lon coords for SDAP call
+        let coordChecker = {
+            infrastructure: null,
+            plumes: null
         };
-        const options = {
-            scales: {
-              x: {
-                type: 'linear',
-                position: 'bottom'
-              }
-            }
-        };
+        if (this.props.infrastructure.size) {
+            let runningInfraMinLat = this.props.infrastructure.get(0).get('metadata').get('LLat');
+            let runningInfraMinLon = this.props.infrastructure.get(0).get('metadata').get('LLon');
+            let runningInfraMaxLat = this.props.infrastructure.get(0).get('metadata').get('LLat');
+            let runningInfraMaxLon = this.props.infrastructure.get(0).get('metadata').get('LLon');
+            this.props.infrastructure.forEach(infra => {
+                if (infra.get('metadata').get('LLat') < runningInfraMinLat) {
+                    runningInfraMinLat = infra.get('metadata').get('LLat');
+                }
+                if (infra.get('metadata').get('LLat') > runningInfraMaxLat) {
+                    runningInfraMaxLat = infra.get('metadata').get('LLat');
+                }
+                if (infra.get('metadata').get('LLon') < runningInfraMinLon) {
+                    runningInfraMinLon = infra.get('metadata').get('LLon');
+                }
+                if (infra.get('metadata').get('LLon') > runningInfraMaxLon) {
+                    runningInfraMaxLon = infra.get('metadata').get('LLon');
+                }
+            });
+            coordChecker.infrastructure = {
+                latMax: runningInfraMaxLat,
+                lonMax: runningInfraMaxLon,
+                latMin: runningInfraMinLat,
+                lonMin: runningInfraMinLon
+            };
+        }
+        if (this.props.plumes.size) {
+            let runningPlumeMinLat = this.props.plumes.get(0).get('location').get(0);
+            let runningPlumeMinLon = this.props.plumes.get(0).get('location').get(1);
+            let runningPlumeMaxLat = this.props.plumes.get(0).get('location').get(0);
+            let runningPlumeMaxLon = this.props.plumes.get(0).get('location').get(1);
+            this.props.plumes.forEach(plume => {
+                if (plume.get('location').get(0) < runningPlumeMinLat) {
+                    runningPlumeMinLat = plume.get('location').get(0);
+                }
+                if (plume.get('location').get(0) > runningPlumeMaxLat) {
+                    runningPlumeMaxLat = plume.get('location').get(0);
+                }
+                if (plume.get('location').get(1) < runningPlumeMinLon) {
+                    runningPlumeMinLon = plume.get('location').get(1);
+                }
+                if (plume.get('location').get(1) > runningPlumeMaxLon) {
+                    runningPlumeMaxLon = plume.get('location').get(1);
+                }
+            });
+            coordChecker.plumes = {
+                latMax: runningPlumeMaxLat,
+                lonMax: runningPlumeMaxLon,
+                latMin: runningPlumeMinLat,
+                lonMin: runningPlumeMinLon
+            };
+        }
+        let latMax = 0;
+        let lonMax = 0;
+        let latMin = 0;
+        let lonMin = 0;
+        if(coordChecker.plumes && coordChecker.infrastructure) {
+            latMax = Math.max(coordChecker.infrastructure.latMax, coordChecker.plumes.latMax);
+            lonMax = Math.max(coordChecker.infrastructure.lonMax, coordChecker.plumes.lonMax);
+            latMin = Math.min(coordChecker.infrastructure.latMin, coordChecker.plumes.latMin);
+            lonMin = Math.min(coordChecker.infrastructure.lonMin, coordChecker.plumes.lonMin);
+        } else {
+            latMax = coordChecker.infrastructure ? coordChecker.infrastructure.latMax : coordChecker.plumes.latMax;
+            lonMax = coordChecker.infrastructure ? coordChecker.infrastructure.lonMax : coordChecker.plumes.lonMax;
+            latMin = coordChecker.infrastructure ? coordChecker.infrastructure.latMin : coordChecker.plumes.latMin;
+            lonMin = coordChecker.infrastructure ? coordChecker.infrastructure.lonMin : coordChecker.plumes.lonMin;
+        }
+        // SDAP call will fail if min = max, so change values to be a range
+        if (latMax == latMin) {
+            latMax = latMax + 0.25;
+            latMin = latMin - 0.25;
+        }
+        if (lonMax == lonMin) {
+            lonMax = lonMax + 0.25;
+            lonMin = lonMin - 0.25;
+        }
+        this.props.getSdapChartData(
+        appConfig.URLS.sdapTimeSeriesSpark
+            .replace("{latMax}", latMax)
+            .replace("{lonMax}", lonMax)
+            .replace("{latMin}", latMin)
+            .replace("{lonMin}", lonMin)
+            .replace("{timeStart}", "2015-01-28T00:00:00Z")
+            .replace("{timeEnd}", "2016-12-24T23:59:59Z"),
+        );
         return (
             <React.Fragment>
                 <div className={styles.chartContainer}>
-                    <ScatterChart data={data} options={options} height={250} redraw={true} />
+                    N/A
                 </div>
             </React.Fragment>
         );
@@ -261,7 +334,8 @@ export class FeaturePicker extends Component {
     }
 
     render() {
-        if (!this.props.plumes && !this.props.infrastructure) return null;
+        if ((!this.props.plumes || !this.props.plumes.size) && 
+            (!this.props.infrastructure || !this.props.infrastructure.size)) return null;
         const { pickerStyle, pickerClass } = this.getPickerStyle();
         const rootClasses = MiscUtilExtended.generateStringFromSet({
             [pickerClass]: true,
@@ -327,7 +401,10 @@ FeaturePicker.propTypes = {
     setFeatureDetail: PropTypes.func.isRequired,
     layerSidebarCollapsed: PropTypes.bool.isRequired,
     featureDetailActiveFeature: PropTypes.object,
-    setHoverPlume: PropTypes.func.isRequired
+    setHoverPlume: PropTypes.func.isRequired,
+    getSdapChartData: PropTypes.func.isRequired,
+    sdapPlumeChartData: PropTypes.object,
+    sdapPlumeChartOptions: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -337,7 +414,9 @@ function mapStateToProps(state) {
         plumes: state.map.getIn(["featurePicker", "plumes"]),
         activeFeature: state.map.getIn(["featurePicker", "activeFeature"]),
         layerSidebarCollapsed: state.layerSidebar.get("layerSidebarCollapsed"),
-        featureDetailActiveFeature: state.featureDetail.get("feature")
+        featureDetailActiveFeature: state.featureDetail.get("feature"),
+        sdapPlumeChartData: state.map.getIn(["sdapChart", "data"]),
+        sdapPlumeChartOptions: state.map.getIn(["sdapChart", "options"])
     };
 }
 
@@ -347,7 +426,8 @@ function mapDispatchToProps(dispatch) {
         setActivePickerFeature: bindActionCreators(mapActionsMSF.setActivePickerFeature, dispatch),
         toggleFeatureLabel: bindActionCreators(mapActionsMSF.toggleFeatureLabel, dispatch),
         setFeatureDetail: bindActionCreators(layerSidebarActions.setFeatureDetail, dispatch),
-        setHoverPlume: bindActionCreators(mapActionsMSF.setHoverPlume, dispatch)
+        setHoverPlume: bindActionCreators(mapActionsMSF.setHoverPlume, dispatch),
+        getSdapChartData: bindActionCreators(mapActionsMSF.getSdapChartData, dispatch)
     };
 }
 

@@ -56,6 +56,10 @@ export default function map_Extended(
             return opt_reducer.setJumpToNearestPending(state, action);
         case actionTypesMSF.SET_HOME_AREA_PICKER_VISIBLE:
             return opt_reducer.setHomeAreaPickerModalVisible(state, action);
+        case actionTypesMSF.UPDATE_SDAP_CHART_DATA:
+            return opt_reducer.updateSdapChartData(state, action);
+        case actionTypesMSF.UPDATE_SDAP_CHART_OPTIONS:
+            return opt_reducer.updateSdapChartOptions(state, action);
         default:
             return map.call(this, state, action, opt_reducer);
     }

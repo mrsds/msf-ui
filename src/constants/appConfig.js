@@ -66,7 +66,10 @@ const APP_CONFIG = Immutable.fromJS({
         plumeListDownload: beEndpoint + "/csv/Plume_list_20191031.csv",
         pleiadesJobSubmitEndpoint:
             beEndpoint +
-            "/pleiades/run?jobowner={jobowner}&jobtag={jobtag}&lonres={lonres}&latres={latres}&lonll={lonll}&latll={latll}&numpixx={numpixx}&numpixy={numpixy}&numpar={numpar}&nhrs={nhrs}"
+            "/pleiades/run?jobowner={jobowner}&jobtag={jobtag}&lonres={lonres}&latres={latres}&lonll={lonll}&latll={latll}&numpixx={numpixx}&numpixy={numpixy}&numpar={numpar}&nhrs={nhrs}",
+        sdapTimeSeriesSpark:
+            "https://methane-sdap-sit.jpl.nasa.gov/nexus/timeSeriesSpark?ds=M2AF_REGIONAL_LABASIN_CH4_fluxes&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}&startTime={timeStart}&endTime={timeEnd}"
+
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
     PLUME_START_DATE: new Date(2000, 0, 1),

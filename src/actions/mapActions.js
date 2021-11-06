@@ -125,6 +125,73 @@ function availableFeatureListLoading(category) {
     return { type: typesMSF.AVAILABLE_LAYER_LIST_LOADING, category };
 }
 
+// function setSdapLoading(sdapLoaded) {
+//     return { type: typesMSF.UPDATE_SDAP_CHART_DATA, sdapLoaded };
+// }
+
+function setSdapChartLoading(loading, failed) {
+    return asyncActions.setAsyncLoadingState("sdapChartAsync", {
+        loading: loading,
+        failed: failed,
+    });
+}
+
+function updateSdapChartData(data) {
+    return { type: typesMSF.UPDATE_SDAP_CHART_DATA, data };
+}
+
+function updateSdapChartOptions(options) {
+    return { type: typesMSF.UPDATE_SDAP_CHART_OPTIONS, options };
+}
+
+export function getSdapChartData(url) {
+    return (dispatch, getState) => {
+        dispatch(setSdapChartLoading(true, false));
+        // const sdapChartData = getState().map.getIn(["sdapChart", "data"]);
+        // const sdapChartOptions = getState().map.getIn(["sdapChart", "options"]);
+        return MiscUtil.asyncFetch({
+            url: url,
+            handleAs: "json",
+            options: { credentials: "same-origin" }
+        }).then(
+            (sdapData) => {
+            console.log(sdapData);
+            let chartData = sdapData.data.map(coord => {
+                console.log(coord);
+                return {
+                    x: coord[0].time,
+                    y: coord[0].mean
+                };
+            });
+            const data = {
+                datasets: [{
+                data: chartData,
+                backgroundColor: 'rgb(255, 99, 132)'
+                }],
+            };
+            const options = {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            displayFormats: {
+                                quarter: 'MMM YYYY'
+                            }
+                        }
+                    }
+                }
+            };
+            dispatch(updateSdapChartData(data));
+            dispatch(updateSdapChartOptions(options));
+            dispatch(setSdapChartLoading(false, false));
+        },
+        (err) => {
+            console.warn("Error getting SDAP data for plot:", err);
+            dispatch(setSdapChartLoading(false, true));
+        });
+    }
+}
+
 let loadTimer;
 function availableFeatureListLoaded(category) {
     return (dispatch, getState) => {
