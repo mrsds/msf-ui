@@ -85,6 +85,7 @@ export function vistaLayersLoaded() {
 export function updateFeatureList_Map() {
     return (dispatch, getState) => {
         dispatch({ type: typesMSF.START_FEATURE_LOADING });
+        dispatch(updateSdapChartData(null)); // Reset SDAP plot
         dispatch(updateVistaFeatures());
         dispatch(updateAvirisFeatures());
     };
@@ -156,29 +157,27 @@ export function getSdapChartData(url) {
         }).then(
             (sdapData) => {
             console.log(sdapData);
+            const labels = [];
             let chartData = sdapData.data.map(coord => {
-                console.log(coord);
+                labels.push(coord[0].iso_time.substring(0,10));
                 return {
                     x: coord[0].time,
                     y: coord[0].mean
                 };
             });
             const data = {
+                labels: labels,
                 datasets: [{
-                data: chartData,
-                backgroundColor: 'rgb(255, 99, 132)'
+                    data: chartData,
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    fill: false,
+                    borderColor: "#742774"
                 }],
             };
             const options = {
-                scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-                            displayFormats: {
-                                quarter: 'MMM YYYY'
-                            }
-                        }
-                    }
+                type: 'line',
+                legend: {
+                    display: false
                 }
             };
             dispatch(updateSdapChartData(data));
@@ -237,6 +236,7 @@ export function toggleFeatureLabel(category, feature) {
             .map.getIn(["maps", "openlayers"])
             .map.getPixelFromCoordinate(Ol_Extent.getCenter(feature.get("geometry").getExtent()));
 
+        dispatch(updateSdapChartData(null)); // Reset SDAP plot
         dispatch({
             type: typesMSF.UPDATE_FEATURE_PICKER,
             clickEvt,
@@ -296,7 +296,11 @@ export function incrementActivePlume(increment) {
 }
 
 export function selectFeatureInSidebar(id) {
-    return { type: typesMSF.SELECT_FEATURE_IN_SIDEBAR, id };
+    return (dispatch, getState) => {
+        console.log('click feat');
+        dispatch(updateSdapChartData(null)); // Reset SDAP plot
+        return { type: typesMSF.SELECT_FEATURE_IN_SIDEBAR, id };
+    }
 }
 
 export function pixelClick(clickEvt) {
@@ -306,6 +310,7 @@ export function pixelClick(clickEvt) {
         const vistaFeatures = getVistaFeaturesAtPixel(clickEvt, mapState, layerSidebarState);
         const avirisFeatures = getAvirisFeaturesAtPixel(clickEvt, mapState, layerSidebarState);
         // Update the layer destacking list
+        dispatch(updateSdapChartData(null)); // Reset SDAP plot
         dispatch({
             type: typesMSF.UPDATE_FEATURE_PICKER,
             clickEvt,

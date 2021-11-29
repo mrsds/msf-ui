@@ -20,7 +20,7 @@ import * as layerSidebarTypes from "constants/layerSidebarTypes";
 import * as layerSidebarActions from "actions/layerSidebarActions";
 import CloseIcon from "@material-ui/icons/Close";
 import { IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
-import { Scatter as ScatterChart } from "react-chartjs-2";
+import { Line as LineChart } from "react-chartjs-2";
 import appConfig from "constants/appConfig";
 
 export class FeaturePicker extends Component {
@@ -164,7 +164,7 @@ export class FeaturePicker extends Component {
             return (
                 <React.Fragment>
                     <div className={styles.chartContainer}>
-                        <ScatterChart data={this.props.sdapPlumeChartData} options={this.props.sdapPlumeChartOptions} height={250} redraw={true} />
+                        <LineChart data={this.props.sdapPlumeChartData} options={this.props.sdapPlumeChartOptions} height={250} redraw={true} />
                     </div>
                 </React.Fragment>
             );
