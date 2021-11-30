@@ -169,9 +169,9 @@ export function getSdapChartData(url) {
                 labels: labels,
                 datasets: [{
                     data: chartData,
-                    backgroundColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgb(111, 199, 130)',
                     fill: false,
-                    borderColor: "#742774"
+                    borderColor: "#272e4a"
                 }],
             };
             const options = {
