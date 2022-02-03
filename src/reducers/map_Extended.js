@@ -60,6 +60,8 @@ export default function map_Extended(
             return opt_reducer.updateSdapChartData(state, action);
         case actionTypesMSF.UPDATE_SDAP_CHART_OPTIONS:
             return opt_reducer.updateSdapChartOptions(state, action);
+        case actionTypesMSF.UPDATE_SDAP_CHART_INTERSECTION_TIME:
+                return opt_reducer.updateSdapIntersectionTime(state, action);
         default:
             return map.call(this, state, action, opt_reducer);
     }

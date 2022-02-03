@@ -22,6 +22,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { IconButtonSmall, ClickAwayListener } from "_core/components/Reusables";
 import { Line as LineChart } from "react-chartjs-2";
 import appConfig from "constants/appConfig";
+import * as appStrings from "_core/constants/appStrings";
 
 export class FeaturePicker extends Component {
     makeInfrastructureItem(feature) {
@@ -250,8 +251,14 @@ export class FeaturePicker extends Component {
             lonMax = lonMax + 0.25;
             lonMin = lonMin - 0.25;
         }
+        const activeLayer = this.props.layers.find(
+            l => l.get("id") === this.props.griddedSettings.get("activeLayer")
+        );
+        let sdapUrl = appConfig.GRIDDED_LAYER_TYPES.find(
+            l => l.name === activeLayer.get("id")
+        ).sdapTimeSeriesSpark;
         this.props.getSdapChartData(
-        appConfig.URLS.sdapTimeSeriesSpark
+            sdapUrl
             .replace("{latMax}", latMax)
             .replace("{lonMax}", lonMax)
             .replace("{latMin}", latMin)
@@ -261,9 +268,7 @@ export class FeaturePicker extends Component {
         );
         return (
             <React.Fragment>
-                <div className={styles.chartContainer}>
-                    N/A
-                </div>
+                <div className={styles.chartContainer}></div>
             </React.Fragment>
         );
     }
@@ -415,6 +420,9 @@ function mapStateToProps(state) {
         activeFeature: state.map.getIn(["featurePicker", "activeFeature"]),
         layerSidebarCollapsed: state.layerSidebar.get("layerSidebarCollapsed"),
         featureDetailActiveFeature: state.featureDetail.get("feature"),
+        griddedSettings: state.map.get("griddedSettings"),
+        layers: state.map.getIn(["layers", appStrings.LAYER_GROUP_TYPE_DATA]),
+        sdapIntersectionTime: state.map.getIn(["sdapChart", "intersectionTime"]),
         sdapPlumeChartData: state.map.getIn(["sdapChart", "data"]),
         sdapPlumeChartOptions: state.map.getIn(["sdapChart", "options"])
     };

@@ -145,11 +145,25 @@ function updateSdapChartOptions(options) {
     return { type: typesMSF.UPDATE_SDAP_CHART_OPTIONS, options };
 }
 
+function updateSdapIntersectionTime(intersectionTime) {
+    return { type: typesMSF.UPDATE_SDAP_CHART_INTERSECTION_TIME, intersectionTime };
+}
+
+export function setSdapIntersectionTime(intersectionTime) {
+    return (dispatch, getState) => {
+        dispatch(updateSdapIntersectionTime(intersectionTime));
+    }
+}
+
 export function getSdapChartData(url) {
     return (dispatch, getState) => {
+        const intersectionTime = getState().map.getIn(["sdapChart", "intersectionTime"]);
+        if (!intersectionTime) {
+            // If there is no intersection date set, then we do nothing
+            return { type: types.NO_ACTION };
+        }
         dispatch(setSdapChartLoading(true, false));
-        // const sdapChartData = getState().map.getIn(["sdapChart", "data"]);
-        // const sdapChartOptions = getState().map.getIn(["sdapChart", "options"]);
+
         return MiscUtil.asyncFetch({
             url: url,
             handleAs: "json",
@@ -162,17 +176,36 @@ export function getSdapChartData(url) {
                 labels.push(coord[0].iso_time.substring(0,10));
                 return {
                     x: coord[0].time,
-                    y: coord[0].mean
+                    y: coord[0].mean,
                 };
+            });
+            let pointBackgroundColor = sdapData.data.map(coord => {
+                const date = new Date(coord[0].iso_time);
+                let color = 'rgb(111, 199, 130)';
+                if (intersectionTime) {
+                    if (intersectionTime.period == 'yearly') {
+                        const year = intersectionTime.time.year();
+                        const pointYear = date.getFullYear();
+                        if (pointYear == 'year') {
+                            color = 'rgb(255, 0, 0)';
+                        }
+                    } else if (intersectionTime.period == 'monthly') {
+                        // will fill out later
+                    }
+                    else if (intersectionTime.period == 'daily') {
+                        // will fill out later
+                    }
+                }
+                return color;
             });
             const data = {
                 labels: labels,
                 datasets: [{
                     data: chartData,
-                    backgroundColor: 'rgb(111, 199, 130)',
+                    pointBackgroundColor: pointBackgroundColor,
                     fill: false,
                     borderColor: "#272e4a"
-                }],
+                }]
             };
             const options = {
                 type: 'line',

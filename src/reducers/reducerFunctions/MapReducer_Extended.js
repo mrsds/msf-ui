@@ -287,4 +287,9 @@ export default class MapReducer_Extended extends MapReducer {
     static updateSdapChartOptions(state, action) {
         return state.setIn(["sdapChart", "options"], action.options);
     }
+
+    static updateSdapIntersectionTime(state, action) {
+        return state.setIn(["sdapChart", "intersectionTime"], action.intersectionTime);
+    }
+
 }

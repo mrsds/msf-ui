@@ -47,7 +47,8 @@ export const mapState_Extended = mapState.mergeDeep(
         },
         sdapChart: {
             data: null,
-            options: null
+            options: null,
+            intersectionTime: null
         },
         currentZoom: null,
         visiblePlumes: [],

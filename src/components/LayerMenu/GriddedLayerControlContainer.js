@@ -55,6 +55,20 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
     setLayerActive(active) {
         this.isChangingPosition = false;
         this.isChangingOpacity = false;
+        if (!active) {
+            // So personally I think it's weird that '!active' is when I should set the active layer's
+            // intersection time for any SDAP plots, but...it works like this
+            const activeLayer = this.props.griddedSettings.get("activeLayer");
+            const period = appConfig.GRIDDED_LAYER_TYPES.find(
+                l => l.name === activeLayer
+            ).period;
+            this.props.mapActionsExtended.setSdapIntersectionTime({
+                period,
+                time: this.props.griddedSettings.get("currentDate")
+            });
+        } else {
+            this.props.mapActionsExtended.setSdapIntersectionTime(null);
+        }
         this.props.mapActionsExtended.setGroupVisible(this.props.group, !active);
         this.props.mapActionsExtended.changeActiveGriddedLayer(
             this.props.griddedSettings.get("activeLayer"),
@@ -131,7 +145,10 @@ export class GriddedLayerControlContainer extends LayerControlContainerCore {
                 >
                     <EnhancedSwitch
                         checked={this.props.group.get("isActive")}
-                        onChange={(value, checked) => this.setLayerActive(!checked)}
+                        onChange={(value, checked) => {
+                            this.setLayerActive(!checked)
+                        }}
+
                         onClick={evt => this.setLayerActive(evt.target.checked)}
                         inputProps={{
                             "aria-label":

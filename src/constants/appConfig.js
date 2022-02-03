@@ -67,8 +67,8 @@ const APP_CONFIG = Immutable.fromJS({
         pleiadesJobSubmitEndpoint:
             beEndpoint +
             "/pleiades/run?jobowner={jobowner}&jobtag={jobtag}&lonres={lonres}&latres={latres}&lonll={lonll}&latll={latll}&numpixx={numpixx}&numpixy={numpixy}&numpar={numpar}&nhrs={nhrs}",
-        sdapTimeSeriesSpark:
-            "https://methane-sdap-sit.jpl.nasa.gov/nexus/timeSeriesSpark?ds=M2AF_REGIONAL_LABASIN_CH4_fluxes&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}&startTime={timeStart}&endTime={timeEnd}"
+        // sdapTimeSeriesSpark:
+        //     "https://methane-sdap-sit.jpl.nasa.gov/nexus/timeSeriesSpark?ds=M2AF_REGIONAL_LABASIN_CH4_fluxes&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}&startTime={timeStart}&endTime={timeEnd}"
 
     },
     DEFAULT_BBOX_EXTENT: [-120, 33, -116, 35],
@@ -126,6 +126,7 @@ const APP_CONFIG = Immutable.fromJS({
             name: "GRIDDED_EMISSIONS_PERMIAN",
             dateEndpoint: beEndpoint + "/data/permian-thumb-date-list.json",
             endpoint: beEndpoint + "/data/permian-thumb-{date}.geojson",
+            sdapTimeSeriesSpark: "https://methane-sdap-sit.jpl.nasa.gov/nexus/timeSeriesSpark?ds=M2AF_REGIONAL_LABASIN_CH4_fluxes&minLon={lonMin}&minLat={latMin}&maxLon={lonMax}&maxLat={latMax}&startTime={timeStart}&endTime={timeEnd}",
             period: "yearly"
         },
         {
