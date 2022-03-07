@@ -155,13 +155,15 @@ export function setSdapIntersectionTime(intersectionTime) {
     }
 }
 
-export function getSdapChartData(url) {
+export function getSdapChartData(paletteId, url) {
     return (dispatch, getState) => {
         const intersectionTime = getState().map.getIn(["sdapChart", "intersectionTime"]);
         if (!intersectionTime) {
             // If there is no intersection date set, then we do nothing
             return { type: types.NO_ACTION };
         }
+        const paletteValues = getState().map.getIn(["palettes", paletteId]).get("values");
+        const paletteSize = paletteValues.size;
         dispatch(setSdapChartLoading(true, false));
 
         return MiscUtil.asyncFetch({
@@ -180,22 +182,47 @@ export function getSdapChartData(url) {
                 };
             });
             let pointBackgroundColor = sdapData.data.map(coord => {
-                const date = new Date(coord[0].iso_time);
-                let color = 'rgb(111, 199, 130)';
-                if (intersectionTime) {
-                    if (intersectionTime.period == 'yearly') {
-                        const year = intersectionTime.time.year();
-                        const pointYear = date.getFullYear();
-                        if (pointYear == 'year') {
-                            color = 'rgb(255, 0, 0)';
+                let color = 'rgb(50, 50, 50)';
+                for (let i = 0; i < paletteSize; ++i) {
+                    let valueEntry = paletteValues.get(i).get("value");
+                    if (isNaN(valueEntry)) {
+                        let numValue = (valueEntry).match(/(\d+)/);
+                        if (valueEntry.indexOf("<") != -1) {
+                            // Check if less than
+                            if (!isNaN(numValue[0]) && coord[0].mean < numValue[0]) {
+                                color = paletteValues.get(i).get("color");
+                                break;
+                            }
+                        } else if (valueEntry.indexOf(">") != -1) {
+                            // Check if greater than
+                            if (!isNaN(numValue[0]) && coord[0].mean > numValue[0]) {
+                                color = paletteValues.get(i).get("color");
+                                break;
+                            }
                         }
-                    } else if (intersectionTime.period == 'monthly') {
-                        // will fill out later
-                    }
-                    else if (intersectionTime.period == 'daily') {
-                        // will fill out later
+                    } else {
+                        if (valueEntry == coord[0].mean) {
+                            color = paletteValues.get(i).get("color");
+                            break;
+                        }
                     }
                 }
+                // Overriding this behavior with using the palette as a guide for color
+                // const date = new Date(coord[0].iso_time);
+                // if (intersectionTime) {
+                //     if (intersectionTime.period == 'yearly') {
+                //         const year = intersectionTime.time.year();
+                //         const pointYear = date.getFullYear();
+                //         if (pointYear == 'year') {
+                //             color = 'rgb(255, 0, 0)';
+                //         }
+                //     } else if (intersectionTime.period == 'monthly') {
+                //         // will fill out later
+                //     }
+                //     else if (intersectionTime.period == 'daily') {
+                //         // will fill out later
+                //     }
+                // }
                 return color;
             });
             const data = {

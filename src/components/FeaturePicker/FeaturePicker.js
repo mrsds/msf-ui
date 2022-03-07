@@ -258,6 +258,7 @@ export class FeaturePicker extends Component {
             l => l.name === activeLayer.get("id")
         ).sdapTimeSeriesSpark;
         this.props.getSdapChartData(
+            activeLayer.get("palette").get("name"),
             sdapUrl
             .replace("{latMax}", latMax)
             .replace("{lonMax}", lonMax)
