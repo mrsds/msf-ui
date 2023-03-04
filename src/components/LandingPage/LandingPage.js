@@ -139,7 +139,7 @@ export class LandingPage extends Component {
                                         Open Data Portal</a>. This mapping effort is in keeping with the Open Science
                                         and Open Data policy and part of NASA&#8217;s contribution to a federated US
                                         Government Greenhouse Gas (GHG) information system.
-                                    </div>
+                                    
                                 </div>
 
                                 <div className={styles.section_body}>
@@ -188,137 +188,136 @@ export class LandingPage extends Component {
                                 AVIRIS-NG (upper right), from a landfill observed with EMIT (lower left), and power
                                 plant carbon dioxide plumes observed with EMIT (lower right).
                                 </div>
-
+                            </div>
 
                             <div className={styles.right}>
-
-                                <div className={styles.right}>
-                                <Typography
-                                    className={styles.section_title}
-                                    color="default"
-                                    gutterBottom
-                                >
-                                    PUBLICATIONS
-                                </Typography>
-                                <Typography
-                                    className={styles.subsection_title}
-                                    color="default"
-                                    gutterBottom
-                                >
-                                    JPL imaging spectrometers
-                                </Typography>
                                 <div className={styles.section_body}>
-                                Green, R.O., Schaepman, M.E., Mouroulis, P., Geier, S., Shaw, L., Hueini, A., Bernas, M., McKinley, I., Smith, C., Wehbe, R. and Eastwood, M., 2022, March. Airborne Visible/Infrared Imaging Spectrometer 3 (AVIRIS-3). In 2022 IEEE Aerospace Conference (AERO) (pp. 1-10). IEEE.
+                                    <Typography
+                                        className={styles.section_title}
+                                        color="default"
+                                        gutterBottom
+                                    >
+                                        PUBLICATIONS
+                                    </Typography>
+                                    <Typography
+                                        className={styles.subsection_title}
+                                        color="default"
+                                        gutterBottom
+                                    >
+                                        JPL imaging spectrometers
+                                    </Typography>
 
-                                Bradley, C.L., Thingvold, E., Moore, L.B., Haag, J.M., Raouf, N.A., Mouroulis, P. and Green, R.O., 2020, August. Optical design of the earth surface mineral dust source investigation (EMIT) imaging spectrometer. In Imaging Spectrometry XXIV: Applications, Sensors, and Processing (Vol. 11504, p. 1150402). SPIE.
+                                    Green, R.O., Schaepman, M.E., Mouroulis, P., Geier, S., Shaw, L., Hueini, A., Bernas, M., McKinley, I., Smith, C., Wehbe, R. and Eastwood, M., 2022, March. Airborne Visible/Infrared Imaging Spectrometer 3 (AVIRIS-3). In 2022 IEEE Aerospace Conference (AERO) (pp. 1-10). IEEE.
 
-                                Hamlin, L., Green, R.O., Mouroulis, P., Eastwood, M., Wilson, D., Dudik, M. and Paine, C., 2011, March. Imaging spectrometer science measurements for terrestrial ecology: AVIRIS and new developments. In 2011 Aerospace conference (pp. 1-7). IEEE.
+                                    Bradley, C.L., Thingvold, E., Moore, L.B., Haag, J.M., Raouf, N.A., Mouroulis, P. and Green, R.O., 2020, August. Optical design of the earth surface mineral dust source investigation (EMIT) imaging spectrometer. In Imaging Spectrometry XXIV: Applications, Sensors, and Processing (Vol. 11504, p. 1150402). SPIE.
 
-                                Green, R.O., Eastwood, M.L., Sarture, C.M., Chrien, T.G., Aronsson, M., Chippendale, B.J., Faust, J.A., Pavri, B.E., Chovit, C.J., Solis, M. and Olah, M.R., 1998. Imaging spectroscopy and the airborne visible/infrared imaging spectrometer (AVIRIS). Remote sensing of environment, 65(3), pp.227-248.
+                                    Hamlin, L., Green, R.O., Mouroulis, P., Eastwood, M., Wilson, D., Dudik, M. and Paine, C., 2011, March. Imaging spectrometer science measurements for terrestrial ecology: AVIRIS and new developments. In 2011 Aerospace conference (pp. 1-7). IEEE.
+
+                                    Green, R.O., Eastwood, M.L., Sarture, C.M., Chrien, T.G., Aronsson, M., Chippendale, B.J., Faust, J.A., Pavri, B.E., Chovit, C.J., Solis, M. and Olah, M.R., 1998. Imaging spectroscopy and the airborne visible/infrared imaging spectrometer (AVIRIS). Remote sensing of environment, 65(3), pp.227-248.
                                 </div>
 
-                                <Typography
-                                    className={styles.subsection_title}
-                                    color="default"
-                                    gutterBottom
-                                >
-                                    Greenhouse gas mapping using JPL imaging spectrometers
-                                </Typography>
                                 <div className={styles.section_body}>
-                                Yu, J., Hmiel, B., Lyon, D.R., Warren, J., Yu, J., Cusworth, D.H.,  Duren, R.M., submitted. Empirical Quantification of Methane Emission Intensity from Oil and Gas Producers in the Permian Basin. Environmental Science & Technology Letters.
+                                    <Typography
+                                        className={styles.subsection_title}
+                                        color="default"
+                                        gutterBottom
+                                    >
+                                        Greenhouse gas mapping using JPL imaging spectrometers
+                                    </Typography>
 
-Thorpe, A. K., Kort, E. A., Duren, R. M., Cusworth, D. H., Herner, J., Falk, M., Lozo, C.J., Langfitt, Q., Wilhelm, S. F., Eggers, R., Bue, B. D., Yadav, V., Ayasse, A. K., Thompson, D. R., Green, R. O., Miller, C. E., Frankenberg, C., in review. Methane emissions decline from reduced oil, natural gas, and refinery production during COVID-19.
+                                    Yu, J., Hmiel, B., Lyon, D.R., Warren, J., Yu, J., Cusworth, D.H.,  Duren, R.M., submitted. Empirical Quantification of Methane Emission Intensity from Oil and Gas Producers in the Permian Basin. Environmental Science & Technology Letters.
 
-B.M. Conrad, D.R. Tyner, M.R. Johnson, in review. Robust Probabilities of Detection and Quantification Uncertainty for Aerial Methane Detection: Examples for Three Airborne Technologies, Remote Sensing of Environment.
+                                    Thorpe, A. K., Kort, E. A., Duren, R. M., Cusworth, D. H., Herner, J., Falk, M., Lozo, C.J., Langfitt, Q., Wilhelm, S. F., Eggers, R., Bue, B. D., Yadav, V., Ayasse, A. K., Thompson, D. R., Green, R. O., Miller, C. E., Frankenberg, C., in review. Methane emissions decline from reduced oil, natural gas, and refinery production during COVID-19.
 
-Erland, B.M., Adams, C.., Thorpe, A.K., Gamon, J.A., 2022. Recent Advances Towards Transparent Methane Emissions Monitoring: A Review. Environmental Science & Technology.
+                                    B.M. Conrad, D.R. Tyner, M.R. Johnson, in review. Robust Probabilities of Detection and Quantification Uncertainty for Aerial Methane Detection: Examples for Three Airborne Technologies, Remote Sensing of Environment.
 
-Erland, B.M., Adams, C., Darlington, A., Smith, M.L., Thorpe, A.K., Wentworth, G.R., Conley, S., Liggio, J., Li, S.M., Miller, C.E. and Gamon, J.A., 2022. Comparing airborne algorithms for greenhouse gas flux measurements over the Alberta oil sands. Atmospheric Measurement Techniques, 15(19), pp.5841-5859.
+                                    Erland, B.M., Adams, C.., Thorpe, A.K., Gamon, J.A., 2022. Recent Advances Towards Transparent Methane Emissions Monitoring: A Review. Environmental Science & Technology.
 
-Jacob, D.J., Varon, D.J., Cusworth, D.H., Dennison, P.E., Frankenberg, C., Gautam, R., Guanter, L., Kelley, J., McKeever, J., Ott, L.E. and Poulter, B., 2022. Quantifying methane emissions from the global scale down to point sources using satellite observations of atmospheric methane. Atmospheric Chemistry and Physics Discussions, pp.1-44.
+                                    Erland, B.M., Adams, C., Darlington, A., Smith, M.L., Thorpe, A.K., Wentworth, G.R., Conley, S., Liggio, J., Li, S.M., Miller, C.E. and Gamon, J.A., 2022. Comparing airborne algorithms for greenhouse gas flux measurements over the Alberta oil sands. Atmospheric Measurement Techniques, 15(19), pp.5841-5859.
 
-Yu, J., Hmiel, B., Lyon, D.R., Warren, J., Cusworth, D.H., Duren, R.M., Chen, Y., Murphy, E.C. and Brandt, A.R., 2022. Methane Emissions from Natural Gas Gathering Pipelines in the Permian Basin. Environmental Science & Technology Letters.
+                                    Jacob, D.J., Varon, D.J., Cusworth, D.H., Dennison, P.E., Frankenberg, C., Gautam, R., Guanter, L., Kelley, J., McKeever, J., Ott, L.E. and Poulter, B., 2022. Quantifying methane emissions from the global scale down to point sources using satellite observations of atmospheric methane. Atmospheric Chemistry and Physics Discussions, pp.1-44.
 
-Cusworth, D.H., 2022, Thorpe, A.K., Ayasse, A.K., Stepp, D., Heckler, J., Asner, G.P., Miller, C.E., Chapman, J. W., Eastwood, M.L., Green, R.O., Hmiel, B., Lyon, D., Duren, R.M., 2022. Strong methane point sources contribute a disproportionate fraction of total  emissions across multiple basins in the U.S. https://doi.org/10.31223/X53P88
+                                    Yu, J., Hmiel, B., Lyon, D.R., Warren, J., Cusworth, D.H., Duren, R.M., Chen, Y., Murphy, E.C. and Brandt, A.R., 2022. Methane Emissions from Natural Gas Gathering Pipelines in the Permian Basin. Environmental Science & Technology Letters.
 
-Ayasse, A.K., Thorpe, A.K., Cusworth, D.H., Kort, E.A., Negron, A.G., Heckler, J., Asner, G. and Duren, R.M., 2022. Methane remote sensing and emission quantification of offshore shallow water oil and gas platforms in the Gulf of Mexico. Environmental Research Letters, 17(8), p.084039.
+                                    Cusworth, D.H., 2022, Thorpe, A.K., Ayasse, A.K., Stepp, D., Heckler, J., Asner, G.P., Miller, C.E., Chapman, J. W., Eastwood, M.L., Green, R.O., Hmiel, B., Lyon, D., Duren, R.M., 2022. Strong methane point sources contribute a disproportionate fraction of total  emissions across multiple basins in the U.S. https://doi.org/10.31223/X53P88
 
-Jongaramrungruang, S., Thorpe, A.K., Matheou, G. and Frankenberg, C., 2022. MethaNet–An AI-driven approach to quantifying methane point-source emission from high-resolution 2-D plume imagery. Remote Sensing of Environment, 269, p.112809.
+                                    Ayasse, A.K., Thorpe, A.K., Cusworth, D.H., Kort, E.A., Negron, A.G., Heckler, J., Asner, G. and Duren, R.M., 2022. Methane remote sensing and emission quantification of offshore shallow water oil and gas platforms in the Gulf of Mexico. Environmental Research Letters, 17(8), p.084039.
 
-Jongaramrungruang, S., Matheou, G., Thorpe, A.K., Zeng, Z.C. and Frankenberg, C., 2021. Remote sensing of methane plumes: instrument tradeoff analysis for detecting and quantifying local sources at global scale. Atmospheric Measurement Techniques, 14(12), pp.7999-8017.
+                                    Jongaramrungruang, S., Thorpe, A.K., Matheou, G. and Frankenberg, C., 2022. MethaNet–An AI-driven approach to quantifying methane point-source emission from high-resolution 2-D plume imagery. Remote Sensing of Environment, 269, p.112809.
 
-Foote, M.D., Dennison, P.E., Sullivan, P.R., O'Neill, K.B., Thorpe, A.K., Thompson, D.R., Cusworth, D.H., Duren, R. and Joshi, S.C., 2021. Impact of scene-specific enhancement spectra on matched filter greenhouse gas retrievals from imaging spectroscopy. Remote Sensing of Environment, 264, p.112574.
+                                    Jongaramrungruang, S., Matheou, G., Thorpe, A.K., Zeng, Z.C. and Frankenberg, C., 2021. Remote sensing of methane plumes: instrument tradeoff analysis for detecting and quantifying local sources at global scale. Atmospheric Measurement Techniques, 14(12), pp.7999-8017.
 
-Thorpe, A.K., O'Handley, C., Emmitt, G.D., DeCola, P.L., Hopkins, F.M., Yadav, V., Guha, A., Newman, S., Herner, J.D., Falk, M. and Duren, R.M., 2021. Improved methane emission estimates using AVIRIS-NG and an Airborne Doppler Wind Lidar. Remote Sensing of Environment, 266, p.112681.
+                                    Foote, M.D., Dennison, P.E., Sullivan, P.R., O'Neill, K.B., Thorpe, A.K., Thompson, D.R., Cusworth, D.H., Duren, R. and Joshi, S.C., 2021. Impact of scene-specific enhancement spectra on matched filter greenhouse gas retrievals from imaging spectroscopy. Remote Sensing of Environment, 264, p.112574.
 
-Cusworth, D.H., Duren, R.M., Thorpe, A.K., Olson-Duvall, W., Heckler, J., Chapman, J.W., Eastwood, M.L., Helmlinger, M.C., Green, R.O., Asner, G.P. and Dennison, P.E., 2021. Intermittency of Large Methane Emitters in the Permian Basin. Environmental Science & Technology Letters.
+                                    Thorpe, A.K., O'Handley, C., Emmitt, G.D., DeCola, P.L., Hopkins, F.M., Yadav, V., Guha, A., Newman, S., Herner, J.D., Falk, M. and Duren, R.M., 2021. Improved methane emission estimates using AVIRIS-NG and an Airborne Doppler Wind Lidar. Remote Sensing of Environment, 266, p.112681.
 
-Irakulis-Loitxate, I., Guanter, L., Liu, Y.N., Varon, D.J., Maasakkers, J.D., Zhang, Y., Chulakadabba, A., Wofsy, S.C., Thorpe, A.K., Duren, R.M. and Frankenberg, C., 2021. Satellite-based survey of extreme methane emissions in the Permian basin. Science Advances, 7(27), p.eabf4507.
+                                    Cusworth, D.H., Duren, R.M., Thorpe, A.K., Olson-Duvall, W., Heckler, J., Chapman, J.W., Eastwood, M.L., Helmlinger, M.C., Green, R.O., Asner, G.P. and Dennison, P.E., 2021. Intermittency of Large Methane Emitters in the Permian Basin. Environmental Science & Technology Letters.
 
-Cusworth, D.H., Duren, R.M., Thorpe, A.K., Eastwood, M.L., Green, R.O., Dennison, P.E., Frankenberg, C., Heckler, J.W., Asner, G.P. and Miller, C.E., 2021. Quantifying global power plant carbon dioxide emissions with imaging spectroscopy. AGU Advances, 2(2), p.e2020AV000350.
+                                    Irakulis-Loitxate, I., Guanter, L., Liu, Y.N., Varon, D.J., Maasakkers, J.D., Zhang, Y., Chulakadabba, A., Wofsy, S.C., Thorpe, A.K., Duren, R.M. and Frankenberg, C., 2021. Satellite-based survey of extreme methane emissions in the Permian basin. Science Advances, 7(27), p.eabf4507.
 
-Elder, C.D., Thompson, D.R., Thorpe, A.K., Chandanpurkar, H.A., Hanke, P.J., Hasson, N., James, S.R., Minsley, B.J., Pastick, N.J., Olefeldt, D. and Walter Anthony, K.M., 2021. Characterizing methane emission hotspots from thawing permafrost. Global Biogeochemical Cycles, 35(12), p.e2020GB006922.
+                                    Cusworth, D.H., Duren, R.M., Thorpe, A.K., Eastwood, M.L., Green, R.O., Dennison, P.E., Frankenberg, C., Heckler, J.W., Asner, G.P. and Miller, C.E., 2021. Quantifying global power plant carbon dioxide emissions with imaging spectroscopy. AGU Advances, 2(2), p.e2020AV000350.
 
-Cusworth, D.H., Duren, R.M., Thorpe, A.K, Miller, C.E., Pandey, S., Maasakkers, J.D., Aben, I., Jervis, D., Varon, D., Jacob, D.J., Randles, C.R., Smith, M., Gautam, R., Omara, M., Schade, G., Dennison, P.E., Frankenberg, C., Gordon, D., Lopinto, E. (2020c). Multi-satellite imaging of a gas well blowout enables quantification of total methane emissions. Geophysical Research Letters, p.e2020GL090864.
+                                    Elder, C.D., Thompson, D.R., Thorpe, A.K., Chandanpurkar, H.A., Hanke, P.J., Hasson, N., James, S.R., Minsley, B.J., Pastick, N.J., Olefeldt, D. and Walter Anthony, K.M., 2021. Characterizing methane emission hotspots from thawing permafrost. Global Biogeochemical Cycles, 35(12), p.e2020GB006922.
 
-Borchardt, J., Gerilowski, K., Krautwurst, S., Bovensmann, H., Thorpe, A.K., Thompson, D.R., Frankenberg, C., Miller, C.E., Duren, R.M. and Burrows, J.P. (2020). Detection and quantification of CH4 plumes using the WFM-DOAS retrieval on AVIRIS-NG hyperspectral data. Atmospheric Measurement Techniques.
+                                    Cusworth, D.H., Duren, R.M., Thorpe, A.K, Miller, C.E., Pandey, S., Maasakkers, J.D., Aben, I., Jervis, D., Varon, D., Jacob, D.J., Randles, C.R., Smith, M., Gautam, R., Omara, M., Schade, G., Dennison, P.E., Frankenberg, C., Gordon, D., Lopinto, E. (2020c). Multi-satellite imaging of a gas well blowout enables quantification of total methane emissions. Geophysical Research Letters, p.e2020GL090864.
 
-Cusworth, D.H., Duren, R.M., Thorpe, A.K., Tseng, E., Thompson, D.R., Guha, A., Newman, S., Foster, K., Miller, C.E. (2020b). Using remote sensing to detect, validate, and quantify methane emissions from California solid waste operations. Environmental Research Letters, 15(5), 054012.
+                                    Borchardt, J., Gerilowski, K., Krautwurst, S., Bovensmann, H., Thorpe, A.K., Thompson, D.R., Frankenberg, C., Miller, C.E., Duren, R.M. and Burrows, J.P. (2020). Detection and quantification of CH4 plumes using the WFM-DOAS retrieval on AVIRIS-NG hyperspectral data. Atmospheric Measurement Techniques.
 
-Cusworth, D.H., Duren, R.M., Yadav, V., Thorpe, A.K., Verhulst, K., Sander, S., Hopkins, F., Rafiq, T. and Miller, C.E. (2020a). Synthesis of Methane Observations Across Scales: Strategies for Deploying a Multitiered Observing Network. Geophysical Research Letters, 47(7), p.e2020GL087869.
+                                    Cusworth, D.H., Duren, R.M., Thorpe, A.K., Tseng, E., Thompson, D.R., Guha, A., Newman, S., Foster, K., Miller, C.E. (2020b). Using remote sensing to detect, validate, and quantify methane emissions from California solid waste operations. Environmental Research Letters, 15(5), 054012.
 
-Elder, C.D., Thompson, D.R., Thorpe, A.K., Hanke, P., Walter Anthony, K.M. and Miller, C.E. (2020). Airborne Mapping Reveals Emergent Power Law of Arctic Methane Emissions. Geophysical Research Letters, 47(3), p.e2019GL085707.
+                                    Cusworth, D.H., Duren, R.M., Yadav, V., Thorpe, A.K., Verhulst, K., Sander, S., Hopkins, F., Rafiq, T. and Miller, C.E. (2020a). Synthesis of Methane Observations Across Scales: Strategies for Deploying a Multitiered Observing Network. Geophysical Research Letters, 47(7), p.e2020GL087869.
 
-Foote, M.D., Dennison, P.E., Thorpe, A.K., Thompson, D.R., Jongaramrungruang, S., Frankenberg, C., Joshi, S.C. (2020). Fast and accurate retrieval of point-source methane emissions from imaging spectrometer data using sparsity prior. IEEE Transactions on Geoscience and Remote Sensing, 58, 6480-6492.
+                                    Elder, C.D., Thompson, D.R., Thorpe, A.K., Hanke, P., Walter Anthony, K.M. and Miller, C.E. (2020). Airborne Mapping Reveals Emergent Power Law of Arctic Methane Emissions. Geophysical Research Letters, 47(3), p.e2019GL085707.
 
-Guha, A., Newman, S., Fairley, D., Dinh, T.M., Duca, L., Conley, S., Smith, M.L., Thorpe, A., Duren, R.M., Cusworth, D. and Foster, K. (2020). Assessment of Regional Methane Emissions Inventories through Airborne Quantification in the San Francisco Bay Area. Environmental Science & Technology.
+                                    Foote, M.D., Dennison, P.E., Thorpe, A.K., Thompson, D.R., Jongaramrungruang, S., Frankenberg, C., Joshi, S.C. (2020). Fast and accurate retrieval of point-source methane emissions from imaging spectrometer data using sparsity prior. IEEE Transactions on Geoscience and Remote Sensing, 58, 6480-6492.
 
-Rafiq, T., Duren, R.M., Thorpe, A.K., Foster, K, Patarsuk, R.,  Mille, C.E., Hopkins, F.M. (2020). Attribution of Methane Point Source Emissions using Airborne Imaging Spectroscopy and the Vista-California Methane Infrastructure Dataset. Environmental Research Letters.
+                                    Guha, A., Newman, S., Fairley, D., Dinh, T.M., Duca, L., Conley, S., Smith, M.L., Thorpe, A., Duren, R.M., Cusworth, D. and Foster, K. (2020). Assessment of Regional Methane Emissions Inventories through Airborne Quantification in the San Francisco Bay Area. Environmental Science & Technology.
 
-Thorpe, A.K., Duren, R., Conley, S., Prasad, K., Bue, B., Yadav, V., Foster, K., Rafiq, T., Hopkins, F., Smith, M. and Fischer, M.L. (2020). Methane emissions from underground gas storage in California. Environmental Research Letters, 15(4), 045005.
+                                    Rafiq, T., Duren, R.M., Thorpe, A.K., Foster, K, Patarsuk, R.,  Mille, C.E., Hopkins, F.M. (2020). Attribution of Methane Point Source Emissions using Airborne Imaging Spectroscopy and the Vista-California Methane Infrastructure Dataset. Environmental Research Letters.
 
-Ayasse, A.K., Dennison, P.E., Foote, M., Thorpe, A.K., Joshi, S., Green, R.O., Duren, R.M., Thompson, D.R. and Roberts, D.A. (2019). Methane Mapping with Future Satellite Imaging Spectrometers. Remote Sensing, 11(24), p.3054.
+                                    Thorpe, A.K., Duren, R., Conley, S., Prasad, K., Bue, B., Yadav, V., Foster, K., Rafiq, T., Hopkins, F., Smith, M. and Fischer, M.L. (2020). Methane emissions from underground gas storage in California. Environmental Research Letters, 15(4), 045005.
 
-Cusworth, D.H., Jacob, D.J., Varon, D.J., Miller, C.C., Lu, X., Chance, K., Thorpe, A.K., Duren, R.M., Miller, C.E., Frankenberg, C., Randles, C.A. (2019). Potential of next-generation imaging spectrometers to detect and quantify methane point sources from space. Atmospheric Measurement Techniques.
+                                    Ayasse, A.K., Dennison, P.E., Foote, M., Thorpe, A.K., Joshi, S., Green, R.O., Duren, R.M., Thompson, D.R. and Roberts, D.A. (2019). Methane Mapping with Future Satellite Imaging Spectrometers. Remote Sensing, 11(24), p.3054.
 
-Duren, R.M., Thorpe, A.K., Foster, K., Rafiq, T., Hopkins, F.M., Yadav, V., Bue, B.D., Conley, S., Colombi, N., McCubbin, I., Frankenberg, C., Thompson, D.R., Falk, M., Herner, J., Croes, B., Green, R.O., Miller, C.E. (2019). California’s methane super-emitters. Nature.
+                                    Cusworth, D.H., Jacob, D.J., Varon, D.J., Miller, C.C., Lu, X., Chance, K., Thorpe, A.K., Duren, R.M., Miller, C.E., Frankenberg, C., Randles, C.A. (2019). Potential of next-generation imaging spectrometers to detect and quantify methane point sources from space. Atmospheric Measurement Techniques.
 
-Jongaramrungruang, S., Frankenberg, C., Matheou, G., Thorpe, A.K., Kuai, L., Thompson, D.R., Duren, R. M. (2019). Towards accurate methane point-source quantification using high spatial resolution spatial methane mapping. Atmospheric Measurement Techniques.
+                                    Duren, R.M., Thorpe, A.K., Foster, K., Rafiq, T., Hopkins, F.M., Yadav, V., Bue, B.D., Conley, S., Colombi, N., McCubbin, I., Frankenberg, C., Thompson, D.R., Falk, M., Herner, J., Croes, B., Green, R.O., Miller, C.E. (2019). California’s methane super-emitters. Nature.
 
-Thompson, D.R., Guanter, L., Berk, A. et al. Retrieval of Atmospheric Parameters and Surface Reflectance from Visible and Shortwave Infrared Imaging Spectroscopy Data. Surv Geophys 40, 333–360 (2019). https://doi.org/10.1007/s10712-018-9488-9.
+                                    Jongaramrungruang, S., Frankenberg, C., Matheou, G., Thorpe, A.K., Kuai, L., Thompson, D.R., Duren, R. M. (2019). Towards accurate methane point-source quantification using high spatial resolution spatial methane mapping. Atmospheric Measurement Techniques.
 
-Ayasse, A.K., Thorpe, A.K., Roberts, D.A., Funk, C.C., Dennison, P.E., Frankenberg, C., Steffke, A., Aubrey, A.D. (2018). Evaluating the effects of surface properties on methane retrievals using a synthetic Airborne Visible/Infrared Imaging Spectrometer Next Generation (AVIRIS-NG) image. Remote Sensing of Environment, 215, 386-397.
+                                    Thompson, D.R., Guanter, L., Berk, A. et al. Retrieval of Atmospheric Parameters and Surface Reflectance from Visible and Shortwave Infrared Imaging Spectroscopy Data. Surv Geophys 40, 333–360 (2019). https://doi.org/10.1007/s10712-018-9488-9.
 
-Krautwurst, S., Gerilowski, K., Jonsson, H.H., Thompson, D.R., Kolyer, R.W., Iraci, L.T., Thorpe, A.K., Horstjann, M., Eastwood, M., Leifer, I., Vigil, S.A. (2017). Methane emissions from a Californian landfill, determined from airborne remote sensing and in situ measurements. Atmospheric Measurement Techniques, 10(9), 3429.
+                                    Ayasse, A.K., Thorpe, A.K., Roberts, D.A., Funk, C.C., Dennison, P.E., Frankenberg, C., Steffke, A., Aubrey, A.D. (2018). Evaluating the effects of surface properties on methane retrievals using a synthetic Airborne Visible/Infrared Imaging Spectrometer Next Generation (AVIRIS-NG) image. Remote Sensing of Environment, 215, 386-397.
 
-Thorpe, A.K., Frankenberg, C., Thompson, D.R., Duren, R.M., Aubrey, A.D., Bue, B.D., Green, R.O., Gerilowski, K., Krings, T., Borchardt, J., Kort, E.A. (2017). Airborne DOAS retrievals of methane, carbon dioxide, and water vapor concentrations at high spatial resolution: Application to AVIRIS-NG. Atmospheric Measurement Techniques, 10(10), 3833.
+                                    Krautwurst, S., Gerilowski, K., Jonsson, H.H., Thompson, D.R., Kolyer, R.W., Iraci, L.T., Thorpe, A.K., Horstjann, M., Eastwood, M., Leifer, I., Vigil, S.A. (2017). Methane emissions from a Californian landfill, determined from airborne remote sensing and in situ measurements. Atmospheric Measurement Techniques, 10(9), 3429.
 
-Frankenberg, C., Thorpe, A.K., Thompson, D.R., Hulley, G., Kort, E.A., Vance, N., Borchardt, J., Krings, T., Gerilowski, K., Sweeney, C., Conley, S. (2016). Airborne methane remote measurements reveal heavy-tail flux distribution in Four Corners region. Proceedings of the National Academy of Sciences, 201605617.
+                                    Thorpe, A.K., Frankenberg, C., Thompson, D.R., Duren, R.M., Aubrey, A.D., Bue, B.D., Green, R.O., Gerilowski, K., Krings, T., Borchardt, J., Kort, E.A. (2017). Airborne DOAS retrievals of methane, carbon dioxide, and water vapor concentrations at high spatial resolution: Application to AVIRIS-NG. Atmospheric Measurement Techniques, 10(10), 3833.
 
-Thompson, D.R., Thorpe, A.K., Frankenberg, C., Green, R.O., Duren, R., Guanter, L., Hollstein, A., Middleton, E., Ong, L., Ungar, S. (2016). Space‐based remote imaging spectroscopy of the Aliso Canyon CH4 superemitter. Geophysical Research Letters, 43(12), 6571-6578.
+                                    Frankenberg, C., Thorpe, A.K., Thompson, D.R., Hulley, G., Kort, E.A., Vance, N., Borchardt, J., Krings, T., Gerilowski, K., Sweeney, C., Conley, S. (2016). Airborne methane remote measurements reveal heavy-tail flux distribution in Four Corners region. Proceedings of the National Academy of Sciences, 201605617.
 
-Thorpe, A.K., Frankenberg, C., Roberts, et al. (2016a). Mapping methane concentrations from a controlled release experiment using the next generation Airborne Visible/Infrared Imaging Spectrometer (AVIRIS-NG). Remote Sensing of Environment, 179, 104-115.
+                                    Thompson, D.R., Thorpe, A.K., Frankenberg, C., Green, R.O., Duren, R., Guanter, L., Hollstein, A., Middleton, E., Ong, L., Ungar, S. (2016). Space‐based remote imaging spectroscopy of the Aliso Canyon CH4 superemitter. Geophysical Research Letters, 43(12), 6571-6578.
 
-Thorpe, A. K., Frankenberg, C., Green, R. O., Thompson, D. R., Mouroulis, P., Eastwood, M.L., Matheou, G. (2016b). The Airborne Methane Plume Spectrometer (AMPS): Quantitative imaging of methane plumes in real time, paper presented at Aerospace Conference, 2016 IEEE.
+                                    Thorpe, A.K., Frankenberg, C., Roberts, et al. (2016a). Mapping methane concentrations from a controlled release experiment using the next generation Airborne Visible/Infrared Imaging Spectrometer (AVIRIS-NG). Remote Sensing of Environment, 179, 104-115.
 
-Aubrey, A.D., Frankenberg, C., Green, R.O., Eastwood, M.L., Thompson, D.R., Thorpe, A.K. (2015). Crosscutting airborne remote sensing technologies for oil and gas and earth science applications, paper presented at Offshore Technology Conference, Houston, Texas.
-Thompson, D.R., Leifer, I., Bovensmann, H., Eastwood, M.L., Green, R.O., Eastwood, M.L., Fladeland, M., Frankenberg, C., Gerilowski, K., Green, R.O., Kratwurst, S., Krings, T., Luna, B., Thorpe, A.K. (2015). Real time remote detection and measurement for airborne imaging spectroscopy: A case study with methane. Atmospheric Measurement Techniques, 8, 4383-4397.
+                                    Thorpe, A. K., Frankenberg, C., Green, R. O., Thompson, D. R., Mouroulis, P., Eastwood, M.L., Matheou, G. (2016b). The Airborne Methane Plume Spectrometer (AMPS): Quantitative imaging of methane plumes in real time, paper presented at Aerospace Conference, 2016 IEEE.
 
-Thorpe, A.K., Frankenberg, C., Roberts, D.A. (2014). Retrieval techniques for airborne imaging of methane concentrations using high spatial and moderate spectral resolution: Application to AVIRIS. Atmospheric Measurement Techniques, 7, 491-506.
+                                    Aubrey, A.D., Frankenberg, C., Green, R.O., Eastwood, M.L., Thompson, D.R., Thorpe, A.K. (2015). Crosscutting airborne remote sensing technologies for oil and gas and earth science applications, paper presented at Offshore Technology Conference, Houston, Texas.
+                                    Thompson, D.R., Leifer, I., Bovensmann, H., Eastwood, M.L., Green, R.O., Eastwood, M.L., Fladeland, M., Frankenberg, C., Gerilowski, K., Green, R.O., Kratwurst, S., Krings, T., Luna, B., Thorpe, A.K. (2015). Real time remote detection and measurement for airborne imaging spectroscopy: A case study with methane. Atmospheric Measurement Techniques, 8, 4383-4397.
 
-Dennison, P.E., Thorpe, A.K., Qi, Y., Roberts, D.A., Green, R.O. (2013a). Modeling sensitivity of imaging spectrometer data to carbon dioxide and methane plumes. Proc. Workshop on Hyperspectral Image and Signal Processing: Evolution in Remote Sensing (WHISPERS).
+                                    Thorpe, A.K., Frankenberg, C., Roberts, D.A. (2014). Retrieval techniques for airborne imaging of methane concentrations using high spatial and moderate spectral resolution: Application to AVIRIS. Atmospheric Measurement Techniques, 7, 491-506.
 
-Dennison, P.E., Thorpe, A.K., Qi, Y., Roberts, D.A., Green, R.O., Bradley, E.S., Funk, C.C. (2013b). High spatial resolution mapping of elevated atmospheric carbon dioxide using airborne imaging spectroscopy: Radiative transfer modeling and power plant plume detection. Remote Sensing of Environment, 139, 116–129.
+                                    Dennison, P.E., Thorpe, A.K., Qi, Y., Roberts, D.A., Green, R.O. (2013a). Modeling sensitivity of imaging spectrometer data to carbon dioxide and methane plumes. Proc. Workshop on Hyperspectral Image and Signal Processing: Evolution in Remote Sensing (WHISPERS).
 
-Thorpe, A.K., Roberts, D.A., Bradley, E.S., Funk, C.C., Dennison, P.E., Leifer I. (2013). High resolution mapping of methane emissions from marine and terrestrial sources using a Cluster-Tuned Matched Filter technique and imaging spectrometry. Remote Sensing of Environment, 134, 305–318.
+                                    Dennison, P.E., Thorpe, A.K., Qi, Y., Roberts, D.A., Green, R.O., Bradley, E.S., Funk, C.C. (2013b). High spatial resolution mapping of elevated atmospheric carbon dioxide using airborne imaging spectroscopy: Radiative transfer modeling and power plant plume detection. Remote Sensing of Environment, 139, 116–129.
 
-Thorpe, A.K., Roberts, D.A., Dennison, P.E., Bradley, E.S., Funk, C.C. (2012). Point source emissions mapping using the Airborne Visible/Infrared Imaging Spectrometer (AVIRIS). Proc. SPIE, 8390, 839013.
+                                    Thorpe, A.K., Roberts, D.A., Bradley, E.S., Funk, C.C., Dennison, P.E., Leifer I. (2013). High resolution mapping of methane emissions from marine and terrestrial sources using a Cluster-Tuned Matched Filter technique and imaging spectrometry. Remote Sensing of Environment, 134, 305–318.
 
-Bradley, E.S., Leifer, I., Roberts, D.A., Dennison, P.E. and Washburn, L., 2011. Detection of marine methane emissions with AVIRIS band ratios. Geophysical Research Letters, 38(10).
+                                    Thorpe, A.K., Roberts, D.A., Dennison, P.E., Bradley, E.S., Funk, C.C. (2012). Point source emissions mapping using the Airborne Visible/Infrared Imaging Spectrometer (AVIRIS). Proc. SPIE, 8390, 839013.
 
-Roberts, D.A., Bradley, E.S., Cheung, R., Leifer, I., Dennison, P.E. and Margolis, J.S., 2010. Mapping methane emissions from a marine geological seep source using imaging spectrometry. Remote Sensing of Environment, 114(3), pp.592-606.
+                                    Bradley, E.S., Leifer, I., Roberts, D.A., Dennison, P.E. and Washburn, L., 2011. Detection of marine methane emissions with AVIRIS band ratios. Geophysical Research Letters, 38(10).
+
+                                    Roberts, D.A., Bradley, E.S., Cheung, R., Leifer, I., Dennison, P.E. and Margolis, J.S., 2010. Mapping methane emissions from a marine geological seep source using imaging spectrometry. Remote Sensing of Environment, 114(3), pp.592-606.
                                 </div>
-
 
                             </div>
                         </CardContent>
