@@ -33,13 +33,13 @@ require("_core/styles/resources/img/layer_thumbnails/ASTER_GDEM_Color_Shaded_Rel
 require("_core/styles/resources/img/layer_thumbnails/ESRI_World_Imagery.jpeg");
 require("styles/resources/img/layer_thumbnails/gridded_methane_v1.png");
 require("styles/resources/img/layer_thumbnails/AVIRIS.png");
-require("styles/resources/img/layer_thumbnails/permian-thumb.png");
 require("styles/resources/img/map_icons/PlumeIcon.png");
 require("styles/resources/img/map_icons/PlumeIconActive.png");
 require("styles/resources/img/landing_page/logo_nasa_trio_white.png");
 require("styles/resources/img/landing_page/logo_nasa_trio_white@2x.png");
 require("styles/resources/img/landing_page/hero_image.jpg");
 require("styles/resources/img/landing_page/msf_screenshot.jpg");
+require("styles/resources/img/landing_page/4panel_landfill_annotated.png");
 require("styles/resources/img/landing_page/Methane_tiered_obs_system_small.jpg");
 require("styles/resources/img/layer_thumbnails/msf-flightcoverage.png");
 require("styles/resources/img/layer_thumbnails/msf-pointsources.png");
