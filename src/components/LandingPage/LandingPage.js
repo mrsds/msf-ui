@@ -161,10 +161,10 @@ export class LandingPage extends Component {
                                     (1900&ndash;2500 nm) that permits mapping of point source
                                     greenhouse gas emissions with imaging spectrometers that were
                                     developed at JPL, like{" "}
-                                    <a href="https://aviris.jpl.nasa.gov/">AVIRIS</a>,
+                                    <a href="https://aviris.jpl.nasa.gov/">AVIRIS</a>, 
                                     <a href="https://avirisng.jpl.nasa.gov/greenhouse_gas_mapping.html">
                                         AVIRIS-NG
-                                    </a>,
+                                    </a>, 
                                     <a href="https://doi.org/10.1109/AERO53065.2022.9843565">
                                         AVIRIS-3
                                     </a>, and <a href="https://earth.jpl.nasa.gov/emit/">EMIT</a>.
