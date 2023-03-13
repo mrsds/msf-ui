@@ -141,11 +141,10 @@ a.nasa_logo {
     padding: 0.2em 1em 0.2em 1em;
     background-color: #ffffff;
     color: #25468a;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.1s ease-in-out;
     &:hover {
         color: #ffffff;
         background-color: #25468a;
-        transform: scale(1.1);
     }
 }
 
