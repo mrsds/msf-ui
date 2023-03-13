@@ -363,9 +363,9 @@ export class LandingPage extends Component {
                         </div>
                         <div className={styles.div_footer_right}>
                             Site Contact:{" "}
-                            <a href="mailto:steve.zelinka@arb.ca.gov">Steve Zelinka</a>
+                            <a href="mailto:msf@jpl.nasa.gov">Andrew Thorpe</a>
                             <br />
-                            Release number: URS280411-CARB
+                            Release number: URS280411
                         </div>
                         <script
                             id="_fed_an_ua_tag"
