@@ -130,12 +130,13 @@ export class LandingPage extends Component {
                                         Greenhouse-gas mapping tools
                                     </Typography>
                                     The Methane Source Finder web portal was developed to visualize
-                                    methane plumes observed with AVIRIS-NG and includes data from
+                                    methane plumes observed with the Airborne Visible Infrared Imaging
+                                    Spectrometer - Next Generation (AVIRIS-NG) and includes data from
                                     airborne campaigns between 2016 and 2019. Methane plumes
                                     observed with the Earth Surface Mineral Dust Source
                                     Investigation (EMIT) instrument, currently operating on the
                                     International Space Station, are visualized using the
-                                    <a href="https://earth.jpl.nasa.gov/emit/data/data-portal/Greenhouse-Gases/">
+                                    {" "}<a href="https://earth.jpl.nasa.gov/emit/data/data-portal/Greenhouse-Gases/">
                                         EMIT VISIONS Open Data Portal
                                     </a>. This mapping effort is in keeping with the Open Science
                                     and Open Data policy and part of NASA&#8217;s contribution to a
@@ -162,10 +163,10 @@ export class LandingPage extends Component {
                                     greenhouse gas emissions with imaging spectrometers that were
                                     developed at JPL, like{" "}
                                     <a href="https://aviris.jpl.nasa.gov/">AVIRIS</a>, 
-                                    <a href="https://avirisng.jpl.nasa.gov/greenhouse_gas_mapping.html">
+                                    {" "}<a href="https://avirisng.jpl.nasa.gov/greenhouse_gas_mapping.html">
                                         AVIRIS-NG
                                     </a>, 
-                                    <a href="https://doi.org/10.1109/AERO53065.2022.9843565">
+                                    {" "}<a href="https://doi.org/10.1109/AERO53065.2022.9843565">
                                         AVIRIS-3
                                     </a>, and <a href="https://earth.jpl.nasa.gov/emit/">EMIT</a>.
                                     Future NASA missions like the Surface Biology and Geology (<a href="https://sbg.jpl.nasa.gov/">
