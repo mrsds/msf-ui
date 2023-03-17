@@ -88,23 +88,12 @@ export class LandingPage extends Component {
 
                             <Typography className={styles.title} color="textSecondary" gutterBottom>
                                 <br />
-                                Greenhouse-Gas Mapping
+                                Greenhouse Gas Mapping
                             </Typography>
                             <div className={styles.section_hero}>
-                                These interactive maps will help you explore methane data.
+                                These interactive maps will help you explore methane point source data.
                             </div>
                             <div className={styles.map_button_container}>
-                                <Link to="./map">
-                                    <Button
-                                        size="small"
-                                        variant="raised"
-                                        color="primary"
-                                        className={styles.map_button}
-                                    >
-                                        Methane Source Finder
-                                    </Button>
-                                </Link>
-
                                 <a href="https://earth.jpl.nasa.gov/emit/data/data-portal/Greenhouse-Gases/">
                                     <Button
                                         size="small"
@@ -115,32 +104,52 @@ export class LandingPage extends Component {
                                         EMIT VISIONS
                                     </Button>
                                 </a>
+                                <Link to="./map">
+                                    <Button
+                                        size="small"
+                                        variant="raised"
+                                        color="primary"
+                                        className={styles.map_button}
+                                    >
+                                        Methane Source Finder
+                                    </Button>
+                                </Link>
                             </div>
                         </div>
                     </div>
                     <Card className={styles.card}>
                         <CardContent className={styles.card_content}>
                             <div className={styles.left}>
+
                                 <div className={styles.section_body}>
-                                    <Typography
-                                        className={styles.section_title}
-                                        color="default"
-                                        gutterBottom
-                                    >
-                                        Greenhouse-gas mapping tools
-                                    </Typography>
-                                    The Methane Source Finder web portal was developed to visualize
-                                    methane plumes observed with the Airborne Visible Infrared Imaging
-                                    Spectrometer - Next Generation (AVIRIS-NG) and includes data from
-                                    airborne campaigns between 2016 and 2019. Methane plumes
-                                    observed with the Earth Surface Mineral Dust Source
-                                    Investigation (EMIT) instrument, currently operating on the
-                                    International Space Station, are visualized using the
-                                    {" "}<a href="https://earth.jpl.nasa.gov/emit/data/data-portal/Greenhouse-Gases/">
-                                        EMIT VISIONS Open Data Portal
-                                    </a>. This mapping effort is in keeping with the Open Science
-                                    and Open Data policy and part of NASA&#8217;s contribution to a
-                                    federated US Government Greenhouse Gas (GHG) information system.
+                                    Carbon dioxide and methane are the two dominant anthropogenic climate-forcing
+                                    agents. Because the methane lifetime in the atmosphere is only about a decade,
+                                    and methane is more efficient at trapping radiation than carbon dioxide on a
+                                    molecular basis, targeting reductions in anthropogenic methane emissions
+                                    offers an effective approach to decrease overall atmospheric radiative forcing. 
+                                    
+                                    Methane and carbon dioxide have distinct absorption features in the shortwave 
+                                    infrared (1900&ndash;2500 nm) that permits mapping of point source
+                                    greenhouse gas emissions with imaging spectrometers that were
+                                    developed at JPL, like
+                                    {" "}<a href="https://aviris.jpl.nasa.gov/">AVIRIS</a>, 
+                                    {" "}<a href="https://avirisng.jpl.nasa.gov/greenhouse_gas_mapping.html">AVIRIS-NG</a>, 
+                                    {" "}<a href="https://doi.org/10.1109/AERO53065.2022.9843565">AVIRIS-3</a>,
+                                    and <a href="https://earth.jpl.nasa.gov/emit/">EMIT</a>.
+                                    Future NASA missions like the Surface Biology and Geology (<a href="https://sbg.jpl.nasa.gov/">
+                                        SBG</a>) Designated Observable will have methane and carbon dioxide
+                                    sensitivity. 
+                                </div>
+                                <div className={styles.section_body}> 
+                                    Using these instruments, methane and carbon dioxide plumes can be mapped at 
+                                    high spatial resolution and emission sources located and attributed to specific 
+                                    emission sectors like oil & gas or waste management. The use of quantitative gas 
+                                    retrieval algorithms permits quantification of methane and carbon dioxide 
+                                    emission rates. Identifying strong emission sources offers the potential to 
+                                    constrain regional greenhouse gas budgets, improve partitioning between 
+                                    anthropogenic and natural emission sources, and to mitigate emissions. A list 
+                                    of publications that utilize imaging spectrometers for greenhouse gas mapping 
+                                    is provided below.
                                 </div>
 
                                 <div className={styles.section_body}>
@@ -149,41 +158,30 @@ export class LandingPage extends Component {
                                         color="default"
                                         gutterBottom
                                     >
-                                        Technology
+                                        Greenhouse gas mapping tools
                                     </Typography>
-                                    Carbon dioxide and methane are the two dominant anthropogenic
-                                    climate-forcing agents. Because the methane lifetime in the
-                                    atmosphere is only about nine years and methane is more
-                                    efficient at trapping radiation than carbon dioxide on a
-                                    molecular basis, targeting reductions in anthropogenic methane
-                                    emissions offers an effective approach to decrease overall
-                                    atmospheric radiative forcing. Methane and carbon dioxide have
-                                    distinct absorption features in the shortwave infrared
-                                    (1900&ndash;2500 nm) that permits mapping of point source
-                                    greenhouse gas emissions with imaging spectrometers that were
-                                    developed at JPL, like{" "}
-                                    <a href="https://aviris.jpl.nasa.gov/">AVIRIS</a>, 
-                                    {" "}<a href="https://avirisng.jpl.nasa.gov/greenhouse_gas_mapping.html">
-                                        AVIRIS-NG
-                                    </a>, 
-                                    {" "}<a href="https://doi.org/10.1109/AERO53065.2022.9843565">
-                                        AVIRIS-3
-                                    </a>, and <a href="https://earth.jpl.nasa.gov/emit/">EMIT</a>.
-                                    Future NASA missions like the Surface Biology and Geology (<a href="https://sbg.jpl.nasa.gov/">
-                                        SBG
-                                    </a>) Designated Observable will have methane and carbon dioxide
-                                    sensitivity. Using these instruments, methane and carbon dioxide
-                                    plumes can be mapped at high spatial resolution and emission
-                                    sources located and attributed to specific emission sectors like
-                                    oil-and-gas or waste management. The use of quantitative gas
-                                    retrieval algorithms permits quantification of methane and
-                                    carbon dioxide emission rates. Identifying strong emission
-                                    sources offers the potential to constrain regional greenhouse
-                                    gas budgets, improve partitioning between anthropogenic and
-                                    natural emission sources, and to mitigate emissions. A list of
-                                    publications that utilize imaging spectrometers for greenhouse
-                                    gas mapping is provided here.
+                                    JPL is using data from AVIRIS-NG and EMIT to visualize point 
+                                    sources of greenhouse gas emissions. 
                                 </div>
+
+                                <div className={styles.section_body}>
+                                    The Methane Source Finder web portal was developed to visualize
+                                    methane plumes observed with the Airborne Visible Infrared Imaging
+                                    Spectrometer - Next Generation (AVIRIS-NG) and includes data from
+                                    airborne campaigns between 2016 and 2019. 
+                                </div>
+
+                                <div className={styles.section_body}></div>
+                                    Methane plumes observed with the Earth Surface Mineral Dust Source
+                                    Investigation (EMIT) instrument, currently operating on the
+                                    International Space Station, are visualized using the
+                                    {" "}<a href="https://earth.jpl.nasa.gov/emit/data/data-portal/Greenhouse-Gases/">
+                                        EMIT VISIONS Open Data Portal
+                                    </a>. This mapping effort aligns with the Open Science
+                                    and Open Data policy and is part of NASA&#8217;s contribution to a
+                                    federated US Government Greenhouse Gas (GHG) information system.
+                                </div>
+
                                 <div className={styles.image_container}>
                                     <img
                                         alt="Four examples of methane plumes observed with AVIRIS and EMIT"
@@ -194,21 +192,19 @@ export class LandingPage extends Component {
                                 <div className={styles.section_body}>
                                     The graphic above shows methane plumes observed with AVIRIS for
                                     the Aliso Canyon gas storage blowout in 2015 (upper left), for
-                                    an oil&gas source in the Permian Basin using AVIRIS-NG (upper
+                                    an oil & gas source in the Permian Basin using AVIRIS-NG (upper
                                     right), from a landfill observed with EMIT (lower left), and
                                     power plant carbon dioxide plumes observed with EMIT (lower
                                     right).
                                 </div>
-                            </div>
 
-                            <div className={styles.right}>
                                 <div className={styles.section_body}>
                                     <Typography
                                         className={styles.section_title}
                                         color="default"
                                         gutterBottom
                                     >
-                                        PUBLICATIONS
+                                        Publications
                                     </Typography>
                                     <Typography
                                         className={styles.subsection_title}
