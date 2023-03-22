@@ -176,7 +176,7 @@ export class LandingPage extends Component {
                                     data from airborne campaigns between 2016 and 2019.
                                 </div>
 
-                                <div className={styles.section_body} />
+                                <div className={styles.section_body}>
                                     Methane plumes observed with the Earth Surface Mineral Dust Source
                                     Investigation (EMIT) instrument, currently operating on the
                                     International Space Station, are visualized using the{" "}
