@@ -213,9 +213,9 @@ export class DataFilterContainer extends Component {
         const downloadSettings = (_ => {
             switch (this.props.analyticsMode) {
                 case MSFTypes.ANALYTICS_MODE_PLUME_DETECTION_STATS:
-                    return ["Download original plume lists (CA and Permian)", appConfig.URLS.plumeListDownload];
+                    return ["Download original plume lists", appConfig.URLS.plumeListDownload];
                 case MSFTypes.ANALYTICS_MODE_EMISSIONS_SUMMARY_INFO:
-                    return ["Download original source lists (CA and Permian)", appConfig.URLS.sourceListDownload];
+                    return ["Download original source lists", appConfig.URLS.sourceListDownload];
                 default:
                     null;
             }
