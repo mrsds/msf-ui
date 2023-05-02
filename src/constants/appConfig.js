@@ -141,7 +141,7 @@ const APP_CONFIG = Immutable.fromJS({
     DEFAULT_ANALYTICS_ENABLED: true,
     GOOGLE_ANALYTICS_ENABLED: true,
     GOOGLE_ANALYTICS_ID: "UA-145064320-1",
-    MSF_MANAGEMENT_CONSOLE_ENABLED: true
+    MSF_MANAGEMENT_CONSOLE_ENABLED: false
 });
 
 // define and export the final config
