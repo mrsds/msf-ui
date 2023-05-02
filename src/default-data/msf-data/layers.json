@@ -417,32 +417,6 @@
             "thumbnailImage": "img/msf-flightcoverage.png",
             "updateParameters": { "time": false },
             "layerOrder": 0
-        },
-        {
-            "id": "GRIDDED_EMISSIONS_PERMIAN",
-            "title": "Permian Regional Flux Inversion",
-            "type": "data",
-            "handleAs": "gridded_geojson",
-            "isDefault": false,
-            "url": "/server/data/permian-thumb-2019.geojson",
-            "thumbnailImage": "img/permian-thumb.png",
-            "opacity": 0.6,
-            "metadata": {
-                "url": "default-data/msf-data/layer-metadata/Grid-Permian.json",
-                "handleAs": "json"
-            },
-            "units": "kg/km2/hr",
-            "updateParameters": { "time": false },
-            "palette": {
-                "name": "permian",
-                "handleAs": "json-fixed",
-                "min": "0",
-                "max": "15"
-            },
-            "layerOrder": 1,
-            "group": "GRIDDED",
-            "visibleInGroup": true
         }
-
     ]
 }
