@@ -41,6 +41,6 @@ APPLICATION_CONFIG = {
 
 APPLICATION_CONFIG = {
     APP_TITLE: "Methane Source Finder",
-    BE_ENDPOINT: "https://localhost:3001/server",
+    BE_ENDPOINT: "https://methane.jpl.nasa.gov/server",
     BE_PORT: ""
 };
