@@ -27,7 +27,7 @@ export const EXTENTS_PERMIAN_BASIN = [-107, 29, -98, 36];
 export const HOME_AREAS = [
     { title: "Los Angeles", homeArea: HOME_AREA_LOS_ANGELES, extents: EXTENTS_LOS_ANGELES },
     { title: "San Francisco Bay Area", homeArea: HOME_AREA_SF_BAY, extents: EXTENTS_SF_BAY },
-    { title: "Permian Basin", homeArea: HOME_AREA_PERMIAN_BASIN, extents: EXTENTS_PERMIAN_BASIN }
+//    { title: "Permian Basin", homeArea: HOME_AREA_PERMIAN_BASIN, extents: EXTENTS_PERMIAN_BASIN }
 ];
 
 export const CONTROL_MODE_JOB_SUBMISSION = "CONTROL_MODE_JOB_SUBMISSION";
