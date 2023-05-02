@@ -13,12 +13,6 @@ import * as MSFTypes from "constants/MSFTypes";
 
 const LOCATION_OPTIONS = [
     {
-        key: "permian",
-        label: "Permian Basin, Texas/New Mexico",
-        location: MSFTypes.HOME_AREA_PERMIAN_BASIN,
-        extent: MSFTypes.EXTENTS_PERMIAN_BASIN,
-    },
-    {
         key: "la",
         label: "Los Angeles, California",
         location: MSFTypes.HOME_AREA_LOS_ANGELES,
@@ -35,7 +29,7 @@ const LOCATION_OPTIONS = [
 export class HomeAreaPickerContainer extends Component {
     constructor(props) {
         super(props);
-        this.state = { selectedHomeArea: "permian" };
+        this.state = { selectedHomeArea: "la" };
     }
 
     selectHomeArea(location) {
