@@ -7,16 +7,6 @@
 5. High resolution remote sensing of methane plumes can pinpoint emissions sources and identify specific equipment for efficient follow up by facility operators and regulators.
 6. Accurate quantification of regional methane budgets/inventories benefits from tiered observing systems that apply multiple measurements from different vantage points (e.g., land, air and space) to provide a complete picture of the different types of emitters, including strong point sources and wider area sources.
 
-### What are some findings from the 2019 Permian Methane Survey?
-
-1. We found about 1700 high-emitting methane point sources above our detection limit from oil and gas production, gathering and processing activity in an area spanning about 55,000 km2 in Texas and New Mexico.
-2. The population of methane sources above our detection limit in the Permian is significantly skewed (higher) compared to equivalent populations of oil and gas emissions from similar studies in California and Four Corners (San Juan basin).
-3. Repeated sampling reveals that about half of the emissions from sources above our detection limit in the Permian come from sources that are active < 25% of the time (many of which are likely expected process-emissions such as periodic venting).
-4. The remaining half of emissions from that population comes from sources active 25-100% of the time; in general these are much higher emitting sources and many are potentially malfunctions or leaks, suggesting opportunities for mitigation.
-5. The total emissions from Permian point sources above our detection limits varies by a factor of 2 from day to day and that variability is twice as large as the total emissions from an equivalent point source population of oil and gas emitters in California.
-6. We used our high-resolution methane images to pinpoint the equipment types responsible for high-emitting point source emissions in the Permian, revealing a 20% shift in emissions from upstream to midstream activity compared to previous studies of all US oil and gas basins; we attribute this to over-production in the Permian (production is outpacing haul-away capacity).
-7. Using spectroscopy to detect flaring stacks we were also able to attribute 12% of emissions from our population of Permian methane point sources to active flaring (incomplete combustion) and unlit flares, many of which have very large emissions (>1000 kgCH4/hr).
-
 ### What are some findings from the [California Methane Survey](https://ww2.energy.ca.gov/2020publications/CEC-500-2020-047/CEC-500-2020-047.pdf) (2016-2017)?
 
 1. Less than 0.2% of infrastructure elements in the state (based on a survey of 272,000 facilities and components) are responsible for 34–46% of total methane emissions in California.
