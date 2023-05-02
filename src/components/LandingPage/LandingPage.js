@@ -173,7 +173,7 @@ export class LandingPage extends Component {
                                     The Methane Source Finder web portal was developed to visualize
                                     methane plumes observed with the Airborne Visible Infrared
                                     Imaging Spectrometer - Next Generation (AVIRIS-NG) and includes
-                                    data from airborne campaigns between 2016 and 2019.
+                                    data from airborne campaigns between 2016 and 2017.
                                 </div>
 
                                 <div className={styles.section_body}>
