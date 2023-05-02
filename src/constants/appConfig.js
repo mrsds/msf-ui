@@ -120,12 +120,6 @@ const APP_CONFIG = Immutable.fromJS({
     PLUME_MAX_RESOLUTION: 76,
     GRIDDED_LAYER_TYPES: [
         {
-            name: "GRIDDED_EMISSIONS_PERMIAN",
-            dateEndpoint: beEndpoint + "/data/permian-thumb-date-list.json",
-            endpoint: beEndpoint + "/data/permian-thumb-{date}.geojson",
-            period: "yearly"
-        },
-        {
             name: "GRIDDED_EMISSIONS_V2",
             dateEndpoint: beEndpoint + "/data/gridded/gridded_date_list.json",
             endpoint: beEndpoint + "/data/gridded/v2/Fluxes_{date}.geojson",
